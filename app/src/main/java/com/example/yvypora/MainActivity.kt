@@ -21,7 +21,12 @@ class MainActivity : ComponentActivity() {
             YvyporaTheme {
                     val navController = rememberNavController()
                     SetupNavGraph(navController = navController)
+                Surface(
 
+
+                ){
+
+                }
             }
         }
     }

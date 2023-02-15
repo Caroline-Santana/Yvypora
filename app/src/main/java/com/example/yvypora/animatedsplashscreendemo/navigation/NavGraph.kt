@@ -16,7 +16,7 @@ import androidx.navigation.compose.composable
          startDestination = Screen.Splash.route
      ){
          composable(route = Screen.Splash.route){
-             AnimatedSplashScreen(navController = )
+             AnimatedSplashScreen(navController = navController)
          }
          composable(route = Screen.Home.route){
              Box(modifier = Modifier.fillMaxSize())
