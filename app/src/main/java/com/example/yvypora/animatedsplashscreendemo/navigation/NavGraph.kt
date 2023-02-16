@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.yvypora.AnimatedSplashScreen
 
 @Composable
  fun SetupNavGraph(navController: NavHostController){
