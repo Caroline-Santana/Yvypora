@@ -1,26 +1,37 @@
 package com.example.yvypora
 
 
+import android.content.Intent
 import android.graphics.fonts.Font
+import android.graphics.fonts.FontStyle
 import android.os.Bundle
+import android.support.v4.os.IResultReceiver.Default
+import android.text.style.UnderlineSpan
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.ui.theme.YvyporaTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +42,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    Image(painter =  painterResource(id = R.drawable.background), contentDescription = "",
+                    Image(
+                        painter = painterResource(id = R.drawable.background),
+                        contentDescription = "",
                         contentScale = ContentScale.Crop
                     )
                     Column(
@@ -40,15 +53,13 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.End,
                         verticalArrangement = Arrangement.Top
 
-                    ){
+                    ) {
                         Text(
                             modifier = Modifier.padding(top = 35.dp, end = 10.dp),
                             text = stringResource(id = R.string.yvypora),
                             color = colorResource(id = R.color.green_yvy),
                             fontSize = 32.sp,
-
                         )
-
 
                     }
 
@@ -62,33 +73,72 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainLayout(){
+fun MainLayout() {
     Column(
         modifier =
-        Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
+        Modifier
+            .fillMaxSize()
+            .padding(25.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
         //Main
-            Text(
-                text = stringResource(id = R.string.slogan),
-                fontSize = 45.sp,
-                color = androidx.compose.ui.graphics.Color.White,
-                letterSpacing = 4.sp
-            )
-        }
-
-    Button(onClick = { /*TODO*/ },
-        modifier = Modifier
-            .width(50.dp)
-            .height(50.dp),
-        shape = RoundedCornerShape(5.dp),
-        colors = ButtonDefaults.buttonColors(Color(83,141,34))
-    ){
         Text(
-            text = stringResource(id = R.string.login),
-            color = Color.White
+            text = stringResource(id = R.string.slogan),
+            fontSize = 45.sp,
+            color = androidx.compose.ui.graphics.Color.White,
+
+            letterSpacing = 4.sp
         )
     }
-        
+    Column(
+        modifier =
+        Modifier
+            .fillMaxSize()
+            .padding(bottom = 34.dp),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
+    {
+        val context = LocalContext.current
+        Button(
+            onClick = {
+                val intent = Intent(context, LoginActivity()::class.java)
+                context.startActivity(intent)
+            },
+            modifier = Modifier
+                .width(330.dp)
+                .height(135.dp)
+                .padding(bottom = 85.dp)
+                .padding(),
+            shape = RoundedCornerShape(5.dp),
+            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+
+            ) {
+            Text(
+                text = stringResource(id = R.string.login),
+                color = Color.White,
+                fontSize = 24.sp
+            )
+        }
+        Text(
+            text = stringResource(id = R.string.question),
+            fontSize = 18.sp,
+            color = androidx.compose.ui.graphics.Color.White,
+
+            letterSpacing = 4.sp
+        )
+        Text(
+            text = stringResource(id = R.string.register),
+            fontSize = 18.sp,
+            color = androidx.compose.ui.graphics.Color.White,
+            textDecoration = TextDecoration.Underline,
+            letterSpacing = 4.sp
+        )
+    }
+
 
 }
+
+

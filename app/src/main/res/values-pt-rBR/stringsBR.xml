@@ -6,4 +6,8 @@
     <string name="slogan">"Encontre sua feira de onde estiver"</string>
     <string name="yvypora">"yvyporã"</string>
     <string name="login">"Login"</string>
+    <string name="question">"Não possui uma conta?"</string>
+    <string name="register">"Cadastre-se"</string>
+    <string name="name">"Nome:"</string>
+    <string name="name_error">"Informe um nome de usuário!"</string>
 </resources>

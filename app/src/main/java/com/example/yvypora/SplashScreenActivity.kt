@@ -23,8 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.yvypora.animatedsplashscreendemo.navigation.Screen
 import com.example.yvypora.animatedsplashscreendemo.navigation.SetupNavGraph
+
+
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlinx.coroutines.delay
 
@@ -41,34 +42,38 @@ class SplashScreenActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
-fun AnimatedSplashScreen(navController: NavHostController){
+fun AnimatedSplashScreen(navController: NavHostController) {
     var startAnimation by remember { mutableStateOf(false) }
     var alphaAnim = animateFloatAsState(
-        targetValue = if(startAnimation) 1f else 0f,
+        targetValue = if (startAnimation) 1f else 0f,
         animationSpec = tween(
-            durationMillis = 3500
+            durationMillis = 2000
         )
     )
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(2500)
+        delay(3500)
         navController.popBackStack()
 
     }
     val context = LocalContext.current
-    val intent = Intent(context,MainActivity::class.java)
-               context.startActivity(intent)
+    val intent = Intent(context, MainActivity::class.java)
+    context.startActivity(intent)
     Splash(alpha = alphaAnim.value)
 }
+
 @Composable
-fun Splash(alpha: Float){
-    Box(modifier = Modifier
-        .background(color = Color.White)
-        .fillMaxSize(),
+fun Splash(alpha: Float) {
+    Box(
+        modifier = Modifier
+            .background(color = Color.White)
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
-        Image(painter = painterResource(id = R.drawable.logo),
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
             "",
             modifier = Modifier
                 .width(200.dp)
@@ -78,9 +83,10 @@ fun Splash(alpha: Float){
     }
 
 }
+
 @Composable
 @Preview
-fun SplashScreenPreview(){
+fun SplashScreenPreview() {
     Splash(alpha = 1f)
 }
 
