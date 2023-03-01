@@ -5,6 +5,7 @@
     <string name="slogan">"Find your fair wherever you are"</string>
     <string name="yvypora">"yvyporã"</string>
     <string name="login">"Login"</string>
+    <string name="enter">"Enter"</string>
     <string name="question">"Don't have an account?"</string>
     <string name="register">"Register"</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -17,6 +18,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="name">"Name:"</string>
+    <string name="email">"Email:"</string>
     <string name="name_error">"Provide a username!"</string>
+    <string name="email_error">"Provide a valid email!"</string>
+    <string name="icon_content_description">"Vegetable box"</string>
 
 </resources>
