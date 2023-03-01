@@ -1,6 +1,7 @@
 package com.example.yvypora
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -8,10 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -19,8 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,43 +28,60 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.ui.theme.YvyporaTheme
 
-class LoginActivity : ComponentActivity() {
+class RegisterClient : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
                 Surface(
-                    modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .fillMaxWidth()
-                        .padding(top = 50.dp),
+                    modifier = Modifier.fillMaxWidth(),
 
-                ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.background2),
-                            alignment = Alignment.TopStart,
-                            contentDescription = "",
-                            contentScale = ContentScale.FillWidth
+                    ) {
+                    Image(
+                        painter =  painterResource(id =R.drawable.logo_no_name),
+                        modifier = Modifier
+                            .height(58.dp)
+                            .width(55.dp)
+                            .padding(horizontal = 28.dp),
+                        alignment = Alignment.BottomStart,
+                        contentDescription = "logo",
+
                         )
-
-
+                    Spacer(
+                        modifier = Modifier.height(36.dp)
+                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 50.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.register),
+                            modifier = Modifier.padding(top = 35.dp, end = 10.dp),
+                            textAlign = TextAlign.Center,
+                            color = colorResource(id = R.color.darkgreen_yvy),
+                            fontSize = 48.sp
+                        )
                     }
-                LoginLayout()
                 }
-
             }
+            Inputs()
         }
     }
-
+}
 
 @Composable
-fun LoginLayout() {
-
+fun Inputs() {
     var nameState by rememberSaveable {
         mutableStateOf("")
     }
+
     var emailState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var passwordState by rememberSaveable {
         mutableStateOf("")
     }
     var isNameError by remember {
@@ -77,30 +90,35 @@ fun LoginLayout() {
     var isEmailError by remember {
         mutableStateOf(false)
     }
+    var isPasswordError by remember {
+        mutableStateOf(false)
+    }
+    val context = LocalContext.current
+    val mMaxLength = 8
     //Objeto que controla a requisição de foco
     val inputsFocusRequest = FocusRequester()
     val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
     fun isEmailValid(email: String): Boolean {
         return EMAIL_REGEX.toRegex().matches(email);
+
     }
     Column(
         modifier =
         Modifier
             .fillMaxSize()
             .fillMaxWidth()
-            .padding(start = 24.dp, top = 320.dp, end = 24.dp),
+            .padding(start = 24.dp, end = 24.dp),
         verticalArrangement = Arrangement.Center,
 
         ) {
+        //Input nome
         Text(
             text = stringResource(id = R.string.name),
-            modifier = Modifier.padding(bottom = 6.dp),
             fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Start,
             color = colorResource(id = R.color.darkgreen_yvy)
         )
-        OutlinedTextField(
+        TextField(
             value = nameState,
             onValueChange = { newName ->
                 var lastChar = if (newName.isEmpty()) {
@@ -117,37 +135,15 @@ fun LoginLayout() {
                 else newName
                 nameState = newValue
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = colorResource(id = R.color.transparentgreen_yvy),
-                focusedBorderColor = colorResource(id = R.color.transparentgreen_yvy),
-                unfocusedBorderColor = colorResource(id = R.color.transparentgreen_yvy)
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Unspecified,
+                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,
+                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),
+                cursorColor = colorResource(id = R.color.darkgreen_yvy)
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .focusRequester(inputsFocusRequest)
-                .padding(0.dp),
-
-            trailingIcon = {
-                if (nameState.length <= 0) {
-                    Icon(
-                        painter = painterResource(R.drawable.iconboxe),
-                        contentDescription = stringResource(id = R.string.icon_content_description),
-                        modifier = Modifier
-                            .width(31.dp)
-                            .height(32.dp)
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(R.drawable.icon_colorful),
-                        contentDescription = stringResource(id = R.string.icon_content_description),
-                        modifier = Modifier
-                            .width(31.dp)
-                            .height(32.dp),
-                        tint = Color.Unspecified
-                    )
-                }
-            },
-
+                .focusRequester(inputsFocusRequest),
             isError = isNameError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             singleLine = true,
@@ -162,22 +158,21 @@ fun LoginLayout() {
                 color = Color.Red,
                 textAlign = TextAlign.End
             )
-
-
         }
 
+        //*********************************************************************
         Spacer(
-            modifier = Modifier.height(18.dp)
+            modifier = Modifier.height(35.dp)
         )
+
+        //Input Email
         Text(
             text = stringResource(id = R.string.email),
-            modifier = Modifier.padding(bottom = 6.dp),
             fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Start,
             color = colorResource(id = R.color.darkgreen_yvy)
         )
-        OutlinedTextField(
+        TextField(
             value = emailState,
             onValueChange = { newEmail ->
                 if (newEmail.isEmpty()) {
@@ -191,44 +186,20 @@ fun LoginLayout() {
 
                 emailState = newEmail
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = colorResource(id = R.color.transparentgreen_yvy),
-                focusedBorderColor = colorResource(id = R.color.transparentgreen_yvy),
-                unfocusedBorderColor = colorResource(id = R.color.transparentgreen_yvy)
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Unspecified,
+                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,
+                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),
+                cursorColor = colorResource(id = R.color.darkgreen_yvy)
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .focusRequester(inputsFocusRequest)
-                .padding(0.dp),
-
-            trailingIcon = {
-                if (nameState.length <= 0) {
-                    Icon(
-                        painter = painterResource(R.drawable.iconboxe),
-                        contentDescription = stringResource(id = R.string.icon_content_description),
-                        modifier = Modifier
-                            .width(31.dp)
-                            .height(32.dp)
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(R.drawable.icon_colorful),
-                        contentDescription = stringResource(id = R.string.icon_content_description),
-                        modifier = Modifier
-                            .width(31.dp)
-                            .height(32.dp),
-                        tint = Color.Unspecified
-                    )
-                }
-            },
-
+                .focusRequester(inputsFocusRequest),
             isError = isEmailError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             singleLine = true,
             shape = RoundedCornerShape(8.dp),
-
-            )
-
+        )
         if (isEmailError) {
             Text(
                 text = stringResource(id = R.string.email_error),
@@ -236,31 +207,65 @@ fun LoginLayout() {
                 color = Color.Red,
                 textAlign = TextAlign.End
             )
-
-
         }
+
+        //*********************************************************************
         Spacer(
-            modifier = Modifier.height(44.dp)
+            modifier = Modifier.height(35.dp)
         )
 
-        Button(
-            onClick = {
+        // Input senha
+        Text(
+            text = stringResource(id = R.string.password),
+            fontSize = 20.sp,
+            textAlign = TextAlign.Start,
+            color = colorResource(id = R.color.darkgreen_yvy)
+        )
+        TextField(
+            value = passwordState,
+            onValueChange = { newPass ->
+                if (newPass.isEmpty()) {
+                    isPasswordError = true
+                } else if (newPass.length >= mMaxLength) {
+                    isPasswordError = true
+                } else {
+                    newPass.get(newPass.length - 1)
+                    isPasswordError = false
+                }
 
+                if(isPasswordError) newPass.dropLast(1)
+
+                passwordState = newPass
             },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Unspecified,
+                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,
+                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),
+                cursorColor = colorResource(id = R.color.darkgreen_yvy)
+            ),
             modifier = Modifier
-                .width(257.dp)
-                .height(54.dp)
-                .padding(start = 100.dp),
-            shape = RoundedCornerShape(5.dp),
-            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
-
-
-            ) {
+                .fillMaxWidth()
+                .focusRequester(inputsFocusRequest),
+            isError = isPasswordError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            singleLine = true,
+            shape = RoundedCornerShape(8.dp),
+        )
+        if (isPasswordError) {
             Text(
-                text = stringResource(id = R.string.enter),
-                color = Color.White,
-                fontSize = 24.sp
+                text = stringResource(id = R.string.message_error_pass),
+                modifier = Modifier.fillMaxWidth(),
+                color = Color.Red,
+                textAlign = TextAlign.End
             )
         }
+    }
+}
+@Preview(showBackground = true, showSystemUi = true)
+
+@Composable
+fun DefaultPreview() {
+   YvyporaTheme{
+        Inputs()
     }
 }

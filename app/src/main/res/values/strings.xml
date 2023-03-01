@@ -22,5 +22,15 @@
     <string name="name_error">"Provide a username!"</string>
     <string name="email_error">"Provide a valid email!"</string>
     <string name="icon_content_description">"Vegetable box"</string>
+    <string name="title1_activity_decision_sreen">Welcome to</string>
+    <string name="title_activity_decision_sreen">Welcome to</string>
+    <string name="title2_activity_decision_sreen">your digital fair</string>
+    <string name="question_decision_sreen">How will you use the app?</string>
+    <string name="decision_option1">CLIENT</string>
+    <string name="decision_option2">MARKETER</string>
+    <string name="title_activity_register_client" translatable="false">RegisterClient</string>
+    <string name="password">Password:</string>
+    <string name="message_error_pass">Cannot be more than 8 characters!</string>
+
 
 </resources>
