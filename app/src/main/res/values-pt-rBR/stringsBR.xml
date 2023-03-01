@@ -14,4 +14,8 @@
     <string name="name_error">"Informe um nome de usuário!"</string>
     <string name="email_error">"Informe um email válido!"</string>
     <string name="icon_content_description">"Caixa de vegetais"</string>
+    <string name="title1_activity_decision_sreen">Bem-vindo(a) ao</string>
+    <string name="title_activity_decision_sreen">Welcome to</string>
+    <string name="title2_activity_decision_sreen">a sua feira digital</string>
+    <string name="question_decision_sreen">Como você usuará o aplicativo?</string>
 </resources>

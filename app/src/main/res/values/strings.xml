@@ -22,5 +22,11 @@
     <string name="name_error">"Provide a username!"</string>
     <string name="email_error">"Provide a valid email!"</string>
     <string name="icon_content_description">"Vegetable box"</string>
+    <string name="title1_activity_decision_sreen">Welcome to</string>
+    <string name="title_activity_decision_sreen">Welcome to</string>
+    <string name="title2_activity_decision_sreen">your digital fair</string>
+    <string name="question_decision_sreen">How will you use the app?</string>
+
+
 
 </resources>

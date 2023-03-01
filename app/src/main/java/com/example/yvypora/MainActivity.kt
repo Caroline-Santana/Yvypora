@@ -7,11 +7,13 @@ import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.support.v4.os.IResultReceiver.Default
 import android.text.style.UnderlineSpan
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
@@ -23,10 +25,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,6 +77,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 fun MainLayout() {
@@ -129,16 +136,20 @@ fun MainLayout() {
 
             letterSpacing = 4.sp
         )
-        Text(
-            text = stringResource(id = R.string.register),
-            fontSize = 18.sp,
-            color = androidx.compose.ui.graphics.Color.White,
-            textDecoration = TextDecoration.Underline,
-            letterSpacing = 4.sp
-        )
+        ClickableText(
+            text = AnnotatedString(text = stringResource(id = R.string.register),
+               SpanStyle(
+                   fontSize = 18.sp,
+                    color = androidx.compose.ui.graphics.Color.White,
+                    textDecoration = TextDecoration.Underline,
+                    letterSpacing = 4.sp
+               )
+            ), onClick = {
+            val intent = Intent(context, DecisionSreenActivity()::class.java)
+            context.startActivity(intent)
+
+        })
     }
-
-
 }
 
 
