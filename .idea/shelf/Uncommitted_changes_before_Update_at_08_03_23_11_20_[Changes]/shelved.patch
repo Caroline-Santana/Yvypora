@@ -1,0 +1,676 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'org.jetbrains.kotlin.android'\n}\n\nandroid {\n    namespace 'com.example.yvypora'\n    compileSdk 33\n\n    defaultConfig {\n        applicationId \"com.example.yvypora\"\n        minSdk 26\n        targetSdk 33\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        vectorDrawables {\n            useSupportLibrary true\n        }\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n    buildFeatures {\n        compose true\n        viewBinding true\n    }\n    composeOptions {\n        kotlinCompilerExtensionVersion '1.2.0'\n    }\n    packagingOptions {\n        resources {\n            excludes += '/META-INF/{AL2.0,LGPL2.1}'\n        }\n    }\n}\n\ndependencies {\n\n    implementation \"androidx.compose.ui:ui-text-google-fonts:1.3.3\"\n    implementation 'androidx.core:core-ktx:1.7.0'\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'\n    implementation 'androidx.activity:activity-compose:1.3.1'\n    implementation \"androidx.compose.ui:ui:$compose_ui_version\"\n    implementation \"androidx.compose.ui:ui-tooling-preview:$compose_ui_version\"\n    implementation 'androidx.compose.material:material:1.2.0'\n    implementation 'androidx.appcompat:appcompat:1.4.1'\n    implementation 'com.google.android.material:material:1.5.0'\n    implementation 'androidx.annotation:annotation:1.3.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'\n    testImplementation 'junit:junit:4.13.2'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n    androidTestImplementation \"androidx.compose.ui:ui-test-junit4:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-tooling:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-test-manifest:$compose_ui_version\"\n\n    implementation(\"androidx.navigation:navigation-compose:2.4.0-beta02\")\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 07dc196ff4f77c34bc37a4481e2211752b33373a)
++++ b/app/build.gradle	(date 1678284988854)
+@@ -70,4 +70,7 @@
+     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+ 
+     implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
++
++    //Biblioteca para validar CPF
++    implementation("br.com.colman.simplecpfvalidator:simple-cpf-validator:2.5.0")
+ }
+\ No newline at end of file
+Index: app/src/main/res/values-pt-rBR/stringsBR.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <string name=\"app_name\">Yvypora</string>\n    <string name=\"title_activity_main\">MainActivity</string>\n    <string name=\"title_activity_main2\">MainActivity2</string>\n    <string name=\"slogan\">\"Encontre sua feira de onde estiver\"</string>\n    <string name=\"yvypora\">\"yvyporã\"</string>\n    <string name=\"login\">\"Login\"</string>\n    <string name=\"enter\">\"Entrar\"</string>\n    <string name=\"question\">\"Não possui uma conta?\"</string>\n    <string name=\"register\">\"Cadastre-se\"</string>\n    <string name=\"name\">\"Nome:\"</string>\n    <string name=\"email\">\"Email:\"</string>\n    <string name=\"name_error\">\"Informe um nome de usuário!\"</string>\n    <string name=\"email_error\">\"Informe um email válido!\"</string>\n    <string name=\"icon_content_description\">\"Caixa de vegetais\"</string>\n    <string name=\"title1_activity_decision_sreen\">Bem-vindo(a) ao</string>\n    <string name=\"title_activity_decision_sreen\">Welcome to</string>\n    <string name=\"title2_activity_decision_sreen\">a sua feira digital</string>\n    <string name=\"question_decision_sreen\">Como você usuará o aplicativo?</string>\n    <string name=\"decision_option1\">CLIENTE</string>\n    <string name=\"title_activity_login\">LoginActivity</string>\n    <string name=\"prompt_email\">Email</string>\n    <string name=\"prompt_password\">Password</string>\n    <string name=\"action_sign_in\">Sign in or register</string>\n    <string name=\"action_sign_in_short\">Sign in</string>\n    <string name=\"welcome\">\"Welcome !\"</string>\n    <string name=\"invalid_username\">Not a valid username</string>\n    <string name=\"invalid_password\">Password must be >5 characters</string>\n    <string name=\"login_failed\">\"Login failed\"</string>\n    <string name=\"decision_option2\">FEIRANTE</string>\n    <string name=\"password\">Senha:</string>\n    <string name=\"message_error_pass\">Não pode ter mais de 8 caracteres!</string>\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values-pt-rBR/stringsBR.xml b/app/src/main/res/values-pt-rBR/stringsBR.xml
+--- a/app/src/main/res/values-pt-rBR/stringsBR.xml	(revision 07dc196ff4f77c34bc37a4481e2211752b33373a)
++++ b/app/src/main/res/values-pt-rBR/stringsBR.xml	(date 1678283492340)
+@@ -30,5 +30,12 @@
+     <string name="login_failed">"Login failed"</string>
+     <string name="decision_option2">FEIRANTE</string>
+     <string name="password">Senha:</string>
+-    <string name="message_error_pass">Não pode ter mais de 8 caracteres!</string>
++    <string name="message_error_pass1">Cannot be more than 8 characters!</string>
++    <string name="message_error_pass2">Insira uma senha!</string>
++    <string name="profile_photo">Adicione uma foto de perfil</string>
++    <string name="cpf">CPF</string>
++    <string name="cpf_error">informe um CPF!</string>
++    <string name="cpf_error_valid">informe um CPF válido!</string>
++    <string name="cpf_error_format">Formato invalido!</string>
++
+ </resources>
+\ No newline at end of file
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\n    <string name=\"app_name\">Yvypora</string>\n    <string name=\"title_activity_main\">MainActivity</string>\n    <string name=\"title_activity_main2\">MainActivity2</string>\n    <string name=\"slogan\">\"Find your fair wherever you are\"</string>\n    <string name=\"yvypora\">\"yvyporã\"</string>\n    <string name=\"login\">\"Login\"</string>\n    <string name=\"enter\">\"Enter\"</string>\n    <string name=\"question\">\"Don't have an account?\"</string>\n    <string name=\"register\">\"Register\"</string>\n    <string name=\"title_activity_login\">LoginActivity</string>\n    <string name=\"prompt_email\">Email</string>\n    <string name=\"prompt_password\">Password</string>\n    <string name=\"action_sign_in\">Sign in or register</string>\n    <string name=\"action_sign_in_short\">Sign in</string>\n    <string name=\"welcome\">\"Welcome !\"</string>\n    <string name=\"invalid_username\">Not a valid username</string>\n    <string name=\"invalid_password\">Password must be >5 characters</string>\n    <string name=\"login_failed\">\"Login failed\"</string>\n    <string name=\"name\">\"Name:\"</string>\n    <string name=\"email\">\"Email:\"</string>\n    <string name=\"name_error\">\"Provide a username!\"</string>\n    <string name=\"email_error\">\"Provide a valid email!\"</string>\n    <string name=\"icon_content_description\">\"Vegetable box\"</string>\n    <string name=\"title1_activity_decision_sreen\">Welcome to</string>\n    <string name=\"title_activity_decision_sreen\">Welcome to</string>\n    <string name=\"title2_activity_decision_sreen\">your digital fair</string>\n    <string name=\"question_decision_sreen\">How will you use the app?</string>\n    <string name=\"decision_option1\">CLIENT</string>\n    <string name=\"decision_option2\">MARKETER</string>\n    <string name=\"title_activity_register_client\" translatable=\"false\">RegisterClient</string>\n    <string name=\"password\">Password:</string>\n    <string name=\"message_error_pass\">Cannot be more than 8 characters!</string>\n\n\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+--- a/app/src/main/res/values/strings.xml	(revision 07dc196ff4f77c34bc37a4481e2211752b33373a)
++++ b/app/src/main/res/values/strings.xml	(date 1678283492344)
+@@ -30,7 +30,13 @@
+     <string name="decision_option2">MARKETER</string>
+     <string name="title_activity_register_client" translatable="false">RegisterClient</string>
+     <string name="password">Password:</string>
+-    <string name="message_error_pass">Cannot be more than 8 characters!</string>
++    <string name="message_error_pass1">Cannot be more than 8 characters!</string>
++    <string name="message_error_pass2">Provide a password!</string>
++    <string name="profile_photo">Add a profile picture</string>
++    <string name="cpf">CPF</string>
++    <string name="cpf_error">provide a CPF</string>
++    <string name="cpf_error_valid">provide a valid CPF</string>
++    <string name="cpf_error_format">Invalid Format!</string>
+ 
+ 
+ </resources>
+\ No newline at end of file
+Index: app/src/main/java/com/example/yvypora/RegisterClient.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\nimport android.os.Bundle\nimport android.widget.Toast\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.foundation.text.KeyboardOptions\nimport androidx.compose.material.*\nimport androidx.compose.runtime.*\nimport androidx.compose.runtime.saveable.rememberSaveable\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.focus.FocusRequester\nimport androidx.compose.ui.focus.focusRequester\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.input.KeyboardType\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.example.yvypora.ui.theme.YvyporaTheme\n\nclass RegisterClient : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                Surface(\n                    modifier = Modifier.fillMaxWidth(),\n\n                    ) {\n                    Image(\n                        painter =  painterResource(id =R.drawable.logo_no_name),\n                        modifier = Modifier\n                            .height(58.dp)\n                            .width(55.dp)\n                            .padding(horizontal = 28.dp),\n                        alignment = Alignment.BottomStart,\n                        contentDescription = \"logo\",\n\n                        )\n                    Spacer(\n                        modifier = Modifier.height(36.dp)\n                    )\n                    Column(\n                        modifier = Modifier\n                            .fillMaxSize()\n                            .padding(top = 50.dp),\n                        horizontalAlignment = Alignment.CenterHorizontally,\n                        verticalArrangement = Arrangement.Top\n                    ) {\n                        Text(\n                            text = stringResource(id = R.string.register),\n                            modifier = Modifier.padding(top = 35.dp, end = 10.dp),\n                            textAlign = TextAlign.Center,\n                            color = colorResource(id = R.color.darkgreen_yvy),\n                            fontSize = 48.sp\n                        )\n                    }\n                }\n            }\n            Inputs()\n        }\n    }\n}\n\n@Composable\nfun Inputs() {\n    var nameState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n\n    var emailState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var passwordState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isNameError by remember {\n        mutableStateOf(false)\n    }\n    var isEmailError by remember {\n        mutableStateOf(false)\n    }\n    var isPasswordError by remember {\n        mutableStateOf(false)\n    }\n    val context = LocalContext.current\n    val mMaxLength = 8\n    //Objeto que controla a requisição de foco\n    val inputsFocusRequest = FocusRequester()\n    val EMAIL_REGEX = \"^[A-Za-z](.*)([@]{1})(.{1,})(\\\\.)(.{1,})\";\n    fun isEmailValid(email: String): Boolean {\n        return EMAIL_REGEX.toRegex().matches(email);\n\n    }\n    Column(\n        modifier =\n        Modifier\n            .fillMaxSize()\n            .fillMaxWidth()\n            .padding(start = 24.dp, end = 24.dp),\n        verticalArrangement = Arrangement.Center,\n\n        ) {\n        //Input nome\n        Text(\n            text = stringResource(id = R.string.name),\n            fontSize = 20.sp,\n            textAlign = TextAlign.Start,\n            color = colorResource(id = R.color.darkgreen_yvy)\n        )\n        TextField(\n            value = nameState,\n            onValueChange = { newName ->\n                var lastChar = if (newName.isEmpty()) {\n                    isNameError = true\n                    newName\n\n                } else {\n                    newName.get(newName.length - 1)\n                    isNameError = false\n\n                }\n                var newValue = if (lastChar == '.' || lastChar == ',')\n                    newName.dropLast(1)\n                else newName\n                nameState = newValue\n            },\n            colors = TextFieldDefaults.textFieldColors(\n                backgroundColor = Color.Unspecified,\n                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,\n                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),\n                cursorColor = colorResource(id = R.color.darkgreen_yvy)\n            ),\n            modifier = Modifier\n                .fillMaxWidth()\n                .focusRequester(inputsFocusRequest),\n            isError = isNameError,\n            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),\n            singleLine = true,\n            shape = RoundedCornerShape(8.dp),\n\n            )\n\n        if (isNameError) {\n            Text(\n                text = stringResource(id = R.string.name_error),\n                modifier = Modifier.fillMaxWidth(),\n                color = Color.Red,\n                textAlign = TextAlign.End\n            )\n        }\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n        //Input Email\n        Text(\n            text = stringResource(id = R.string.email),\n            fontSize = 20.sp,\n            textAlign = TextAlign.Start,\n            color = colorResource(id = R.color.darkgreen_yvy)\n        )\n        TextField(\n            value = emailState,\n            onValueChange = { newEmail ->\n                if (newEmail.isEmpty()) {\n                    isEmailError = true\n                } else if (isEmailValid(newEmail) == false) {\n                    isEmailError = true\n                } else {\n                    newEmail.get(newEmail.length - 1)\n                    isEmailError = false\n                }\n\n                emailState = newEmail\n            },\n            colors = TextFieldDefaults.textFieldColors(\n                backgroundColor = Color.Unspecified,\n                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,\n                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),\n                cursorColor = colorResource(id = R.color.darkgreen_yvy)\n            ),\n            modifier = Modifier\n                .fillMaxWidth()\n                .focusRequester(inputsFocusRequest),\n            isError = isEmailError,\n            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),\n            singleLine = true,\n            shape = RoundedCornerShape(8.dp),\n        )\n        if (isEmailError) {\n            Text(\n                text = stringResource(id = R.string.email_error),\n                modifier = Modifier.fillMaxWidth(),\n                color = Color.Red,\n                textAlign = TextAlign.End\n            )\n        }\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n        // Input senha\n        Text(\n            text = stringResource(id = R.string.password),\n            fontSize = 20.sp,\n            textAlign = TextAlign.Start,\n            color = colorResource(id = R.color.darkgreen_yvy)\n        )\n        TextField(\n            value = passwordState,\n            onValueChange = { newPass ->\n                if (newPass.isEmpty()) {\n                    isPasswordError = true\n                } else if (newPass.length >= mMaxLength) {\n                    isPasswordError = true\n                } else {\n                    newPass.get(newPass.length - 1)\n                    isPasswordError = false\n                }\n\n                if(isPasswordError) newPass.dropLast(1)\n\n                passwordState = newPass\n            },\n            colors = TextFieldDefaults.textFieldColors(\n                backgroundColor = Color.Unspecified,\n                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,\n                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),\n                cursorColor = colorResource(id = R.color.darkgreen_yvy)\n            ),\n            modifier = Modifier\n                .fillMaxWidth()\n                .focusRequester(inputsFocusRequest),\n            isError = isPasswordError,\n            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),\n            singleLine = true,\n            shape = RoundedCornerShape(8.dp),\n        )\n        if (isPasswordError) {\n            Text(\n                text = stringResource(id = R.string.message_error_pass),\n                modifier = Modifier.fillMaxWidth(),\n                color = Color.Red,\n                textAlign = TextAlign.End\n            )\n        }\n    }\n}\n@Preview(showBackground = true, showSystemUi = true)\n\n@Composable\nfun DefaultPreview() {\n   YvyporaTheme{\n        Inputs()\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/RegisterClient.kt b/app/src/main/java/com/example/yvypora/RegisterClient.kt
+--- a/app/src/main/java/com/example/yvypora/RegisterClient.kt	(revision f4dc6e00f92d58876d1009b22ffc280f153d3845)
++++ b/app/src/main/java/com/example/yvypora/RegisterClient.kt	(date 1678285197344)
+@@ -1,17 +1,20 @@
+ package com.example.yvypora
+ 
+ import android.os.Bundle
+-import android.widget.Toast
++
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
+ import androidx.compose.foundation.Image
+ import androidx.compose.foundation.layout.*
+-import androidx.compose.foundation.shape.RoundedCornerShape
++
++import androidx.compose.foundation.rememberScrollState
+ import androidx.compose.foundation.text.KeyboardOptions
++import androidx.compose.foundation.verticalScroll
+ import androidx.compose.material.*
+ import androidx.compose.runtime.*
+ import androidx.compose.runtime.saveable.rememberSaveable
+ import androidx.compose.ui.Alignment
++
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.focus.FocusRequester
+ import androidx.compose.ui.focus.focusRequester
+@@ -20,12 +23,13 @@
+ import androidx.compose.ui.res.colorResource
+ import androidx.compose.ui.res.painterResource
+ import androidx.compose.ui.res.stringResource
+-import androidx.compose.ui.text.font.FontWeight
++
+ import androidx.compose.ui.text.input.KeyboardType
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
++import br.com.colman.simplecpfvalidator.isCpf
+ import com.example.yvypora.ui.theme.YvyporaTheme
+ 
+ class RegisterClient : ComponentActivity() {
+@@ -38,7 +42,7 @@
+ 
+                     ) {
+                     Image(
+-                        painter =  painterResource(id =R.drawable.logo_no_name),
++                        painter = painterResource(id = R.drawable.logo_no_name),
+                         modifier = Modifier
+                             .height(58.dp)
+                             .width(55.dp)
+@@ -74,198 +78,375 @@
+ 
+ @Composable
+ fun Inputs() {
++
++    Column(
++        modifier = Modifier
++            .fillMaxSize()
++            .fillMaxWidth()
++            .padding(top = 190.dp, start = 24.dp, end = 24.dp)
++            .verticalScroll(rememberScrollState()),
++        verticalArrangement = Arrangement.Center,
++
++        ) {
++//        Input nome
++        NameInput()
++
++        //*********************************************************************
++        Spacer(
++            modifier = Modifier.height(35.dp)
++        )
++
++        //Input Email
++        EmailInput()
++
++        //*********************************************************************
++        Spacer(
++            modifier = Modifier.height(35.dp)
++        )
++
++        // Input senha
++        PassInput()
++
++        //*********************************************************************
++        Spacer(
++            modifier = Modifier.height(35.dp)
++        )
++
++        // Input photo
++        PhotoProfile()
++
++        //*********************************************************************
++        Spacer(
++            modifier = Modifier.height(15.dp)
++        )
++
++        // Input cpf
++        CpfInput()
++
++
++        //*********************************************************************
++        Spacer(
++            modifier = Modifier.height(35.dp)
++        )
++
++    }
++}
++
++
++@Composable
++fun NameInput() {
+     var nameState by rememberSaveable {
+         mutableStateOf("")
+     }
+-
+-    var emailState by rememberSaveable {
+-        mutableStateOf("")
+-    }
+-    var passwordState by rememberSaveable {
+-        mutableStateOf("")
+-    }
+     var isNameError by remember {
+         mutableStateOf(false)
+     }
+-    var isEmailError by remember {
+-        mutableStateOf(false)
+-    }
+-    var isPasswordError by remember {
+-        mutableStateOf(false)
+-    }
+-    val context = LocalContext.current
+-    val mMaxLength = 8
+-    //Objeto que controla a requisição de foco
+     val inputsFocusRequest = FocusRequester()
+-    val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
+-    fun isEmailValid(email: String): Boolean {
+-        return EMAIL_REGEX.toRegex().matches(email);
+ 
+-    }
+-    Column(
+-        modifier =
+-        Modifier
+-            .fillMaxSize()
+-            .fillMaxWidth()
+-            .padding(start = 24.dp, end = 24.dp),
+-        verticalArrangement = Arrangement.Center,
+-
+-        ) {
+-        //Input nome
+-        Text(
+-            text = stringResource(id = R.string.name),
+-            fontSize = 20.sp,
+-            textAlign = TextAlign.Start,
+-            color = colorResource(id = R.color.darkgreen_yvy)
+-        )
+-        TextField(
+-            value = nameState,
+-            onValueChange = { newName ->
+-                var lastChar = if (newName.isEmpty()) {
+-                    isNameError = true
+-                    newName
+-
+-                } else {
+-                    newName.get(newName.length - 1)
+-                    isNameError = false
+-
+-                }
+-                var newValue = if (lastChar == '.' || lastChar == ',')
+-                    newName.dropLast(1)
+-                else newName
++    Text(
++        text = stringResource(id = R.string.name),
++//        modifier = Modifier.padding(top = 85.dp),
++        fontSize = 20.sp,
++        textAlign = TextAlign.Start,
++        color = colorResource(id = R.color.darkgreen_yvy)
++    )
++    TextField(
++        value = nameState,
++        onValueChange = { newName ->
++            var lastChar = if (newName.isEmpty()) {
++                isNameError = true
++                newName
++            } else {
++                newName.get(newName.length - 1)
++                isNameError = false
++            }
++            var newValue = if (lastChar == '.' || lastChar == ',')
++                newName.dropLast(1)
++            else newName
++            if(newValue.length > 0) {
++                nameState = newValue[0].uppercaseChar() + newValue.substring(1)
++            } else {
+                 nameState = newValue
+-            },
+-            colors = TextFieldDefaults.textFieldColors(
+-                backgroundColor = Color.Unspecified,
+-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,
+-                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),
+-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
+-            ),
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .focusRequester(inputsFocusRequest),
+-            isError = isNameError,
+-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+-            singleLine = true,
+-            shape = RoundedCornerShape(8.dp),
+-
+-            )
+-
+-        if (isNameError) {
+-            Text(
+-                text = stringResource(id = R.string.name_error),
+-                modifier = Modifier.fillMaxWidth(),
+-                color = Color.Red,
+-                textAlign = TextAlign.End
+-            )
+-        }
++            }
++
++        },
++        colors = TextFieldDefaults.textFieldColors(
++            backgroundColor = Color.Unspecified,
++            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            cursorColor = colorResource(id = R.color.darkgreen_yvy)
++        ),
++        modifier = Modifier
++            .fillMaxWidth()
++            .focusRequester(inputsFocusRequest),
++        isError = isNameError,
++        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
++        singleLine = true,
++    )
++    if (isNameError) {
++        Text(
++            text = stringResource(id = R.string.name_error),
++            modifier = Modifier.fillMaxWidth(),
++            color = Color.Red,
++            textAlign = TextAlign.End
++        )
++    }
+ 
+-        //*********************************************************************
+-        Spacer(
+-            modifier = Modifier.height(35.dp)
+-        )
++}
++
++@Composable
++fun EmailInput() {
++    var emailState by rememberSaveable {
++        mutableStateOf("")
++    }
++
++    var isEmailError by remember {
++        mutableStateOf(false)
++    }
++    val inputsFocusRequest = FocusRequester()
++
++    val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
+ 
+-        //Input Email
+-        Text(
+-            text = stringResource(id = R.string.email),
+-            fontSize = 20.sp,
+-            textAlign = TextAlign.Start,
+-            color = colorResource(id = R.color.darkgreen_yvy)
+-        )
+-        TextField(
+-            value = emailState,
+-            onValueChange = { newEmail ->
+-                if (newEmail.isEmpty()) {
+-                    isEmailError = true
+-                } else if (isEmailValid(newEmail) == false) {
+-                    isEmailError = true
+-                } else {
+-                    newEmail.get(newEmail.length - 1)
+-                    isEmailError = false
+-                }
++    fun isEmailValid(email: String): Boolean {
++        return EMAIL_REGEX.toRegex().matches(email);
++    }
++
++    Text(
++        text = stringResource(id = R.string.email),
++        fontSize = 20.sp,
++        textAlign = TextAlign.Start,
++        color = colorResource(id = R.color.darkgreen_yvy)
++    )
++    TextField(
++        value = emailState,
++        onValueChange = { newEmail ->
++            if (newEmail.isEmpty()) {
++                isEmailError = true
++            } else if (isEmailValid(newEmail) == false) {
++                isEmailError = true
++            } else {
++                newEmail.get(newEmail.length - 1)
++                isEmailError = false
++            }
+ 
+-                emailState = newEmail
+-            },
+-            colors = TextFieldDefaults.textFieldColors(
+-                backgroundColor = Color.Unspecified,
+-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,
+-                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),
+-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
+-            ),
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .focusRequester(inputsFocusRequest),
+-            isError = isEmailError,
+-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+-            singleLine = true,
+-            shape = RoundedCornerShape(8.dp),
+-        )
+-        if (isEmailError) {
+-            Text(
+-                text = stringResource(id = R.string.email_error),
+-                modifier = Modifier.fillMaxWidth(),
+-                color = Color.Red,
+-                textAlign = TextAlign.End
+-            )
+-        }
++            emailState = newEmail
++        },
++        colors = TextFieldDefaults.textFieldColors(
++            backgroundColor = Color.Unspecified,
++            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            cursorColor = colorResource(id = R.color.darkgreen_yvy)
++        ),
++        modifier = Modifier
++            .fillMaxWidth()
++            .focusRequester(inputsFocusRequest),
++        isError = isEmailError,
++        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
++        singleLine = true,
++    )
++    if (isEmailError) {
++        Text(
++            text = stringResource(id = R.string.email_error),
++            modifier = Modifier.fillMaxWidth(),
++            color = Color.Red,
++            textAlign = TextAlign.End
++        )
++    }
++}
+ 
+-        //*********************************************************************
+-        Spacer(
+-            modifier = Modifier.height(35.dp)
+-        )
++@Composable
++fun PassInput() {
++    var passwordState by rememberSaveable {
++        mutableStateOf("")
++    }
+ 
+-        // Input senha
+-        Text(
+-            text = stringResource(id = R.string.password),
+-            fontSize = 20.sp,
+-            textAlign = TextAlign.Start,
+-            color = colorResource(id = R.color.darkgreen_yvy)
+-        )
+-        TextField(
+-            value = passwordState,
+-            onValueChange = { newPass ->
+-                if (newPass.isEmpty()) {
+-                    isPasswordError = true
+-                } else if (newPass.length >= mMaxLength) {
+-                    isPasswordError = true
+-                } else {
+-                    newPass.get(newPass.length - 1)
+-                    isPasswordError = false
+-                }
++    var isPasswordError by remember {
++        mutableStateOf(false)
++    }
++    var isEmptyPasswordError by remember {
++        mutableStateOf(false)
++    }
++    val inputsFocusRequest = FocusRequester()
++    val context = LocalContext.current
++    val mMaxLength = 8
++
++    Text(
++        text = stringResource(id = R.string.password),
++        fontSize = 20.sp,
++        textAlign = TextAlign.Start,
++        color = colorResource(id = R.color.darkgreen_yvy)
++    )
++    TextField(
++        value = passwordState,
++        onValueChange = { newPass ->
++            if (newPass.isEmpty()) {
++                isEmptyPasswordError = true
++            } else if (newPass.length >= mMaxLength) {
++                isPasswordError = true
++            } else {
++                newPass.get(newPass.length - 1)
++                isPasswordError = false
++            }
+ 
+-                if(isPasswordError) newPass.dropLast(1)
++            if (isPasswordError) newPass.dropLast(1)
+ 
+-                passwordState = newPass
+-            },
+-            colors = TextFieldDefaults.textFieldColors(
+-                backgroundColor = Color.Unspecified,
+-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy) ,
+-                unfocusedIndicatorColor =  colorResource(id = R.color.darkgreen_yvy),
+-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
+-            ),
+-            modifier = Modifier
+-                .fillMaxWidth()
+-                .focusRequester(inputsFocusRequest),
+-            isError = isPasswordError,
+-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+-            singleLine = true,
+-            shape = RoundedCornerShape(8.dp),
+-        )
+-        if (isPasswordError) {
+-            Text(
+-                text = stringResource(id = R.string.message_error_pass),
+-                modifier = Modifier.fillMaxWidth(),
+-                color = Color.Red,
+-                textAlign = TextAlign.End
+-            )
+-        }
++            passwordState = newPass
++        },
++        colors = TextFieldDefaults.textFieldColors(
++            backgroundColor = Color.Unspecified,
++            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            cursorColor = colorResource(id = R.color.darkgreen_yvy)
++        ),
++        modifier = Modifier
++            .fillMaxWidth()
++            .focusRequester(inputsFocusRequest),
++        isError = isPasswordError,
++        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
++        singleLine = true,
++    )
++    if (isPasswordError) {
++        Text(
++            text = stringResource(id = R.string.message_error_pass1),
++            modifier = Modifier.fillMaxWidth(),
++            color = Color.Red,
++            textAlign = TextAlign.End
++        )
++    }
++    if (isEmptyPasswordError) {
++        Text(
++            text = stringResource(id = R.string.message_error_pass2),
++            modifier = Modifier.fillMaxWidth(),
++            color = Color.Red,
++            textAlign = TextAlign.End
++        )
++    }
++}
++
++@Composable
++fun PhotoProfile() {
++    Column(
++        modifier =
++        Modifier
++            .fillMaxWidth(),
++        verticalArrangement = Arrangement.Center,
++        horizontalAlignment = Alignment.CenterHorizontally
++    ) {
++        Text(
++            text = stringResource(id = R.string.profile_photo),
++            modifier = Modifier.padding(bottom = 9.dp),
++            fontSize = 20.sp,
++            textAlign = TextAlign.Center,
++            color = colorResource(id = R.color.darkgreen_yvy)
++        )
++        Image(
++            painter = painterResource(id = R.drawable.add_photo),
++            modifier = Modifier
++                .height(91.dp)
++                .width(91.dp),
++            alignment = Alignment.Center,
++            contentDescription = "logo",
++
++            )
++    }
++}
++
++@Composable
++fun CpfInput(){
++    var CpfState by rememberSaveable {
++        mutableStateOf("")
++    }
++    var isCpfError by remember {
++        mutableStateOf(false)
++    }
++    var isCpfErrorValidate by remember {
++        mutableStateOf(false)
++    }
++    var isCpfErrorFormat by remember {
++        mutableStateOf(false)
++    }
++
++    val CPF_REGEX: Regex = "([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})".toRegex()
++    val FormatCpf = "$1.$2.$3-$4"
++
++    fun isCpfValid(cpf: String): Boolean {
++        return CPF_REGEX.matches(cpf);
++    }
++
++    val isValid = CpfState.isCpf(charactersToIgnore = listOf('.', '/'))
++    if (!isValid) {
++       isCpfErrorValidate = false
++    }
++
++    val inputsFocusRequest = FocusRequester()
++
++    Text(
++        text = stringResource(id = R.string.cpf),
++        fontSize = 20.sp,
++        textAlign = TextAlign.Start,
++        color = colorResource(id = R.color.darkgreen_yvy)
++    )
++    TextField(
++        value = CpfState,
++        onValueChange = { newCpf ->
++                if (newCpf.isEmpty()) {
++                    isCpfError = true
++                    newCpf
++                } else if (isCpfValid(newCpf) == false) {
++                    isCpfErrorValidate = true
++                } else if (newCpf.format() >= FormatCpf) {
++                    isCpfErrorFormat = true
++                } else {
++                    newCpf.get(newCpf.length - 1)
++                    isCpfError = false
++                }
++            CpfState = newCpf
++        },
++        colors = TextFieldDefaults.textFieldColors(
++            backgroundColor = Color.Unspecified,
++            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
++            cursorColor = colorResource(id = R.color.darkgreen_yvy)
++        ),
++        modifier = Modifier
++            .fillMaxWidth()
++            .focusRequester(inputsFocusRequest),
++        isError = isCpfError,
++        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
++        singleLine = true,
++    )
++    if (isCpfError) {
++        Text(
++            text = stringResource(id = R.string.cpf_error),
++            modifier = Modifier.fillMaxWidth(),
++            color = Color.Red,
++            textAlign = TextAlign.End
++        )
++    }
++     else if (isCpfErrorFormat) {
++        Text(
++            text = stringResource(id = R.string.cpf_error_format),
++            modifier = Modifier.fillMaxWidth(),
++            color = Color.Red,
++            textAlign = TextAlign.End
++        )
++    }
++    else if (isCpfErrorValidate) {
++        Text(
++            text = stringResource(id = R.string.cpf_error_valid),
++            modifier = Modifier.fillMaxWidth(),
++            color = Color.Red,
++            textAlign = TextAlign.End
++        )
+     }
+ }
++
++
+ @Preview(showBackground = true, showSystemUi = true)
+ 
+ @Composable
+ fun DefaultPreview() {
+-   YvyporaTheme{
++    YvyporaTheme {
+         Inputs()
+     }
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/com/example/yvypora/utils/CpfValidation.kt b/app/src/main/java/com/example/yvypora/utils/CpfValidation.kt
+new file mode 100644
