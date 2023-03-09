@@ -30,5 +30,11 @@
     <string name="login_failed">"Login failed"</string>
     <string name="decision_option2">FEIRANTE</string>
     <string name="password">Senha:</string>
-    <string name="message_error_pass">Não pode ter mais de 8 caracteres!</string>
+    <string name="message_error_pass1">Informe uma senha!</string>
+    <string name="message_error_pass2">Não pode ter mais de 8 caracteres!</string>
+    <string name="profile_picture">Adicione uma foto de perfil</string>
+    <string name="title_cpf">CPF</string>
+    <string name="cpf_error_empty">Informe um CPF!</string>
+    <string name="cpf_error_invalid">CPF inválido !</string>
+
 </resources>
