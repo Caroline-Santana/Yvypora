@@ -36,5 +36,13 @@
     <string name="title_cpf">CPF</string>
     <string name="cpf_error_empty">Informe um CPF!</string>
     <string name="cpf_error_invalid">CPF inválido !</string>
+    <string name="title_cep">CEP</string>
+    <string name="cep_error_empty">Informe um CEP!</string>
+    <string name="cep_error_invalid">CEP inválido!</string>
+    <string name="button_register">Cadastrar</string>
+    <string name="title_activity_register_marketer">RegisterMarketer</string>
+    <string name="name_tent">Nome da barraca</string>
+    <string name="phone_tent">Telefone da barraca</string>
+    <string name="date_of_birth">Data de nascimento</string>
 
 </resources>

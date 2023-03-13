@@ -1,17 +1,19 @@
 package com.example.yvypora
 
-
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -38,8 +40,7 @@ import com.example.yvypora.utils.MaskCep
 import com.example.yvypora.utils.MaskCpf
 import com.example.yvypora.utils.ValidationCpf
 
-
-class RegisterClient : ComponentActivity() {
+class RegisterMarketer : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -78,13 +79,13 @@ class RegisterClient : ComponentActivity() {
                     }
                 }
             }
-            Inputs()
+            InputsMarketer()
         }
     }
 }
 
 @Composable
-fun Inputs() {
+fun InputsMarketer() {
 
     val context = LocalContext.current
 
@@ -99,7 +100,7 @@ fun Inputs() {
 
         ) {
         //Input nome
-        NameInput()
+        NameInputMarketer()
 
         //*********************************************************************
         Spacer(
@@ -107,7 +108,7 @@ fun Inputs() {
         )
 
         //Input Email
-        EmailInput()
+        EmailInputMarketer()
 
         //*********************************************************************
         Spacer(
@@ -115,29 +116,46 @@ fun Inputs() {
         )
 
         // Input senha
-        PassInput()
+        PassInputMarketer()
 
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(35.dp)
         )
         //Input photo
-        PhotoInput()
+        PhotoInputMarketer()
 
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(15.dp)
         )
+
         //Input cpf
-        CpfInput()
+        CnpjInputMarketer()
 
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(15.dp)
         )
 
-        //Input cep
-        CepInput()
+        //Input cpf
+        CpfInputMarketer()
+
+        //*********************************************************************
+        Spacer(
+            modifier = Modifier.height(15.dp)
+        )
+
+        //Input telefone
+        PhoneInputMarketer()
+
+        //*********************************************************************
+        Spacer(
+            modifier = Modifier.height(15.dp)
+        )
+
+        //Input genero
+        GenderInputMarketer()
 
         //*********************************************************************
         Spacer(
@@ -172,7 +190,7 @@ fun Inputs() {
 }
 
 @Composable
-fun NameInput() {
+fun NameInputMarketer() {
     var nameState by rememberSaveable {
         mutableStateOf("")
     }
@@ -182,7 +200,7 @@ fun NameInput() {
     val inputsFocusRequest = FocusRequester()
 
     Text(
-        text = stringResource(id = R.string.name),
+        text = stringResource(id = R.string.name_tent),
         modifier = Modifier.padding(top = 5.dp),
         fontSize = 20.sp,
         textAlign = TextAlign.Start,
@@ -234,7 +252,7 @@ fun NameInput() {
 }
 
 @Composable
-fun EmailInput() {
+fun EmailInputMarketer() {
     var emailState by rememberSaveable {
         mutableStateOf("")
     }
@@ -295,7 +313,7 @@ fun EmailInput() {
 }
 
 @Composable
-fun PassInput() {
+fun PassInputMarketer() {
     var passwordState by rememberSaveable {
         mutableStateOf("")
     }
@@ -368,7 +386,7 @@ fun PassInput() {
 }
 
 @Composable
-fun PhotoInput() {
+fun PhotoInputMarketer() {
     val imageUri = rememberSaveable { mutableStateOf("") }
     val painter = rememberImagePainter(
         if (imageUri.value.isEmpty())
@@ -379,7 +397,7 @@ fun PhotoInput() {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ){
-        uri: Uri? ->
+            uri: Uri? ->
         uri?.let {imageUri.value = it.toString()}
     }
 
@@ -420,7 +438,7 @@ fun PhotoInput() {
 }
 
 @Composable
-fun CpfInput() {
+fun CpfInputMarketer() {
     var cpfState by rememberSaveable {
         mutableStateOf("")
     }
@@ -491,52 +509,33 @@ fun CpfInput() {
     }
 }
 
+
 @Composable
-fun CepInput() {
-    var cepState by rememberSaveable {
+fun PhoneInputMarketer() {
+    var phoneState by rememberSaveable {
         mutableStateOf("")
     }
-    var isCepErrorEmpty by remember {
-        mutableStateOf(false)
-    }
-    var isCepError by remember {
+    var isPhoneErrorEmpty by remember {
         mutableStateOf(false)
     }
     val inputsFocusRequest = FocusRequester()
 
     val context = LocalContext.current
 
-    var cep = ""
-
     Text(
-        text = stringResource(id = R.string.title_cep),
+        text = stringResource(id = R.string.title_cpf),
         fontSize = 20.sp,
         textAlign = TextAlign.Start,
         color = colorResource(id = R.color.darkgreen_yvy)
     )
     TextField(
-        value = cepState,
-        onValueChange = { newCep ->
-            isCepErrorEmpty = newCep.isEmpty()
+        value = phoneState,
+        onValueChange = { newPhone ->
+            isPhoneErrorEmpty = newPhone.isEmpty()
 
-            if (cepState.length > 8) newCep.dropLast(1)
+            if (phoneState.length > 11) newPhone.dropLast(1)
 
-            if (cepState.length == 8) {
-
-                cep = buscarCep(cepState) {
-                    cep = it
-                }.toString()
-
-
-                if (cep.isEmpty()) {
-                    isCepError = true
-                } else {
-                    isCepError = false
-                    isCepErrorEmpty = false
-                }
-            }
-
-            cepState = newCep
+            phoneState = newPhone
         },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
@@ -548,22 +547,15 @@ fun CepInput() {
             .fillMaxWidth()
             .fillMaxSize()
             .focusRequester(inputsFocusRequest),
-        isError = isCepErrorEmpty,
+        isError = isPhoneErrorEmpty,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        visualTransformation = MaskCep(),
+        visualTransformation = MaskCpf(),
         singleLine = true,
         shape = RoundedCornerShape(8.dp),
     )
-    if (isCepErrorEmpty) {
+    if (isPhoneErrorEmpty) {
         Text(
-            text = stringResource(id = R.string.cep_error_empty),
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Red,
-            textAlign = TextAlign.End
-        )
-    } else if (isCepError) {
-        Text(
-            text = stringResource(id = R.string.cep_error_invalid),
+            text = stringResource(id = R.string.cpf_error_empty),
             modifier = Modifier.fillMaxWidth(),
             color = Color.Red,
             textAlign = TextAlign.End
@@ -571,12 +563,20 @@ fun CepInput() {
     }
 }
 
-
-@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun CnpjInputMarketer() {
+    TODO("Not yet implemented")
+}
 
 @Composable
-fun DefaultPreview() {
+fun GenderInputMarketer() {
+    TODO("Not yet implemented")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview2() {
     YvyporaTheme {
-        Inputs()
+
     }
 }

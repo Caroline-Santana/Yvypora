@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -63,7 +64,8 @@ class DecisionSreenActivity : ComponentActivity() {
                             modifier = Modifier
                                 .height(238.dp)
                                 .fillMaxWidth()
-                                .padding(end = 45.dp)
+                                .align(Alignment.Start)
+                                .padding(end = 70.dp)
                                 ,
                             contentDescription = "background"
                         )
@@ -102,7 +104,7 @@ fun TitleWithStyle() {
         }
         Text(
             text = stringResource(id = R.string.title2_activity_decision_sreen),
-            modifier = Modifier.padding(end = 110.dp),
+            modifier = Modifier.padding(end = 84.dp),
             textAlign = TextAlign.Start,
             color = colorResource(id = R.color.darkgreen_yvy),
             fontSize = 24.sp
@@ -166,7 +168,8 @@ fun ButtonDecision(){
         }
         Button(
             onClick = {
-                /*TODO*/
+                val intent = Intent(context,RegisterMarketer()::class.java)
+                context.startActivity(intent)
             },
 
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),

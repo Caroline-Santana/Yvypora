@@ -5,38 +5,36 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 
-
-class MaskCpf() : VisualTransformation {
+class MaskCep: VisualTransformation {
 
         override fun filter(text: AnnotatedString): TransformedText {
-            return maskFilterCpf(text)
+            return maskFilterCep(text)
         }
     }
 
 
-    fun maskFilterCpf(text: AnnotatedString): TransformedText {
+    fun maskFilterCep(text: AnnotatedString): TransformedText {
 
-        val trimmed = if (text.text.length >= 11) text.text.substring(0..10) else text.text
+        val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
         var out = ""
         for (i in trimmed.indices) {
             out += trimmed[i]
-            if (i==2) out += "."
-            if (i==5) out += "."
-            if (i==8) out += "-"
+            if (i==4) out += "-"
+
         }
 
         val numberOffsetTranslator = object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {
-                if (offset <= 2) return offset
-                if (offset <= 10) return offset +1
-                return 11
+                if (offset <= 4) return offset
+                if (offset <= 7) return offset +1
+                return 8
 
             }
 
             override fun transformedToOriginal(offset: Int): Int {
-                if (offset <=3) return offset
-                if (offset <=12) return offset -1
-                return 11
+                if (offset <=5) return offset
+                if (offset <=9) return offset -1
+                return 8
             }
         }
 

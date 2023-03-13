@@ -36,6 +36,13 @@
     <string name="title_cpf">CPF</string>
     <string name="cpf_error_empty">Provide a CPF!</string>
     <string name="cpf_error_invalid">Invalid CPF!</string>
-
+    <string name="title_cep">CEP</string>
+    <string name="cep_error_empty">Provide a CEP!</string>
+    <string name="cep_error_invalid">Invalid CEP!</string>
+    <string name="button_register">Register</string>
+    <string name="title_activity_register_marketer">RegisterMarketer</string>
+    <string name="name_tent">Tent name</string>
+    <string name="phone_tent">Tent phone</string>
+    <string name="date_of_birth">Date of birth</string>
 
 </resources>
