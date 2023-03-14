@@ -70,6 +70,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
+
     implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
     // Retrofit Dependecnies
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

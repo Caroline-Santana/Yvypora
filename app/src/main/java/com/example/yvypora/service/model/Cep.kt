@@ -1,5 +1,6 @@
 package com.example.yvypora.service.model
 
+
 import com.google.gson.annotations.SerializedName
 
 data class Cep(

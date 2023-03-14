@@ -72,6 +72,9 @@ fun LoginLayout() {
     var isNameError by remember {
         mutableStateOf(false)
     }
+    var resultState by remember{
+        mutableStateOf("")
+    }
     var isEmailError by remember {
         mutableStateOf(false)
     }
@@ -243,6 +246,9 @@ fun LoginLayout() {
 
         Button(
             onClick = {
+//                      if (resultState){
+//
+//                      }
 
             },
             modifier = Modifier

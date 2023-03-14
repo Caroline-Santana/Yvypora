@@ -44,5 +44,11 @@
     <string name="name_tent">Nome da barraca</string>
     <string name="phone_tent">Telefone da barraca</string>
     <string name="date_of_birth">Data de nascimento</string>
+    <string name="title_phone">Telefone</string>
+    <string name="phone_error_empty">Informe um telefone!</string>
+    <string name="title_activity_inicial_screen">InicialScreen</string>
+    <string name="title_cnpj">CNPJ</string>
+    <string name="cnpj_error_empty">Informe um CNPJ!</string>
+    <string name="cnpj_error_invalid">CNPJ inválido!</string>
 
 </resources>

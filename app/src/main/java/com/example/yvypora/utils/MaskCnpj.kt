@@ -5,36 +5,38 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 
-class MaskPhone : VisualTransformation {
+class MaskCnpj() : VisualTransformation {
+
     override fun filter(text: AnnotatedString): TransformedText {
-        return maskFilterPhone(text)
+        return maskFilterCnpj(text)
     }
 }
 
 
-fun maskFilterPhone(text: AnnotatedString): TransformedText {
+fun maskFilterCnpj(text: AnnotatedString): TransformedText {
 
-    val trimmed = if (text.text.length >= 11) text.text.substring(0..10) else text.text
-    var out = " "
+    val trimmed = if (text.text.length >= 15) text.text.substring(0..14) else text.text
+    var out = ""
     for (i in trimmed.indices) {
         out += trimmed[i]
-        if (i==1) out += " "
-        if (i==6) out += "-"
-
+        if (i==2) out += "."
+        if (i==5) out += "."
+        if (i==8) out += "/"
+        if (i==12) out += "-"
     }
-// 11 9 54009469
+
     val numberOffsetTranslator = object : OffsetMapping {
         override fun originalToTransformed(offset: Int): Int {
-            if (offset <= 0) return offset
-            if (offset <= 10) return offset +1
-            return 11
+            if (offset <= 2) return offset
+            if (offset <= 13) return offset +1
+            return 14
 
         }
 
         override fun transformedToOriginal(offset: Int): Int {
-            if (offset <=1) return offset
-            if (offset <=11) return offset -1
-            return 10
+            if (offset <=3) return offset
+            if (offset <=15) return offset -1
+            return 14
         }
     }
 

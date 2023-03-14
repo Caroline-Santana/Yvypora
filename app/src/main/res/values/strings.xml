@@ -44,5 +44,13 @@
     <string name="name_tent">Tent name</string>
     <string name="phone_tent">Tent phone</string>
     <string name="date_of_birth">Date of birth</string>
+    <string name="phone_error_empty">Provide a phone!</string>
+    <string name="title_phone">Phone</string>
+    <string name="title_activity_inicial_screen">InicialScreen</string>
+    <string name="title_cnpj">CNPJ</string>
+    <string name="cnpj_error_empty">Provide a CNPJ!</string>
+    <string name="cnpj_error_invalid">Invalid CNPJ!</string>
+
+
 
 </resources>

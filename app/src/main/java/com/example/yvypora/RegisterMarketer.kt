@@ -2,6 +2,7 @@ package com.example.yvypora
 
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -10,11 +11,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -33,12 +38,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.Dp
 import coil.compose.rememberImagePainter
-import com.example.yvypora.service.buscarCep
 import com.example.yvypora.ui.theme.YvyporaTheme
-import com.example.yvypora.utils.MaskCep
+import com.example.yvypora.utils.MaskCnpj
 import com.example.yvypora.utils.MaskCpf
+import com.example.yvypora.utils.MaskPhone
 import com.example.yvypora.utils.ValidationCpf
+//import androidx.compose.ui.platform.ContextAmbient
 
 class RegisterMarketer : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -427,8 +434,8 @@ fun PhotoInputMarketer() {
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(top = 12.dp)
-                    .clickable { launcher.launch("image/*")},
+                    .padding(start = 5.dp, bottom = 15.dp, top = 12.dp, end = 5.dp)
+                    .clickable { launcher.launch("image/*") },
                 contentScale = ContentScale.Crop
             )
 
@@ -523,7 +530,7 @@ fun PhoneInputMarketer() {
     val context = LocalContext.current
 
     Text(
-        text = stringResource(id = R.string.title_cpf),
+        text = stringResource(id = R.string.title_phone),
         fontSize = 20.sp,
         textAlign = TextAlign.Start,
         color = colorResource(id = R.color.darkgreen_yvy)
@@ -533,7 +540,7 @@ fun PhoneInputMarketer() {
         onValueChange = { newPhone ->
             isPhoneErrorEmpty = newPhone.isEmpty()
 
-            if (phoneState.length > 11) newPhone.dropLast(1)
+            if (phoneState.length > 10) newPhone.dropLast(1)
 
             phoneState = newPhone
         },
@@ -549,13 +556,13 @@ fun PhoneInputMarketer() {
             .focusRequester(inputsFocusRequest),
         isError = isPhoneErrorEmpty,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        visualTransformation = MaskCpf(),
+        visualTransformation = MaskPhone(),
         singleLine = true,
         shape = RoundedCornerShape(8.dp),
     )
     if (isPhoneErrorEmpty) {
         Text(
-            text = stringResource(id = R.string.cpf_error_empty),
+            text = stringResource(id = R.string.phone_error_empty),
             modifier = Modifier.fillMaxWidth(),
             color = Color.Red,
             textAlign = TextAlign.End
@@ -565,13 +572,127 @@ fun PhoneInputMarketer() {
 
 @Composable
 fun CnpjInputMarketer() {
-    TODO("Not yet implemented")
+
+    var cnpjState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var isCnpjErrorEmpty by remember {
+        mutableStateOf(false)
+    }
+    var isCnpjError by remember {
+        mutableStateOf(false)
+    }
+    val inputsFocusRequest = FocusRequester()
+
+    val context = LocalContext.current
+
+    Text(
+        text = stringResource(id = R.string.title_cnpj),
+        fontSize = 20.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = cnpjState,
+        onValueChange = { newCnpj ->
+            isCnpjError = newCnpj.isEmpty()
+
+            if (cnpjState.length > 11) newCnpj.dropLast(1)
+
+//
+//            if (//!ValidationCpf.myValidateCPF(
+//                    newCnpj
+//            )) {
+//                isCnpjError = true
+//            } else {
+//                isCnpjError = false
+//                isCnpjErrorEmpty = false
+//            }
+
+
+            cnpjState = newCnpj
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxSize()
+            .focusRequester(inputsFocusRequest),
+        isError = isCnpjErrorEmpty,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        visualTransformation = MaskCnpj(),
+        singleLine = true,
+        shape = RoundedCornerShape(8.dp),
+    )
+    if (isCnpjErrorEmpty) {
+        Text(
+            text = stringResource(id = R.string.cnpj_error_empty),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
+        )
+    } else if (isCnpjError) {
+        Text(
+            text = stringResource(id = R.string.cnpj_error_invalid),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
+        )
+    }
 }
 
 @Composable
-fun GenderInputMarketer() {
-    TODO("Not yet implemented")
+fun GenderInputMarketer(){
+    val radioOptions = listOf("DSA", "Java", "C++")
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[2]) }
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+    ) {
+        Column {
+            radioOptions.forEach { text ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (text == selectedOption),
+                            onClick = { onOptionSelected(text) }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+//                    val context = ContextAmbient.current
+                    RadioButton(
+                        selected = (text == selectedOption),modifier = Modifier.padding(all = Dp(value = 8F)),
+                        onClick = {
+                            // inside on click method we are setting a
+                            // selected option of our radio buttons.
+                            onOptionSelected(text)
+
+                            // after clicking a radio button
+                            // we are displaying a toast message.
+                            Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+                        }
+                    )
+                    // below line is use to add
+                    // text to our radio buttons.
+                    Text(
+                        text = text,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+        }
+    }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

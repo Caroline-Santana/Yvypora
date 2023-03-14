@@ -409,7 +409,7 @@ fun PhotoInput() {
                 contentDescription = null,
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(top = 12.dp)
+                    .padding(start = 5.dp, bottom = 15.dp, top = 12.dp, end = 5.dp)
                     .clickable { launcher.launch("image/*")},
                 contentScale = ContentScale.Crop
             )
