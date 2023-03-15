@@ -12,7 +12,7 @@ fun buscarCep(cep: String, onComplete: (String) -> Unit) {
     var logradouro = ""
 
 
-    val call = RetrofitFactory()
+    val call = RetrofitFactoryCep()
         .retrofitService()
         .getCep(cep)
 

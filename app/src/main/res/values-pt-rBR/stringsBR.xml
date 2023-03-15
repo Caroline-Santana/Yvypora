@@ -50,5 +50,7 @@
     <string name="title_cnpj">CNPJ</string>
     <string name="cnpj_error_empty">Informe um CNPJ!</string>
     <string name="cnpj_error_invalid">CNPJ inválido!</string>
+    <string name="gender_f">Feminino</string>
+    <string name="gender_m">Masculino</string>
 
 </resources>

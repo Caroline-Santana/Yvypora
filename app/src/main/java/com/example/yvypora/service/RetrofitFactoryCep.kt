@@ -3,7 +3,7 @@ package com.example.yvypora.service
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitFactory {
+class RetrofitFactoryCep {
     val URL = "https://viacep.com.br/ws/"
 
     val retrofitFactory =

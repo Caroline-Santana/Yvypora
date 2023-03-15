@@ -2,7 +2,6 @@ package com.example.yvypora
 
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -17,9 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -164,10 +161,6 @@ fun InputsMarketer() {
         //Input genero
         GenderInputMarketer()
 
-        //*********************************************************************
-        Spacer(
-            modifier = Modifier.height(35.dp)
-        )
 
         //Butão de cadastro
         Button(
@@ -647,48 +640,31 @@ fun CnpjInputMarketer() {
 
 @Composable
 fun GenderInputMarketer(){
-    val radioOptions = listOf("DSA", "Java", "C++")
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[2]) }
-    val context = LocalContext.current
-    Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
 
-    ) {
-        Column {
-            radioOptions.forEach { text ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = (text == selectedOption),
-                            onClick = { onOptionSelected(text) }
-                        )
-                        .padding(horizontal = 16.dp)
-                ) {
-//                    val context = ContextAmbient.current
-                    RadioButton(
-                        selected = (text == selectedOption),modifier = Modifier.padding(all = Dp(value = 8F)),
-                        onClick = {
-                            // inside on click method we are setting a
-                            // selected option of our radio buttons.
-                            onOptionSelected(text)
+    var selected by remember { mutableStateOf("") }
+    Row {
+        RadioButton(
+            selected = selected == "woman",
+            onClick = { selected = "woman" },
+            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy)) )
+        Text(
+            text = stringResource(id = R.string.gender_f),
+            modifier = Modifier
+                .clickable(onClick = { selected = "woman" })
+                .padding(top = 12.dp, start = 4.dp)
+        )
+        Spacer(modifier = Modifier.size(60.dp))
 
-                            // after clicking a radio button
-                            // we are displaying a toast message.
-                            Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-                        }
-                    )
-                    // below line is use to add
-                    // text to our radio buttons.
-                    Text(
-                        text = text,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
-                }
-            }
-        }
+        RadioButton(
+            selected = selected == "man",
+            onClick = { selected = "man" } ,
+            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy)))
+        Text(
+            text = stringResource(id = R.string.gender_m),
+            modifier = Modifier
+                .clickable(onClick = { selected = "man" })
+                .padding(top = 15.dp)
+        )
     }
 }
 
