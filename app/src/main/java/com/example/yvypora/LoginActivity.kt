@@ -1,13 +1,14 @@
 package com.example.yvypora
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.HorizontalScrollView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-
-
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -23,6 +24,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,10 +34,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val auth = FirebaseAuth.getInstance()
+
+        if(auth.currentUser != null){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity((intent))
+        }
+        Log.i("ds3m", if(auth.currentUser == null) "Não tem usuário" else "")
         setContent {
             YvyporaTheme {
                 Surface(
@@ -62,22 +73,22 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 fun LoginLayout() {
-
-    var nameState by rememberSaveable {
+    val context = LocalContext.current
+    var passState by rememberSaveable {
         mutableStateOf("")
     }
     var emailState by rememberSaveable {
         mutableStateOf("")
     }
-    var isNameError by remember {
-        mutableStateOf(false)
-    }
-    var resultState by remember{
-        mutableStateOf("")
-    }
+
     var isEmailError by remember {
         mutableStateOf(false)
     }
+    var isPasswordErrorEmpty by remember {
+        mutableStateOf(false)
+    }
+
+    val mMaxLength = 8
     //Objeto que controla a requisição de foco
     val inputsFocusRequest = FocusRequester()
     val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
@@ -102,68 +113,38 @@ fun LoginLayout() {
             color = colorResource(id = R.color.darkgreen_yvy)
         )
         OutlinedTextField(
-            value = nameState,
-            onValueChange = { newName ->
-                var lastChar = if (newName.isEmpty()) {
-                    isNameError = true
-                    newName
 
-                } else {
-                    newName.get(newName.length - 1)
-                    isNameError = false
-
+            value = passState,
+            onValueChange = { newPass ->
+                if (newPass.isEmpty()) {
+                    isPasswordErrorEmpty = true
                 }
-                var newValue = if (lastChar == '.' || lastChar == ',')
-                    newName.dropLast(1)
-                else newName
-                nameState = newValue
+
+                passState = newPass
             },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = colorResource(id = R.color.transparentgreen_yvy),
-                focusedBorderColor = colorResource(id = R.color.transparentgreen_yvy),
-                unfocusedBorderColor = colorResource(id = R.color.transparentgreen_yvy)
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Unspecified,
+                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+                cursorColor = colorResource(id = R.color.darkgreen_yvy)
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .focusRequester(inputsFocusRequest)
-                .padding(0.dp),
-
-            trailingIcon = {
-                if (nameState.length <= 0) {
-                    Icon(
-                        painter = painterResource(R.drawable.iconboxe),
-                        contentDescription = stringResource(id = R.string.icon_content_description),
-                        modifier = Modifier
-                            .width(31.dp)
-                            .height(32.dp)
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(R.drawable.icon_colorful),
-                        contentDescription = stringResource(id = R.string.icon_content_description),
-                        modifier = Modifier
-                            .width(31.dp)
-                            .height(32.dp),
-                        tint = Color.Unspecified
-                    )
-                }
-            },
-
-            isError = isNameError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                .focusRequester(inputsFocusRequest),
+            isError = isPasswordErrorEmpty,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             singleLine = true,
             shape = RoundedCornerShape(8.dp),
+        )
 
-            )
-
-        if (isNameError) {
+        if (isPasswordErrorEmpty) {
             Text(
-                text = stringResource(id = R.string.name_error),
+                text = stringResource(id = R.string.message_error_pass1),
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.Red,
                 textAlign = TextAlign.End
             )
-
+        }
 
         }
 
@@ -203,7 +184,7 @@ fun LoginLayout() {
                 .padding(0.dp),
 
             trailingIcon = {
-                if (nameState.length <= 0) {
+                if (passState.length <= 0) {
                     Icon(
                         painter = painterResource(R.drawable.iconboxe),
                         contentDescription = stringResource(id = R.string.icon_content_description),
@@ -246,9 +227,7 @@ fun LoginLayout() {
 
         Button(
             onClick = {
-//                      if (resultState){
-//
-//                      }
+                authenticate(emailState,passState, context )
 
             },
             modifier = Modifier
@@ -267,4 +246,17 @@ fun LoginLayout() {
             )
         }
     }
+
+fun authenticate(email: String, password: String, context: Context) {
+    //Obter instancia do firebase
+    val auth = FirebaseAuth.getInstance()
+    //Autentificação
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener{
+            Log.i("ds3m","${it.isSuccessful}" )
+            val intent =  Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+
+        }
 }
+

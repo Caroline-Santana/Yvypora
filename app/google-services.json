@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "136618530673",
+    "project_id": "yvypora-10e50",
+    "storage_bucket": "yvypora-10e50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136618530673:android:f0bda0ac15612158f648d0",
+        "android_client_info": {
+          "package_name": "com.example.yvypora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136618530673-2esc1vg4m50tdq08m7ri1hpf8ocpvi3c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0t7h-3k8WPIsDypU782toMNNtIxn0q4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136618530673-2esc1vg4m50tdq08m7ri1hpf8ocpvi3c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

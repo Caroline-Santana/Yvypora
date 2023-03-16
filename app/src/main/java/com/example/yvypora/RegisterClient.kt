@@ -3,6 +3,7 @@ package com.example.yvypora
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -37,6 +38,9 @@ import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.MaskCep
 import com.example.yvypora.utils.MaskCpf
 import com.example.yvypora.utils.ValidationCpf
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 
 class RegisterClient : ComponentActivity() {
@@ -85,7 +89,12 @@ class RegisterClient : ComponentActivity() {
 
 @Composable
 fun Inputs() {
-
+    var emailState by remember {
+        mutableStateOf("")
+    }
+    var passState by remember {
+        mutableStateOf("")
+    }
     val context = LocalContext.current
 
     Column(
@@ -147,8 +156,7 @@ fun Inputs() {
         //Butão de cadastro
         Button(
             onClick = {
-//                val intent = Intent(context,RegisterClient()::class.java)
-//                context.startActivity(intent)
+                accountCreate(email = emailState, password = passState)
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
@@ -169,6 +177,27 @@ fun Inputs() {
             modifier = Modifier.height(15.dp)
         )
     }
+}
+
+fun accountCreate(email: String, password: String) {
+    // obter uma instância do FirebaseAuth
+    val auth = FirebaseAuth.getInstance()
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnSuccessListener {
+            Log.i("ds3m","${it.user!!.uid}")
+        }
+        .addOnFailureListener{
+            try {
+                throw it
+            } catch (e: FirebaseAuthUserCollisionException){
+                Log.i("ds3m", "ja cadastrou esse email")
+            } catch (e: FirebaseAuthWeakPasswordException){
+                Log.i("ds3m", "senha fraca")
+            }catch (e: Exception){
+                Log.i("ds3m", "nem sei que erro é esse")
+            }
+        }
 }
 
 @Composable
@@ -238,16 +267,10 @@ fun EmailInput() {
     var emailState by rememberSaveable {
         mutableStateOf("")
     }
-    var isEmailError by remember {
-        mutableStateOf(false)
-    }
+
     val inputsFocusRequest = FocusRequester()
 
-    val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
-    fun isEmailValid(email: String): Boolean {
-        return EMAIL_REGEX.toRegex().matches(email);
 
-    }
 
     Text(
         text = stringResource(id = R.string.email),
@@ -258,14 +281,6 @@ fun EmailInput() {
     TextField(
         value = emailState,
         onValueChange = { newEmail ->
-            if (newEmail.isEmpty()) {
-                isEmailError = true
-            } else if (isEmailValid(newEmail) == false) {
-                isEmailError = true
-            } else {
-                newEmail.get(newEmail.length - 1)
-                isEmailError = false
-            }
 
             emailState = newEmail
         },
@@ -278,19 +293,11 @@ fun EmailInput() {
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(inputsFocusRequest),
-        isError = isEmailError,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         singleLine = true,
         shape = RoundedCornerShape(8.dp),
     )
-    if (isEmailError) {
-        Text(
-            text = stringResource(id = R.string.email_error),
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Red,
-            textAlign = TextAlign.End
-        )
-    }
+
 
 }
 
@@ -299,17 +306,11 @@ fun PassInput() {
     var passwordState by rememberSaveable {
         mutableStateOf("")
     }
-
-
     var isPasswordError by remember {
-        mutableStateOf(false)
-    }
-    var isPasswordErrorEmpty by remember {
         mutableStateOf(false)
     }
 
     val mMaxLength = 8
-
     val inputsFocusRequest = FocusRequester()
 
 
@@ -322,9 +323,7 @@ fun PassInput() {
     TextField(
         value = passwordState,
         onValueChange = { newPass ->
-            if (newPass.isEmpty()) {
-                isPasswordErrorEmpty = true
-            } else if (newPass.length >= mMaxLength) {
+            if (newPass.length >= mMaxLength) {
                 isPasswordError = true
             } else {
                 newPass.get(newPass.length - 1)
@@ -357,14 +356,7 @@ fun PassInput() {
             textAlign = TextAlign.End
         )
     }
-    if (isPasswordErrorEmpty) {
-        Text(
-            text = stringResource(id = R.string.message_error_pass1),
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.Red,
-            textAlign = TextAlign.End
-        )
-    }
+
 }
 
 @Composable
@@ -410,7 +402,7 @@ fun PhotoInput() {
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(start = 5.dp, bottom = 15.dp, top = 12.dp, end = 5.dp)
-                    .clickable { launcher.launch("image/*")},
+                    .clickable { launcher.launch("image/*") },
                 contentScale = ContentScale.Crop
             )
 
