@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.ui.theme.YvyporaTheme
@@ -97,6 +98,14 @@ fun MainLayout() {
     )
     {
         val context = LocalContext.current
+
+        Button(onClick = {
+            val intent = Intent(context, InicialScreen()::class.java)
+            context.startActivity(intent)
+        }) {
+            Text(text = "rapido")
+        }
+
         Button(
             onClick = {
                 val intent = Intent(context, LoginActivity()::class.java)
@@ -139,5 +148,12 @@ fun MainLayout() {
         })
     }
 }
+@Preview(showBackground = true, showSystemUi = true)
 
+@Composable
+fun DefaultPreview() {
+    YvyporaTheme{
+        MainLayout()
+    }
+}
 

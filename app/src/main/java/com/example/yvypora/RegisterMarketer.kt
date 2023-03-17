@@ -670,10 +670,3 @@ fun GenderInputMarketer(){
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview2() {
-    YvyporaTheme {
-
-    }
-}

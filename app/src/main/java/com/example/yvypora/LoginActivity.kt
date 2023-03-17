@@ -245,6 +245,7 @@ fun LoginLayout() {
                 fontSize = 24.sp
             )
         }
+
     }
 
 fun authenticate(email: String, password: String, context: Context) {

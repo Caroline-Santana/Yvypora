@@ -4,6 +4,7 @@ package com.example.yvypora
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -93,6 +95,12 @@ fun Inputs() {
         mutableStateOf("")
     }
     var passState by remember {
+        mutableStateOf("")
+    }
+    val clientName by remember {
+        mutableStateOf(TextFieldValue())
+    }
+    val response = remember {
         mutableStateOf("")
     }
     val context = LocalContext.current
@@ -191,7 +199,8 @@ fun accountCreate(email: String, password: String) {
             try {
                 throw it
             } catch (e: FirebaseAuthUserCollisionException){
-                Log.i("ds3m", "ja cadastrou esse email")
+                    //Usuário existente
+                Log.i("ds3m", "usuario ja cadastrado")
             } catch (e: FirebaseAuthWeakPasswordException){
                 Log.i("ds3m", "senha fraca")
             }catch (e: Exception){
@@ -209,6 +218,8 @@ fun NameInput() {
         mutableStateOf(false)
     }
     val inputsFocusRequest = FocusRequester()
+
+
 
     Text(
         text = stringResource(id = R.string.name),
@@ -564,11 +575,3 @@ fun CepInput() {
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
-
-@Composable
-fun DefaultPreview() {
-    YvyporaTheme {
-        Inputs()
-    }
-}
