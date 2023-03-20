@@ -53,6 +53,12 @@
     <string name="gender_f">Feminine</string>
     <string name="gender_m">Masculine</string>
     <string name="lupa">Magnifying glass</string>
+    <string name="fruits">Fruits</string>
+    <string name="vegetable">Veggies</string>
+    <string name="spices">Spices</string>
+    <string name="other">Others</string>
+    <string name="isBirthErrorEmpty">Provide a Birth!</string>
+    <string name="titleBirth">Date of Birth</string>
 
 
 </resources>

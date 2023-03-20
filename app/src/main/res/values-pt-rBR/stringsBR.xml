@@ -53,5 +53,11 @@
     <string name="gender_f">Feminino</string>
     <string name="gender_m">Masculino</string>
     <string name="lupa">Lupa</string>
+    <string name="fruits">Frutas</string>
+    <string name="vegetable">Vegetais</string>
+    <string name="spices">Especiarias</string>
+    <string name="other">Outros</string>
+    <string name="isBirthErrorEmpty">Informe sua data de nascimento!</string>
+    <string name="titleBirth">Data de nascimento</string>
 
 </resources>
