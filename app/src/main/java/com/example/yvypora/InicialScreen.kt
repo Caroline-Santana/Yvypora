@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -254,16 +255,23 @@ fun AutoSliding() {
                                 .background(Color.LightGray)
                                 .align(Alignment.Center)
                         ){
-//                            Image(painter = painterResource(
-//                                id = when(page){
-//                                    1 -> R.drawable.logo
-//                                    2 -> R.drawable.ofertas
-//                                    3 -> R.drawable.ofertas
-//                                    4 -> R.drawable.ofertas
-//                                    5 -> R.drawable.ofertas
-//                                    else -> R.drawable.logo
-////                                }
-//                            ) )
+                            Image(painter = painterResource(
+                                id = when(page){
+                                    1 -> R.drawable.logo
+                                    2 -> R.drawable.ofertas
+                                    3 -> R.drawable.ofertas
+                                    4 -> R.drawable.ofertas
+                                    5 -> R.drawable.ofertas
+                                    else -> R.drawable.logo
+                                }
+                            ), contentDescription = "Image",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            
+                            Column() {
+                                
+                            }
                         }
                     }
 
