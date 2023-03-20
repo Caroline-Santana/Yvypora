@@ -1,4 +1,4 @@
-package com.example.yvypora.service.model
+package com.example.yvypora.models
 
 
 import com.google.gson.annotations.SerializedName

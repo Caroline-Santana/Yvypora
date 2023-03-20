@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.HorizontalScrollView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -33,20 +34,24 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.api.RetrofitApi
+import com.example.yvypora.api.commons.auth
+import com.example.yvypora.models.Credentials
+import com.example.yvypora.models.Token
 import com.example.yvypora.ui.theme.YvyporaTheme
-import com.google.firebase.auth.FirebaseAuth
+//import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val auth = FirebaseAuth.getInstance()
+//        val auth = FirebaseAuth.getInstance()
 
-        if(auth.currentUser != null){
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity((intent))
-        }
-        Log.i("ds3m", if(auth.currentUser == null) "Não tem usuário" else "")
+//        if(auth.currentUser != null){
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity((intent))
+//        }
+//        Log.i("ds3m", if(auth.currentUser == null) "Não tem usuário" else "")
         setContent {
             YvyporaTheme {
                 Surface(
@@ -75,6 +80,9 @@ class LoginActivity : ComponentActivity() {
 fun LoginLayout() {
     val context = LocalContext.current
     var passState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var token by rememberSaveable {
         mutableStateOf("")
     }
     var emailState by rememberSaveable {
@@ -227,8 +235,9 @@ fun LoginLayout() {
 
         Button(
             onClick = {
-                authenticate(emailState,passState, context )
-
+                var res = authenticate(emailState,passState)
+                token = res
+                Toast.makeText(context, token, Toast.LENGTH_SHORT).show()
             },
             modifier = Modifier
                 .width(257.dp)
@@ -248,16 +257,36 @@ fun LoginLayout() {
 
     }
 
-fun authenticate(email: String, password: String, context: Context) {
-    //Obter instancia do firebase
-    val auth = FirebaseAuth.getInstance()
-    //Autentificação
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener{
-            Log.i("ds3m","${it.isSuccessful}" )
-            val intent =  Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
 
-        }
+fun authenticate(email: String, password: String): String {
+    val credentials = Credentials(email, password)
+    var token = ""
+
+    auth(credentials) {
+        token = it.token
+    }
+
+    return token
 }
+
+
+
+
+
+
+
+
+
+
+//fun authenticate(email: String, password: String, context: Context) {
+//
+//    val auth = FirebaseAuth.getInstance()
+//
+//    auth.signInWithEmailAndPassword(email, password)
+//        .addOnCompleteListener{
+//            Log.i("ds3m","${it.isSuccessful}" )
+//            val intent =  Intent(context, MainActivity::class.java)
+//            context.startActivity(intent)
+//        }
+//}
 

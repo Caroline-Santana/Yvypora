@@ -1,7 +1,7 @@
 package com.example.yvypora.service
 
 import android.util.Log
-import com.example.yvypora.service.model.Cep
+import com.example.yvypora.models.Cep
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

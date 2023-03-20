@@ -1,6 +1,6 @@
 package com.example.yvypora.service
 
-import com.example.yvypora.service.model.Cep
+import com.example.yvypora.models.Cep
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
