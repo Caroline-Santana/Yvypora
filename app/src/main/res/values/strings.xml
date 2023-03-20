@@ -52,6 +52,7 @@
     <string name="cnpj_error_invalid">Invalid CNPJ!</string>
     <string name="gender_f">Feminine</string>
     <string name="gender_m">Masculine</string>
+    <string name="lupa">Magnifying glass</string>
 
 
 </resources>

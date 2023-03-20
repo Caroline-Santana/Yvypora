@@ -35,6 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.example.yvypora.api.cep.getCep
+import com.example.yvypora.models.Address
+import com.example.yvypora.models.Cep
+import com.example.yvypora.models.Costumer
 import com.example.yvypora.service.buscarCep
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.MaskCep
@@ -91,6 +95,26 @@ class RegisterClient : ComponentActivity() {
 
 @Composable
 fun Inputs() {
+    var cpfState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var isCpfErrorEmpty by remember {
+        mutableStateOf(false)
+    }
+    var isCpfError by remember {
+        mutableStateOf(false)
+    }
+
+    var cepState by remember {
+        mutableStateOf("")
+    }
+    var isCepErrorEmpty by remember {
+        mutableStateOf(false)
+    }
+    var isCepError by remember {
+        mutableStateOf(false)
+    }
+
     var emailState by remember {
         mutableStateOf("")
     }
@@ -146,7 +170,25 @@ fun Inputs() {
             modifier = Modifier.height(15.dp)
         )
         //Input cpf
-        CpfInput()
+        CpfInput(
+            cpfState, isCpfErrorEmpty, isCpfError,
+            onCpfChange = { newCpf ->
+                isCpfErrorEmpty = newCpf.isEmpty()
+
+                if (cpfState.length > 11) newCpf.dropLast(1)
+
+
+                if (!ValidationCpf.myValidateCPF(newCpf)) {
+                    isCpfError = true
+                } else {
+                    isCpfError = false
+                    isCpfErrorEmpty = false
+                }
+
+
+                cpfState = newCpf
+            },
+        )
 
         //*********************************************************************
         Spacer(
@@ -154,7 +196,31 @@ fun Inputs() {
         )
 
         //Input cep
-        CepInput()
+        CepInput(
+            cepState, isCepError, isCepErrorEmpty,
+            onCepChange = { newCep ->
+                isCepErrorEmpty = newCep.isEmpty()
+
+                if (cepState.length > 8) newCep.dropLast(1)
+
+                if (cepState.length == 8) {
+                    var cep = ""
+                    buscarCep(cepState) {
+                        cep = it
+                    }.toString()
+
+
+                    if (cep.isEmpty()) {
+                        isCepError = true
+                    } else {
+                        isCepError = false
+                        isCepErrorEmpty = false
+                    }
+                }
+
+                cepState = newCep
+            },
+        )
 
         //*********************************************************************
         Spacer(
@@ -164,7 +230,32 @@ fun Inputs() {
         //Butão de cadastro
         Button(
             onClick = {
-                accountCreate(email = emailState, password = passState)
+                var cep: Cep? = null
+
+                getCep(cepState) {
+                    cep = it
+                }
+
+                if (cep != null) {
+                    val costumer = Costumer(
+                        name = clientName.text,
+                        email = emailState,
+                        password = passState,
+                        address = Address(
+                            cep = cep!!.cep,
+                            addressTypeId = 1,
+                            city = cep!!.localidade,
+                            uf =  cep!!.uf,
+                            complemento = "",
+                            logradouro = cep!!.logradouro,
+                            neighborhood = cep!!.bairro,
+                        ),
+                        cpf = cpfState,
+                        birthday = // TODO this
+                    )
+                }
+
+
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
@@ -185,28 +276,6 @@ fun Inputs() {
             modifier = Modifier.height(15.dp)
         )
     }
-}
-
-fun accountCreate(email: String, password: String) {
-    // obter uma instância do FirebaseAuth
-    val auth = FirebaseAuth.getInstance()
-
-    auth.createUserWithEmailAndPassword(email, password)
-        .addOnSuccessListener {
-            Log.i("ds3m","${it.user!!.uid}")
-        }
-        .addOnFailureListener{
-            try {
-                throw it
-            } catch (e: FirebaseAuthUserCollisionException){
-                    //Usuário existente
-                Log.i("ds3m", "usuario ja cadastrado")
-            } catch (e: FirebaseAuthWeakPasswordException){
-                Log.i("ds3m", "senha fraca")
-            }catch (e: Exception){
-                Log.i("ds3m", "nem sei que erro é esse")
-            }
-        }
 }
 
 @Composable
@@ -381,9 +450,8 @@ fun PhotoInput() {
     )
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ){
-        uri: Uri? ->
-        uri?.let {imageUri.value = it.toString()}
+    ) { uri: Uri? ->
+        uri?.let { imageUri.value = it.toString() }
     }
 
 
@@ -423,16 +491,13 @@ fun PhotoInput() {
 }
 
 @Composable
-fun CpfInput() {
-    var cpfState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isCpfErrorEmpty by remember {
-        mutableStateOf(false)
-    }
-    var isCpfError by remember {
-        mutableStateOf(false)
-    }
+fun CpfInput(
+    cpfState: String,
+    isCpfErrorEmpty: Boolean,
+    isCpfError: Boolean,
+    onCpfChange: (String) -> Unit
+) {
+
     val inputsFocusRequest = FocusRequester()
 
     val context = LocalContext.current
@@ -445,22 +510,7 @@ fun CpfInput() {
     )
     TextField(
         value = cpfState,
-        onValueChange = { newCpf ->
-            isCpfErrorEmpty = newCpf.isEmpty()
-
-            if (cpfState.length > 11) newCpf.dropLast(1)
-
-
-            if (!ValidationCpf.myValidateCPF(newCpf)) {
-                isCpfError = true
-            } else {
-                isCpfError = false
-                isCpfErrorEmpty = false
-            }
-
-
-            cpfState = newCpf
-        },
+        onValueChange = onCpfChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -495,16 +545,12 @@ fun CpfInput() {
 }
 
 @Composable
-fun CepInput() {
-    var cepState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isCepErrorEmpty by remember {
-        mutableStateOf(false)
-    }
-    var isCepError by remember {
-        mutableStateOf(false)
-    }
+fun CepInput(
+    cepState: String,
+    isCepErrorEmpty: Boolean,
+    isCepError: Boolean,
+    onCepChange: (String) -> Unit
+) {
     val inputsFocusRequest = FocusRequester()
 
     val context = LocalContext.current
@@ -517,30 +563,10 @@ fun CepInput() {
         textAlign = TextAlign.Start,
         color = colorResource(id = R.color.darkgreen_yvy)
     )
+
     TextField(
         value = cepState,
-        onValueChange = { newCep ->
-            isCepErrorEmpty = newCep.isEmpty()
-
-            if (cepState.length > 8) newCep.dropLast(1)
-
-            if (cepState.length == 8) {
-
-                cep = buscarCep(cepState) {
-                    cep = it
-                }.toString()
-
-
-                if (cep.isEmpty()) {
-                    isCepError = true
-                } else {
-                    isCepError = false
-                    isCepErrorEmpty = false
-                }
-            }
-
-            cepState = newCep
-        },
+        onValueChange = onCepChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -573,5 +599,7 @@ fun CepInput() {
         )
     }
 }
+
+
 
 

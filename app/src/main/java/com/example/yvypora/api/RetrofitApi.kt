@@ -1,5 +1,6 @@
 package com.example.yvypora.api
 
+import com.example.yvypora.api.cep.CepApiService
 import com.example.yvypora.api.commons.CommonsApiService
 import com.example.yvypora.service.constants.Constants
 import retrofit2.Retrofit
@@ -9,7 +10,7 @@ class RetrofitApi {
     companion object {
         private lateinit var instance: Retrofit
 
-        fun getRetrofit(): Retrofit {
+        private fun getRetrofit(): Retrofit {
             if (::instance.isInitialized) {
                 return instance
             }
@@ -24,6 +25,10 @@ class RetrofitApi {
 
         fun commonsRetrofitService(): CommonsApiService {
             return getRetrofit().create(CommonsApiService::class.java)
+        }
+
+        fun cepRetrofitService(): CepApiService {
+            return getRetrofit().create(CepApiService::class.java)
         }
     }
 }
