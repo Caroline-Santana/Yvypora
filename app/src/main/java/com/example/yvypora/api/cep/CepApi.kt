@@ -1,5 +1,6 @@
 package com.example.yvypora.api.cep
 
+import android.util.Log
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.models.Cep
 import retrofit2.Call
@@ -12,6 +13,7 @@ fun getCep(cep: String, onComplete: (Cep) -> Unit ) {
     call.enqueue(object: Callback<Cep> {
         override fun onResponse(call: Call<Cep>, response: Response<Cep>) {
             val res = response.body()
+            Log.i("teste", res.toString())
             return onComplete.invoke(res!!)
         }
 

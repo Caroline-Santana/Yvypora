@@ -39,14 +39,16 @@ import com.example.yvypora.api.cep.getCep
 import com.example.yvypora.models.Address
 import com.example.yvypora.models.Cep
 import com.example.yvypora.models.Costumer
-import com.example.yvypora.service.buscarCep
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.example.yvypora.utils.MaskBirth
 import com.example.yvypora.utils.MaskCep
 import com.example.yvypora.utils.MaskCpf
 import com.example.yvypora.utils.ValidationCpf
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class RegisterClient : ComponentActivity() {
@@ -95,6 +97,13 @@ class RegisterClient : ComponentActivity() {
 
 @Composable
 fun Inputs() {
+    var birthState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var isBirthErrorEmpty by remember {
+        mutableStateOf(false)
+    }
+
     var cpfState by rememberSaveable {
         mutableStateOf("")
     }
@@ -204,18 +213,18 @@ fun Inputs() {
                 if (cepState.length > 8) newCep.dropLast(1)
 
                 if (cepState.length == 8) {
-                    var cep = ""
-                    buscarCep(cepState) {
-                        cep = it
-                    }.toString()
-
-
-                    if (cep.isEmpty()) {
-                        isCepError = true
-                    } else {
-                        isCepError = false
-                        isCepErrorEmpty = false
-                    }
+//                    var cep = ""
+//                    buscarCep(cepState) {
+//                        cep = it
+//                    }.toString()
+//
+//
+//                    if (cep.isEmpty()) {
+//                        isCepError = true
+//                    } else {
+//                        isCepError = false
+//                        isCepErrorEmpty = false
+//                    }
                 }
 
                 cepState = newCep
@@ -226,15 +235,40 @@ fun Inputs() {
         Spacer(
             modifier = Modifier.height(35.dp)
         )
+        //Input birth
+        BirthClient(
+            birthState, isBirthErrorEmpty,
+            onBirthdayChange = { newBirth ->
+                isBirthErrorEmpty = newBirth.isEmpty()
+
+                if (birthState.length > 8) newBirth.dropLast(1)
+
+                birthState = newBirth
+            },
+        )
+        //*********************************************************************
+        Spacer(
+            modifier = Modifier.height(35.dp)
+        )
+        //Input Gender
+        GenderInputClient()
+        //*********************************************************************
+        Spacer(
+            modifier = Modifier.height(35.dp)
+        )
 
         //Butão de cadastro
         Button(
             onClick = {
                 var cep: Cep? = null
 
+                Log.i("teste", cepState)
+
                 getCep(cepState) {
                     cep = it
                 }
+
+                Log.i("teste", cep.toString())
 
                 if (cep != null) {
                     val costumer = Costumer(
@@ -245,17 +279,17 @@ fun Inputs() {
                             cep = cep!!.cep,
                             addressTypeId = 1,
                             city = cep!!.localidade,
-                            uf =  cep!!.uf,
+                            uf = cep!!.uf,
                             complemento = "",
                             logradouro = cep!!.logradouro,
                             neighborhood = cep!!.bairro,
                         ),
                         cpf = cpfState,
-                        birthday = // TODO this
+                        birthday = birthState
                     )
+                    Log.i("teste", costumer.toString())
+
                 }
-
-
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
@@ -596,6 +630,84 @@ fun CepInput(
             modifier = Modifier.fillMaxWidth(),
             color = Color.Red,
             textAlign = TextAlign.End
+        )
+    }
+}
+
+@Composable
+fun BirthClient(
+    birthState: String,
+    isBirthErrorEmpty: Boolean,
+    onBirthdayChange: (String) -> Unit
+) {
+
+    val inputsFocusRequest = FocusRequester()
+
+    val context = LocalContext.current
+
+    Text(
+        text = stringResource(id = R.string.titleBirth),
+        fontSize = 20.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = birthState,
+        onValueChange = onBirthdayChange,
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxSize()
+            .focusRequester(inputsFocusRequest),
+        isError = isBirthErrorEmpty,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        visualTransformation = MaskBirth(),
+        singleLine = true,
+        shape = RoundedCornerShape(8.dp),
+    )
+    if (isBirthErrorEmpty) {
+        Text(
+            text = stringResource(id = R.string.isBirthErrorEmpty),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
+        )
+    }
+}
+
+@Composable
+fun GenderInputClient() {
+
+    var selected by remember { mutableStateOf("") }
+    Row {
+        RadioButton(
+            selected = selected == "woman",
+            onClick = { selected = "woman" },
+            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))
+        )
+        Text(
+            text = stringResource(id = R.string.gender_f),
+            modifier = Modifier
+                .clickable(onClick = { selected = "woman" })
+                .padding(top = 12.dp, start = 4.dp)
+        )
+        Spacer(modifier = Modifier.size(60.dp))
+
+        RadioButton(
+            selected = selected == "man",
+            onClick = { selected = "man" },
+            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))
+        )
+        Text(
+            text = stringResource(id = R.string.gender_m),
+            modifier = Modifier
+                .clickable(onClick = { selected = "man" })
+                .padding(top = 15.dp)
         )
     }
 }

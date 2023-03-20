@@ -38,10 +38,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Dp
 import coil.compose.rememberImagePainter
 import com.example.yvypora.ui.theme.YvyporaTheme
-import com.example.yvypora.utils.MaskCnpj
-import com.example.yvypora.utils.MaskCpf
-import com.example.yvypora.utils.MaskPhone
-import com.example.yvypora.utils.ValidationCpf
+import com.example.yvypora.utils.*
+
 //import androidx.compose.ui.platform.ContextAmbient
 
 class RegisterMarketer : ComponentActivity() {
@@ -158,6 +156,13 @@ fun InputsMarketer() {
             modifier = Modifier.height(15.dp)
         )
 
+        //Input birth
+        BirthMarketer()
+
+        //*********************************************************************
+        Spacer(
+            modifier = Modifier.height(35.dp)
+        )
         //Input genero
         GenderInputMarketer()
 
@@ -637,7 +642,64 @@ fun CnpjInputMarketer() {
         )
     }
 }
+@Composable
+fun BirthMarketer() {
+    var birthState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var isBirthErrorEmpty by remember {
+        mutableStateOf(false)
+    }
 
+    val inputsFocusRequest = FocusRequester()
+
+    val context = LocalContext.current
+
+    Text(
+        text = stringResource(id = R.string.titleBirth),
+        fontSize = 20.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = birthState,
+        onValueChange = { newBirth ->
+            isBirthErrorEmpty = newBirth.isEmpty()
+
+            if (birthState.length > 8) newBirth.dropLast(1)
+
+
+                birthState = newBirth
+
+
+
+
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxSize()
+            .focusRequester(inputsFocusRequest),
+        isError = isBirthErrorEmpty,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        visualTransformation = MaskBirth(),
+        singleLine = true,
+        shape = RoundedCornerShape(8.dp),
+    )
+    if (isBirthErrorEmpty) {
+        Text(
+            text = stringResource(id = R.string.isBirthErrorEmpty),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
+        )
+    }
+}
 @Composable
 fun GenderInputMarketer(){
 
