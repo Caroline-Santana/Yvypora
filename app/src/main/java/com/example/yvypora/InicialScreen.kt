@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -32,7 +34,9 @@ class InicialScreen : ComponentActivity() {
         setContent {
             YvyporaTheme {
                 Surface(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 40.dp),
 
                     ) {
                     Image(
@@ -45,9 +49,18 @@ class InicialScreen : ComponentActivity() {
                         contentDescription = "logo",
 
                         )
+                    Image(
+                        painter = painterResource(id = R.drawable.icon_user),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(55.dp)
+                            .padding(top = 5.dp, end = 15.dp),
+                        alignment = Alignment.BottomEnd,
+                        contentDescription = "logo",
 
-
+                        )
                 }
+                LayoutMain()
             }
 
         }
@@ -57,29 +70,74 @@ class InicialScreen : ComponentActivity() {
 }
 @Composable
 fun LayoutMain() {
-    Text("teste")
+        var searchState by remember {
+        mutableStateOf("")
+    }
+    Column( modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxSize()
+        .padding(top = 125.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+
+            value = searchState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(45.dp)
+                .padding(start = 25.dp, end = 25.dp)
+            ,
+            onValueChange = {
+                searchState = it
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = colorResource(id = R.color.transparentgreen_yvy),
+                focusedIndicatorColor = colorResource(id = R.color.transparentgreen_yvy),
+                unfocusedIndicatorColor = colorResource(id = R.color.transparentgreen_yvy),
+                cursorColor = colorResource(id = R.color.darkgreen_yvy)
+            ),
+            shape = RoundedCornerShape(20.dp),
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.lupa_icon),
+                    contentDescription = stringResource(id = R.string.lupa),
+                    modifier = Modifier
+                        .width(35.dp)
+                        .height(35.dp)
+                        .padding(end = 10.dp),
+                    tint = Color.White
+                )
+            }
+        )
+        Row( modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 35.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.morango),
+                modifier = Modifier.height(80.dp).width(70.dp),
+                contentDescription = "Fruit" 
+            )
+            Image(
+                painter = painterResource(id = R.drawable.morango),
+                modifier = Modifier.height(80.dp).width(70.dp),
+                contentDescription = "Fruit"
+            )
+            Image(
+                painter = painterResource(id = R.drawable.morango),
+                modifier = Modifier.height(80.dp).width(70.dp),
+                contentDescription = "Fruit"
+            )
+            Image(
+                painter = painterResource(id = R.drawable.morango),
+                modifier = Modifier.height(80.dp).width(70.dp),
+                contentDescription = "Fruit"
+            )
+
+        }
+    }
+
 }
-//    var searchState by remember {
-//        mutableStateOf("")
-//    }
-//    Column( modifier = Modifier
-//        .fillMaxWidth()
-//        .fillMaxSize()
-//    ) {
-//
-//    }
-//    OutlinedTextField(
-//
-//        value = searchState,
-//        onValueChange = {
-//            searchState = it
-//        },
-//        colors = TextFieldDefaults.textFieldColors(
-//            backgroundColor = Color.Unspecified,
-//            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-//            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-//            cursorColor = colorResource(id = R.color.darkgreen_yvy)
-//        ),
-//    )
+
 
 

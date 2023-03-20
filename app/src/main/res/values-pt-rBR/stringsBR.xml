@@ -52,5 +52,6 @@
     <string name="cnpj_error_invalid">CNPJ inválido!</string>
     <string name="gender_f">Feminino</string>
     <string name="gender_m">Masculino</string>
+    <string name="lupa">Lupa</string>
 
 </resources>

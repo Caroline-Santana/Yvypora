@@ -40,13 +40,13 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val auth = FirebaseAuth.getInstance()
-
-        if(auth.currentUser != null){
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity((intent))
-        }
-        Log.i("ds3m", if(auth.currentUser == null) "Não tem usuário" else "")
+//        val auth = FirebaseAuth.getInstance()
+//
+//        if(auth.currentUser != null){
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity((intent))
+//        }
+//        Log.i("ds3m", if(auth.currentUser == null) "Não tem usuário" else "")
         setContent {
             YvyporaTheme {
                 Surface(
@@ -104,53 +104,14 @@ fun LoginLayout() {
         verticalArrangement = Arrangement.Center,
 
         ) {
-        Text(
-            text = stringResource(id = R.string.name),
-            modifier = Modifier.padding(bottom = 6.dp),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Start,
-            color = colorResource(id = R.color.darkgreen_yvy)
-        )
-        OutlinedTextField(
-
-            value = passState,
-            onValueChange = { newPass ->
-                if (newPass.isEmpty()) {
-                    isPasswordErrorEmpty = true
-                }
-
-                passState = newPass
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Unspecified,
-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(inputsFocusRequest),
-            isError = isPasswordErrorEmpty,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-        )
-
-        if (isPasswordErrorEmpty) {
-            Text(
-                text = stringResource(id = R.string.message_error_pass1),
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Red,
-                textAlign = TextAlign.End
-            )
-        }
-
-        }
-
-        Spacer(
-            modifier = Modifier.height(18.dp)
-        )
+//        Text(
+//            text = stringResource(id = R.string.name),
+//            modifier = Modifier.padding(bottom = 6.dp),
+//            fontSize = 20.sp,
+//            fontWeight = FontWeight.Medium,
+//            textAlign = TextAlign.Start,
+//            color = colorResource(id = R.color.darkgreen_yvy)
+//        )
         Text(
             text = stringResource(id = R.string.email),
             modifier = Modifier.padding(bottom = 6.dp),
@@ -180,8 +141,7 @@ fun LoginLayout() {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .focusRequester(inputsFocusRequest)
-                .padding(0.dp),
+                .focusRequester(inputsFocusRequest),
 
             trailingIcon = {
                 if (passState.length <= 0) {
@@ -218,16 +178,79 @@ fun LoginLayout() {
                 color = Color.Red,
                 textAlign = TextAlign.End
             )
-
-
         }
+        Spacer(
+            modifier = Modifier.height(18.dp)
+        )
+        Text(
+            text = stringResource(id = R.string.password),
+            modifier = Modifier.padding(bottom = 6.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Start,
+            color = colorResource(id = R.color.darkgreen_yvy)
+        )
+        OutlinedTextField(
+            value = passState,
+            onValueChange = { newPass ->
+                if (newPass.isEmpty()) {
+                    isPasswordErrorEmpty = true
+                }
+                passState = newPass
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = colorResource(id = R.color.transparentgreen_yvy),
+                focusedBorderColor = colorResource(id = R.color.transparentgreen_yvy),
+                unfocusedBorderColor = colorResource(id = R.color.transparentgreen_yvy)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(inputsFocusRequest),
+
+            trailingIcon = {
+                if (passState.length <= 0) {
+                    Icon(
+                        painter = painterResource(R.drawable.iconboxe),
+                        contentDescription = stringResource(id = R.string.icon_content_description),
+                        modifier = Modifier
+                            .width(31.dp)
+                            .height(32.dp)
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_colorful),
+                        contentDescription = stringResource(id = R.string.icon_content_description),
+                        modifier = Modifier
+                            .width(31.dp)
+                            .height(32.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+            },
+
+            isError = isPasswordErrorEmpty,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            singleLine = true,
+            shape = RoundedCornerShape(8.dp),
+
+            )
+
+        if (isPasswordErrorEmpty) {
+            Text(
+                text = stringResource(id = R.string.message_error_pass1),
+                modifier = Modifier.fillMaxWidth(),
+                color = Color.Red,
+                textAlign = TextAlign.End
+            )
+        }
+
         Spacer(
             modifier = Modifier.height(44.dp)
         )
 
         Button(
             onClick = {
-                authenticate(emailState,passState, context )
+//                authenticate(emailState,passState, context )
 
             },
             modifier = Modifier
@@ -247,17 +270,19 @@ fun LoginLayout() {
         }
 
     }
+    }
 
-fun authenticate(email: String, password: String, context: Context) {
-    //Obter instancia do firebase
-    val auth = FirebaseAuth.getInstance()
-    //Autentificação
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener{
-            Log.i("ds3m","${it.isSuccessful}" )
-            val intent =  Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
 
-        }
-}
-
+//fun authenticate(email: String, password: String, context: Context) {
+//    //Obter instancia do firebase
+//    val auth = FirebaseAuth.getInstance()
+//    //Autentificação
+//    auth.signInWithEmailAndPassword(email, password)
+//        .addOnCompleteListener{
+//            Log.i("ds3m","${it.isSuccessful}" )
+//            val intent =  Intent(context, MainActivity::class.java)
+//            context.startActivity(intent)
+//
+//        }
+//}
+//
