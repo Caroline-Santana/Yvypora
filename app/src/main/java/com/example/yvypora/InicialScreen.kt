@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.RatingBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -225,8 +227,8 @@ fun CardProducts() {
         elevation = 10.dp,
         contentColor = colorResource(id = R.color.darkgreen_yvy),
         modifier = Modifier
-            .width(120.dp)
-            .height(140.dp),
+            .width(130.dp)
+            .height(160.dp),
         border = BorderStroke(1.dp,colorResource(id = R.color.green_yvy))
 
     ) {
@@ -268,12 +270,13 @@ fun CardProducts() {
                 Icon(
                     painter = painterResource(R.drawable.shopping_cart),
                     modifier = Modifier
-                        .width(30.dp)
-                        .height(30.dp)
+                        .fillMaxWidth()
+                        .height(40.dp)
                         .drawBehind {
                             drawCircle(
                                 color = colorCircle,
-                                radius = this.size.minDimension
+                                radius = 65F,
+                                center = Offset.VisibilityThreshold
                             )
                         },
                     contentDescription = "Shopping",

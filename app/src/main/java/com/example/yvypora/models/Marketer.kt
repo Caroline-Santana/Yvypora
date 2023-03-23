@@ -1,5 +1,5 @@
 package com.example.yvypora.models
 
-data class Marketer (
-
-)
+//data class Marketer (
+//
+//)
