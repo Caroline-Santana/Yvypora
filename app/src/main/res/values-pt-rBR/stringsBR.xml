@@ -59,5 +59,8 @@
     <string name="other">Outros</string>
     <string name="isBirthErrorEmpty">Informe sua data de nascimento!</string>
     <string name="titleBirth">Data de nascimento</string>
+    <string name="all">Todos</string>
+    <string name="discount">Em desconto</string>
+    <string name="near">Perto de você</string>
 
 </resources>

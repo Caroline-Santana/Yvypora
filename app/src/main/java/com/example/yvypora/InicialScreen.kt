@@ -4,27 +4,38 @@ package com.example.yvypora
 
 
 
+import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import android.widget.RatingBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+
+import androidx.compose.foundation.shape.CircleShape
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ShoppingCart
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +45,8 @@ import com.example.yvypora.model.template
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 import kotlinx.coroutines.yield
 import kotlin.math.absoluteValue
 
@@ -45,7 +58,8 @@ class InicialScreen : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 40.dp),
+                        .padding(top = 40.dp)
+                        .background(color = Color.Unspecified),
 
                     ) {
                     Image(
@@ -88,7 +102,8 @@ fun UpsideLayout() {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxSize()
-            .padding(top = 125.dp),
+            .padding(top = 125.dp)
+            .verticalScroll(state = rememberScrollState(), enabled = true),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
@@ -102,7 +117,7 @@ fun UpsideLayout() {
             },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = colorResource(id = R.color.transparentgreen_yvy),
-                focusedIndicatorColor = colorResource(id = R.color.transparentgreen_yvy),
+                focusedIndicatorColor = colorResource(id = R.color.green_yvy),
                 unfocusedIndicatorColor = colorResource(id = R.color.transparentgreen_yvy),
                 cursorColor = colorResource(id = R.color.darkgreen_yvy)
             ),
@@ -136,43 +151,139 @@ fun UpsideLayout() {
 
 @Composable
 fun TabLayoutScreen() {
-    var selectedIndex by remember { mutableStateOf(0) }
 
-    val list = listOf("Active", "Completed")
-
-    Column(modifier = Modifier.padding(top = 560.dp)) {
-        TabRow(selectedTabIndex = selectedIndex,
-            modifier = Modifier
-                .padding(vertical = 4.dp, horizontal = 8.dp)
-                .clip(RoundedCornerShape(50))
-                .padding(1.dp),
-            backgroundColor = Color.Unspecified,
-            indicator = { tabPositions: List<TabPosition> ->
-                Box {}
-            }
-        ) {
-            list.forEachIndexed { index, text ->
-                val selected = selectedIndex == index
-                Tab(
-                    modifier = if (selected) Modifier
-                        .clip(RoundedCornerShape(50))
-
-                    else Modifier
-                        .clip(RoundedCornerShape(50)),
-                    selected = selected,
-                    onClick = { selectedIndex = index },
-                    text = { Text(text = text, color = colorResource(id = R.color.darkgreen_yvy)) }
+    val tabData = listOf(
+         stringResource(id = R.string.all),
+        stringResource(id = R.string.discount),
+        stringResource(id = R.string.near)
+    )
+    val pagerState = rememberPagerState(
+        pageCount = tabData.size,
+        initialOffscreenLimit = 2,
+        infiniteLoop = true,
+        initialPage = 1,
+    )
+    val tabIndex = pagerState.currentPage
+    val coroutineScope = rememberCoroutineScope()
+    Column (modifier = Modifier
+        .padding(top = 552.dp)){
+        TabRow(
+            selectedTabIndex = tabIndex,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                 )
+            },
+            backgroundColor =Color.Unspecified,
+            contentColor =  colorResource(id = R.color.green_yvy),
+
+        ) {
+            tabData.forEachIndexed { index, pair ->
+                Tab(
+                    selected = tabIndex == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = {
+                        Text(
+                            text = tabData[index],
+                        )
+                    },
+                    selectedContentColor = colorResource(id = R.color.green_yvy),
+                    unselectedContentColor = colorResource(id = R.color.darkgreen_yvy),
+                ) 
+            }
+        }
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.weight(1f)
+        ) { index ->
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                tabData[0]
             }
         }
     }
-
 }
+
+
 
 
 @Composable
 fun CardProducts() {
+        var titleCard = "Abobrinha"
+        var photoProduct = painterResource(id = R.drawable.abobrinha)
+        var qtdeProduct = "200g"
+        var priceProduct = "R$6,00"
+        val colorCircle = colorResource(id = R.color.darkgreen_yvy)
+    Card(
+        elevation = 10.dp,
+        contentColor = colorResource(id = R.color.darkgreen_yvy),
+        modifier = Modifier
+            .width(120.dp)
+            .height(140.dp),
+        border = BorderStroke(1.dp,colorResource(id = R.color.green_yvy))
 
+    ) {
+        Column{
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = titleCard,
+                    modifier = Modifier.padding(top = 4.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+                Image(
+                    painter = photoProduct,
+                    contentDescription = "Product",
+                    modifier = Modifier
+                        .width(97.dp)
+                        .height(70.dp),
+                )
+            }
+            Text(
+                text = qtdeProduct,
+                modifier = Modifier.padding(top = 2.dp, start = 4.dp),
+                color = colorResource(id = R.color.dark_gray),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Left,
+                fontSize = 12.sp
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = priceProduct,
+                    modifier = Modifier.padding(top = 2.dp, start = 12.dp),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Left,
+                    fontSize = 14.sp
+                )
+                Icon(
+                    painter = painterResource(R.drawable.shopping_cart),
+                    modifier = Modifier
+                        .width(30.dp)
+                        .height(30.dp)
+                        .drawBehind {
+                            drawCircle(
+                                color = colorCircle,
+                                radius = this.size.minDimension
+                            )
+                        },
+                    contentDescription = "Shopping",
+                    tint = Color.White,
+
+                )
+            }
+
+        }
+    }
 }
 @Composable
 fun Shortcuts(){
@@ -298,7 +409,7 @@ fun AutoSliding() {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .width(100.dp)
+                        .width(130.dp)
                         .align(Alignment.Center)
                 ) {
                     Image(

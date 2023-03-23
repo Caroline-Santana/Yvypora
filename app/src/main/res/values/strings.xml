@@ -59,6 +59,9 @@
     <string name="other">Others</string>
     <string name="isBirthErrorEmpty">Provide a Birth!</string>
     <string name="titleBirth">Date of Birth</string>
+    <string name="all">All</string>
+    <string name="discount">At discount</string>
+    <string name="near">Near to you</string>
 
 
 </resources>
