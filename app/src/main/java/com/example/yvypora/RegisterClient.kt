@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.yvypora.api.cep.getCep
+import com.example.yvypora.api.commons.createCostumer
 import com.example.yvypora.models.Address
 import com.example.yvypora.models.Cep
 import com.example.yvypora.models.Costumer
@@ -136,6 +137,19 @@ fun Inputs() {
     val response = remember {
         mutableStateOf("")
     }
+    var nameState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var isNameError by remember {
+        mutableStateOf(false)
+    }
+    var passwordState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var isPasswordError by remember {
+        mutableStateOf(false)
+    }
+
     val context = LocalContext.current
 
     Column(
@@ -149,7 +163,21 @@ fun Inputs() {
 
         ) {
         //Input nome
-        NameInput()
+        NameInput(nameState, isNameError, onNameChange =
+        { newName ->
+            val lastChar = if (newName.isEmpty()) {
+                isNameError = true
+                newName
+            } else {
+                newName.get(newName.length - 1)
+                isNameError = false
+            }
+            var newValue = if (lastChar == '.' || lastChar == ',')
+                newName.dropLast(1)
+            else newName
+            nameState = newValue
+
+        })
 
         //*********************************************************************
         Spacer(
@@ -157,7 +185,9 @@ fun Inputs() {
         )
 
         //Input Email
-        EmailInput()
+        EmailInput(emailState, onEmailChange = { newEmail ->
+            emailState = newEmail
+        })
 
         //*********************************************************************
         Spacer(
@@ -165,7 +195,19 @@ fun Inputs() {
         )
 
         // Input senha
-        PassInput()
+        PassInput(passwordState, isPasswordError, onPasswordChange = { newPass ->
+            val mMaxLength = 8
+            isPasswordError = if (newPass.length >= mMaxLength) {
+                true
+            } else {
+                newPass[newPass.length - 1]
+                false
+            }
+
+            if (isPasswordError) newPass.dropLast(1)
+
+            passwordState = newPass
+        })
 
         //*********************************************************************
         Spacer(
@@ -250,45 +292,42 @@ fun Inputs() {
         Spacer(
             modifier = Modifier.height(35.dp)
         )
+
+        var gender by remember { mutableStateOf("") }
         //Input Gender
-        GenderInputClient()
+        GenderInputClient(gender, onFemClick = { gender = "F" }, onManClick = { gender = "M" })
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(35.dp)
         )
 
-        //Butão de cadastro
         Button(
             onClick = {
-                var cep: Cep? = null
-
-                Log.i("teste", cepState)
-
                 getCep(cepState) {
-                    cep = it
-                }
+                    val cep = it
+                    Log.i("teste", cep.toString())
 
-                Log.i("teste", cep.toString())
-
-                if (cep != null) {
                     val costumer = Costumer(
-                        name = clientName.text,
+                        name = nameState,
                         email = emailState,
-                        password = passState,
+                        password = passwordState,
                         address = Address(
-                            cep = cep!!.cep,
+                            cep = cep.cep,
                             addressTypeId = 1,
-                            city = cep!!.localidade,
-                            uf = cep!!.uf,
+                            city = cep.localidade,
+                            uf = cep.uf,
                             complemento = "",
-                            logradouro = cep!!.logradouro,
-                            neighborhood = cep!!.bairro,
+                            logradouro = cep.logradouro,
+                            neighborhood = cep.bairro,
                         ),
                         cpf = cpfState,
-                        birthday = birthState
+                        birthday = formatBirthday(birthState),
+                        gender = gender[0]
                     )
-                    Log.i("teste", costumer.toString())
-
+                    // send to create the costumer without a picture
+                    createCostumer(costumer) { _costumer ->
+                        Log.i("teste", _costumer.toString())
+                    }
                 }
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
@@ -313,16 +352,8 @@ fun Inputs() {
 }
 
 @Composable
-fun NameInput() {
-    var nameState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isNameError by remember {
-        mutableStateOf(false)
-    }
+fun NameInput(nameState: String, isNameError: Boolean, onNameChange: (String) -> Unit) {
     val inputsFocusRequest = FocusRequester()
-
-
 
     Text(
         text = stringResource(id = R.string.name),
@@ -333,21 +364,7 @@ fun NameInput() {
     )
     TextField(
         value = nameState,
-        onValueChange = { newName ->
-            var lastChar = if (newName.isEmpty()) {
-                isNameError = true
-                newName
-
-            } else {
-                newName.get(newName.length - 1)
-                isNameError = false
-
-            }
-            var newValue = if (lastChar == '.' || lastChar == ',')
-                newName.dropLast(1)
-            else newName
-            nameState = newValue
-        },
+        onValueChange = onNameChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -377,14 +394,9 @@ fun NameInput() {
 }
 
 @Composable
-fun EmailInput() {
-    var emailState by rememberSaveable {
-        mutableStateOf("")
-    }
+fun EmailInput(emailState: String, onEmailChange: (String) -> Unit) {
 
     val inputsFocusRequest = FocusRequester()
-
-
 
     Text(
         text = stringResource(id = R.string.email),
@@ -394,10 +406,7 @@ fun EmailInput() {
     )
     TextField(
         value = emailState,
-        onValueChange = { newEmail ->
-
-            emailState = newEmail
-        },
+        onValueChange = onEmailChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -415,16 +424,11 @@ fun EmailInput() {
 
 }
 
-@Composable
-fun PassInput() {
-    var passwordState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isPasswordError by remember {
-        mutableStateOf(false)
-    }
 
-    val mMaxLength = 8
+@Composable
+fun PassInput(passwordState: String, isPasswordError: Boolean, onPasswordChange: (String) -> Unit) {
+
+
     val inputsFocusRequest = FocusRequester()
 
 
@@ -436,18 +440,7 @@ fun PassInput() {
     )
     TextField(
         value = passwordState,
-        onValueChange = { newPass ->
-            if (newPass.length >= mMaxLength) {
-                isPasswordError = true
-            } else {
-                newPass.get(newPass.length - 1)
-                isPasswordError = false
-            }
-
-            if (isPasswordError) newPass.dropLast(1)
-
-            passwordState = newPass
-        },
+        onValueChange = onPasswordChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -681,35 +674,42 @@ fun BirthClient(
 }
 
 @Composable
-fun GenderInputClient() {
-
-    var selected by remember { mutableStateOf("") }
+fun GenderInputClient(selected: String, onFemClick: () -> Unit, onManClick: () -> Unit) {
     Row {
         RadioButton(
-            selected = selected == "woman",
-            onClick = { selected = "woman" },
+            selected = selected == "F",
+            onClick = onFemClick,
             colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))
         )
         Text(
             text = stringResource(id = R.string.gender_f),
             modifier = Modifier
-                .clickable(onClick = { selected = "woman" })
+                .clickable(onClick = onFemClick)
                 .padding(top = 12.dp, start = 4.dp)
         )
         Spacer(modifier = Modifier.size(60.dp))
 
         RadioButton(
-            selected = selected == "man",
-            onClick = { selected = "man" },
+            selected = selected == "M",
+            onClick = onManClick,
             colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))
         )
         Text(
             text = stringResource(id = R.string.gender_m),
             modifier = Modifier
-                .clickable(onClick = { selected = "man" })
+                .clickable(onClick = onManClick)
                 .padding(top = 15.dp)
         )
     }
+}
+
+
+fun formatBirthday(birthday: String): String {
+    val year = birthday.takeLast(4)
+    val month = (birthday[2].toString() + birthday[3].toString()).toString()
+    val day = (birthday[0].toString() + birthday[1].toString()).toString()
+
+    return "$year-$month-$day"
 }
 
 

@@ -260,12 +260,16 @@ fun LoginLayout() {
                 val credentials = Credentials(emailState, passState)
 
                 auth(credentials) {
-                    token = it.token
+                    if (it.token.isNotEmpty()) {
+                        // OPEN NEXT Activity
+                        Toast.makeText(context, token, Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        Toast.makeText(context, "Nao foi possivel fazer Login!", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
-                if (token.length > 0) {
-                    // OPEN NEXT Activity
-                }
+
             },
             modifier = Modifier
                 .width(257.dp)

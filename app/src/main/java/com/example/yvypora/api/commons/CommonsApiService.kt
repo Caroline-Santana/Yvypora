@@ -13,5 +13,9 @@ interface CommonsApiService {
     fun auth(@Body credentials: Credentials): Call<Token>
 
     @POST("register/costumer")
-    fun createCostumer(costumer: Costumer): Call<RegisterCostumerResponse>
+    fun createCostumer(@Body costumer: Costumer): Call<Any>
+
+
+    @POST("register/marketer")
+    fun createMarketer(@Body marketer: Marketer): Call<Any>
 }

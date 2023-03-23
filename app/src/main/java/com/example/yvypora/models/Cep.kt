@@ -8,6 +8,6 @@ data class Cep(
     var logradouro: String,
     var complemento: String,
     var bairro: String,
-    @SerializedName("cidade") var localidade: String,
-    @SerializedName("estado") var uf: String,
+    var localidade: String,
+    var uf: String,
 )
