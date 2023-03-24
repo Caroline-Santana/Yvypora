@@ -1,9 +1,6 @@
 package com.example.yvypora.api.commons
 
-import com.example.yvypora.models.Costumer
-import com.example.yvypora.models.Credentials
-import com.example.yvypora.models.RegisterCostumerResponse
-import com.example.yvypora.models.Token
+import com.example.yvypora.models.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -16,6 +13,6 @@ interface CommonsApiService {
     fun createCostumer(@Body costumer: Costumer): Call<Any>
 
 
-    @POST("register/marketer")
-    fun createMarketer(@Body marketer: Marketer): Call<Any>
+//    @POST("register/marketer")
+//    fun createMarketer(@Body marketer: Marketer): Call<Any>
 }
