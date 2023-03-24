@@ -3,40 +3,38 @@
 package com.example.yvypora
 
 
-
-import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
+import android.util.Log
 import android.widget.RatingBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.items
 
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ShoppingCart
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,11 +42,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.yvypora.model.template
+import com.example.yvypora.models.Product
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
 import kotlinx.coroutines.yield
 import kotlin.math.absoluteValue
 
@@ -57,46 +55,47 @@ class InicialScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 40.dp)
-                        .background(color = Color.Unspecified),
-
-                    ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.logo_no_name),
-                        modifier = Modifier
-                            .height(58.dp)
-                            .width(55.dp)
-                            .padding(horizontal = 28.dp),
-                        alignment = Alignment.BottomStart,
-                        contentDescription = "logo",
-
-                        )
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_user),
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(55.dp)
-                            .padding(top = 5.dp, end = 15.dp),
-                        alignment = Alignment.BottomEnd,
-                        contentDescription = "logo",
-
-                        )
-                }
-                UpsideLayout()
+                HomeScreen()
             }
 
         }
     }
+}
 
+@Composable
+fun Header() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(55.dp)
+            .padding(top = 40.dp, start = 15.dp, end = 15.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo_no_name),
+            modifier = Modifier
+                .height(58.dp)
+                .width(55.dp),
+            alignment = Alignment.BottomStart,
+            contentDescription = "logo",
 
+            )
+        Image(
+            painter = painterResource(id = R.drawable.icon_user),
+            modifier = Modifier
+                .height(50.dp)
+                .width(55.dp),
+
+            contentDescription = "logo",
+
+            )
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UpsideLayout() {
+    val offset = remember { mutableStateOf(0f) }
     var searchState by remember {
         mutableStateOf("")
     }
@@ -105,11 +104,13 @@ fun UpsideLayout() {
             .fillMaxWidth()
             .fillMaxSize()
             .padding(top = 125.dp)
-            .verticalScroll(state = rememberScrollState(), enabled = true),
+            .scrollable(state = rememberScrollableState() { delta ->
+                offset.value = offset.value + delta
+                delta // indicate that we consumed all the pixels available
+            }, orientation = Orientation.Vertical),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        OutlinedTextField(
-            value = searchState,
+        OutlinedTextField(value = searchState,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(45.dp)
@@ -134,28 +135,67 @@ fun UpsideLayout() {
                         .padding(end = 10.dp),
                     tint = Color.White
                 )
-            }
-        )
+            })
         Spacer(
             modifier = Modifier.height(15.dp)
         )
         // Função dos atalhos para outras telas
-             Shortcuts()
+        Shortcuts()
 
     }
 
-        AutoSliding()
-        TabLayoutScreen()
-        CardProducts()
+    AutoSliding()
+    TabLayoutScreen()
 
 
+}
+
+@Composable
+fun HomeScreen() {
+    Scaffold(
+        content = {
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.Unspecified),
+            ) {
+                    Log.i("teste", it.toString())
+                Header()
+                UpsideLayout()
+            }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /* ... */ },
+                backgroundColor = colorResource(id = R.color.green_yvy)
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.shopping_cart),
+                    modifier = Modifier.width(42.dp).height(42.dp).padding(start = 6.dp),
+                    contentDescription = "icon"
+                )
+            }
+        }, floatingActionButtonPosition = FabPosition.Center,
+        isFloatingActionButtonDocked = true,
+        bottomBar = {
+            BottomAppBar(
+                cutoutShape = MaterialTheme.shapes.small.copy(
+                    CornerSize(percent = 50)
+                )
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.home),
+                    modifier = Modifier.width(42.dp).height(42.dp).padding(start = 6.dp),
+                    contentDescription = "icon"
+                )
+            }
+        })
 }
 
 @Composable
 fun TabLayoutScreen() {
 
     val tabData = listOf(
-         stringResource(id = R.string.all),
+        stringResource(id = R.string.all),
         stringResource(id = R.string.discount),
         stringResource(id = R.string.near)
     )
@@ -167,8 +207,9 @@ fun TabLayoutScreen() {
     )
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
-    Column (modifier = Modifier
-        .padding(top = 552.dp)){
+    Column(
+        modifier = Modifier.padding(top = 552.dp)
+    ) {
         TabRow(
             selectedTabIndex = tabIndex,
             indicator = { tabPositions ->
@@ -176,10 +217,10 @@ fun TabLayoutScreen() {
                     Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                 )
             },
-            backgroundColor =Color.Unspecified,
-            contentColor =  colorResource(id = R.color.green_yvy),
+            backgroundColor = Color.Unspecified,
+            contentColor = colorResource(id = R.color.green_yvy),
 
-        ) {
+            ) {
             tabData.forEachIndexed { index, pair ->
                 Tab(
                     selected = tabIndex == index,
@@ -195,51 +236,103 @@ fun TabLayoutScreen() {
                     },
                     selectedContentColor = colorResource(id = R.color.green_yvy),
                     unselectedContentColor = colorResource(id = R.color.darkgreen_yvy),
-                ) 
+                )
             }
         }
         HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.weight(1f)
+            state = pagerState, modifier = Modifier.weight(1f)
         ) { index ->
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                tabData[0]
+                when (tabIndex) {
+                    0 -> ListOfProducts(products = list)
+                    1 -> ListOfProducts(products = list)
+                    2 -> ListOfProducts(products = list)
+                }
             }
         }
     }
 }
 
 
+// MOCKEAD
+// TODO PEGAR A LISTA
 
+val list = listOf<Product>(
+    Product(
+        name = "Abobrinha",
+        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
+        price = 6.00F,
+        qtdeProduct = 200
+    ), Product(
+        name = "Abobrinha",
+        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
+        price = 6.00F,
+        qtdeProduct = 200
+    ), Product(
+        name = "Abobrinha",
+        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
+        price = 6.00F,
+        qtdeProduct = 200
+    ), Product(
+        name = "Abobrinha",
+        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
+        price = 6.00F,
+        qtdeProduct = 200
+    ), Product(
+        name = "Abobrinha",
+        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
+        price = 6.00F,
+        qtdeProduct = 200
+    )
+)
 
 @Composable
-fun CardProducts() {
-        var titleCard = "Abobrinha"
-        var photoProduct = painterResource(id = R.drawable.abobrinha)
-        var qtdeProduct = "200g"
-        var priceProduct = "R$6,00"
-        val colorCircle = colorResource(id = R.color.darkgreen_yvy)
+fun ListOfProducts(products: List<Product>) {
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
+        contentPadding = PaddingValues(0.dp),
+    ) {
+        items(products) { product -> CardProducts(product) }
+    }
+}
+
+
+// TODO COMPONENETE DE LISTA --> CARD PRODUCTS
+@Composable
+fun CardProducts(data: Product) {
+    var titleCard = data.name
+    var photoProduct = painterResource(id = R.drawable.abobrinha)
+    var qtdeProduct = data.qtdeProduct.toString() + "g"
+    var priceProduct = "R$" + data.price.toString()
     Card(
         elevation = 10.dp,
         contentColor = colorResource(id = R.color.darkgreen_yvy),
         modifier = Modifier
             .width(130.dp)
-            .height(160.dp),
-        border = BorderStroke(1.dp,colorResource(id = R.color.green_yvy))
+            .height(140.dp),
+        border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
 
     ) {
-        Column{
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = titleCard,
                     modifier = Modifier.padding(top = 4.dp),
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
                 )
+                // MODIFICAR PARA USAR URL
                 Image(
                     painter = photoProduct,
                     contentDescription = "Product",
@@ -248,48 +341,56 @@ fun CardProducts() {
                         .height(70.dp),
                 )
             }
-            Text(
-                text = qtdeProduct,
-                modifier = Modifier.padding(top = 2.dp, start = 4.dp),
-                color = colorResource(id = R.color.dark_gray),
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Left,
-                fontSize = 12.sp
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.Center
-            ) {
+            Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = priceProduct,
-                    modifier = Modifier.padding(top = 2.dp, start = 12.dp),
+                    text = qtdeProduct,
+                    modifier = Modifier.padding(top = 2.dp, start = 4.dp),
+                    color = colorResource(id = R.color.dark_gray),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left,
-                    fontSize = 14.sp
+                    fontSize = 12.sp
                 )
-                Icon(
-                    painter = painterResource(R.drawable.shopping_cart),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                        .drawBehind {
-                            drawCircle(
-                                color = colorCircle,
-                                radius = 65F,
-                                center = Offset.VisibilityThreshold
-                            )
-                        },
-                    contentDescription = "Shopping",
-                    tint = Color.White,
 
-                )
+                Row(
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = priceProduct,
+                        modifier = Modifier.padding(top = 20.dp, start = 12.dp, end = 15.dp),
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Left,
+                        fontSize = 14.sp
+                    )
+                    OutlinedButton(
+                        onClick = { },
+                        modifier = Modifier.size(40.dp),
+                        shape = CircleShape,
+                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            backgroundColor = colorResource(
+                                id = R.color.darkgreen_yvy
+                            )
+                        )
+                    ) {
+                        // Adding an Icon "Add" inside the Button
+                        Icon(
+                            painter = painterResource(id = R.drawable.shopping_cart),
+                            contentDescription = "content description",
+                            tint = Color.White
+                        )
+                    }
+
+
+                }
             }
 
         }
     }
 }
+
 @Composable
-fun Shortcuts(){
+fun Shortcuts() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -332,8 +433,7 @@ fun Shortcuts(){
             .fillMaxWidth()
             .padding(start = 25.dp, end = 25.dp),
         horizontalArrangement = Arrangement.SpaceBetween
-    )
-    {
+    ) {
         Text(
             text = stringResource(id = R.string.fruits),
             modifier = Modifier
@@ -368,6 +468,7 @@ fun Shortcuts(){
         )
     }
 }
+
 @ExperimentalPagerApi
 @Composable
 fun AutoSliding() {
@@ -386,17 +487,13 @@ fun AutoSliding() {
 
     Column(modifier = Modifier.padding(top = 60.dp)) {
         HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .weight(1f)
+            state = pagerState, modifier = Modifier.weight(1f)
         ) { page ->
             Card(modifier = Modifier
                 .graphicsLayer {
                     val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
                     lerp(
-                        start = 0.85f,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     ).also { scale ->
                         scaleX = scale
                         scaleY = scale
@@ -406,8 +503,7 @@ fun AutoSliding() {
                 .fillMaxWidth()
                 .height(195.dp)
                 .padding(15.dp, 0.dp, 15.dp, 0.dp),
-                shape = RoundedCornerShape(20.dp)
-            ) {
+                shape = RoundedCornerShape(20.dp)) {
                 val template = template[page]
                 Box(
                     modifier = Modifier
@@ -425,7 +521,8 @@ fun AutoSliding() {
                                 5 -> R.drawable.ofertas
                                 else -> R.drawable.logo
                             }
-                        ), contentDescription = "Image",
+                        ),
+                        contentDescription = "Image",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -444,16 +541,14 @@ fun AutoSliding() {
                         }
                         AndroidView(
                             factory = { ratingBar },
-                            modifier = Modifier
-                                .padding(0.dp, 8.dp, 0.dp, 0.dp)
+                            modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 0.dp)
                         )
                     }
                 }
             }
             HorizontalPagerIndicator(
                 pagerState = pagerState,
-                modifier = Modifier
-                    .padding(top = 235.dp),
+                modifier = Modifier.padding(top = 235.dp),
                 activeColor = colorResource(id = R.color.darkgreen_yvy),
                 inactiveColor = colorResource(id = R.color.transparentgreen_yvy)
             )
