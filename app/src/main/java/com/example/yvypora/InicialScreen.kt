@@ -14,17 +14,12 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.items
-
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
-
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,10 +36,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.yvypora.model.template
 import com.example.yvypora.models.Product
+import com.example.yvypora.navbar.ItemsMenu
+import com.example.yvypora.navbar.NavigationHost
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
@@ -152,44 +153,70 @@ fun UpsideLayout() {
 
 @Composable
 fun HomeScreen() {
+   val navController = rememberNavController()
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+    val navigation_item = listOf(
+        ItemsMenu.Pantalla1,
+        ItemsMenu.Pantalla2,
+        ItemsMenu.Pantalla3,
+        ItemsMenu.Pantalla4,
+    )
+    
     Scaffold(
-        content = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.Unspecified),
-            ) {
-                    Log.i("teste", it.toString())
-                Header()
-                UpsideLayout()
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { /* ... */ },
-                backgroundColor = colorResource(id = R.color.green_yvy)
-            ) {
-                Icon(
-                    painterResource(id = R.drawable.shopping_cart),
-                    modifier = Modifier.width(42.dp).height(42.dp).padding(start = 6.dp),
-                    contentDescription = "icon"
-                )
-            }
-        }, floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true,
-        bottomBar = {
-            BottomAppBar(
-                cutoutShape = MaterialTheme.shapes.small.copy(
-                    CornerSize(percent = 50)
-                )
-            ) {
-                Icon(
-                    painterResource(id = R.drawable.home),
-                    modifier = Modifier.width(42.dp).height(42.dp).padding(start = 6.dp),
-                    contentDescription = "icon"
-                )
-            }
-        })
+        scaffoldState = scaffoldState,
+        bottomBar = { NavegationInferior(navController,navigation_item)},
+        floatingActionButton = {Fab(scope,scaffoldState)}
+    )
+
+    {
+        it.toString()
+        NavigationHost(navController)
+    }
 }
+
+@Composable
+fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
+            FloatingActionButton(
+                onClick = {
+                    scope.launch { scaffoldState.snackbarHostState
+                        .showSnackbar("blbla",
+                            actionLabel = "bsljdjsskd",
+                            duration = SnackbarDuration.Indefinite) }
+            },
+            backgroundColor = colorResource(id = R.color.green_yvy)
+
+                ) {
+                    Icon(painter = painterResource(id = R.drawable.shopping_cart) , contentDescription = "shopping" )
+            }
+}
+
+@Composable
+fun currentRoute(navController: NavHostController): String?{
+    val entrada by navController.currentBackStackEntryAsState()
+    return entrada?.destination?.route
+}
+
+@Composable
+fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsMenu>) 
+{
+    BottomAppBar() {
+        BottomNavigation()
+        {
+            val currentRoute = currentRoute(navController = navController)
+            menu_items.forEach{ item ->
+                BottomNavigationItem(
+                    selected = currentRoute == item.rota,
+                    onClick = { navController.navigate(item.rota) },
+                    icon = {
+                        Icon(painter = painterResource(id = item.icon), contentDescription = "")
+                    },
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun TabLayoutScreen() {
