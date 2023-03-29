@@ -18,7 +18,7 @@ fun NavigationHost(navController: NavHostController){
        composable(ItemsMenu.Pantalla2.rota){
            Live()
        }
-       composable(ItemsMenu.Pantalla4.rota){
+       composable(ItemsMenu.Pantalla3.rota){
            Fair()
        }
        composable(ItemsMenu.Pantalla4.rota){

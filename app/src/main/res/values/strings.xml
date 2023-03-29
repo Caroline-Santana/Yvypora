@@ -62,6 +62,10 @@
     <string name="all">All</string>
     <string name="discount">At discount</string>
     <string name="near">Near to you</string>
+    <string name="home">Icon home</string>
+    <string name="profile">Icon profile</string>
+    <string name="fair">Icon fair</string>
+    <string name="live">Icon live</string>
 
 
 </resources>

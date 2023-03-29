@@ -62,5 +62,9 @@
     <string name="all">Todos</string>
     <string name="discount">Em desconto</string>
     <string name="near">Perto de você</string>
+    <string name="home">Icone home</string>
+    <string name="profile">Icone perfil</string>
+    <string name="fair">Icone feira</string>
+    <string name="live">Icone live</string>
 
 </resources>

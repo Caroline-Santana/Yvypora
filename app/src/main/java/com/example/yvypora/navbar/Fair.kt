@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 fun Fair(){
     Column() {
         Text(
-            text = "HOME",
+            text = "Fair",
             style = MaterialTheme.typography.h1
         )
     }

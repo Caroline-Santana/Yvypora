@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 fun Profile(){
     Column() {
         Text(
-            text = "HOME",
+            text = "Profile",
             style = MaterialTheme.typography.h1
         )
     }

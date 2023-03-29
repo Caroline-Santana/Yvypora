@@ -14,6 +14,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -68,14 +69,14 @@ fun Header() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(55.dp)
-            .padding(top = 40.dp, start = 15.dp, end = 15.dp),
+            .height(90.dp)
+            .padding(top = 35.dp, start = 15.dp, end = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_no_name),
             modifier = Modifier
-                .height(58.dp)
+                .height(55.dp)
                 .width(55.dp),
             alignment = Alignment.BottomStart,
             contentDescription = "logo",
@@ -100,6 +101,7 @@ fun UpsideLayout() {
     var searchState by remember {
         mutableStateOf("")
     }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -162,11 +164,13 @@ fun HomeScreen() {
         ItemsMenu.Pantalla3,
         ItemsMenu.Pantalla4,
     )
-    
+
     Scaffold(
         scaffoldState = scaffoldState,
         bottomBar = { NavegationInferior(navController,navigation_item)},
-        floatingActionButton = {Fab(scope,scaffoldState)}
+        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButton = {Fab(scope,scaffoldState)},
+        isFloatingActionButtonDocked = true
     )
 
     {
@@ -187,7 +191,14 @@ fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
             backgroundColor = colorResource(id = R.color.green_yvy)
 
                 ) {
-                    Icon(painter = painterResource(id = R.drawable.shopping_cart) , contentDescription = "shopping" )
+                    Icon(
+                        painter = painterResource(id = R.drawable.shopping_cart),
+                        contentDescription = "shopping",
+                        modifier = Modifier
+                            .height(44.dp)
+                            .width(44.dp)
+                            .padding(start = 5.dp)
+                    )
             }
 }
 
@@ -198,20 +209,50 @@ fun currentRoute(navController: NavHostController): String?{
 }
 
 @Composable
-fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsMenu>) 
-{
-    BottomAppBar() {
-        BottomNavigation()
+fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsMenu>) {
+    BottomAppBar(
+        cutoutShape = MaterialTheme.shapes.medium.copy(
+            CornerSize(percent = 50)
+        ),
+//        contentPadding = PaddingValues(15.dp)
+    ) {
+        BottomNavigation(modifier = Modifier.fillMaxSize())
         {
             val currentRoute = currentRoute(navController = navController)
-            menu_items.forEach{ item ->
-                BottomNavigationItem(
-                    selected = currentRoute == item.rota,
-                    onClick = { navController.navigate(item.rota) },
-                    icon = {
-                        Icon(painter = painterResource(id = item.icon), contentDescription = "")
-                    },
-                )
+            menu_items.forEachIndexed(){ index, item ->
+                if (index == 2) {
+                    BottomNavigationItem(
+                        selected = currentRoute == item.rota,
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(50.dp),
+                        onClick = { navController.navigate(item.rota) },
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = item.icon),
+                                contentDescription = item.title
+                            )
+                        },
+                    )
+                } else {
+                    BottomNavigationItem(
+                        selected = currentRoute == item.rota,
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(50.dp),
+                        onClick = { navController.navigate(item.rota) },
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = item.icon),
+                                contentDescription = item.title
+                            )
+                        },
+                    )
+                }
+
+
+
+
             }
         }
     }
@@ -344,8 +385,9 @@ fun CardProducts(data: Product) {
         contentColor = colorResource(id = R.color.darkgreen_yvy),
         modifier = Modifier
             .width(130.dp)
-            .height(140.dp),
-        border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
+            .height(140.dp)
+            .padding(3.dp),
+        border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))
 
     ) {
         Column {
