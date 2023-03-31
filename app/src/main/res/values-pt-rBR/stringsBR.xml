@@ -55,7 +55,7 @@
     <string name="lupa">Lupa</string>
     <string name="fruits">Frutas</string>
     <string name="vegetable">Vegetais</string>
-    <string name="spices">Especiarias</string>
+    <string name="spices">Temperos</string>
     <string name="other">Outros</string>
     <string name="isBirthErrorEmpty">Informe sua data de nascimento!</string>
     <string name="titleBirth">Data de nascimento</string>
@@ -66,5 +66,10 @@
     <string name="profile">Icone perfil</string>
     <string name="fair">Icone feira</string>
     <string name="live">Icone live</string>
+    <string name="title_activity_screen_search">ScreenSearch</string>
+    <string name="back_screen">Atalho para mudar de tela</string>
+    <string name="latest_search">Últimas pesquisas</string>
+    <string name="delete_search">Deletar uma pesquisa</string>
+
 
 </resources>

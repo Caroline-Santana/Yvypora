@@ -11,5 +11,6 @@
     <color name="darkgreen_yvy">#143601</color>
     <color name="transparentgreen_yvy">#98BB7A</color>
     <color name="dark_gray">#7D7D7D</color>
+    <color name="light_gray">#F0EFEF</color>
 
 </resources>

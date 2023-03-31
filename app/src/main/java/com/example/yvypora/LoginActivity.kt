@@ -99,9 +99,9 @@ fun LoginLayout() {
     //Objeto que controla a requisição de foco
     val inputsFocusRequest = FocusRequester()
     val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
-    fun isEmailValid(email: String): Boolean {
-        return EMAIL_REGEX.toRegex().matches(email);
-    }
+//    fun isEmailValid(email: String): Boolean {
+//        return EMAIL_REGEX.toRegex().matches(email);
+//    }
     Column(
         modifier =
         Modifier
@@ -132,8 +132,8 @@ fun LoginLayout() {
             onValueChange = { newEmail ->
                 if (newEmail.isEmpty()) {
                     isEmailError = true
-                } else if (isEmailValid(newEmail) == false) {
-                    isEmailError = true
+//                } else if (isEmailValid(newEmail) == false) {
+//                    isEmailError = true
                 } else {
                     newEmail.get(newEmail.length - 1)
                     isEmailError = false
@@ -236,7 +236,7 @@ fun LoginLayout() {
             },
 
             isError = isPasswordErrorEmpty,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             singleLine = true,
             shape = RoundedCornerShape(8.dp),
 
@@ -262,6 +262,8 @@ fun LoginLayout() {
                 auth(credentials) {
                     if (it.token.isNotEmpty()) {
                         // OPEN NEXT Activity
+//                        val intent = Intent(context, InicialScreen()::class.java)
+//                        context.startActivity(intent)
                         Toast.makeText(context, token, Toast.LENGTH_SHORT).show()
                     }
                     else {

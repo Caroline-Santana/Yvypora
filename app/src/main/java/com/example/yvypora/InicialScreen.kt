@@ -3,6 +3,7 @@
 package com.example.yvypora
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
@@ -13,26 +14,34 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import kotlinx.coroutines.flow.collect
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
@@ -94,38 +103,67 @@ fun Header() {
     }
 }
 
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UpsideLayout() {
     val offset = remember { mutableStateOf(0f) }
-    var searchState by remember {
-        mutableStateOf("")
-    }
+    val textState = remember { mutableStateOf(TextFieldValue()) }
+    val context = LocalContext.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxSize()
-            .padding(top = 125.dp)
-            .scrollable(state = rememberScrollableState() { delta ->
-                offset.value = offset.value + delta
-                delta // indicate that we consumed all the pixels available
-            }, orientation = Orientation.Vertical),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        OutlinedTextField(value = searchState,
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxSize()
+                .padding(top = 125.dp)
+                .scrollable(state = rememberScrollableState() { delta ->
+                    offset.value = offset.value + delta
+                    delta // indicate that we consumed all the pixels available
+                }, orientation = Orientation.Vertical),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CompositionLocalProvider(
+                LocalTextInputService provides null
+            ){
+                ReadonlyTextField(
+                    value = textState.value,
+                    onValueChange = { textState.value = it },
+                    modifier = Modifier,
+                    onClick = {
+                        val intent = Intent(context, ScreenSearch()::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+
+            }
+
+            Spacer(
+                modifier = Modifier.height(15.dp)
+            )
+            // Função dos atalhos para outras telas
+            Shortcuts()
+            AutoSliding()
+            TabLayoutScreen()
+        }
+}
+
+@Composable
+fun ReadonlyTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit, modifier: Modifier = Modifier, onClick: () -> Unit)
+{
+
+    Box {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(45.dp)
                 .padding(start = 25.dp, end = 25.dp),
-            onValueChange = {
-                searchState = it
-            },
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = colorResource(id = R.color.transparentgreen_yvy),
+                backgroundColor = colorResource(id = R.color.green_yvy),
                 focusedIndicatorColor = colorResource(id = R.color.green_yvy),
-                unfocusedIndicatorColor = colorResource(id = R.color.transparentgreen_yvy),
-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
+                unfocusedIndicatorColor = colorResource(id = R.color.green_yvy),
+                cursorColor = colorResource(id = R.color.green_yvy)
             ),
             shape = RoundedCornerShape(20.dp),
             trailingIcon = {
@@ -138,20 +176,18 @@ fun UpsideLayout() {
                         .padding(end = 10.dp),
                     tint = Color.White
                 )
-            })
-        Spacer(
-            modifier = Modifier.height(15.dp)
+            }
         )
-        // Função dos atalhos para outras telas
-        Shortcuts()
 
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .alpha(0f)
+                .clickable(onClick = onClick),
+        )
     }
-
-    AutoSliding()
-    TabLayoutScreen()
-
-
 }
+
 
 @Composable
 fun HomeScreen() {
@@ -164,19 +200,39 @@ fun HomeScreen() {
         ItemsMenu.Pantalla3,
         ItemsMenu.Pantalla4,
     )
-
     Scaffold(
         scaffoldState = scaffoldState,
-        bottomBar = { NavegationInferior(navController,navigation_item)},
+        bottomBar = {
+            NavegationInferior(navController,navigation_item)
+            Modifier
+                .padding(bottom = 40.dp)
+                .height(56.dp)
+        },
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {Fab(scope,scaffoldState)},
         isFloatingActionButtonDocked = true
     )
 
-    {
-        it.toString()
-        NavigationHost(navController)
+    { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)){
+            NavigationHost(navController)
+        }
     }
+//
+//    Scaffold(
+//        scaffoldState = scaffoldState,
+//        bottomBar = { NavegationInferior(navController,navigation_item)},
+//        floatingActionButtonPosition = FabPosition.Center,
+//        floatingActionButton = {Fab(scope,scaffoldState)},
+//        isFloatingActionButtonDocked = true
+//    )
+//
+//    { innerPadding ->
+//        Box(modifier = Modifier.padding(innerPadding)){
+//            NavigationHost(navController)
+//        }
+//
+//    }
 }
 
 @Composable
@@ -189,7 +245,6 @@ fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
                             duration = SnackbarDuration.Indefinite) }
             },
             backgroundColor = colorResource(id = R.color.green_yvy)
-
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.shopping_cart),
@@ -220,12 +275,15 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
         {
             val currentRoute = currentRoute(navController = navController)
             menu_items.forEachIndexed(){ index, item ->
-                if (index == 2) {
+                if (index == 1) {
                     BottomNavigationItem(
                         selected = currentRoute == item.rota,
                         modifier = Modifier
                             .height(50.dp)
-                            .width(50.dp),
+                            .width(50.dp)
+                            .weight(2f)
+                            .padding(end = 75.dp)
+                           ,
                         onClick = { navController.navigate(item.rota) },
                         icon = {
                             Icon(
@@ -249,10 +307,6 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
                         },
                     )
                 }
-
-
-
-
             }
         }
     }
@@ -275,9 +329,7 @@ fun TabLayoutScreen() {
     )
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
-    Column(
-        modifier = Modifier.padding(top = 552.dp)
-    ) {
+    Column() {
         TabRow(
             selectedTabIndex = tabIndex,
             indicator = { tabPositions ->
@@ -463,7 +515,7 @@ fun Shortcuts() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 25.dp, end = 25.dp),
+            .padding(start = 23.dp, end = 25.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Image(
@@ -506,33 +558,30 @@ fun Shortcuts() {
         Text(
             text = stringResource(id = R.string.fruits),
             modifier = Modifier
-                .height(80.dp)
                 .width(70.dp),
-            fontSize = 16.sp,
+            fontSize = 15.sp,
             textAlign = TextAlign.Center
         )
         Text(
             text = stringResource(id = R.string.vegetable),
             modifier = Modifier
-                .height(80.dp)
                 .width(70.dp),
-            fontSize = 16.sp,
+            fontSize = 15.sp,
             textAlign = TextAlign.Center
         )
         Text(
             text = stringResource(id = R.string.spices),
             modifier = Modifier
-                .height(80.dp)
                 .width(70.dp),
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             textAlign = TextAlign.Center
         )
         Text(
             text = stringResource(id = R.string.other),
             modifier = Modifier
-                .height(80.dp)
+
                 .width(70.dp),
-            fontSize = 16.sp,
+            fontSize = 15.sp,
             textAlign = TextAlign.Center
         )
     }
@@ -554,9 +603,12 @@ fun AutoSliding() {
         }
     }
 
-    Column(modifier = Modifier.padding(top = 60.dp)) {
+    Column(
+        verticalArrangement = Arrangement.Top
+    ) {
         HorizontalPager(
-            state = pagerState, modifier = Modifier.weight(1f)
+            state = pagerState,
+//            modifier = Modifier.weight(1f)
         ) { page ->
             Card(modifier = Modifier
                 .graphicsLayer {
@@ -626,6 +678,10 @@ fun AutoSliding() {
 }
 
 
-
+@Preview
+@Composable
+fun UpsidePriview() {
+    UpsideLayout()
+}
 
 

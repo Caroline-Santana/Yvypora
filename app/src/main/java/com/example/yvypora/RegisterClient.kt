@@ -711,7 +711,11 @@ fun formatBirthday(birthday: String): String {
 
     return "$year-$month-$day"
 }
-
+@Preview
+@Composable
+fun InputsPriview() {
+    Inputs()
+}
 
 
 

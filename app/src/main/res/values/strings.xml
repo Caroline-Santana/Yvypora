@@ -66,6 +66,10 @@
     <string name="profile">Icon profile</string>
     <string name="fair">Icon fair</string>
     <string name="live">Icon live</string>
+    <string name="title_activity_screen_search">ScreenSearch</string>
+    <string name="back_screen">Shortcut to switch screen</string>
+    <string name="latest_search">Latest Searches</string>
+    <string name="delete_search">Delete a survey</string>
 
 
 </resources>
