@@ -103,8 +103,6 @@ fun Header() {
     }
 }
 
-
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UpsideLayout() {
     val offset = remember { mutableStateOf(0f) }
@@ -188,7 +186,6 @@ fun ReadonlyTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> 
     }
 }
 
-
 @Composable
 fun HomeScreen() {
    val navController = rememberNavController()
@@ -218,21 +215,6 @@ fun HomeScreen() {
             NavigationHost(navController)
         }
     }
-//
-//    Scaffold(
-//        scaffoldState = scaffoldState,
-//        bottomBar = { NavegationInferior(navController,navigation_item)},
-//        floatingActionButtonPosition = FabPosition.Center,
-//        floatingActionButton = {Fab(scope,scaffoldState)},
-//        isFloatingActionButtonDocked = true
-//    )
-//
-//    { innerPadding ->
-//        Box(modifier = Modifier.padding(innerPadding)){
-//            NavigationHost(navController)
-//        }
-//
-//    }
 }
 
 @Composable
@@ -681,7 +663,6 @@ fun AutoSliding() {
 @Preview
 @Composable
 fun UpsidePriview() {
-    UpsideLayout()
 }
 
 
