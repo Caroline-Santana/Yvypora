@@ -1,8 +1,7 @@
 package com.example.yvypora
 
-import android.content.Context
+
 import android.content.Intent
-import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,13 +19,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.SemanticsProperties.ImeAction
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.yvypora.models.UserSearches
+import com.example.yvypora.models.HistoricSearchDBHelper
+
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class ScreenSearch : ComponentActivity() {
@@ -39,20 +38,26 @@ class ScreenSearch : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    OtherSearch()
+                    Search()
                 }
             }
         }
     }
 }
 
+
+
 @Composable
-fun OtherSearch() {
+fun Search() {
     var searchState by remember {
         mutableStateOf("")
     }
     val context = LocalContext.current
-    val userPreferences = UserSearches(context)
+    val dbHelper = remember { HistoricSearchDBHelper(context)}
+
+    var list = dbHelper.obeterHistorico()
+
+    var historySearchState = remember { list.toMutableStateList() }
 
     Column( modifier = Modifier
         .padding(top = 10.dp, start = 20.dp)
@@ -63,7 +68,7 @@ fun OtherSearch() {
                 .height(45.dp)
                 .width(50.dp)
                 .clickable {
-                    val intent = Intent(context, InicialScreen()::class.java)
+                    val intent = Intent(context, InicialScreen::class.java)
                     context.startActivity(intent)
                 },
             alignment = Alignment.BottomStart,
@@ -85,7 +90,11 @@ fun OtherSearch() {
                 ),
                 keyboardActions = KeyboardActions(
                     onSearch = {
-                        userPreferences.searchHistory += searchState
+                        if (searchState.isNotBlank()){
+                            dbHelper.insertSearch(searchState)
+                            historySearchState.add(searchState)
+                        }
+
                     }
                 ),
                 colors = TextFieldDefaults.textFieldColors(
@@ -103,7 +112,9 @@ fun OtherSearch() {
                         modifier = Modifier
                             .width(35.dp)
                             .height(35.dp)
-                            .padding(end = 10.dp),
+                            .padding(end = 10.dp)
+                            .clickable { dbHelper.insertSearch(searchState)
+                                historySearchState.add(searchState)},
                         tint = Color.White
                     )
                 }
@@ -120,7 +131,7 @@ fun OtherSearch() {
                 fontSize = 30.sp,
                 color = colorResource(id = R.color.darkgreen_yvy)
             )
-            for (search in userPreferences.searchHistory) {
+            for (search in historySearchState) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp)
@@ -141,23 +152,21 @@ fun OtherSearch() {
                         modifier = Modifier
                             .padding(end = 10.dp)
                             .height(38.dp)
-                            .width(28.dp),
+                            .width(28.dp)
+                            .clickable {
+                                dbHelper.deleteSearch(search)
+                                historySearchState.remove(search)
+                                       },
                         contentDescription = stringResource(id = R.string.delete_search))
                 }
-
             }
         }
     }
-
-
-
-
 }
-
 @Preview(showBackground = true)
 @Composable
 fun SearchScreen() {
     YvyporaTheme {
-        OtherSearch()
+
     }
 }

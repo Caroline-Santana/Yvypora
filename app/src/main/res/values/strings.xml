@@ -70,6 +70,7 @@
     <string name="back_screen">Shortcut to switch screen</string>
     <string name="latest_search">Latest Searches</string>
     <string name="delete_search">Delete a survey</string>
+    <string name="title_activity_profile_client">ProfileClient</string>
 
 
 </resources>

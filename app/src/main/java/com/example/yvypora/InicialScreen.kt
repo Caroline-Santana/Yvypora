@@ -1,12 +1,7 @@
-
-
 package com.example.yvypora
 
-
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.RatingBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,24 +10,20 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import kotlinx.coroutines.flow.collect
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
@@ -42,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
@@ -62,6 +52,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import kotlin.math.absoluteValue
 
+
 class InicialScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +67,7 @@ class InicialScreen : ComponentActivity() {
 
 @Composable
 fun Header() {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,6 +87,10 @@ fun Header() {
         Image(
             painter = painterResource(id = R.drawable.icon_user),
             modifier = Modifier
+                .clickable {
+                    val intent = Intent(context, ProfileClient()::class.java)
+                    context.startActivity(intent)
+                }
                 .height(50.dp)
                 .width(55.dp),
 
@@ -104,7 +100,7 @@ fun Header() {
     }
 }
 
-@SuppressLint("SuspiciousIndentation")
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UpsideLayout() {
@@ -112,41 +108,36 @@ fun UpsideLayout() {
     val textState = remember { mutableStateOf(TextFieldValue()) }
     val context = LocalContext.current
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxSize()
-                .padding(top = 125.dp)
-                .scrollable(state = rememberScrollableState() { delta ->
-                    offset.value = offset.value + delta
-                    delta // indicate that we consumed all the pixels available
-                }, orientation = Orientation.Vertical),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CompositionLocalProvider(
-                LocalTextInputService provides null
-            ){
-                ReadonlyTextField(
-                    value = textState.value,
-                    onValueChange = { textState.value = it },
-                    modifier = Modifier,
-                    onClick = {
-                        val intent = Intent(context, ScreenSearch()::class.java)
-                        context.startActivity(intent)
-                    }
-                )
-
-            }
-
-            Spacer(
-                modifier = Modifier.height(15.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxSize()
+            .padding(top = 125.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CompositionLocalProvider(
+            LocalTextInputService provides null
+        ){
+            ReadonlyTextField(
+                value = textState.value,
+                onValueChange = { textState.value = it },
+                modifier = Modifier,
+                onClick = {
+                    val intent = Intent(context, ScreenSearch()::class.java)
+                    context.startActivity(intent)
+                }
             )
-            // Função dos atalhos para outras telas
-            Shortcuts()
-            AutoSliding()
-            TabLayoutScreen()
+
         }
+
+        // Função dos atalhos para outras telas
+        Shortcuts()
+        AutoSliding()
+        TabLayoutScreen()
+    }
 }
+
 
 @Composable
 fun ReadonlyTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit, modifier: Modifier = Modifier, onClick: () -> Unit)
@@ -190,37 +181,6 @@ fun ReadonlyTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> 
 }
 
 
-//@Composable
-//fun HomeScreen() {
-//   val navController = rememberNavController()
-//    val scaffoldState = rememberScaffoldState()
-//    val scope = rememberCoroutineScope()
-//    val navigation_item = listOf(
-//        ItemsMenu.Pantalla1,
-//        ItemsMenu.Pantalla2,
-//        ItemsMenu.Pantalla3,
-//        ItemsMenu.Pantalla4,
-//    )
-//    Scaffold(
-//        scaffoldState = scaffoldState,
-//        bottomBar = {
-//            NavegationInferior(navController,navigation_item)
-//            Modifier
-//                .padding(bottom = 40.dp)
-//                .height(56.dp)
-//        },
-//        floatingActionButtonPosition = FabPosition.Center,
-//        floatingActionButton = {Fab(scope,scaffoldState)},
-//        isFloatingActionButtonDocked = true
-//    )
-//
-//    { innerPadding ->
-//        Box(modifier = Modifier.padding(innerPadding)){
-//            NavigationHost(navController)
-//        }
-//    }
-//
-//}
 @Composable
 fun HomeScreen() {
     val navController = rememberNavController()
@@ -245,7 +205,6 @@ fun HomeScreen() {
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavigationHost(navController)
-            Spacer(modifier = Modifier.height(56.dp))
 
         }
     }
@@ -254,24 +213,24 @@ fun HomeScreen() {
 
 @Composable
 fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
-            FloatingActionButton(
-                onClick = {
-                    scope.launch { scaffoldState.snackbarHostState
-                        .showSnackbar("blbla",
-                            actionLabel = "bsljdjsskd",
-                            duration = SnackbarDuration.Indefinite) }
-            },
-            backgroundColor = colorResource(id = R.color.green_yvy)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.shopping_cart),
-                        contentDescription = "shopping",
-                        modifier = Modifier
-                            .height(44.dp)
-                            .width(44.dp)
-                            .padding(start = 5.dp)
-                    )
-            }
+    FloatingActionButton(
+        onClick = {
+            scope.launch { scaffoldState.snackbarHostState
+                .showSnackbar("blbla",
+                    actionLabel = "bsljdjsskd",
+                    duration = SnackbarDuration.Indefinite) }
+        },
+        backgroundColor = colorResource(id = R.color.green_yvy),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.shopping_cart),
+            contentDescription = "shopping",
+            modifier = Modifier
+                .height(44.dp)
+                .width(44.dp)
+                .padding(start = 5.dp)
+        )
+    }
 }
 
 @Composable
@@ -287,7 +246,9 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
             CornerSize(percent = 50)
         ),
     ) {
-        BottomNavigation(modifier = Modifier.fillMaxSize())
+        BottomNavigation(
+            modifier = Modifier.fillMaxSize(),
+        )
         {
             val currentRoute = currentRoute(navController = navController)
             menu_items.forEachIndexed(){ index, item ->
@@ -299,7 +260,7 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
                             .width(50.dp)
                             .weight(2f)
                             .padding(end = 75.dp)
-                           ,
+                        ,
                         onClick = { navController.navigate(item.rota) },
                         icon = {
                             Icon(
@@ -332,6 +293,7 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabLayoutScreen() {
+    val offset = remember { mutableStateOf(0f) }
 
     val tabData = listOf(
         stringResource(id = R.string.all),
@@ -346,7 +308,7 @@ fun TabLayoutScreen() {
     )
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
-    Column() {
+    Column(modifier = Modifier.height(230.dp)) {
         TabRow(
             selectedTabIndex = tabIndex,
             indicator = { tabPositions ->
@@ -382,7 +344,7 @@ fun TabLayoutScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp),
+                    .padding(5.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -391,9 +353,11 @@ fun TabLayoutScreen() {
                     1 -> ListOfProducts(products = list)
                     2 -> ListOfProducts(products = list)
                 }
+
             }
         }
     }
+
 }
 
 
@@ -434,7 +398,7 @@ fun ListOfProducts(products: List<Product>) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .fillMaxHeight() ,
         contentPadding = PaddingValues(0.dp),
     ) {
         items(products) { product -> CardProducts(product) }
@@ -454,7 +418,7 @@ fun CardProducts(data: Product) {
         contentColor = colorResource(id = R.color.darkgreen_yvy),
         modifier = Modifier
             .width(130.dp)
-            .height(140.dp)
+            .height(145.dp)
             .padding(3.dp),
         border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))
 
@@ -514,15 +478,13 @@ fun CardProducts(data: Product) {
                         // Adding an Icon "Add" inside the Button
                         Icon(
                             painter = painterResource(id = R.drawable.shopping_cart),
+                            modifier = Modifier.padding(start = 3.dp),
                             contentDescription = "content description",
                             tint = Color.White
                         )
                     }
-
-
                 }
             }
-
         }
     }
 }
@@ -639,7 +601,7 @@ fun AutoSliding() {
 
                 }
                 .fillMaxWidth()
-                .height(195.dp)
+                .height(185.dp)
                 .padding(15.dp, 0.dp, 15.dp, 0.dp),
                 shape = RoundedCornerShape(20.dp)) {
                 val template = template[page]
@@ -679,26 +641,17 @@ fun AutoSliding() {
                         }
                         AndroidView(
                             factory = { ratingBar },
-                            modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 0.dp)
+                            modifier = Modifier.padding(0.dp, 18.dp, 0.dp, 0.dp)
                         )
                     }
                 }
             }
             HorizontalPagerIndicator(
                 pagerState = pagerState,
-                modifier = Modifier.padding(top = 235.dp),
+                modifier = Modifier.padding(top = 210.dp),
                 activeColor = colorResource(id = R.color.darkgreen_yvy),
                 inactiveColor = colorResource(id = R.color.transparentgreen_yvy)
             )
         }
     }
 }
-
-
-@Preview
-@Composable
-fun UpsidePriview() {
-    UpsideLayout()
-}
-
-
