@@ -1,8 +1,9 @@
-@file:OptIn(ExperimentalPagerApi::class)
+
 
 package com.example.yvypora
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -103,6 +104,8 @@ fun Header() {
     }
 }
 
+@SuppressLint("SuspiciousIndentation")
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UpsideLayout() {
     val offset = remember { mutableStateOf(0f) }
@@ -186,9 +189,41 @@ fun ReadonlyTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> 
     }
 }
 
+
+//@Composable
+//fun HomeScreen() {
+//   val navController = rememberNavController()
+//    val scaffoldState = rememberScaffoldState()
+//    val scope = rememberCoroutineScope()
+//    val navigation_item = listOf(
+//        ItemsMenu.Pantalla1,
+//        ItemsMenu.Pantalla2,
+//        ItemsMenu.Pantalla3,
+//        ItemsMenu.Pantalla4,
+//    )
+//    Scaffold(
+//        scaffoldState = scaffoldState,
+//        bottomBar = {
+//            NavegationInferior(navController,navigation_item)
+//            Modifier
+//                .padding(bottom = 40.dp)
+//                .height(56.dp)
+//        },
+//        floatingActionButtonPosition = FabPosition.Center,
+//        floatingActionButton = {Fab(scope,scaffoldState)},
+//        isFloatingActionButtonDocked = true
+//    )
+//
+//    { innerPadding ->
+//        Box(modifier = Modifier.padding(innerPadding)){
+//            NavigationHost(navController)
+//        }
+//    }
+//
+//}
 @Composable
 fun HomeScreen() {
-   val navController = rememberNavController()
+    val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val navigation_item = listOf(
@@ -197,25 +232,25 @@ fun HomeScreen() {
         ItemsMenu.Pantalla3,
         ItemsMenu.Pantalla4,
     )
+
     Scaffold(
         scaffoldState = scaffoldState,
         bottomBar = {
-            NavegationInferior(navController,navigation_item)
-            Modifier
-                .padding(bottom = 40.dp)
-                .height(56.dp)
+            NavegationInferior(navController, navigation_item)
         },
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {Fab(scope,scaffoldState)},
-        isFloatingActionButtonDocked = true
-    )
-
-    { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)){
+        isFloatingActionButtonDocked = true,
+        modifier = Modifier.fillMaxHeight()
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
             NavigationHost(navController)
+            Spacer(modifier = Modifier.height(56.dp))
+
         }
     }
 }
+
 
 @Composable
 fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
@@ -251,7 +286,6 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
         cutoutShape = MaterialTheme.shapes.medium.copy(
             CornerSize(percent = 50)
         ),
-//        contentPadding = PaddingValues(15.dp)
     ) {
         BottomNavigation(modifier = Modifier.fillMaxSize())
         {
@@ -295,6 +329,7 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
 }
 
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabLayoutScreen() {
 
@@ -663,6 +698,7 @@ fun AutoSliding() {
 @Preview
 @Composable
 fun UpsidePriview() {
+    UpsideLayout()
 }
 
 
