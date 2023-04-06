@@ -70,6 +70,15 @@
     <string name="back_screen">Atalho para mudar de tela</string>
     <string name="latest_search">Últimas pesquisas</string>
     <string name="delete_search">Deletar uma pesquisa</string>
+    <string name="title_activity_profile_client">ProfileClient</string>
+    <string name="photo_profile">Foto de perfil</string>
+    <string name="address">Address</string>
+    <string name="edit_account">Editar conta</string>
+    <string name="payment_methods">Formas de pagamento</string>
+    <string name="purchase_history">Histórico de compra</string>
+    <string name="logout">Sair</string>
+    <string name="title_activity_edit_profile_sreen">EditProfileSreen</string>
+    <string name="to_save">Salvar</string>
 
 
 </resources>

@@ -33,10 +33,10 @@
     <string name="message_error_pass1">Provide a password!</string>
     <string name="message_error_pass2">Cannot be more than 8 characters!</string>
     <string name="profile_picture">Add a profile picture</string>
-    <string name="title_cpf">CPF</string>
+    <string name="title_cpf">CPF:</string>
     <string name="cpf_error_empty">Provide a CPF!</string>
     <string name="cpf_error_invalid">Invalid CPF!</string>
-    <string name="title_cep">CEP</string>
+    <string name="title_cep">CEP:</string>
     <string name="cep_error_empty">Provide a CEP!</string>
     <string name="cep_error_invalid">Invalid CEP!</string>
     <string name="button_register">Register</string>
@@ -47,7 +47,7 @@
     <string name="phone_error_empty">Provide a phone!</string>
     <string name="title_phone">Phone</string>
     <string name="title_activity_inicial_screen">InicialScreen</string>
-    <string name="title_cnpj">CNPJ</string>
+    <string name="title_cnpj">CNPJ:</string>
     <string name="cnpj_error_empty">Provide a CNPJ!</string>
     <string name="cnpj_error_invalid">Invalid CNPJ!</string>
     <string name="gender_f">Feminine</string>
@@ -71,6 +71,14 @@
     <string name="latest_search">Latest Searches</string>
     <string name="delete_search">Delete a survey</string>
     <string name="title_activity_profile_client">ProfileClient</string>
+    <string name="photo_profile">Profile picture</string>
+    <string name="edit_account">Edit account</string>
+    <string name="address">Address</string>
+    <string name="payment_methods">Payment methods</string>
+    <string name="purchase_history">Purchase history</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_edit_profile_sreen">EditProfileSreen</string>
+    <string name="to_save">To save</string>
 
 
 </resources>

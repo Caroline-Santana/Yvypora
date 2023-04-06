@@ -15,6 +15,11 @@
         android:theme="@style/Theme.Yvypora"
         tools:targetApi="31">
         <activity
+            android:name=".EditProfileSreen"
+            android:exported="false"
+            android:label="@string/title_activity_edit_profile_sreen"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".ProfileClient"
             android:exported="false"
             android:label="@string/title_activity_profile_client"
