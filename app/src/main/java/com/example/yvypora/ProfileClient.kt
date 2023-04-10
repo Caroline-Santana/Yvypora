@@ -166,12 +166,17 @@ fun EditProfile(){
 
 @Composable
 fun Address(){
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .height(60.dp)
             .background(colorResource(id = R.color.green_camps))
+            .clickable {
+                val intent = Intent(context, AdressesActivity()::class.java)
+                context.startActivity(intent)
+            }
             .padding(start = 25.dp),
         verticalAlignment = Alignment.CenterVertically
 

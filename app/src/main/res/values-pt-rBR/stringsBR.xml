@@ -72,13 +72,26 @@
     <string name="delete_search">Deletar uma pesquisa</string>
     <string name="title_activity_profile_client">ProfileClient</string>
     <string name="photo_profile">Foto de perfil</string>
-    <string name="address">Address</string>
+    <string name="address">Endereço</string>
     <string name="edit_account">Editar conta</string>
     <string name="payment_methods">Formas de pagamento</string>
     <string name="purchase_history">Histórico de compra</string>
     <string name="logout">Sair</string>
     <string name="title_activity_edit_profile_sreen">EditProfileSreen</string>
     <string name="to_save">Salvar</string>
+    <string name="title_activity_address">AddressActivity</string>
+    <string name="title_activity_adresses">AdressesActivity</string>
+    <string name="adresses">Endereços</string>
+    <string name="main_adresses">Endereço principal</string>
+    <string name="add_new_adress">Adcione novos endereços clicando a baixo:</string>
+    <string name="to_add">Adicionar</string>
+    <string name="title_activity_add_adress_acitivity">AddAdressAcitivity</string>
+    <string name="choose_location">Escolha o local</string>
+    <string name="details_address">Detalhes do endereço</string>
+    <string name="name_address">Nome do endereço</string>
+    <string name="name_of_recipient">Nome de quem vai receber</string>
+    <string name="phone_address">Telefone para contato</string>
+    <string name="cep_address">CEP</string>
 
 
 </resources>

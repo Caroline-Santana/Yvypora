@@ -15,6 +15,21 @@
         android:theme="@style/Theme.Yvypora"
         tools:targetApi="31">
         <activity
+            android:name=".AddAdressAcitivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_adress_acitivity"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".AdressesActivity"
+            android:exported="false"
+            android:label="@string/title_activity_adresses"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".AddressActivity"
+            android:exported="false"
+            android:label="@string/title_activity_address"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".EditProfileSreen"
             android:exported="false"
             android:label="@string/title_activity_edit_profile_sreen"
