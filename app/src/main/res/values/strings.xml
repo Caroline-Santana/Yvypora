@@ -92,6 +92,18 @@
     <string name="name_of_recipient">Name of the recipient</string>
     <string name="phone_address">Contact phone</string>
     <string name="cep_address">CEP</string>
+    <string name="title_activity_payment_methods">PaymentMethodsActivity</string>
+    <string name="title_payment_methods">Payment methods</string>
+    <string name="credit_card">Credit card</string>
+    <string name="title_activity_add_pay_methods_acitivity">AddPayMethodsAcitivity</string>
+    <string name="add_card_pay_methods">Add your card</string>
+    <string name="name_card_pay_methods">Name on card</string>
+    <string name="number_card_pay_methods">Card number</string>
+    <string name="validity_card_pay_methods">Expiration date</string>
+    <string name="add_card">Add. card</string>
+    <string name="add_account">Add. account</string>
+    <string name="title_activity_add_account">AddAccount</string>
+    <string name="add_account_pay_methods">Add your account</string>
 
 
 </resources>

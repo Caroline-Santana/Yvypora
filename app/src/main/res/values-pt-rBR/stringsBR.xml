@@ -92,6 +92,17 @@
     <string name="name_of_recipient">Nome de quem vai receber</string>
     <string name="phone_address">Telefone para contato</string>
     <string name="cep_address">CEP</string>
-
+    <string name="title_activity_payment_methods">PaymentMethodsActivity</string>
+    <string name="title_payment_methods">Formas de pagamento</string>
+    <string name="credit_card">Cartão de crédito</string>
+    <string name="title_activity_add_pay_methods_acitivity">AddPayMethodsAcitivity</string>
+    <string name="add_card_pay_methods">Adicionar seu cartão</string>
+    <string name="name_card_pay_methods">Nome no cartão</string>
+    <string name="number_card_pay_methods">Número do cartão</string>
+    <string name="validity_card_pay_methods">Data de validade</string>
+    <string name="add_card">Add. cartão</string>
+    <string name="add_account">Add. conta</string>
+    <string name="title_activity_add_account">AddAccount</string>
+    <string name="add_account_pay_methods">Adcionar sua conta</string>
 
 </resources>

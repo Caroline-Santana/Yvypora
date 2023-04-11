@@ -15,6 +15,21 @@
         android:theme="@style/Theme.Yvypora"
         tools:targetApi="31">
         <activity
+            android:name=".AddAccount"
+            android:exported="false"
+            android:label="@string/title_activity_add_account"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".AddPayMethodsAcitivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_pay_methods_acitivity"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".PaymentMethodsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_payment_methods"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".AddAdressAcitivity"
             android:exported="false"
             android:label="@string/title_activity_add_adress_acitivity"
