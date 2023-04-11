@@ -86,12 +86,16 @@
     <string name="add_new_adress">Add new addresses by clicking below:</string>
     <string name="to_add">To add</string>
     <string name="title_activity_add_adress_acitivity">AddAdressAcitivity</string>
+    <string name="title_activity_buy_history_acitivity">BuyHistory</string>
     <string name="choose_location">Choose the location</string>
     <string name="details_address">Address details</string>
     <string name="name_address">Address name</string>
     <string name="name_of_recipient">Name of the recipient</string>
     <string name="phone_address">Contact phone</string>
     <string name="cep_address">CEP</string>
+
+
+
 
 
 </resources>

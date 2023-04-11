@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {

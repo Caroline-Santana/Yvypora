@@ -33,6 +33,7 @@ import com.example.yvypora.navbar.NavigationHost
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 class ProfileClient : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -266,13 +267,19 @@ fun PaymentMethods() {
 }
 @Composable
 fun PurchaseHistory() {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .height(60.dp)
             .background(colorResource(id = R.color.green_camps))
-            .padding(start = 25.dp),
+            .padding(start = 25.dp)
+            .clickable {
+                val intent = Intent(context, BuyHistory()::class.java)
+                    context.startActivity(intent)
+            },
+
         verticalAlignment = Alignment.CenterVertically
 
     ) {

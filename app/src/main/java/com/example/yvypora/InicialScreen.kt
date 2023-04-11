@@ -100,7 +100,6 @@ fun Header() {
     }
 }
 
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UpsideLayout() {
@@ -118,7 +117,7 @@ fun UpsideLayout() {
     ) {
         CompositionLocalProvider(
             LocalTextInputService provides null
-        ){
+        ) {
             ReadonlyTextField(
                 value = textState.value,
                 onValueChange = { textState.value = it },
@@ -130,8 +129,6 @@ fun UpsideLayout() {
             )
 
         }
-
-        // Função dos atalhos para outras telas
         Shortcuts()
         AutoSliding()
         TabLayoutScreen()
@@ -140,9 +137,12 @@ fun UpsideLayout() {
 
 
 @Composable
-fun ReadonlyTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit, modifier: Modifier = Modifier, onClick: () -> Unit)
-{
-
+fun ReadonlyTextField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Box {
         OutlinedTextField(
             value = value,
@@ -199,7 +199,7 @@ fun HomeScreen() {
             NavegationInferior(navController, navigation_item)
         },
         floatingActionButtonPosition = FabPosition.Center,
-        floatingActionButton = {Fab(scope,scaffoldState)},
+        floatingActionButton = { Fab(scope, scaffoldState) },
         isFloatingActionButtonDocked = true,
         modifier = Modifier.fillMaxHeight()
     ) { innerPadding ->
@@ -214,10 +214,14 @@ fun HomeScreen() {
 fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
     FloatingActionButton(
         onClick = {
-            scope.launch { scaffoldState.snackbarHostState
-                .showSnackbar("blbla",
-                    actionLabel = "bsljdjsskd",
-                    duration = SnackbarDuration.Indefinite) }
+            scope.launch {
+                scaffoldState.snackbarHostState
+                    .showSnackbar(
+                        "blbla",
+                        actionLabel = "bsljdjsskd",
+                        duration = SnackbarDuration.Indefinite
+                    )
+            }
         },
         backgroundColor = colorResource(id = R.color.green_yvy),
     ) {
@@ -233,7 +237,7 @@ fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
 }
 
 @Composable
-fun currentRoute(navController: NavHostController): String?{
+fun currentRoute(navController: NavHostController): String? {
     val entrada by navController.currentBackStackEntryAsState()
     return entrada?.destination?.route
 }
@@ -250,7 +254,7 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
         )
         {
             val currentRoute = currentRoute(navController = navController)
-            menu_items.forEachIndexed(){ index, item ->
+            menu_items.forEachIndexed() { index, item ->
                 if (index == 1) {
                     BottomNavigationItem(
                         selected = currentRoute == item.rota,
@@ -258,8 +262,7 @@ fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsM
                             .height(50.dp)
                             .width(50.dp)
                             .weight(2f)
-                            .padding(end = 75.dp)
-                        ,
+                            .padding(end = 75.dp),
                         onClick = { navController.navigate(item.rota) },
                         icon = {
                             Icon(
@@ -397,7 +400,7 @@ fun ListOfProducts(products: List<Product>) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight() ,
+            .fillMaxHeight(),
         contentPadding = PaddingValues(0.dp),
     ) {
         items(products) { product -> CardProducts(product) }
@@ -451,7 +454,6 @@ fun CardProducts(data: Product) {
                     textAlign = TextAlign.Left,
                     fontSize = 12.sp
                 )
-
                 Row(
                     horizontalArrangement = Arrangement.Center
                 ) {

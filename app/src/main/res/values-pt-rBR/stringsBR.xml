@@ -92,6 +92,7 @@
     <string name="name_of_recipient">Nome de quem vai receber</string>
     <string name="phone_address">Telefone para contato</string>
     <string name="cep_address">CEP</string>
+    <string name="title_activity_buy_history_acitivity">Histórico de Compras</string>
 
 
 </resources>
