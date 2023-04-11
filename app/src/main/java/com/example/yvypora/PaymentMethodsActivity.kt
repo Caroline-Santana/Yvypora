@@ -1,5 +1,6 @@
 package com.example.yvypora
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,12 +9,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,20 +20,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.yvypora.navbar.ItemsMenu
-import com.example.yvypora.navbar.NavigationHost
 import com.example.yvypora.ui.theme.YvyporaTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
-class ProfileClient : ComponentActivity() {
+class PaymentMethodsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -45,97 +36,154 @@ class ProfileClient : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .fillMaxWidth()
                     ) {
-                        HeaderProfile()
-                        JoiningFields()
+                        HeaderPayMethods()
+                        MainPayMethods()
                     }
+
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun HeaderProfile() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 22.dp, top = 30.dp)
+fun MainPayMethods() {
+ val context = LocalContext.current
 
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.icon_user),
-            modifier = Modifier
-                .height(66.dp)
-                .width(75.dp),
-            contentDescription = stringResource(id = R.string.photo_profile),
-
-            )
-        Column(
-            modifier = Modifier
-                .padding(start = 87.dp)
-        ) {
-            Text(
-                text = "Carlos Arcanjo",
-                modifier = Modifier.padding(bottom = 3.dp),
-                fontSize = 20.sp
-
-            )
-            Text(
-                text = "carlaoprof@gmail.com"
-            )
-        }
-
-    }
-}
-@Composable
-fun JoiningFields(){
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp, top = 75.dp)
+            .padding(15.dp)
+            .fillMaxSize(),
     )
     {
-        EditProfile()
-        Spacer(modifier = Modifier.height(19.dp))
-        Address()
-        Spacer(modifier = Modifier.height(19.dp))
-        PaymentMethods()
-        Spacer(modifier = Modifier.height(19.dp))
-        PurchaseHistory()
-        Spacer(modifier = Modifier.height(19.dp))
-        Logout()
+        Text(
+            text = stringResource(id = R.string.credit_card),
+            modifier = Modifier
+                .padding(top = 30.dp, bottom = 15.dp)
+                .fillMaxWidth(),
+            fontSize = 20.sp,
+            textAlign = TextAlign.Start,
+            color = colorResource(id = R.color.darkgreen_yvy)
+        )
+            CardPayMethods1()
+        Spacer(modifier = Modifier.height(15.dp))
+            CardPayMethods2()
+
+        Spacer(modifier = Modifier.height(25.dp))
+        Button(
+            onClick = {
+                val intent = Intent(context, AddCardAcitivity()::class.java)
+                context.startActivity(intent)
+            },
+            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+            modifier = Modifier
+                .width(200.dp)
+                .height(48.dp)
+                .align(Alignment.CenterHorizontally),
+            shape = RoundedCornerShape(5.dp),
+
+            ) {
+            Text(
+                text = stringResource(id = R.string.add_card),
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        }
+
+        Text(
+            text = stringResource(id = R.string.other),
+            modifier = Modifier
+                .padding(top = 30.dp, bottom = 15.dp)
+                .fillMaxWidth(),
+            fontSize = 20.sp,
+            textAlign = TextAlign.Start,
+            color = colorResource(id = R.color.darkgreen_yvy)
+        )
+        CardPayMethods3()
+        Spacer(modifier = Modifier.height(15.dp))
+        CardPayMethod4()
+        Spacer(modifier = Modifier.height(55.dp))
+        Button(
+            onClick = {
+                val intent = Intent(context, AddAccount()::class.java)
+                context.startActivity(intent)
+            },
+            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+            modifier = Modifier
+                .width(200.dp)
+                .height(48.dp)
+                .align(Alignment.CenterHorizontally),
+            shape = RoundedCornerShape(5.dp),
+
+            ) {
+            Text(
+                text = stringResource(id = R.string.add_account),
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        }
     }
 }
 
 @Composable
-fun EditProfile(){
+fun HeaderPayMethods() {
+    val context = LocalContext.current
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 60.dp, start = 15.dp, bottom = 15.dp, end = 30.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.arrow),
+            modifier = Modifier
+                .height(45.dp)
+                .width(55.dp)
+                .clickable {
+                    val intent = Intent(context, ProfileClient()::class.java)
+                    context.startActivity(intent)
+                },
+            alignment = Alignment.BottomStart,
+            contentDescription = stringResource(id = R.string.back_screen)
+        )
+        Text(
+            text = stringResource(id = R.string.title_payment_methods),
+            modifier = Modifier
+                .fillMaxWidth(),
+            fontSize = 24.sp,
+            textAlign = TextAlign.Center,
+            color = colorResource(id = R.color.darkgreen_yvy)
+        )
+    }
+}
+
+@Composable
+fun CardPayMethods1() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .height(60.dp)
-            .clickable {
-                val intent = Intent(context, EditProfileSreen()::class.java)
-                context.startActivity(intent)
-            }
             .background(colorResource(id = R.color.green_camps))
             .padding(start = 25.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.user),
+        Image(
+            painter = painterResource(id = R.drawable.visa),
             modifier = Modifier
-                .width(24.dp)
-                .height(24.dp)
+                .width(40.dp)
+                .height(40.dp)
             ,
-            tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
         Row(
@@ -144,7 +192,7 @@ fun EditProfile(){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.edit_account),
+                text = "VISA",
                 modifier = Modifier
                     .padding(start = 10.dp),
                 fontSize = 18.sp,
@@ -164,9 +212,8 @@ fun EditProfile(){
 
     }
 }
-
 @Composable
-fun Address(){
+fun CardPayMethods2() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -174,21 +221,16 @@ fun Address(){
             .fillMaxWidth()
             .height(60.dp)
             .background(colorResource(id = R.color.green_camps))
-            .clickable {
-                val intent = Intent(context, AdressesActivity()::class.java)
-                context.startActivity(intent)
-            }
             .padding(start = 25.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.map),
+        Image(
+            painter = painterResource(id = R.drawable.mastercard),
             modifier = Modifier
-                .width(24.dp)
-                .height(24.dp)
+                .width(40.dp)
+                .height(40.dp)
             ,
-            tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
         Row(
@@ -197,7 +239,7 @@ fun Address(){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.address),
+                text = "MasterCard",
                 modifier = Modifier
                     .padding(start = 10.dp),
                 fontSize = 18.sp,
@@ -217,9 +259,8 @@ fun Address(){
 
     }
 }
-
 @Composable
-fun PaymentMethods() {
+fun CardPayMethods3() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -235,13 +276,12 @@ fun PaymentMethods() {
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.card),
+        Image(
+            painter = painterResource(id = R.drawable.paypal),
             modifier = Modifier
-                .width(24.dp)
-                .height(24.dp)
+                .width(30.dp)
+                .height(35.dp)
             ,
-            tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
         Row(
@@ -250,7 +290,7 @@ fun PaymentMethods() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.payment_methods),
+                text = "PayPal",
                 modifier = Modifier
                     .padding(start = 10.dp),
                 fontSize = 18.sp,
@@ -271,30 +311,28 @@ fun PaymentMethods() {
     }
 }
 @Composable
-fun PurchaseHistory() {
+fun CardPayMethod4() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .height(60.dp)
-            .background(colorResource(id = R.color.green_camps))
-            .padding(start = 25.dp)
             .clickable {
-                val intent = Intent(context, BuyHistory()::class.java)
-                    context.startActivity(intent)
-            },
-
+                val intent = Intent(context, PaymentMethodsActivity()::class.java)
+                context.startActivity(intent)
+            }
+            .background(colorResource(id = R.color.green_camps))
+            .padding(start = 25.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.bag),
+        Image(
+            painter = painterResource(id = R.drawable.apple_pay),
             modifier = Modifier
-                .width(24.dp)
-                .height(24.dp)
+                .width(40.dp)
+                .height(40.dp)
             ,
-            tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
         Row(
@@ -303,7 +341,7 @@ fun PurchaseHistory() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.purchase_history),
+                text = "ApplePAy",
                 modifier = Modifier
                     .padding(start = 10.dp),
                 fontSize = 18.sp,
@@ -323,54 +361,18 @@ fun PurchaseHistory() {
 
     }
 }
-@Composable
-fun Logout() {
-    Row(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(10.dp))
-            .fillMaxWidth()
-            .height(60.dp)
-            .background(colorResource(id = R.color.green_camps))
-            .padding(start = 25.dp),
-        verticalAlignment = Alignment.CenterVertically
 
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.exportsquare),
-            modifier = Modifier
-                .width(24.dp)
-                .height(24.dp)
-            ,
-            tint = colorResource(id = R.color.darkgreen_yvy),
-            contentDescription = "icon"
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = R.string.logout),
-                modifier = Modifier
-                    .padding(start = 10.dp),
-                fontSize = 18.sp,
-                color = colorResource(id = R.color.darkgreen_yvy)
-
-            )
-        }
-
-    }
-}
 @Preview(showBackground = true)
+
 @Composable
-fun ProfileCliente() {
-    YvyporaTheme {
-        Column(
-            modifier = Modifier
+    fun PaymentMethodsActivityPreview() {
+        YvyporaTheme {
+            Column(modifier = Modifier
                 .fillMaxSize()
-        ) {
-            HeaderProfile()
-            JoiningFields()
+                .fillMaxWidth()
+            ) {
+                HeaderPayMethods()
+                MainPayMethods()
+            }
         }
     }
-}

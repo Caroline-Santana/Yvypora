@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +21,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -49,7 +52,6 @@ class EditProfileSreen : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        HeaderProfile()
                         InputsProfile()
                     }
 
@@ -71,44 +73,74 @@ fun InputsProfile() {
             .padding(start = 23.dp, end = 23.dp, top = 20.dp),
     )
     {
-        Text(
-            text = stringResource(id = R.string.edit_account),
-            modifier = Modifier.fillMaxWidth(),
-            fontSize = 25.sp,
-            color = colorResource(id = R.color.darkgreen_yvy),
-            textAlign = TextAlign.Center
-        )
-        NameInputAgain()
-        Spacer(modifier = Modifier.height(19.dp))
-        EmailInputAgain()
-        Spacer(modifier = Modifier.height(19.dp))
-        PassInputAgain()
-        Spacer(modifier = Modifier.height(19.dp))
-        CpfInputAgain()
-        Spacer(modifier = Modifier.height(19.dp))
-        CepInputAgain()
-        Spacer(modifier = Modifier.height(25.dp))
-
-        Button(
-            onClick = {
-                val intent = Intent(context, ProfileClient()::class.java)
-                context.startActivity(intent)
-            },
-            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+        Row(
             modifier = Modifier
-                .width(217.dp)
-                .height(48.dp)
-                .align(Alignment.CenterHorizontally),
-            shape = RoundedCornerShape(5.dp),
+                .fillMaxWidth()
+                .padding(top = 30.dp, start = 15.dp, bottom = 15.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
 
-            ) {
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.arrow),
+                modifier = Modifier
+                    .height(45.dp)
+                    .width(55.dp)
+                    .clickable {
+                        val intent = Intent(context, AdressesActivity::class.java)
+                        context.startActivity(intent)
+                    },
+                alignment = Alignment.BottomStart,
+                contentDescription = stringResource(id = R.string.back_screen)
+            )
             Text(
-                text = stringResource(id = R.string.to_save),
-                color = Color.White,
-                fontSize = 20.sp
+                text = stringResource(id = R.string.edit_account),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 15.dp)
+                ,
+                fontSize = 25.sp,
+                color = colorResource(id = R.color.darkgreen_yvy),
+                textAlign = TextAlign.Center
             )
         }
-        Spacer(modifier = Modifier.height(19.dp))
+        Column(
+            modifier = Modifier.padding(top = 10.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            NameInputAgain()
+            Spacer(modifier = Modifier.height(19.dp))
+            EmailInputAgain()
+            Spacer(modifier = Modifier.height(19.dp))
+            PassInputAgain()
+            Spacer(modifier = Modifier.height(19.dp))
+            CpfInputAgain()
+            Spacer(modifier = Modifier.height(19.dp))
+            CepInputAgain()
+            Spacer(modifier = Modifier.height(25.dp))
+
+            Button(
+                onClick = {
+                    val intent = Intent(context, ProfileClient()::class.java)
+                    context.startActivity(intent)
+                },
+                colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+                modifier = Modifier
+                    .width(217.dp)
+                    .height(48.dp)
+                    .align(Alignment.CenterHorizontally),
+                shape = RoundedCornerShape(5.dp),
+
+                ) {
+                Text(
+                    text = stringResource(id = R.string.to_save),
+                    color = Color.White,
+                    fontSize = 20.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(19.dp))
+        }
+
 
     }
 }
@@ -426,7 +458,6 @@ fun PreviewEditProfileSreen() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            HeaderProfile()
             InputsProfile()
         }
     }

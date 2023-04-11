@@ -4,12 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -42,7 +39,6 @@ class AdressesActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        HeaderProfile()
                         MainAddress()
                     }
                 }
@@ -55,55 +51,82 @@ class AdressesActivity : ComponentActivity() {
 fun MainAddress() {
     val context = LocalContext.current
     Column(modifier = Modifier
-        .padding(top = 25.dp, start = 28.dp, end = 25.dp)
         .fillMaxWidth()
         .verticalScroll(rememberScrollState())
         .fillMaxSize()
     ) {
-        Text(
-            text = stringResource(id = R.string.adresses),
+        Row(
             modifier = Modifier
-                .padding(bottom = 3.dp)
-                .fillMaxWidth(),
-            fontSize = 24.sp,
-            color = colorResource(id = R.color.darkgreen_yvy),
-            textAlign = TextAlign.Center
-        )
-            CardPrincipalAdresses()
-             CardAdresses()
-            CardAdressesTeste()
+                .fillMaxWidth()
+                .padding(top = 30.dp, start = 15.dp, bottom = 15.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
 
-        Spacer(modifier = Modifier.height(15.dp))
-        Text(
-            text = stringResource(id = R.string.add_new_adress),
-            modifier = Modifier
-                .padding(bottom = 3.dp)
-                .fillMaxWidth(),
-            fontSize = 16.sp,
-            color = colorResource(id = R.color.darkgreen_yvy),
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(15.dp))
-        Button(
-            onClick = {
-                val intent = Intent(context, AddAdressAcitivity()::class.java)
-                context.startActivity(intent)
-            },
-            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
-            modifier = Modifier
-                .width(200.dp)
-                .height(48.dp)
-                .align(Alignment.CenterHorizontally),
-            shape = RoundedCornerShape(5.dp),
-
-            ) {
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.arrow),
+                modifier = Modifier
+                    .height(45.dp)
+                    .width(55.dp)
+                    .clickable {
+                        val intent = Intent(context, ProfileClient()::class.java)
+                        context.startActivity(intent)
+                    },
+                alignment = Alignment.BottomStart,
+                contentDescription = stringResource(id = R.string.back_screen)
+            )
             Text(
-                text = stringResource(id = R.string.to_add),
-                color = Color.White,
-                fontSize = 20.sp
+                text = stringResource(id = R.string.adresses),
+                modifier = Modifier
+                    .padding(bottom = 3.dp, end = 38.dp)
+                    .fillMaxWidth(),
+                fontSize = 24.sp,
+                color = colorResource(id = R.color.darkgreen_yvy),
+                textAlign = TextAlign.Center
             )
         }
-        Spacer(modifier = Modifier.height(15.dp))
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 25.dp, start = 28.dp, end = 25.dp),
+            verticalArrangement = Arrangement.Center)
+        {
+            CardPrincipalAdresses()
+            CardAdresses()
+            CardAdressesTeste()
+
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = stringResource(id = R.string.add_new_adress),
+                modifier = Modifier
+                    .padding(bottom = 3.dp)
+                    .fillMaxWidth(),
+                fontSize = 16.sp,
+                color = colorResource(id = R.color.darkgreen_yvy),
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Button(
+                onClick = {
+                    val intent = Intent(context, AddAdressAcitivity()::class.java)
+                    context.startActivity(intent)
+                },
+                colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(48.dp)
+                    .align(Alignment.CenterHorizontally),
+                shape = RoundedCornerShape(5.dp),
+
+                ) {
+                Text(
+                    text = stringResource(id = R.string.to_add),
+                    color = Color.White,
+                    fontSize = 20.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(15.dp))
+        }
+
     }
 }
 @Composable
@@ -528,7 +551,6 @@ fun DefaultPreview2() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            HeaderProfile()
             MainAddress()
         }
     }
