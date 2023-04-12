@@ -20,13 +20,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.models.MarketerCard
+import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class BuyHistory : ComponentActivity() {
@@ -101,14 +100,32 @@ val listMarketerCard = listOf<MarketerCard>(
     MarketerCard(
         name = "Barraca do Seu Zé do Alfácil",
         sub_name = "Vila Augusta",
-        photo = "https://s2.glbimg.com/kp-KTfD-SKBXxwKd0-76aS0VTVE=/0x0:1280x853/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2017/0/S/BF1BCgRESb0CcCOfMIAA/feira2.jpg",
+        photo = R.drawable.buy_history_card_marketer,
         date = "15/02/2022"
     ),
     MarketerCard(
         name = "Barraca do Seu Zé",
         sub_name = "Vila Madalena",
-        photo = "https://s2.glbimg.com/kp-KTfD-SKBXxwKd0-76aS0VTVE=/0x0:1280x853/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2017/0/S/BF1BCgRESb0CcCOfMIAA/feira2.jpg",
+        photo = R.drawable.buy_history_card_marketer,
         date = "11/02/2022"
+    )
+)
+val listProductCard = listOf<ProductCardSale>(
+    ProductCardSale(
+        name = "Abobora",
+        qntd_product = 3,
+        photo = 1,
+        type_weight = "g",
+        weight_product = 800,
+        price = 24.00
+    ),
+    ProductCardSale(
+        name = "Abobora",
+        photo = 1,
+        qntd_product = 3,
+        type_weight = "g",
+        weight_product = 800,
+        price = 24.00
     )
 )
 
@@ -117,6 +134,47 @@ fun ListOfMarketerCard(marketers: List<MarketerCard>) {
     LazyColumn() {
         items(marketers) { marketer -> CardMarketer(marketer = marketer) }
     }
+}
+
+
+@Composable
+fun ListOfProductCardSale(cards : List<ProductCardSale>){
+    LazyColumn(){
+        items(cards){card -> CardProduct(card) }
+    }
+}
+@Composable
+fun CardProduct(card:ProductCardSale){
+    var nameProduct = card.name
+//    var photoProduct = card.photo
+    var photoProduct = painterResource(id = R.drawable.abobora)
+    var qntProduct = card.qntd_product
+    var typeProduct = card.type_weight
+    var weightProduct = card.weight_product
+    var priceProduct = card.price
+
+    Card(Modifier.fillMaxWidth()) {
+        Row(){
+            Column() {
+                Text(text = nameProduct)
+                Image(painter = photoProduct,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(150.dp)
+                )
+
+            }
+            Column() {
+               Text(text = qntProduct.toString()) 
+               Text(text = typeProduct)
+               Text(text = priceProduct.toString())
+            }
+        }
+        
+        
+    }
+
 }
 
 
@@ -131,7 +189,7 @@ fun CardMarketer(marketer: MarketerCard) {
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
@@ -144,33 +202,32 @@ fun CardMarketer(marketer: MarketerCard) {
             Column(
                 modifier =
                 Modifier
-                    .background(Color.Yellow)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = nameCard,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = colorResource(id = R.color.green_yvy)
                 )
                 Text(
                     text = subnameCard,
                     fontWeight = FontWeight.Light,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = colorResource(id = R.color.green_yvy)
+
                 )
                 Text(
                     text = date,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = colorResource(id = R.color.green_options)
                 )
-
             }
-
+            ListOfProductCardSale(cards = listProductCard)
         }
-
-
     }
-
 }
 
 //@Preview(showBackground = true)

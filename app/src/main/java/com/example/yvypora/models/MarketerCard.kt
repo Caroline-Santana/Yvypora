@@ -1,12 +1,12 @@
 package com.example.yvypora.models
 
-import java.util.Calendar
-import java.util.Date
+import android.graphics.Bitmap
+import androidx.compose.ui.graphics.ImageBitmap
 
 data class MarketerCard(
     val name: String,
     val sub_name: String,
-    val photo: String,
+    val photo: Int,
     val date: String
 )
 
