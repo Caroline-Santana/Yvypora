@@ -43,7 +43,7 @@ class AddAccount : ComponentActivity() {
 fun AdAccount() {
     val context = LocalContext.current
     Image(
-        painter = painterResource(id = R.drawable.wave1),
+        painter = painterResource(id = R.drawable.wave__5_),
         modifier = Modifier
             .height(80.dp)
             .fillMaxWidth(),
@@ -52,7 +52,7 @@ fun AdAccount() {
     )
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(start = 25.dp, end = 25.dp, top = 190.dp)
+        .padding(start = 25.dp, end = 25.dp, top = 130.dp)
         .fillMaxSize()
     ) {
         Text(

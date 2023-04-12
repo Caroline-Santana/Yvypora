@@ -51,17 +51,21 @@ class AddCardAcitivity : ComponentActivity() {
 @Composable
 fun AddCard () {
     val context = LocalContext.current
-    Image(
-        painter = painterResource(id = R.drawable.wave1),
-        modifier = Modifier
-            .height(80.dp)
-            .fillMaxWidth(),
-        alignment = Alignment.TopCenter,
-        contentDescription = stringResource(id = R.string.back_screen)
-    )
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .statusBarsPadding()
+    ){
+        Image(
+            painter = painterResource(id = R.drawable.wave__5_),
+            modifier = Modifier
+                .fillMaxWidth(),
+            alignment = Alignment.TopCenter,
+            contentDescription = stringResource(id = R.string.back_screen)
+        )
+    }
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(start = 25.dp, end = 25.dp, top = 190.dp)
+        .padding(start = 25.dp, end = 25.dp, top = 130.dp)
         .fillMaxSize()
     ) {
         Text(
@@ -284,7 +288,7 @@ fun DateInputCard() {
                 cursorColor = colorResource(id = R.color.darkgreen_yvy)
             ),
             modifier = Modifier
-                .width(114.dp)
+                .width(165.dp)
                 .height(56.dp)
                 .focusRequester(inputsFocusRequest),
             keyboardOptions = KeyboardOptions(
