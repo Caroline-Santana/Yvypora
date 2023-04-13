@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.yvypora.models.ClientData
 import com.example.yvypora.navbar.ItemsMenu
 import com.example.yvypora.navbar.NavigationHost
 import com.example.yvypora.ui.theme.YvyporaTheme
@@ -59,6 +60,12 @@ class ProfileClient : ComponentActivity() {
     }
 }
 
+val listClientData = listOf<ClientData>(
+    ClientData(
+        name = "Carlos Arcanjo",
+        email = "carlaoprof@gmail.com"
+    )
+)
 @Composable
 fun HeaderProfile() {
     Box(
