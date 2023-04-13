@@ -368,9 +368,9 @@ fun TabLayoutScreen() {
 
 val list = listOf<Product>(
     Product(
-        name = "Abobrinha",
-        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
-        price = 6.00F,
+        name = "Beterraba",
+        photo = "https://campeol.com.br/fotos/1/1/shutterstock_1195597369.jpg",
+        price = 7.50F,
         qtdeProduct = 200
     ), Product(
         name = "Abobrinha",
@@ -411,8 +411,9 @@ fun ListOfProducts(products: List<Product>) {
 // TODO COMPONENETE DE LISTA --> CARD PRODUCTS
 @Composable
 fun CardProducts(data: Product) {
+    val context = LocalContext.current
     var titleCard = data.name
-    var photoProduct = painterResource(id = R.drawable.abobrinha)
+    var photoProduct = painterResource(id = R.drawable.beterraba)
     var qtdeProduct = data.qtdeProduct.toString() + "g"
     var priceProduct = "R$" + data.price.toString()
     Card(
@@ -421,6 +422,10 @@ fun CardProducts(data: Product) {
         modifier = Modifier
             .width(130.dp)
             .height(145.dp)
+            .clickable {
+                val intent = Intent(context, DescriptionProducts()::class.java)
+                context.startActivity(intent)
+            }
             .padding(3.dp),
         border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))
 

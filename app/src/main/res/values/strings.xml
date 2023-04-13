@@ -76,7 +76,7 @@
     <string name="address">Address</string>
     <string name="payment_methods">Payment methods</string>
     <string name="purchase_history">Purchase history</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log out</string>
     <string name="title_activity_edit_profile_sreen">EditProfileSreen</string>
     <string name="to_save">To save</string>
     <string name="title_activity_address">AddressActivity</string>
@@ -105,9 +105,12 @@
     <string name="add_account">Add. account</string>
     <string name="title_activity_add_account">AddAccount</string>
     <string name="add_account_pay_methods">Add your account</string>
-
-
-
+    <string name="logout2">Log out</string>
+    <string name="logout_text">Are you sure you want to quit?</string>
+    <string name="title_activity_description_products">DescriptionProducts</string>
+    <string name="description">Description</string>
+    <string name="buy_now">Buy now</string>
+    <string name="add_affection">Add. to affection</string>
 
 
 </resources>

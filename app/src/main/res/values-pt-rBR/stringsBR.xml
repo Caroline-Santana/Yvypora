@@ -92,14 +92,11 @@
     <string name="name_of_recipient">Nome de quem vai receber</string>
     <string name="phone_address">Telefone para contato</string>
     <string name="cep_address">CEP</string>
-<<<<<<< HEAD
     <string name="title_activity_buy_history_acitivity">Histórico de Compras</string>
-
-=======
     <string name="title_activity_payment_methods">PaymentMethodsActivity</string>
     <string name="title_payment_methods">Formas de pagamento</string>
     <string name="credit_card">Cartão de crédito</string>
-    <string name="title_activity_add_pay_methods_acitivity">AddPayMethodsAcitivity</string>
+    <string name="title_activity_add_pay_methods_acitivity">AddMetodoDePgmntAcitivity</string>
     <string name="add_card_pay_methods">Adicionar seu cartão</string>
     <string name="name_card_pay_methods">Nome no cartão</string>
     <string name="number_card_pay_methods">Número do cartão</string>
@@ -108,6 +105,12 @@
     <string name="add_account">Add. conta</string>
     <string name="title_activity_add_account">AddAccount</string>
     <string name="add_account_pay_methods">Adcionar sua conta</string>
->>>>>>> 2b832a5c27678f5baa61a651134611ac21368997
+    <string name="logout2">Deslogar</string>
+    <string name="logout_text">Tem certeza que deseja sair?</string>
+    <string name="title_activity_description_products">DescriçãoProdutos</string>
+    <string name="description">Descrição</string>
+    <string name="buy_now">Comprar agora</string>
+    <string name="add_affection">Add. ao carrinho</string>
+
 
 </resources>

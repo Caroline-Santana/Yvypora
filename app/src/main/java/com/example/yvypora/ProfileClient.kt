@@ -2,18 +2,18 @@ package com.example.yvypora
 
 import android.content.Intent
 import android.os.Bundle
+import android.service.autofill.OnClickAction
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.ColorRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -282,7 +283,7 @@ fun PurchaseHistory() {
             .padding(start = 25.dp)
             .clickable {
                 val intent = Intent(context, BuyHistory()::class.java)
-                    context.startActivity(intent)
+                context.startActivity(intent)
             },
 
         verticalAlignment = Alignment.CenterVertically
@@ -325,11 +326,14 @@ fun PurchaseHistory() {
 }
 @Composable
 fun Logout() {
+    var abrirDialog by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .height(60.dp)
+            .clickable { abrirDialog = true }
             .background(colorResource(id = R.color.green_camps))
             .padding(start = 25.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -339,8 +343,7 @@ fun Logout() {
             painter = painterResource(id = R.drawable.exportsquare),
             modifier = Modifier
                 .width(24.dp)
-                .height(24.dp)
-            ,
+                .height(24.dp),
             tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
@@ -358,6 +361,72 @@ fun Logout() {
 
             )
         }
+
+    }
+    if (abrirDialog) {
+        AlertDialog(
+            onDismissRequest = { abrirDialog = false },
+            title = {
+                Text(
+                    text = stringResource(id = R.string.logout2),
+                    modifier = Modifier.fillMaxWidth(),
+                    fontSize = 22.sp,
+                    color = colorResource(id = R.color.darkgreen_yvy),
+                    textAlign = TextAlign.Center
+
+                )
+            },
+            backgroundColor = colorResource(id = R.color.green_camps),
+            shape = RoundedCornerShape(
+                topStart = 0.dp,
+                topEnd = 15.dp,
+                bottomEnd = 0.dp,
+                bottomStart = 15.dp
+            ),
+            text = {
+                Text(
+                    text = stringResource(id = R.string.logout_text),
+                    modifier = Modifier.fillMaxWidth(),
+                    color = colorResource(id = R.color.darkgreen_yvy),
+                    textAlign = TextAlign.Center
+                )
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = { abrirDialog = false },
+                        modifier = Modifier.width(80.dp)
+                    )
+                    {
+                        Text(
+                            text = "Sim",
+                            color = Color.White,
+                            fontSize = 16.sp
+                        )
+                    }
+                    Button(
+                        onClick = { abrirDialog = false },
+                        modifier = Modifier.width(80.dp)
+
+                        )
+                    {
+                        Text(
+                            text = "Não",
+                            color = Color.White,
+                            fontSize = 16.sp
+                        )
+                    }
+
+                }
+            }
+
+        )
 
     }
 }
