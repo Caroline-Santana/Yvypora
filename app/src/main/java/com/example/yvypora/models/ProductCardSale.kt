@@ -1,6 +1,7 @@
 package com.example.yvypora.models
 
 data class ProductCardSale(
+    val id : Int,
     val name : String,
     val photo : Int,
     val qntd_product : Int,

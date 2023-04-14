@@ -7,8 +7,6 @@ data class MarketerCard(
     val photo: Int,
     val date: String,
     val products: List<ProductCardSale>
-
-//
 )
 
 

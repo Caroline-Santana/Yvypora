@@ -88,7 +88,6 @@ class RegisterMarketer : ComponentActivity() {
 
 @Composable
 fun InputsMarketer() {
-
     val context = LocalContext.current
 
     Column(

@@ -497,6 +497,7 @@ fun CardProducts(data: Product) {
 
 @Composable
 fun Shortcuts() {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -507,7 +508,11 @@ fun Shortcuts() {
             painter = painterResource(id = R.drawable.fruits_category_icon),
             modifier = Modifier
                 .height(80.dp)
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, FruitsResultActivity::class.java)
+                    context.startActivity(intent)
+                },
             contentDescription = "Fruit"
         )
         Image(
@@ -543,7 +548,11 @@ fun Shortcuts() {
         Text(
             text = stringResource(id = R.string.fruits),
             modifier = Modifier
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, FruitsResultActivity::class.java)
+                    context.startActivity(intent)
+                },
             fontSize = 15.sp,
             textAlign = TextAlign.Center
         )
