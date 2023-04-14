@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -18,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.ui.theme.YvyporaTheme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class FruitsResultActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,19 +27,6 @@ class FruitsResultActivity : ComponentActivity() {
         setContent {
             YvyporaTheme {
                 Surface {
-                    Image(
-                        painter = painterResource(id = R.drawable.logo_no_name),
-                        modifier = Modifier
-                            .height(58.dp)
-                            .width(108.dp)
-                            .padding(top = 25.dp),
-                        alignment = Alignment.Center,
-                        contentDescription = "logo",
-                    )
-                    Spacer(
-                        modifier = Modifier.height(36.dp)
-                            .width(20.dp)
-                    )
                     Column(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -51,6 +40,15 @@ class FruitsResultActivity : ComponentActivity() {
                             fontSize = 48.sp
                         )
                     }
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_no_name),
+                        modifier = Modifier
+                            .height(64.dp)
+                            .width(64.dp)
+                            .padding(start = 10.dp, top = 6.dp),
+                        alignment = Alignment.CenterEnd,
+                        contentDescription = "logo",
+                    )
                 }
                 FruitsResultMain()
             }
