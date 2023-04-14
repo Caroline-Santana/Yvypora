@@ -334,11 +334,11 @@ fun MainDescriptionProducts() {
 fun WidhtProductTeste() {
     var weight by remember { mutableStateOf(1.0f) }
     Box(
-        contentAlignment = Alignment.BottomCenter,
+        contentAlignment = Alignment.TopStart,
         modifier = Modifier
             .background(
                 color = colorResource(id = R.color.green_widht_transparent),
-                RoundedCornerShape(16.dp)
+                RoundedCornerShape(7.dp)
             )
             .width(105.dp)
             .height(30.dp)
@@ -351,21 +351,44 @@ fun WidhtProductTeste() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { weight += 0.5f},
+                onClick = { weight = (weight - 0.5f).coerceAtLeast(1f)},
                 modifier = Modifier
                     .height(30.dp)
                     .width(32.dp),
+                shape = RoundedCornerShape(7.dp),
                 colors = ButtonDefaults.buttonColors(Color(217, 217, 217, 255))
             ) {}
+
+            Text(
+            text = "$weight Kg",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = colorResource(id = R.color.green_widht)
+        )
+            Box(contentAlignment = Alignment.Center) {
+                Button(
+                    onClick = { weight += 0.5f },
+                    modifier = Modifier
+                        .height(30.dp)
+                        .width(32.dp),
+                    shape = RoundedCornerShape(7.dp),
+                ) {}
+                Icon(
+                    painter = painterResource(id = R.drawable.more),
+                    modifier = Modifier
+                        .clickable { weight += 0.5f },
+                    contentDescription = "",
+                    tint = Color.White
+                )
+            }
+
         }
 
         Icon(
             painter = painterResource(id = R.drawable.remove),
-            modifier = Modifier.clickable {  weight += 0.5f },
+            modifier = Modifier.clickable {  weight = (weight - 0.5f).coerceAtLeast(1f) },
             contentDescription = ""
         )
-
-
     }
 }
 

@@ -106,9 +106,12 @@
     <string name="title_activity_add_account">AddAccount</string>
     <string name="add_account_pay_methods">Add your account</string>
     <string name="fruits_result">Fruits</string>
-
-
-
+    <string name="logout2">Logout</string>
+    <string name="logout_text">Are you sure youo want to quit</string>
+    <string name="title_activity_description_products">DescriptionProducts</string>
+    <string name="description">Description</string>
+    <string name="buy_now">But now</string>
+    <string name="add_affection">Add. to affection</string>
 
 
 </resources>
