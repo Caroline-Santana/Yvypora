@@ -1,0 +1,495 @@
+Index: app/src/main/java/com/example/yvypora/models/ProductCardSale.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.models\n\ndata class ProductCardSale(\n    val name : String,\n    val photo : Int,\n    val qntd_product : Int,\n    val type_weight: String,\n    val weight_product : Int,\n    val price : Double\n)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/ProductCardSale.kt b/app/src/main/java/com/example/yvypora/models/ProductCardSale.kt
+--- a/app/src/main/java/com/example/yvypora/models/ProductCardSale.kt	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/java/com/example/yvypora/models/ProductCardSale.kt	(date 1681470464625)
+@@ -1,6 +1,7 @@
+ package com.example.yvypora.models
+ 
+ data class ProductCardSale(
++    val id : Int,
+     val name : String,
+     val photo : Int,
+     val qntd_product : Int,
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <uses-permission android:name=\"android.permisson.READ_EXTERNAL_STORAGE\" />\n\n    <application\n        android:allowBackup=\"true\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\n        android:fullBackupContent=\"@xml/backup_rules\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.Yvypora\"\n        tools:targetApi=\"31\">\n        <activity\n            android:name=\".AddAccount\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_account\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddPayMethodsAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_pay_methods_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".PaymentMethodsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_payment_methods\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddAdressAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_adress_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AdressesActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_adresses\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".BuyHistory\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_buy_history_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".EditProfileSreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_edit_profile_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ProfileClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_profile_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenSearch\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_screen_search\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".RegisterMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".InicialScreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".RegisterClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".DecisionSreenActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_decision_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".LoginActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_login\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MainActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_main\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".SplashScreenActivity\"\n            android:exported=\"true\"\n            android:label=\"@string/app_name\"\n            android:theme=\"@style/Theme.Yvypora\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/AndroidManifest.xml	(date 1681478186877)
+@@ -20,9 +20,9 @@
+             android:label="@string/title_activity_add_account"
+             android:theme="@style/Theme.Yvypora" />
+         <activity
+-            android:name=".AddPayMethodsAcitivity"
++            android:name=".FruitsResultActivity"
+             android:exported="false"
+-            android:label="@string/title_activity_add_pay_methods_acitivity"
++            android:label="@string/fruits_result"
+             android:theme="@style/Theme.Yvypora" />
+         <activity
+             android:name=".PaymentMethodsActivity"
+Index: app/src/main/java/com/example/yvypora/FruitsResultActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/FruitsResultActivity.kt b/app/src/main/java/com/example/yvypora/FruitsResultActivity.kt
+new file mode 100644
+--- /dev/null	(date 1681479280424)
++++ b/app/src/main/java/com/example/yvypora/FruitsResultActivity.kt	(date 1681479280424)
+@@ -0,0 +1,76 @@
++package com.example.yvypora
++
++import android.os.Bundle
++import androidx.activity.ComponentActivity
++import androidx.activity.compose.setContent
++import androidx.compose.foundation.Image
++import androidx.compose.foundation.layout.*
++import androidx.compose.material.Surface
++import androidx.compose.material.Text
++import androidx.compose.runtime.Composable
++import androidx.compose.ui.Alignment
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.res.colorResource
++import androidx.compose.ui.res.painterResource
++import androidx.compose.ui.res.stringResource
++import androidx.compose.ui.text.style.TextAlign
++import androidx.compose.ui.tooling.preview.Preview
++import androidx.compose.ui.unit.dp
++import androidx.compose.ui.unit.sp
++import com.example.yvypora.ui.theme.YvyporaTheme
++
++class FruitsResultActivity : ComponentActivity() {
++    override fun onCreate(savedInstanceState: Bundle?) {
++        super.onCreate(savedInstanceState)
++        setContent {
++            YvyporaTheme {
++                Surface {
++                    Image(
++                        painter = painterResource(id = R.drawable.logo_no_name),
++                        modifier = Modifier
++                            .height(58.dp)
++                            .width(108.dp)
++                            .padding(top = 25.dp),
++                        alignment = Alignment.Center,
++                        contentDescription = "logo",
++                    )
++                    Spacer(
++                        modifier = Modifier.height(36.dp)
++                            .width(20.dp)
++                    )
++                    Column(
++                        modifier = Modifier
++                            .fillMaxSize(),
++                        horizontalAlignment = Alignment.CenterHorizontally,
++                        verticalArrangement = Arrangement.Top
++                    ) {
++                        Text(
++                            text = stringResource(id = R.string.fruits_result),
++                            textAlign = TextAlign.Center,
++                            color = colorResource(id = R.color.darkgreen_yvy),
++                            fontSize = 48.sp
++                        )
++                    }
++                }
++                FruitsResultMain()
++            }
++        }
++
++    }
++}
++
++@Composable
++fun FruitsResultMain() {
++    Surface() {
++        Column() {
++
++        }
++    }
++}
++
++
++@Preview(showBackground = true)
++@Composable
++fun FruitsPreview() {
++    FruitsResultActivity()
++}
+\ No newline at end of file
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\n    <string name=\"app_name\">Yvypora</string>\n    <string name=\"title_activity_main\">MainActivity</string>\n    <string name=\"title_activity_main2\">MainActivity2</string>\n    <string name=\"slogan\">\"Find your fair wherever you are\"</string>\n    <string name=\"yvypora\">\"yvyporã\"</string>\n    <string name=\"login\">\"Login\"</string>\n    <string name=\"enter\">\"Enter\"</string>\n    <string name=\"question\">\"Don't have an account?\"</string>\n    <string name=\"register\">\"Register\"</string>\n    <string name=\"title_activity_login\">LoginActivity</string>\n    <string name=\"prompt_email\">Email</string>\n    <string name=\"prompt_password\">Password</string>\n    <string name=\"action_sign_in\">Sign in or register</string>\n    <string name=\"action_sign_in_short\">Sign in</string>\n    <string name=\"welcome\">\"Welcome !\"</string>\n    <string name=\"invalid_username\">Not a valid username</string>\n    <string name=\"invalid_password\">Password must be >5 characters</string>\n    <string name=\"login_failed\">\"Login failed\"</string>\n    <string name=\"name\">\"Name:\"</string>\n    <string name=\"email\">\"Email:\"</string>\n    <string name=\"name_error\">\"Provide a username!\"</string>\n    <string name=\"email_error\">\"Provide a valid email!\"</string>\n    <string name=\"icon_content_description\">\"Vegetable box\"</string>\n    <string name=\"title1_activity_decision_sreen\">Welcome to</string>\n    <string name=\"title_activity_decision_sreen\">Welcome to</string>\n    <string name=\"title2_activity_decision_sreen\">your digital fair</string>\n    <string name=\"question_decision_sreen\">How will you use the app?</string>\n    <string name=\"decision_option1\">CLIENT</string>\n    <string name=\"decision_option2\">MARKETER</string>\n    <string name=\"title_activity_register_client\" translatable=\"false\">RegisterClient</string>\n    <string name=\"password\">Password:</string>\n    <string name=\"message_error_pass1\">Provide a password!</string>\n    <string name=\"message_error_pass2\">Cannot be more than 8 characters!</string>\n    <string name=\"profile_picture\">Add a profile picture</string>\n    <string name=\"title_cpf\">CPF:</string>\n    <string name=\"cpf_error_empty\">Provide a CPF!</string>\n    <string name=\"cpf_error_invalid\">Invalid CPF!</string>\n    <string name=\"title_cep\">CEP:</string>\n    <string name=\"cep_error_empty\">Provide a CEP!</string>\n    <string name=\"cep_error_invalid\">Invalid CEP!</string>\n    <string name=\"button_register\">Register</string>\n    <string name=\"title_activity_register_marketer\">RegisterMarketer</string>\n    <string name=\"name_tent\">Tent name</string>\n    <string name=\"phone_tent\">Tent phone</string>\n    <string name=\"date_of_birth\">Date of birth</string>\n    <string name=\"phone_error_empty\">Provide a phone!</string>\n    <string name=\"title_phone\">Phone</string>\n    <string name=\"title_activity_inicial_screen\">InicialScreen</string>\n    <string name=\"title_cnpj\">CNPJ:</string>\n    <string name=\"cnpj_error_empty\">Provide a CNPJ!</string>\n    <string name=\"cnpj_error_invalid\">Invalid CNPJ!</string>\n    <string name=\"gender_f\">Feminine</string>\n    <string name=\"gender_m\">Masculine</string>\n    <string name=\"lupa\">Magnifying glass</string>\n    <string name=\"fruits\">Fruits</string>\n    <string name=\"vegetable\">Veggies</string>\n    <string name=\"spices\">Spices</string>\n    <string name=\"other\">Others</string>\n    <string name=\"isBirthErrorEmpty\">Provide a Birth!</string>\n    <string name=\"titleBirth\">Date of Birth</string>\n    <string name=\"all\">All</string>\n    <string name=\"discount\">At discount</string>\n    <string name=\"near\">Near to you</string>\n    <string name=\"home\">Icon home</string>\n    <string name=\"profile\">Icon profile</string>\n    <string name=\"fair\">Icon fair</string>\n    <string name=\"live\">Icon live</string>\n    <string name=\"title_activity_screen_search\">ScreenSearch</string>\n    <string name=\"back_screen\">Shortcut to switch screen</string>\n    <string name=\"latest_search\">Latest Searches</string>\n    <string name=\"delete_search\">Delete a survey</string>\n    <string name=\"title_activity_profile_client\">ProfileClient</string>\n    <string name=\"photo_profile\">Profile picture</string>\n    <string name=\"edit_account\">Edit account</string>\n    <string name=\"address\">Address</string>\n    <string name=\"payment_methods\">Payment methods</string>\n    <string name=\"purchase_history\">Purchase history</string>\n    <string name=\"logout\">Logout</string>\n    <string name=\"title_activity_edit_profile_sreen\">EditProfileSreen</string>\n    <string name=\"to_save\">To save</string>\n    <string name=\"title_activity_address\">AddressActivity</string>\n    <string name=\"title_activity_adresses\">AdressesActivity</string>\n    <string name=\"adresses\">Adresses</string>\n    <string name=\"main_adresses\">Main address</string>\n    <string name=\"add_new_adress\">Add new addresses by clicking below:</string>\n    <string name=\"to_add\">To add</string>\n    <string name=\"title_activity_add_adress_acitivity\">AddAdressAcitivity</string>\n    <string name=\"title_activity_buy_history_acitivity\">BuyHistory</string>\n    <string name=\"choose_location\">Choose the location</string>\n    <string name=\"details_address\">Address details</string>\n    <string name=\"name_address\">Address name</string>\n    <string name=\"name_of_recipient\">Name of the recipient</string>\n    <string name=\"phone_address\">Contact phone</string>\n    <string name=\"cep_address\">CEP</string>\n    <string name=\"title_activity_payment_methods\">PaymentMethodsActivity</string>\n    <string name=\"title_payment_methods\">Payment methods</string>\n    <string name=\"credit_card\">Credit card</string>\n    <string name=\"title_activity_add_pay_methods_acitivity\">AddPayMethodsAcitivity</string>\n    <string name=\"add_card_pay_methods\">Add your card</string>\n    <string name=\"name_card_pay_methods\">Name on card</string>\n    <string name=\"number_card_pay_methods\">Card number</string>\n    <string name=\"validity_card_pay_methods\">Expiration date</string>\n    <string name=\"add_card\">Add. card</string>\n    <string name=\"add_account\">Add. account</string>\n    <string name=\"title_activity_add_account\">AddAccount</string>\n    <string name=\"add_account_pay_methods\">Add your account</string>\n\n\n\n\n\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+--- a/app/src/main/res/values/strings.xml	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/res/values/strings.xml	(date 1681478186886)
+@@ -105,6 +105,7 @@
+     <string name="add_account">Add. account</string>
+     <string name="title_activity_add_account">AddAccount</string>
+     <string name="add_account_pay_methods">Add your account</string>
++    <string name="fruits_result">Fruits</string>
+ 
+ 
+ 
+Index: app/src/main/res/values-pt-rBR/stringsBR.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n    <string name=\"app_name\">Yvypora</string>\n    <string name=\"title_activity_main\">MainActivity</string>\n    <string name=\"title_activity_main2\">MainActivity2</string>\n    <string name=\"slogan\">\"Encontre sua feira de onde estiver\"</string>\n    <string name=\"yvypora\">\"yvyporã\"</string>\n    <string name=\"login\">\"Login\"</string>\n    <string name=\"enter\">\"Entrar\"</string>\n    <string name=\"question\">\"Não possui uma conta?\"</string>\n    <string name=\"register\">\"Cadastre-se\"</string>\n    <string name=\"name\">\"Nome:\"</string>\n    <string name=\"email\">\"Email:\"</string>\n    <string name=\"name_error\">\"Informe um nome de usuário!\"</string>\n    <string name=\"email_error\">\"Informe um email válido!\"</string>\n    <string name=\"icon_content_description\">\"Caixa de vegetais\"</string>\n    <string name=\"title1_activity_decision_sreen\">Bem-vindo(a) ao</string>\n    <string name=\"title_activity_decision_sreen\">Welcome to</string>\n    <string name=\"title2_activity_decision_sreen\">a sua feira digital</string>\n    <string name=\"question_decision_sreen\">Como você usuará o aplicativo?</string>\n    <string name=\"decision_option1\">CLIENTE</string>\n    <string name=\"title_activity_login\">LoginActivity</string>\n    <string name=\"prompt_email\">Email</string>\n    <string name=\"prompt_password\">Password</string>\n    <string name=\"action_sign_in\">Sign in or register</string>\n    <string name=\"action_sign_in_short\">Sign in</string>\n    <string name=\"welcome\">\"Welcome !\"</string>\n    <string name=\"invalid_username\">Not a valid username</string>\n    <string name=\"invalid_password\">Password must be >5 characters</string>\n    <string name=\"login_failed\">\"Login failed\"</string>\n    <string name=\"decision_option2\">FEIRANTE</string>\n    <string name=\"password\">Senha:</string>\n    <string name=\"message_error_pass1\">Informe uma senha!</string>\n    <string name=\"message_error_pass2\">Não pode ter mais de 8 caracteres!</string>\n    <string name=\"profile_picture\">Adicione uma foto de perfil</string>\n    <string name=\"title_cpf\">CPF</string>\n    <string name=\"cpf_error_empty\">Informe um CPF!</string>\n    <string name=\"cpf_error_invalid\">CPF inválido !</string>\n    <string name=\"title_cep\">CEP</string>\n    <string name=\"cep_error_empty\">Informe um CEP!</string>\n    <string name=\"cep_error_invalid\">CEP inválido!</string>\n    <string name=\"button_register\">Cadastrar</string>\n    <string name=\"title_activity_register_marketer\">RegisterMarketer</string>\n    <string name=\"name_tent\">Nome da barraca</string>\n    <string name=\"phone_tent\">Telefone da barraca</string>\n    <string name=\"date_of_birth\">Data de nascimento</string>\n    <string name=\"title_phone\">Telefone</string>\n    <string name=\"phone_error_empty\">Informe um telefone!</string>\n    <string name=\"title_activity_inicial_screen\">InicialScreen</string>\n    <string name=\"title_cnpj\">CNPJ</string>\n    <string name=\"cnpj_error_empty\">Informe um CNPJ!</string>\n    <string name=\"cnpj_error_invalid\">CNPJ inválido!</string>\n    <string name=\"gender_f\">Feminino</string>\n    <string name=\"gender_m\">Masculino</string>\n    <string name=\"lupa\">Lupa</string>\n    <string name=\"fruits\">Frutas</string>\n    <string name=\"vegetable\">Vegetais</string>\n    <string name=\"spices\">Temperos</string>\n    <string name=\"other\">Outros</string>\n    <string name=\"isBirthErrorEmpty\">Informe sua data de nascimento!</string>\n    <string name=\"titleBirth\">Data de nascimento</string>\n    <string name=\"all\">Todos</string>\n    <string name=\"discount\">Em desconto</string>\n    <string name=\"near\">Perto de você</string>\n    <string name=\"home\">Icone home</string>\n    <string name=\"profile\">Icone perfil</string>\n    <string name=\"fair\">Icone feira</string>\n    <string name=\"live\">Icone live</string>\n    <string name=\"title_activity_screen_search\">ScreenSearch</string>\n    <string name=\"back_screen\">Atalho para mudar de tela</string>\n    <string name=\"latest_search\">Últimas pesquisas</string>\n    <string name=\"delete_search\">Deletar uma pesquisa</string>\n    <string name=\"title_activity_profile_client\">ProfileClient</string>\n    <string name=\"photo_profile\">Foto de perfil</string>\n    <string name=\"address\">Endereço</string>\n    <string name=\"edit_account\">Editar conta</string>\n    <string name=\"payment_methods\">Formas de pagamento</string>\n    <string name=\"purchase_history\">Histórico de compra</string>\n    <string name=\"logout\">Sair</string>\n    <string name=\"title_activity_edit_profile_sreen\">EditProfileSreen</string>\n    <string name=\"to_save\">Salvar</string>\n    <string name=\"title_activity_address\">AddressActivity</string>\n    <string name=\"title_activity_adresses\">AdressesActivity</string>\n    <string name=\"adresses\">Endereços</string>\n    <string name=\"main_adresses\">Endereço principal</string>\n    <string name=\"add_new_adress\">Adcione novos endereços clicando a baixo:</string>\n    <string name=\"to_add\">Adicionar</string>\n    <string name=\"title_activity_add_adress_acitivity\">AddAdressAcitivity</string>\n    <string name=\"choose_location\">Escolha o local</string>\n    <string name=\"details_address\">Detalhes do endereço</string>\n    <string name=\"name_address\">Nome do endereço</string>\n    <string name=\"name_of_recipient\">Nome de quem vai receber</string>\n    <string name=\"phone_address\">Telefone para contato</string>\n    <string name=\"cep_address\">CEP</string>\n\n    <string name=\"title_activity_buy_history_acitivity\">Histórico de Compras</string>\n\n\n    <string name=\"title_activity_payment_methods\">PaymentMethodsActivity</string>\n    <string name=\"title_payment_methods\">Formas de pagamento</string>\n    <string name=\"credit_card\">Cartão de crédito</string>\n    <string name=\"title_activity_add_pay_methods_acitivity\">AddPayMethodsAcitivity</string>\n    <string name=\"add_card_pay_methods\">Adicionar seu cartão</string>\n    <string name=\"name_card_pay_methods\">Nome no cartão</string>\n    <string name=\"number_card_pay_methods\">Número do cartão</string>\n    <string name=\"validity_card_pay_methods\">Data de validade</string>\n    <string name=\"add_card\">Add. cartão</string>\n    <string name=\"add_account\">Add. conta</string>\n    <string name=\"title_activity_add_account\">AddAccount</string>\n    <string name=\"add_account_pay_methods\">Adcionar sua conta</string>\n\n\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values-pt-rBR/stringsBR.xml b/app/src/main/res/values-pt-rBR/stringsBR.xml
+--- a/app/src/main/res/values-pt-rBR/stringsBR.xml	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/res/values-pt-rBR/stringsBR.xml	(date 1681478186882)
+@@ -108,6 +108,7 @@
+     <string name="add_account">Add. conta</string>
+     <string name="title_activity_add_account">AddAccount</string>
+     <string name="add_account_pay_methods">Adcionar sua conta</string>
++    <string name="fruits_result">Frutas</string>
+ 
+ 
+ </resources>
+\ No newline at end of file
+Index: app/src/main/java/com/example/yvypora/BuyHistoryActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\nimport android.content.Intent\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.*\nimport androidx.compose.foundation.gestures.scrollable\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.lazy.LazyColumn\nimport androidx.compose.foundation.lazy.LazyListState\nimport androidx.compose.foundation.lazy.items\nimport androidx.compose.foundation.lazy.rememberLazyListState\nimport androidx.compose.material.Card\nimport androidx.compose.material.Text\nimport androidx.compose.runtime.Composable\nimport androidx.compose.runtime.rememberCoroutineScope\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.example.yvypora.models.MarketerCard\nimport com.example.yvypora.models.ProductCardSale\nimport com.example.yvypora.ui.theme.SpaceGrotesk\nimport com.example.yvypora.ui.theme.YvyporaTheme\nimport kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.awaitCancellation\nimport kotlinx.coroutines.launch\n\nclass BuyHistory : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                BuyHistoryMain()\n            }\n        }\n\n    }\n}\n\n@Composable\nfun BuyHistoryMain() {\n    Box {\n        Column() {\n            val context = LocalContext.current\n            Column(\n                modifier = Modifier\n                    .fillMaxWidth()\n                    .fillMaxSize()\n            )\n            {\n                Row(\n                    modifier = Modifier\n                        .fillMaxWidth()\n                        .padding(top = 30.dp, start = 15.dp, bottom = 15.dp),\n                    horizontalArrangement = Arrangement.Center,\n                    verticalAlignment = Alignment.CenterVertically\n\n                ) {\n                    Image(\n                        painter = painterResource(id = R.drawable.arrow),\n                        modifier = Modifier\n                            .height(45.dp)\n                            .width(55.dp)\n                            .clickable {\n                                val intent = Intent(context, ProfileClient()::class.java)\n                                context.startActivity(intent)\n                            },\n                        alignment = Alignment.BottomStart,\n                        contentDescription = stringResource(id = R.string.back_screen)\n                    )\n                    Text(\n                        text = stringResource(id = R.string.purchase_history),\n                        modifier = Modifier\n                            .fillMaxWidth(),\n                        fontSize = 24.sp,\n                        textAlign = TextAlign.Center,\n                        color = colorResource(id = R.color.darkgreen_yvy)\n                    )\n                }\n                Column(\n                    Modifier\n                        .fillMaxWidth()\n                        .fillMaxHeight()\n                ) {\n                    Row() {\n                        ListOfMarketerCard(marketers = listMarketerCard)\n\n                    }\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun ListOfMarketerCard(marketers: List<MarketerCard>) {\n    LazyColumn() {\n        items(marketers) { marketer -> CardMarketer(marketer = marketer) }\n\n    }\n}\n@Composable\nfun ListOfProductCardSale(cards: List<ProductCardSale>) {\n\n    LazyColumn(\n        modifier = Modifier.height(500.dp),\n        userScrollEnabled = false\n    ) {\n        items(cards) { card -> CardProduct(card = card) }\n    }\n}\n\nval listMarketerCard = listOf<MarketerCard>(\n    MarketerCard(\n        name = \"Barraca do Seu Zé\",\n        sub_name = \"Vila Madalena\",\n        photo = R.drawable.buy_history_card_marketer,\n        date = \"11/02/2022\",\n        products = listOf(\n            ProductCardSale(\n                name = \"Abóbora\",\n                qntd_product = 3,\n                photo = 1,\n                type_weight = \"g\",\n                weight_product = 800,\n                price = 24.00,\n            ),\n            ProductCardSale(\n                name = \"Abóbora\",\n                qntd_product = 3,\n                photo = 1,\n                type_weight = \"g\",\n                weight_product = 800,\n                price = 24.00,\n            ),\n            ProductCardSale(\n                name = \"Abóbora\",\n                qntd_product = 3,\n                photo = 1,\n                type_weight = \"g\",\n                weight_product = 800,\n                price = 24.00,\n            )\n        )\n    ),\n    MarketerCard(\n        name = \"Barraca do Seu Zé\",\n        sub_name = \"Vila Madalena\",\n        photo = R.drawable.buy_history_card_marketer,\n        date = \"11/02/2022\",\n        products = listOf(\n            ProductCardSale(\n                name = \"Manga\",\n                qntd_product = 3,\n                photo = 1,\n                type_weight = \"g\",\n                weight_product = 800,\n                price = 24.00,\n            ),\n            ProductCardSale(\n                name = \"Alface\",\n                qntd_product = 3,\n                photo = 1,\n                type_weight = \"g\",\n                weight_product = 800,\n                price = 24.00,\n            ),\n            ProductCardSale(\n                name = \"Beteraba\",\n                qntd_product = 3,\n                photo = 1,\n                type_weight = \"g\",\n                weight_product = 800,\n                price = 24.00,\n            )\n        )\n    )\n)\n\n\n// dado (ordem --> feirantes --> produtos)\n\n//val listProductCard = listOf<ProductCardSale>(\n//    ProductCardSale(\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 24.00\n//    ),\n//    ProductCardSale(\n//        name = \"Abóbora\",\n//        photo = 1,\n//        qntd_product = 3,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 24.00\n//    )\n//)\n\n@Composable\nfun CardMarketer(marketer: MarketerCard) {\n    var nameCard = marketer.name\n    var subnameCard = marketer.sub_name\n//    tem que descomentar e usar o que o banco retorna\n//    var photo = marketer.photo\n    var photo = painterResource(id = R.drawable.buy_history_card_marketer)\n    var date = marketer.date\n    var products = marketer.products\n\n    Card(\n        modifier = Modifier\n            .fillMaxWidth()\n    ) {\n        Column {\n            Row(verticalAlignment = Alignment.CenterVertically) {\n                Image(\n                    painter = photo,\n                    contentDescription = \"\",\n                    modifier = Modifier\n                        .width(160.dp)\n                        .height(160.dp)\n                )\n                Column(\n                    modifier = Modifier\n                        .fillMaxWidth(),\n                    horizontalAlignment = Alignment.CenterHorizontally\n                ) {\n                    Text(\n                        text = nameCard,\n                        fontWeight = FontWeight.Medium,\n                        fontSize = 20.sp,\n                        color = colorResource(id = R.color.green_yvy)\n                    )\n                    Text(\n                        text = subnameCard,\n                        fontWeight = FontWeight.Light,\n                        fontSize = 16.sp,\n                        color = colorResource(id = R.color.green_yvy)\n\n                    )\n                    Text(\n                        text = date,\n                        fontWeight = FontWeight.Bold,\n                        fontSize = 20.sp,\n                        color = colorResource(id = R.color.green_options)\n                    )\n                }\n\n            }\n            ListOfProductCardSale(cards = marketer.products)\n        }\n    }\n}\n\n@Composable\nfun CardProduct(card: ProductCardSale) {\n    var nameProduct = card.name\n//    var photoProduct = card.photo\n    var photoProduct = painterResource(id = R.drawable.abobora)\n    var qntProduct = card.qntd_product\n    var typeProduct = card.type_weight\n    var weightProduct = card.weight_product\n    var priceProduct = card.price\n\n    Card(\n        Modifier\n            .fillMaxWidth()\n            .fillMaxHeight()\n            .padding(10.dp),\n        border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))\n    ) {\n        Row(\n            horizontalArrangement = Arrangement.SpaceEvenly,\n            verticalAlignment = Alignment.CenterVertically\n        ) {\n            Column(horizontalAlignment = Alignment.CenterHorizontally) {\n                Text(\n                    text = nameProduct,\n                    fontWeight = FontWeight.Bold,\n                    fontSize = 26.sp,\n                    fontFamily = SpaceGrotesk,\n                    color = colorResource(id = R.color.darkgreen_yvy)\n                )\n                Image(\n                    painter = photoProduct,\n                    contentDescription = \"\",\n                    modifier = Modifier\n                        .width(150.dp)\n                        .height(100.dp)\n                )\n            }\n            Column(\n                Modifier\n                    .fillMaxWidth(0.7f),\n                horizontalAlignment = Alignment.CenterHorizontally,\n                verticalArrangement = Arrangement.Center\n            ) {\n                Row() {\n                    Text(\n                        text = weightProduct.toString(),\n                        fontWeight = FontWeight.Bold,\n                        fontSize = 20.sp,\n                        fontFamily = SpaceGrotesk,\n                        color = colorResource(id = R.color.dark_gray)\n                    )\n                    Text(\n                        text = typeProduct, fontWeight = FontWeight.Bold,\n                        fontSize = 20.sp,\n                        fontFamily = SpaceGrotesk,\n                        color = colorResource(id = R.color.dark_gray)\n                    )\n                }\n                Text(\n                    text = \"Qnt : $qntProduct\",\n                    fontWeight = FontWeight.Medium,\n                    fontSize = 20.sp,\n                    fontFamily = SpaceGrotesk,\n                    color = colorResource(id = R.color.darkgreen_yvy)\n                )\n                Text(\n                    text = \"R$$priceProduct\",\n                    fontWeight = FontWeight.Bold,\n                    fontSize = 24.sp,\n                    fontFamily = SpaceGrotesk,\n                    color = colorResource(id = R.color.darkgreen_yvy)\n                )\n            }\n        }\n    }\n}\n\n\n@Preview(showBackground = true)\n@Composable\nfun BuyPreview() {\n    BuyHistoryMain()\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/BuyHistoryActivity.kt b/app/src/main/java/com/example/yvypora/BuyHistoryActivity.kt
+--- a/app/src/main/java/com/example/yvypora/BuyHistoryActivity.kt	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/java/com/example/yvypora/BuyHistoryActivity.kt	(date 1681477639668)
+@@ -2,6 +2,7 @@
+ 
+ import android.content.Intent
+ import android.os.Bundle
++import android.util.Log
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
+ import androidx.compose.foundation.*
+@@ -12,11 +13,13 @@
+ import androidx.compose.foundation.lazy.items
+ import androidx.compose.foundation.lazy.rememberLazyListState
+ import androidx.compose.material.Card
++import androidx.compose.material.Surface
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.rememberCoroutineScope
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.res.colorResource
+ import androidx.compose.ui.res.painterResource
+@@ -103,17 +106,18 @@
+ 
+ @Composable
+ fun ListOfMarketerCard(marketers: List<MarketerCard>) {
++
+     LazyColumn() {
+         items(marketers) { marketer -> CardMarketer(marketer = marketer) }
+ 
+     }
+ }
++
+ @Composable
+ fun ListOfProductCardSale(cards: List<ProductCardSale>) {
+-
+     LazyColumn(
+-        modifier = Modifier.height(500.dp),
+-        userScrollEnabled = false
++        modifier = Modifier.height(600.dp),
++//        userScrollEnabled = false
+     ) {
+         items(cards) { card -> CardProduct(card = card) }
+     }
+@@ -127,6 +131,25 @@
+         date = "11/02/2022",
+         products = listOf(
+             ProductCardSale(
++                id = 1,
++                name = "Abóbora",
++                qntd_product = 3,
++                photo = 1,
++                type_weight = "g",
++                weight_product = 800,
++                price = 24.00,
++            ),
++            ProductCardSale(
++                id = 2,
++                name = "Abóbora",
++                qntd_product = 3,
++                photo = 1,
++                type_weight = "g",
++                weight_product = 800,
++                price = 24.00,
++            ),
++            ProductCardSale(
++                id = 3,
+                 name = "Abóbora",
+                 qntd_product = 3,
+                 photo = 1,
+@@ -135,6 +158,7 @@
+                 price = 24.00,
+             ),
+             ProductCardSale(
++                id = 4,
+                 name = "Abóbora",
+                 qntd_product = 3,
+                 photo = 1,
+@@ -143,13 +167,24 @@
+                 price = 24.00,
+             ),
+             ProductCardSale(
++                id = 5,
+                 name = "Abóbora",
+                 qntd_product = 3,
+                 photo = 1,
+                 type_weight = "g",
+                 weight_product = 800,
+                 price = 24.00,
+-            )
++
++                ),
++            ProductCardSale(
++                id = 6,
++                name = "Abóbora",
++                qntd_product = 3,
++                photo = 1,
++                type_weight = "g",
++                weight_product = 800,
++                price = 24.00,
++            ),
+         )
+     ),
+     MarketerCard(
+@@ -159,6 +194,7 @@
+         date = "11/02/2022",
+         products = listOf(
+             ProductCardSale(
++                id = 1,
+                 name = "Manga",
+                 qntd_product = 3,
+                 photo = 1,
+@@ -167,6 +203,7 @@
+                 price = 24.00,
+             ),
+             ProductCardSale(
++                id = 2,
+                 name = "Alface",
+                 qntd_product = 3,
+                 photo = 1,
+@@ -175,6 +212,7 @@
+                 price = 24.00,
+             ),
+             ProductCardSale(
++                id = 3,
+                 name = "Beteraba",
+                 qntd_product = 3,
+                 photo = 1,
+@@ -186,28 +224,6 @@
+     )
+ )
+ 
+-
+-// dado (ordem --> feirantes --> produtos)
+-
+-//val listProductCard = listOf<ProductCardSale>(
+-//    ProductCardSale(
+-//        name = "Abóbora",
+-//        qntd_product = 3,
+-//        photo = 1,
+-//        type_weight = "g",
+-//        weight_product = 800,
+-//        price = 24.00
+-//    ),
+-//    ProductCardSale(
+-//        name = "Abóbora",
+-//        photo = 1,
+-//        qntd_product = 3,
+-//        type_weight = "g",
+-//        weight_product = 800,
+-//        price = 24.00
+-//    )
+-//)
+-
+ @Composable
+ fun CardMarketer(marketer: MarketerCard) {
+     var nameCard = marketer.name
+@@ -222,14 +238,17 @@
+         modifier = Modifier
+             .fillMaxWidth()
+     ) {
+-        Column {
+-            Row(verticalAlignment = Alignment.CenterVertically) {
++        Column() {
++            Row(
++                Modifier.background(Color(227, 240, 227, 138)),
++                verticalAlignment = Alignment.CenterVertically
++            ) {
+                 Image(
+                     painter = photo,
+                     contentDescription = "",
+                     modifier = Modifier
+-                        .width(160.dp)
+-                        .height(160.dp)
++                        .width(120.dp)
++                        .height(120.dp)
+                 )
+                 Column(
+                     modifier = Modifier
+@@ -277,18 +296,23 @@
+         Modifier
+             .fillMaxWidth()
+             .fillMaxHeight()
+-            .padding(10.dp),
++            .padding(25.dp),
+         border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
+     ) {
+         Row(
+-            horizontalArrangement = Arrangement.SpaceEvenly,
++            Modifier.width(100.dp),
++            horizontalArrangement = Arrangement.Center,
+             verticalAlignment = Alignment.CenterVertically
+         ) {
+-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
++            Column(
++                horizontalAlignment = Alignment.CenterHorizontally,
++                verticalArrangement = Arrangement.Center
++            ) {
+                 Text(
+                     text = nameProduct,
++                    Modifier.padding(10.dp),
+                     fontWeight = FontWeight.Bold,
+-                    fontSize = 26.sp,
++                    fontSize = 16.sp,
+                     fontFamily = SpaceGrotesk,
+                     color = colorResource(id = R.color.darkgreen_yvy)
+                 )
+@@ -310,13 +334,13 @@
+                     Text(
+                         text = weightProduct.toString(),
+                         fontWeight = FontWeight.Bold,
+-                        fontSize = 20.sp,
++                        fontSize = 12.sp,
+                         fontFamily = SpaceGrotesk,
+                         color = colorResource(id = R.color.dark_gray)
+                     )
+                     Text(
+                         text = typeProduct, fontWeight = FontWeight.Bold,
+-                        fontSize = 20.sp,
++                        fontSize = 12.sp,
+                         fontFamily = SpaceGrotesk,
+                         color = colorResource(id = R.color.dark_gray)
+                     )
+@@ -324,14 +348,14 @@
+                 Text(
+                     text = "Qnt : $qntProduct",
+                     fontWeight = FontWeight.Medium,
+-                    fontSize = 20.sp,
++                    fontSize = 16.sp,
+                     fontFamily = SpaceGrotesk,
+                     color = colorResource(id = R.color.darkgreen_yvy)
+                 )
+                 Text(
+                     text = "R$$priceProduct",
+                     fontWeight = FontWeight.Bold,
+-                    fontSize = 24.sp,
++                    fontSize = 20.sp,
+                     fontFamily = SpaceGrotesk,
+                     color = colorResource(id = R.color.darkgreen_yvy)
+                 )
+Index: app/src/main/java/com/example/yvypora/RegisterMarketer.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\nimport android.net.Uri\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.rememberLauncherForActivityResult\nimport androidx.activity.compose.setContent\nimport androidx.activity.result.contract.ActivityResultContracts\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.clickable\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.rememberScrollState\nimport androidx.compose.foundation.selection.selectable\nimport androidx.compose.foundation.shape.CircleShape\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.foundation.text.KeyboardOptions\nimport androidx.compose.foundation.verticalScroll\nimport androidx.compose.material.*\nimport androidx.compose.material.MaterialTheme.colors\nimport androidx.compose.runtime.*\nimport androidx.compose.runtime.saveable.rememberSaveable\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.focus.FocusRequester\nimport androidx.compose.ui.focus.focusRequester\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.layout.ContentScale\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.input.KeyboardCapitalization\nimport androidx.compose.ui.text.input.KeyboardType\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport androidx.compose.ui.unit.Dp\nimport coil.compose.rememberImagePainter\nimport com.example.yvypora.ui.theme.YvyporaTheme\nimport com.example.yvypora.utils.*\n\n//import androidx.compose.ui.platform.ContextAmbient\n\nclass RegisterMarketer : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                Surface(\n                    modifier = Modifier.fillMaxWidth(),\n\n                    ) {\n                    Image(\n                        painter = painterResource(id = R.drawable.logo_no_name),\n                        modifier = Modifier\n                            .height(58.dp)\n                            .width(55.dp)\n                            .padding(horizontal = 28.dp),\n                        alignment = Alignment.BottomStart,\n                        contentDescription = \"logo\",\n\n                        )\n                    Spacer(\n                        modifier = Modifier.height(36.dp)\n                    )\n                    Column(\n                        modifier = Modifier\n                            .fillMaxSize()\n                            .padding(top = 50.dp),\n                        horizontalAlignment = Alignment.CenterHorizontally,\n                        verticalArrangement = Arrangement.Top\n                    ) {\n                        Text(\n                            text = stringResource(id = R.string.register),\n                            modifier = Modifier.padding(top = 35.dp, end = 10.dp),\n                            textAlign = TextAlign.Center,\n                            color = colorResource(id = R.color.darkgreen_yvy),\n                            fontSize = 48.sp\n                        )\n                    }\n                }\n            }\n            InputsMarketer()\n        }\n    }\n}\n\n@Composable\nfun InputsMarketer() {\n\n    val context = LocalContext.current\n\n    Column(\n        modifier =\n        Modifier\n            .fillMaxSize()\n            .fillMaxWidth()\n            .padding(top = 170.dp, start = 24.dp, end = 24.dp)\n            .verticalScroll(state = rememberScrollState(), enabled = true),\n        verticalArrangement = Arrangement.Center,\n\n        ) {\n        //Input nome\n        NameInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n        //Input Email\n        EmailInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n        // Input senha\n        PassInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n        //Input photo\n        PhotoInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n\n        //Input cpf\n        CnpjInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n\n        //Input cpf\n        CpfInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n\n        //Input telefone\n        PhoneInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n\n        //Input birth\n        BirthMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n        //Input genero\n        GenderInputMarketer()\n\n\n        //Butão de cadastro\n        Button(\n            onClick = {\n//                val intent = Intent(context,RegisterClient()::class.java)\n//                context.startActivity(intent)\n            },\n            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),\n            modifier = Modifier\n                .width(217.dp)\n                .height(48.dp)\n                .align(Alignment.CenterHorizontally),\n            shape = RoundedCornerShape(5.dp),\n\n            ) {\n            Text(\n                text = stringResource(id = R.string.button_register),\n                color = Color.White,\n                fontSize = 20.sp\n            )\n        }\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n    }\n}\n\n@Composable\nfun NameInputMarketer() {\n    var nameState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isNameError by remember {\n        mutableStateOf(false)\n    }\n    val inputsFocusRequest = FocusRequester()\n\n    Text(\n        text = stringResource(id = R.string.name_tent),\n        modifier = Modifier.padding(top = 5.dp),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = nameState,\n        onValueChange = { newName ->\n            var lastChar = if (newName.isEmpty()) {\n                isNameError = true\n                newName\n\n            } else {\n                newName.get(newName.length - 1)\n                isNameError = false\n\n            }\n            var newValue = if (lastChar == '.' || lastChar == ',')\n                newName.dropLast(1)\n            else newName\n            nameState = newValue\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .focusRequester(inputsFocusRequest),\n        isError = isNameError,\n        keyboardOptions = KeyboardOptions(\n            keyboardType = KeyboardType.Text,\n            capitalization = KeyboardCapitalization.Sentences\n        ),\n        singleLine = true,\n\n        )\n\n    if (isNameError) {\n        Text(\n            text = stringResource(id = R.string.name_error),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\n@Composable\nfun EmailInputMarketer() {\n    var emailState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isEmailError by remember {\n        mutableStateOf(false)\n    }\n    val inputsFocusRequest = FocusRequester()\n\n    val EMAIL_REGEX = \"^[A-Za-z](.*)([@]{1})(.{1,})(\\\\.)(.{1,})\";\n    fun isEmailValid(email: String): Boolean {\n        return EMAIL_REGEX.toRegex().matches(email);\n\n    }\n\n    Text(\n        text = stringResource(id = R.string.email),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = emailState,\n        onValueChange = { newEmail ->\n            if (newEmail.isEmpty()) {\n                isEmailError = true\n            } else if (isEmailValid(newEmail) == false) {\n                isEmailError = true\n            } else {\n                newEmail.get(newEmail.length - 1)\n                isEmailError = false\n            }\n\n            emailState = newEmail\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .focusRequester(inputsFocusRequest),\n        isError = isEmailError,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isEmailError) {\n        Text(\n            text = stringResource(id = R.string.email_error),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n\n}\n\n@Composable\nfun PassInputMarketer() {\n    var passwordState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n\n\n    var isPasswordError by remember {\n        mutableStateOf(false)\n    }\n    var isPasswordErrorEmpty by remember {\n        mutableStateOf(false)\n    }\n\n    val mMaxLength = 8\n\n    val inputsFocusRequest = FocusRequester()\n\n\n    Text(\n        text = stringResource(id = R.string.password),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = passwordState,\n        onValueChange = { newPass ->\n            if (newPass.isEmpty()) {\n                isPasswordErrorEmpty = true\n            } else if (newPass.length >= mMaxLength) {\n                isPasswordError = true\n            } else {\n                newPass.get(newPass.length - 1)\n                isPasswordError = false\n            }\n\n            if (isPasswordError) newPass.dropLast(1)\n\n            passwordState = newPass\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .focusRequester(inputsFocusRequest),\n        isError = isPasswordError,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isPasswordError) {\n        Text(\n            text = stringResource(id = R.string.message_error_pass2),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n    if (isPasswordErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.message_error_pass1),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\n@Composable\nfun PhotoInputMarketer() {\n    val imageUri = rememberSaveable { mutableStateOf(\"\") }\n    val painter = rememberImagePainter(\n        if (imageUri.value.isEmpty())\n            R.drawable.adicionar_foto\n        else\n            imageUri.value\n    )\n    val launcher = rememberLauncherForActivityResult(\n        contract = ActivityResultContracts.GetContent()\n    ){\n            uri: Uri? ->\n        uri?.let {imageUri.value = it.toString()}\n    }\n\n\n    Column(\n        modifier =\n        Modifier\n            .fillMaxWidth(),\n        verticalArrangement = Arrangement.Center,\n        horizontalAlignment = Alignment.CenterHorizontally\n\n    ) {\n        Text(\n            text = stringResource(id = R.string.profile_picture),\n            fontSize = 20.sp,\n            textAlign = TextAlign.Start,\n            color = colorResource(id = R.color.darkgreen_yvy)\n        )\n        Card(\n            shape = CircleShape,\n            modifier = Modifier\n                .padding(8.dp)\n                .size(115.dp)\n        ) {\n            Image(\n                painter = painter,\n                contentDescription = null,\n                modifier = Modifier\n                    .wrapContentSize()\n                    .padding(start = 5.dp, bottom = 15.dp, top = 12.dp, end = 5.dp)\n                    .clickable { launcher.launch(\"image/*\") },\n                contentScale = ContentScale.Crop\n            )\n\n        }\n    }\n\n}\n\n@Composable\nfun CpfInputMarketer() {\n    var cpfState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isCpfErrorEmpty by remember {\n        mutableStateOf(false)\n    }\n    var isCpfError by remember {\n        mutableStateOf(false)\n    }\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.title_cpf),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = cpfState,\n        onValueChange = { newCpf ->\n            isCpfErrorEmpty = newCpf.isEmpty()\n\n            if (cpfState.length > 11) newCpf.dropLast(1)\n\n\n            if (!ValidationCpf.myValidateCPF(newCpf)) {\n                isCpfError = true\n            } else {\n                isCpfError = false\n                isCpfErrorEmpty = false\n            }\n\n\n            cpfState = newCpf\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isCpfErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n        visualTransformation = MaskCpf(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isCpfErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.cpf_error_empty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    } else if (isCpfError) {\n        Text(\n            text = stringResource(id = R.string.cpf_error_invalid),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\n\n@Composable\nfun PhoneInputMarketer() {\n    var phoneState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isPhoneErrorEmpty by remember {\n        mutableStateOf(false)\n    }\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.title_phone),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = phoneState,\n        onValueChange = { newPhone ->\n            isPhoneErrorEmpty = newPhone.isEmpty()\n\n            if (phoneState.length > 10) newPhone.dropLast(1)\n\n            phoneState = newPhone\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isPhoneErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n        visualTransformation = MaskPhone(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isPhoneErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.phone_error_empty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\n@Composable\nfun CnpjInputMarketer() {\n\n    var cnpjState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isCnpjErrorEmpty by remember {\n        mutableStateOf(false)\n    }\n    var isCnpjError by remember {\n        mutableStateOf(false)\n    }\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.title_cnpj),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = cnpjState,\n        onValueChange = { newCnpj ->\n            isCnpjError = newCnpj.isEmpty()\n\n            if (cnpjState.length > 11) newCnpj.dropLast(1)\n\n//\n//            if (//!ValidationCpf.myValidateCPF(\n//                    newCnpj\n//            )) {\n//                isCnpjError = true\n//            } else {\n//                isCnpjError = false\n//                isCnpjErrorEmpty = false\n//            }\n\n\n            cnpjState = newCnpj\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isCnpjErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n        visualTransformation = MaskCnpj(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isCnpjErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.cnpj_error_empty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    } else if (isCnpjError) {\n        Text(\n            text = stringResource(id = R.string.cnpj_error_invalid),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n@Composable\nfun BirthMarketer() {\n    var birthState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isBirthErrorEmpty by remember {\n        mutableStateOf(false)\n    }\n\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.titleBirth),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = birthState,\n        onValueChange = { newBirth ->\n            isBirthErrorEmpty = newBirth.isEmpty()\n\n            if (birthState.length > 8) newBirth.dropLast(1)\n\n\n                birthState = newBirth\n\n\n\n\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isBirthErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n        visualTransformation = MaskBirth(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isBirthErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.isBirthErrorEmpty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n@Composable\nfun GenderInputMarketer(){\n\n    var selected by remember { mutableStateOf(\"\") }\n    Row {\n        RadioButton(\n            selected = selected == \"woman\",\n            onClick = { selected = \"woman\" },\n            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy)) )\n        Text(\n            text = stringResource(id = R.string.gender_f),\n            modifier = Modifier\n                .clickable(onClick = { selected = \"woman\" })\n                .padding(top = 12.dp, start = 4.dp)\n        )\n        Spacer(modifier = Modifier.size(60.dp))\n\n        RadioButton(\n            selected = selected == \"man\",\n            onClick = { selected = \"man\" } ,\n            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy)))\n        Text(\n            text = stringResource(id = R.string.gender_m),\n            modifier = Modifier\n                .clickable(onClick = { selected = \"man\" })\n                .padding(top = 15.dp)\n        )\n    }\n}\n\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/RegisterMarketer.kt b/app/src/main/java/com/example/yvypora/RegisterMarketer.kt
+--- a/app/src/main/java/com/example/yvypora/RegisterMarketer.kt	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/java/com/example/yvypora/RegisterMarketer.kt	(date 1681477639659)
+@@ -88,7 +88,6 @@
+ 
+ @Composable
+ fun InputsMarketer() {
+-
+     val context = LocalContext.current
+ 
+     Column(
+Index: app/src/main/java/com/example/yvypora/InicialScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\nimport android.content.Intent\nimport android.os.Bundle\nimport android.widget.RatingBar\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.animation.core.tween\nimport androidx.compose.foundation.*\nimport androidx.compose.foundation.gestures.Orientation\nimport androidx.compose.foundation.gestures.rememberScrollableState\nimport androidx.compose.foundation.gestures.scrollable\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.lazy.LazyRow\nimport androidx.compose.foundation.lazy.items\nimport androidx.compose.foundation.shape.CircleShape\nimport androidx.compose.foundation.shape.CornerSize\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.material.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.draw.alpha\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.graphics.graphicsLayer\nimport androidx.compose.ui.graphics.lerp\nimport androidx.compose.ui.layout.ContentScale\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.platform.LocalTextInputService\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.input.TextFieldValue\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport androidx.compose.ui.util.lerp\nimport androidx.compose.ui.viewinterop.AndroidView\nimport androidx.navigation.NavHostController\nimport androidx.navigation.compose.currentBackStackEntryAsState\nimport androidx.navigation.compose.rememberNavController\nimport com.example.yvypora.model.template\nimport com.example.yvypora.models.Product\nimport com.example.yvypora.navbar.ItemsMenu\nimport com.example.yvypora.navbar.NavigationHost\nimport com.example.yvypora.ui.theme.YvyporaTheme\nimport com.google.accompanist.pager.*\nimport kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.delay\nimport kotlinx.coroutines.launch\nimport kotlinx.coroutines.yield\nimport kotlin.math.absoluteValue\n\n\nclass InicialScreen : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                HomeScreen()\n            }\n\n        }\n    }\n}\n\n@Composable\nfun Header() {\n    val context = LocalContext.current\n    Row(\n        modifier = Modifier\n            .fillMaxWidth()\n            .height(90.dp)\n            .padding(top = 35.dp, start = 15.dp, end = 15.dp),\n        horizontalArrangement = Arrangement.SpaceBetween,\n    ) {\n        Image(\n            painter = painterResource(id = R.drawable.logo_no_name),\n            modifier = Modifier\n                .height(55.dp)\n                .width(55.dp),\n            alignment = Alignment.BottomStart,\n            contentDescription = \"logo\",\n\n            )\n        Image(\n            painter = painterResource(id = R.drawable.icon_user),\n            modifier = Modifier\n                .clickable {\n                    val intent = Intent(context, ProfileClient()::class.java)\n                    context.startActivity(intent)\n                }\n                .height(50.dp)\n                .width(55.dp),\n\n            contentDescription = \"logo\",\n\n            )\n    }\n}\n\n@OptIn(ExperimentalPagerApi::class)\n@Composable\nfun UpsideLayout() {\n    val offset = remember { mutableStateOf(0f) }\n    val textState = remember { mutableStateOf(TextFieldValue()) }\n    val context = LocalContext.current\n\n    Column(\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .padding(top = 125.dp)\n            .verticalScroll(rememberScrollState()),\n        horizontalAlignment = Alignment.CenterHorizontally\n    ) {\n        CompositionLocalProvider(\n            LocalTextInputService provides null\n        ) {\n            ReadonlyTextField(\n                value = textState.value,\n                onValueChange = { textState.value = it },\n                modifier = Modifier,\n                onClick = {\n                    val intent = Intent(context, ScreenSearch()::class.java)\n                    context.startActivity(intent)\n                }\n            )\n\n        }\n        Shortcuts()\n        AutoSliding()\n        TabLayoutScreen()\n    }\n}\n\n\n@Composable\nfun ReadonlyTextField(\n    value: TextFieldValue,\n    onValueChange: (TextFieldValue) -> Unit,\n    modifier: Modifier = Modifier,\n    onClick: () -> Unit\n) {\n    Box {\n        OutlinedTextField(\n            value = value,\n            onValueChange = onValueChange,\n            modifier = Modifier\n                .fillMaxWidth()\n                .height(45.dp)\n                .padding(start = 25.dp, end = 25.dp),\n            colors = TextFieldDefaults.textFieldColors(\n                backgroundColor = colorResource(id = R.color.green_yvy),\n                focusedIndicatorColor = colorResource(id = R.color.green_yvy),\n                unfocusedIndicatorColor = colorResource(id = R.color.green_yvy),\n                cursorColor = colorResource(id = R.color.green_yvy)\n            ),\n            shape = RoundedCornerShape(20.dp),\n            trailingIcon = {\n                Icon(\n                    painter = painterResource(R.drawable.lupa_icon),\n                    contentDescription = stringResource(id = R.string.lupa),\n                    modifier = Modifier\n                        .width(35.dp)\n                        .height(35.dp)\n                        .padding(end = 10.dp),\n                    tint = Color.White\n                )\n            }\n        )\n\n        Box(\n            modifier = Modifier\n                .matchParentSize()\n                .alpha(0f)\n                .clickable(onClick = onClick),\n        )\n    }\n}\n\n\n@Composable\nfun HomeScreen() {\n    val navController = rememberNavController()\n    val scaffoldState = rememberScaffoldState()\n    val scope = rememberCoroutineScope()\n    val navigation_item = listOf(\n        ItemsMenu.Pantalla1,\n        ItemsMenu.Pantalla2,\n        ItemsMenu.Pantalla3,\n        ItemsMenu.Pantalla4,\n    )\n\n    Scaffold(\n        scaffoldState = scaffoldState,\n        bottomBar = {\n            NavegationInferior(navController, navigation_item)\n        },\n        floatingActionButtonPosition = FabPosition.Center,\n        floatingActionButton = { Fab(scope, scaffoldState) },\n        isFloatingActionButtonDocked = true,\n        modifier = Modifier.fillMaxHeight()\n    ) { innerPadding ->\n        Box(modifier = Modifier.padding(innerPadding)) {\n            NavigationHost(navController)\n\n        }\n    }\n}\n\n@Composable\nfun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {\n    FloatingActionButton(\n        onClick = {\n            scope.launch {\n                scaffoldState.snackbarHostState\n                    .showSnackbar(\n                        \"blbla\",\n                        actionLabel = \"bsljdjsskd\",\n                        duration = SnackbarDuration.Indefinite\n                    )\n            }\n        },\n        backgroundColor = colorResource(id = R.color.green_yvy),\n    ) {\n        Icon(\n            painter = painterResource(id = R.drawable.shopping_cart),\n            contentDescription = \"shopping\",\n            modifier = Modifier\n                .height(44.dp)\n                .width(44.dp)\n                .padding(start = 5.dp)\n        )\n    }\n}\n\n@Composable\nfun currentRoute(navController: NavHostController): String? {\n    val entrada by navController.currentBackStackEntryAsState()\n    return entrada?.destination?.route\n}\n\n@Composable\nfun NavegationInferior(navController: NavHostController, menu_items: List<ItemsMenu>) {\n    BottomAppBar(\n        cutoutShape = MaterialTheme.shapes.medium.copy(\n            CornerSize(percent = 50)\n        ),\n    ) {\n        BottomNavigation(\n            modifier = Modifier.fillMaxSize(),\n        )\n        {\n            val currentRoute = currentRoute(navController = navController)\n            menu_items.forEachIndexed() { index, item ->\n                if (index == 1) {\n                    BottomNavigationItem(\n                        selected = currentRoute == item.rota,\n                        modifier = Modifier\n                            .height(50.dp)\n                            .width(50.dp)\n                            .weight(2f)\n                            .padding(end = 75.dp),\n                        onClick = { navController.navigate(item.rota) },\n                        icon = {\n                            Icon(\n                                painter = painterResource(id = item.icon),\n                                contentDescription = item.title\n                            )\n                        },\n                    )\n                } else {\n                    BottomNavigationItem(\n                        selected = currentRoute == item.rota,\n                        modifier = Modifier\n                            .height(50.dp)\n                            .width(50.dp),\n                        onClick = { navController.navigate(item.rota) },\n                        icon = {\n                            Icon(\n                                painter = painterResource(id = item.icon),\n                                contentDescription = item.title\n                            )\n                        },\n                    )\n                }\n            }\n        }\n    }\n}\n\n\n@OptIn(ExperimentalPagerApi::class)\n@Composable\nfun TabLayoutScreen() {\n    val offset = remember { mutableStateOf(0f) }\n\n    val tabData = listOf(\n        stringResource(id = R.string.all),\n        stringResource(id = R.string.discount),\n        stringResource(id = R.string.near)\n    )\n    val pagerState = rememberPagerState(\n        pageCount = tabData.size,\n        initialOffscreenLimit = 2,\n        infiniteLoop = true,\n        initialPage = 1,\n    )\n    val tabIndex = pagerState.currentPage\n    val coroutineScope = rememberCoroutineScope()\n    Column(modifier = Modifier.height(230.dp)) {\n        TabRow(\n            selectedTabIndex = tabIndex,\n            indicator = { tabPositions ->\n                TabRowDefaults.Indicator(\n                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)\n                )\n            },\n            backgroundColor = Color.Unspecified,\n            contentColor = colorResource(id = R.color.green_yvy),\n\n            ) {\n            tabData.forEachIndexed { index, pair ->\n                Tab(\n                    selected = tabIndex == index,\n                    onClick = {\n                        coroutineScope.launch {\n                            pagerState.animateScrollToPage(index)\n                        }\n                    },\n                    text = {\n                        Text(\n                            text = tabData[index],\n                        )\n                    },\n                    selectedContentColor = colorResource(id = R.color.green_yvy),\n                    unselectedContentColor = colorResource(id = R.color.darkgreen_yvy),\n                )\n            }\n        }\n        HorizontalPager(\n            state = pagerState, modifier = Modifier.weight(1f)\n        ) { index ->\n            Column(\n                modifier = Modifier\n                    .fillMaxSize()\n                    .padding(5.dp),\n                verticalArrangement = Arrangement.Center,\n                horizontalAlignment = Alignment.CenterHorizontally\n            ) {\n                when (tabIndex) {\n                    0 -> ListOfProducts(products = list)\n                    1 -> ListOfProducts(products = list)\n                    2 -> ListOfProducts(products = list)\n                }\n\n            }\n        }\n    }\n\n}\n\n\n// MOCKEAD\n// TODO PEGAR A LISTA\n\nval list = listOf<Product>(\n    Product(\n        name = \"Abobrinha\",\n        photo = \"https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg\",\n        price = 6.00F,\n        qtdeProduct = 200\n    ), Product(\n        name = \"Abobrinha\",\n        photo = \"https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg\",\n        price = 6.00F,\n        qtdeProduct = 200\n    ), Product(\n        name = \"Abobrinha\",\n        photo = \"https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg\",\n        price = 6.00F,\n        qtdeProduct = 200\n    ), Product(\n        name = \"Abobrinha\",\n        photo = \"https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg\",\n        price = 6.00F,\n        qtdeProduct = 200\n    ), Product(\n        name = \"Abobrinha\",\n        photo = \"https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg\",\n        price = 6.00F,\n        qtdeProduct = 200\n    )\n)\n\n@Composable\nfun ListOfProducts(products: List<Product>) {\n    LazyRow(\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxHeight(),\n        contentPadding = PaddingValues(0.dp),\n    ) {\n        items(products) { product -> CardProducts(product) }\n    }\n}\n\n\n// TODO COMPONENETE DE LISTA --> CARD PRODUCTS\n@Composable\nfun CardProducts(data: Product) {\n    var titleCard = data.name\n    var photoProduct = painterResource(id = R.drawable.abobrinha)\n    var qtdeProduct = data.qtdeProduct.toString() + \"g\"\n    var priceProduct = \"R$\" + data.price.toString()\n    Card(\n        elevation = 10.dp,\n        contentColor = colorResource(id = R.color.darkgreen_yvy),\n        modifier = Modifier\n            .width(130.dp)\n            .height(145.dp)\n            .padding(3.dp),\n        border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))\n\n    ) {\n        Column {\n            Column(\n                modifier = Modifier.fillMaxWidth(),\n                horizontalAlignment = Alignment.CenterHorizontally\n            ) {\n                Text(\n                    text = titleCard,\n                    modifier = Modifier.padding(top = 4.dp),\n                    fontWeight = FontWeight.Bold,\n                    fontSize = 14.sp\n                )\n                // MODIFICAR PARA USAR URL\n                Image(\n                    painter = photoProduct,\n                    contentDescription = \"Product\",\n                    modifier = Modifier\n                        .width(97.dp)\n                        .height(70.dp),\n                )\n            }\n            Box(modifier = Modifier.fillMaxWidth()) {\n                Text(\n                    text = qtdeProduct,\n                    modifier = Modifier.padding(top = 2.dp, start = 4.dp),\n                    color = colorResource(id = R.color.dark_gray),\n                    fontWeight = FontWeight.Bold,\n                    textAlign = TextAlign.Left,\n                    fontSize = 12.sp\n                )\n                Row(\n                    horizontalArrangement = Arrangement.Center\n                ) {\n                    Text(\n                        text = priceProduct,\n                        modifier = Modifier.padding(top = 20.dp, start = 12.dp, end = 15.dp),\n                        fontWeight = FontWeight.Bold,\n                        textAlign = TextAlign.Left,\n                        fontSize = 14.sp\n                    )\n                    OutlinedButton(\n                        onClick = { },\n                        modifier = Modifier.size(40.dp),\n                        shape = CircleShape,\n                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),\n                        contentPadding = PaddingValues(0.dp),\n                        colors = ButtonDefaults.outlinedButtonColors(\n                            backgroundColor = colorResource(\n                                id = R.color.darkgreen_yvy\n                            )\n                        )\n                    ) {\n                        // Adding an Icon \"Add\" inside the Button\n                        Icon(\n                            painter = painterResource(id = R.drawable.shopping_cart),\n                            modifier = Modifier.padding(start = 3.dp),\n                            contentDescription = \"content description\",\n                            tint = Color.White\n                        )\n                    }\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun Shortcuts() {\n    Row(\n        modifier = Modifier\n            .fillMaxWidth()\n            .padding(start = 23.dp, end = 25.dp),\n        horizontalArrangement = Arrangement.SpaceBetween\n    ) {\n        Image(\n            painter = painterResource(id = R.drawable.fruits_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp),\n            contentDescription = \"Fruit\"\n        )\n        Image(\n            painter = painterResource(id = R.drawable.vegetables_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp),\n            contentDescription = \"Vegetables\"\n        )\n        Image(\n            painter = painterResource(id = R.drawable.spices_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp),\n            contentDescription = \"Spices\"\n        )\n        Image(\n            painter = painterResource(id = R.drawable.others_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp),\n            contentDescription = \"Others\"\n        )\n\n    }\n\n    Row(\n        modifier = Modifier\n            .fillMaxWidth()\n            .padding(start = 25.dp, end = 25.dp),\n        horizontalArrangement = Arrangement.SpaceBetween\n    ) {\n        Text(\n            text = stringResource(id = R.string.fruits),\n            modifier = Modifier\n                .width(70.dp),\n            fontSize = 15.sp,\n            textAlign = TextAlign.Center\n        )\n        Text(\n            text = stringResource(id = R.string.vegetable),\n            modifier = Modifier\n                .width(70.dp),\n            fontSize = 15.sp,\n            textAlign = TextAlign.Center\n        )\n        Text(\n            text = stringResource(id = R.string.spices),\n            modifier = Modifier\n                .width(70.dp),\n            fontSize = 14.sp,\n            textAlign = TextAlign.Center\n        )\n        Text(\n            text = stringResource(id = R.string.other),\n            modifier = Modifier\n\n                .width(70.dp),\n            fontSize = 15.sp,\n            textAlign = TextAlign.Center\n        )\n    }\n}\n\n@ExperimentalPagerApi\n@Composable\nfun AutoSliding() {\n    val pagerState = rememberPagerState(pageCount = template.size, initialOffscreenLimit = 2)\n\n    LaunchedEffect(Unit) {\n        while (true) {\n            yield()\n            delay(2000)\n            pagerState.animateScrollToPage(\n                page = (pagerState.currentPage + 1) % (pagerState.pageCount),\n                animationSpec = tween(600)\n            )\n        }\n    }\n\n    Column(\n        verticalArrangement = Arrangement.Top\n    ) {\n        HorizontalPager(\n            state = pagerState,\n//            modifier = Modifier.weight(1f)\n        ) { page ->\n            Card(modifier = Modifier\n                .graphicsLayer {\n                    val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue\n                    lerp(\n                        start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)\n                    ).also { scale ->\n                        scaleX = scale\n                        scaleY = scale\n                    }\n\n                }\n                .fillMaxWidth()\n                .height(185.dp)\n                .padding(15.dp, 0.dp, 15.dp, 0.dp),\n                shape = RoundedCornerShape(20.dp)) {\n                val template = template[page]\n                Box(\n                    modifier = Modifier\n                        .fillMaxSize()\n                        .width(130.dp)\n                        .align(Alignment.Center)\n                ) {\n                    Image(\n                        painter = painterResource(\n                            id = when (page) {\n                                1 -> R.drawable.logo\n                                2 -> R.drawable.ofertas\n                                3 -> R.drawable.ofertas\n                                4 -> R.drawable.ofertas\n                                5 -> R.drawable.ofertas\n                                else -> R.drawable.logo\n                            }\n                        ),\n                        contentDescription = \"Image\",\n                        contentScale = ContentScale.Crop,\n                        modifier = Modifier.fillMaxSize()\n                    )\n\n                    Column(\n                        modifier = Modifier\n                            .align(Alignment.BottomStart)\n                            .padding(15.dp)\n                    ) {\n                        val ratingBar = RatingBar(\n                            LocalContext.current,\n                            null,\n                            androidx.appcompat.R.attr.ratingBarStyleSmall\n                        ).apply {\n                            rating = template.rating\n                        }\n                        AndroidView(\n                            factory = { ratingBar },\n                            modifier = Modifier.padding(0.dp, 18.dp, 0.dp, 0.dp)\n                        )\n                    }\n                }\n            }\n            HorizontalPagerIndicator(\n                pagerState = pagerState,\n                modifier = Modifier.padding(top = 210.dp),\n                activeColor = colorResource(id = R.color.darkgreen_yvy),\n                inactiveColor = colorResource(id = R.color.transparentgreen_yvy)\n            )\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/InicialScreen.kt b/app/src/main/java/com/example/yvypora/InicialScreen.kt
+--- a/app/src/main/java/com/example/yvypora/InicialScreen.kt	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/java/com/example/yvypora/InicialScreen.kt	(date 1681478329954)
+@@ -492,6 +492,7 @@
+ 
+ @Composable
+ fun Shortcuts() {
++    val context = LocalContext.current
+     Row(
+         modifier = Modifier
+             .fillMaxWidth()
+@@ -502,7 +503,11 @@
+             painter = painterResource(id = R.drawable.fruits_category_icon),
+             modifier = Modifier
+                 .height(80.dp)
+-                .width(70.dp),
++                .width(70.dp)
++                .clickable {
++                    val intent = Intent(context, FruitsResultActivity::class.java)
++                    context.startActivity(intent)
++                },
+             contentDescription = "Fruit"
+         )
+         Image(
+@@ -538,7 +543,11 @@
+         Text(
+             text = stringResource(id = R.string.fruits),
+             modifier = Modifier
+-                .width(70.dp),
++                .width(70.dp)
++                .clickable {
++                    val intent = Intent(context, FruitsResultActivity::class.java)
++                    context.startActivity(intent)
++                },
+             fontSize = 15.sp,
+             textAlign = TextAlign.Center
+         )
+Index: app/src/main/java/com/example/yvypora/models/MarketerCard.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.models\n\n\ndata class MarketerCard(\n    val name: String,\n    val sub_name: String,\n    val photo: Int,\n    val date: String,\n    val products: List<ProductCardSale>\n\n//\n)\n\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/MarketerCard.kt b/app/src/main/java/com/example/yvypora/models/MarketerCard.kt
+--- a/app/src/main/java/com/example/yvypora/models/MarketerCard.kt	(revision b6da164ae70dbd6c9ccd9a39e0cbdda7634b1e11)
++++ b/app/src/main/java/com/example/yvypora/models/MarketerCard.kt	(date 1681470464620)
+@@ -7,8 +7,6 @@
+     val photo: Int,
+     val date: String,
+     val products: List<ProductCardSale>
+-
+-//
+ )
+ 
+ 

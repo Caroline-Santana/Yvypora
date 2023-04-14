@@ -2,15 +2,21 @@ package com.example.yvypora
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +33,9 @@ import com.example.yvypora.models.MarketerCard
 import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.launch
 
 class BuyHistory : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +45,6 @@ class BuyHistory : ComponentActivity() {
                 BuyHistoryMain()
             }
         }
-
     }
 }
 
@@ -77,7 +85,7 @@ fun BuyHistoryMain() {
                             .fillMaxWidth(),
                         fontSize = 24.sp,
                         textAlign = TextAlign.Center,
-                        color = colorResource(id = R.color.green_widht)
+                        color = colorResource(id = R.color.darkgreen_yvy)
                     )
                 }
                 Column(
@@ -86,7 +94,7 @@ fun BuyHistoryMain() {
                         .fillMaxHeight()
                 ) {
                     Row() {
-                        ListOfMarketerCard(marketers = listMarketerCardHistory)
+                        ListOfMarketerCard(marketers = listMarketerCard)
 
                     }
                 }
@@ -97,7 +105,6 @@ fun BuyHistoryMain() {
 
 @Composable
 fun ListOfMarketerCard(marketers: List<MarketerCard>) {
-
     LazyColumn() {
         items(marketers) { marketer -> CardMarketer(marketer = marketer) }
 
@@ -108,13 +115,12 @@ fun ListOfMarketerCard(marketers: List<MarketerCard>) {
 fun ListOfProductCardSale(cards: List<ProductCardSale>) {
     LazyColumn(
         modifier = Modifier.height(600.dp),
-//        userScrollEnabled = false
     ) {
         items(cards) { card -> CardProduct(card = card) }
     }
 }
 
-val listMarketerCardHistory = listOf<MarketerCard>(
+val listMarketerCard = listOf<MarketerCard>(
     MarketerCard(
         name = "Barraca do Seu Zé",
         sub_name = "Vila Madalena",
@@ -129,6 +135,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             ),
             ProductCardSale(
                 id = 2,
@@ -138,6 +145,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             ),
             ProductCardSale(
                 id = 3,
@@ -147,6 +155,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             ),
             ProductCardSale(
                 id = 4,
@@ -156,6 +165,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             ),
             ProductCardSale(
                 id = 5,
@@ -165,8 +175,8 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
-
-                ),
+                promo = false
+            ),
             ProductCardSale(
                 id = 6,
                 name = "Abóbora",
@@ -175,6 +185,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             ),
         )
     ),
@@ -192,6 +203,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             ),
             ProductCardSale(
                 id = 2,
@@ -201,6 +213,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             ),
             ProductCardSale(
                 id = 3,
@@ -210,6 +223,7 @@ val listMarketerCardHistory = listOf<MarketerCard>(
                 type_weight = "g",
                 weight_product = 800,
                 price = 24.00,
+                promo = false
             )
         )
     )
@@ -231,13 +245,8 @@ fun CardMarketer(marketer: MarketerCard) {
     ) {
         Column() {
             Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp)
-                    .background(
-                        Color(227, 240, 227, 138)
-
-                    ),
+                Modifier.background(Color(227, 240, 227, 138)),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter = photo,
@@ -248,52 +257,36 @@ fun CardMarketer(marketer: MarketerCard) {
                 )
                 Column(
                     modifier = Modifier
-                        .padding(start = 3.dp, top = 35.dp),
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = nameCard,
-                        fontSize = 17.sp,
-                        textAlign = TextAlign.Start,
-                        color = colorResource(id = R.color.green_widht)
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 20.sp,
+                        color = colorResource(id = R.color.green_yvy)
                     )
                     Text(
                         text = subnameCard,
                         fontWeight = FontWeight.Light,
-                        textAlign = TextAlign.Start,
-                        fontSize = 15.sp,
+                        fontSize = 16.sp,
                         color = colorResource(id = R.color.green_yvy)
 
-                    )
-
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxSize()
-                        .padding(top = 38.dp, start = 23.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.date),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.green_widht)
                     )
                     Text(
                         text = date,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.green_widht)
+                        fontSize = 20.sp,
+                        color = colorResource(id = R.color.green_options)
                     )
-
                 }
-            }
 
+            }
             ListOfProductCardSale(cards = marketer.products)
         }
     }
 }
+
 
 @Composable
 fun CardProduct(card: ProductCardSale) {
@@ -304,6 +297,7 @@ fun CardProduct(card: ProductCardSale) {
     var typeProduct = card.type_weight
     var weightProduct = card.weight_product
     var priceProduct = card.price
+
 
     Card(
         Modifier
@@ -376,7 +370,6 @@ fun CardProduct(card: ProductCardSale) {
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Yvypora"
@@ -93,6 +93,26 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".FruitsResultActivity"
+            android:exported="false"
+            android:label="@string/fruits_result"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".VegetablesActivityActivity"
+            android:exported="false"
+            android:label="@string/vegetable"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".SpicesActivityActivity"
+            android:exported="false"
+            android:label="@string/spices"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".OthersActivityActivity"
+            android:exported="false"
+            android:label="@string/spices"
             android:theme="@style/Theme.Yvypora" />
         <activity
             android:name=".SplashScreenActivity"

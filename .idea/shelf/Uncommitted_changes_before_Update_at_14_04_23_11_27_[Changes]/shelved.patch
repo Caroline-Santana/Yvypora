@@ -1,0 +1,84 @@
+Index: app/src/main/java/com/example/yvypora/FruitsResultActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.material.Surface\nimport androidx.compose.material.Text\nimport androidx.compose.runtime.Composable\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.example.yvypora.ui.theme.YvyporaTheme\n\nclass FruitsResultActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                Surface {\n                    Image(\n                        painter = painterResource(id = R.drawable.logo_no_name),\n                        modifier = Modifier\n                            .height(58.dp)\n                            .width(108.dp)\n                            .padding(top = 25.dp),\n                        alignment = Alignment.Center,\n                        contentDescription = \"logo\",\n                    )\n                    Spacer(\n                        modifier = Modifier.height(36.dp)\n                            .width(20.dp)\n                    )\n                    Column(\n                        modifier = Modifier\n                            .fillMaxSize(),\n                        horizontalAlignment = Alignment.CenterHorizontally,\n                        verticalArrangement = Arrangement.Top\n                    ) {\n                        Text(\n                            text = stringResource(id = R.string.fruits_result),\n                            textAlign = TextAlign.Center,\n                            color = colorResource(id = R.color.darkgreen_yvy),\n                            fontSize = 48.sp\n                        )\n                    }\n                }\n                FruitsResultMain()\n            }\n        }\n\n    }\n}\n\n@Composable\nfun FruitsResultMain() {\n    Surface() {\n        Column() {\n\n        }\n    }\n}\n\n\n@Preview(showBackground = true)\n@Composable\nfun FruitsPreview() {\n    FruitsResultActivity()\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/FruitsResultActivity.kt b/app/src/main/java/com/example/yvypora/FruitsResultActivity.kt
+--- a/app/src/main/java/com/example/yvypora/FruitsResultActivity.kt	(revision ff1fb20ab07e6bf60aad60e7373f823baae134e9)
++++ b/app/src/main/java/com/example/yvypora/FruitsResultActivity.kt	(date 1681482399988)
+@@ -9,6 +9,7 @@
+ import androidx.compose.material.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Alignment
++
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.res.colorResource
+ import androidx.compose.ui.res.painterResource
+@@ -18,6 +19,7 @@
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+ import com.example.yvypora.ui.theme.YvyporaTheme
++import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+ 
+ class FruitsResultActivity : ComponentActivity() {
+     override fun onCreate(savedInstanceState: Bundle?) {
+@@ -25,19 +27,6 @@
+         setContent {
+             YvyporaTheme {
+                 Surface {
+-                    Image(
+-                        painter = painterResource(id = R.drawable.logo_no_name),
+-                        modifier = Modifier
+-                            .height(58.dp)
+-                            .width(108.dp)
+-                            .padding(top = 25.dp),
+-                        alignment = Alignment.Center,
+-                        contentDescription = "logo",
+-                    )
+-                    Spacer(
+-                        modifier = Modifier.height(36.dp)
+-                            .width(20.dp)
+-                    )
+                     Column(
+                         modifier = Modifier
+                             .fillMaxSize(),
+@@ -51,6 +40,15 @@
+                             fontSize = 48.sp
+                         )
+                     }
++                    Image(
++                        painter = painterResource(id = R.drawable.logo_no_name),
++                        modifier = Modifier
++                            .height(64.dp)
++                            .width(64.dp)
++                            .padding(start = 10.dp, top = 6.dp),
++                        alignment = Alignment.CenterEnd,
++                        contentDescription = "logo",
++                    )
+                 }
+                 FruitsResultMain()
+             }
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <uses-permission android:name=\"android.permisson.READ_EXTERNAL_STORAGE\" />\n\n    <application\n        android:allowBackup=\"true\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\n        android:fullBackupContent=\"@xml/backup_rules\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.Yvypora\"\n        tools:targetApi=\"31\">\n        <activity\n            android:name=\".DescriptionProducts\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_description_products\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddAccount\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_account\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddCardAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_pay_methods_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".PaymentMethodsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_payment_methods\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddAdressAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_adress_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AdressesActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_adresses\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".BuyHistory\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_buy_history_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".EditProfileSreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_edit_profile_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ProfileClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_profile_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenSearch\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_screen_search\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".RegisterMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".InicialScreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".RegisterClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".DecisionSreenActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_decision_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".LoginActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_login\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MainActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_main\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".SplashScreenActivity\"\n            android:exported=\"true\"\n            android:label=\"@string/app_name\"\n            android:theme=\"@style/Theme.Yvypora\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision ff1fb20ab07e6bf60aad60e7373f823baae134e9)
++++ b/app/src/main/AndroidManifest.xml	(date 1681480885971)
+@@ -55,6 +55,11 @@
+             android:label="@string/title_activity_edit_profile_sreen"
+             android:theme="@style/Theme.Yvypora" />
+         <activity
++            android:name=".FruitsResultActivity"
++            android:exported="false"
++            android:label="@string/fruits_result"
++            android:theme="@style/Theme.Yvypora" />
++        <activity
+             android:name=".ProfileClient"
+             android:exported="false"
+             android:label="@string/title_activity_profile_client"

@@ -1,13 +1,10 @@
 package com.example.yvypora
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -16,44 +13,39 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.yvypora.models.MarketerCard
 import com.example.yvypora.models.MarketerData
 import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.YvyporaTheme
 
-class FruitsResultActivity : ComponentActivity() {
+class OthersActivityActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                FruitsResultMain()
+                OthersMain()
             }
         }
 
     }
 }
-
 @Composable
-fun FruitsResultMain() {
+fun OthersMain(){
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier.fillMaxSize()
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
-                    text = stringResource(id = R.string.fruits_result),
+                    text = stringResource(id = R.string.other),
                     Modifier.padding(start = 150.dp),
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.green_options),
@@ -69,13 +61,13 @@ fun FruitsResultMain() {
                     contentDescription = "logo",
                 )
             }
-            ListOfMarketerData(marketers = listMarketerData())
+            ListOfMarketerDataOthers(marketers = listMarketerDataOthers())
         }
 
     }
 }
 
-fun listMarketerData() = listOf<MarketerData>(
+fun listMarketerDataOthers() = listOf<MarketerData>(
     MarketerData(
         name = "Zé do Alfácil",
         photo = R.drawable.perfil,
@@ -302,14 +294,13 @@ fun listMarketerData() = listOf<MarketerData>(
 )
 
 @Composable
-fun ListOfMarketerData(marketers: List<MarketerData>) {
+fun ListOfMarketerDataOthers(marketers: List<MarketerData>) {
     LazyColumn() {
-        items(marketers) { marketerData -> DataMarketer(marketer = marketerData) }
+        items(marketers) { marketerData -> DataMarketerOthers(marketer = marketerData) }
     }
 }
-
 @Composable
-fun DataMarketer(marketer: MarketerData) {
+fun DataMarketerOthers(marketer: MarketerData) {
     val nameMarketer = marketer.name
 //        var photoMarketer = marketer.photo
     val photoMarketer = painterResource(id = R.drawable.perfil)
@@ -346,22 +337,20 @@ fun DataMarketer(marketer: MarketerData) {
                         colorResource(id = R.color.transparentgreen_yvy)
                     )
                 ) {
-                    ListOfProductData(products = marketer.products)
+                    ListOfProductDataOthers(products = marketer.products)
                 }
             }
         }
     }
 }
-
 @Composable
-fun ListOfProductData(products: List<ProductCardSale>) {
+fun ListOfProductDataOthers(products: List<ProductCardSale>) {
     LazyRow() {
-        items(products) { productsData -> DataProduct(product = productsData) }
+        items(products) { productsData -> DataProductOthers(product = productsData) }
     }
 }
-
 @Composable
-fun DataProduct(product: ProductCardSale) {
+fun DataProductOthers(product: ProductCardSale) {
 //        val context = LocalContext.current
     var nameProduct = product.name
 //    var photoProduct = card.photo
@@ -395,7 +384,7 @@ fun DataProduct(product: ProductCardSale) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
 
-            ) {
+                ) {
                 Text(
                     text = nameProduct,
                     modifier = Modifier.padding(top = 4.dp),
@@ -458,13 +447,4 @@ fun DataProduct(product: ProductCardSale) {
 *  TODO:
 *   - Add navbar
 * */
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FruitsPreview() {
-    YvyporaTheme() {
-        FruitsResultMain()
-    }
-
 }

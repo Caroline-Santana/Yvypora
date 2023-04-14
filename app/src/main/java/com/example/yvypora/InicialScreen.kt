@@ -514,21 +514,33 @@ fun Shortcuts() {
             painter = painterResource(id = R.drawable.vegetables_category_icon),
             modifier = Modifier
                 .height(80.dp)
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, VegetablesActivityActivity::class.java)
+                    context.startActivity(intent)
+                },
             contentDescription = "Vegetables"
         )
         Image(
             painter = painterResource(id = R.drawable.spices_category_icon),
             modifier = Modifier
                 .height(80.dp)
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, SpicesActivityActivity::class.java)
+                    context.startActivity(intent)
+                },
             contentDescription = "Spices"
         )
         Image(
             painter = painterResource(id = R.drawable.others_category_icon),
             modifier = Modifier
                 .height(80.dp)
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, OthersActivityActivity::class.java)
+                    context.startActivity(intent)
+                },
             contentDescription = "Others"
         )
 
@@ -554,22 +566,33 @@ fun Shortcuts() {
         Text(
             text = stringResource(id = R.string.vegetable),
             modifier = Modifier
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, VegetablesActivityActivity::class.java)
+                    context.startActivity(intent)
+                },
             fontSize = 15.sp,
             textAlign = TextAlign.Center
         )
         Text(
             text = stringResource(id = R.string.spices),
             modifier = Modifier
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, SpicesActivityActivity::class.java)
+                    context.startActivity(intent)
+                },
             fontSize = 14.sp,
             textAlign = TextAlign.Center
         )
         Text(
             text = stringResource(id = R.string.other),
             modifier = Modifier
-
-                .width(70.dp),
+                .width(70.dp)
+                .clickable {
+                    val intent = Intent(context, OthersActivityActivity::class.java)
+                    context.startActivity(intent)
+                },
             fontSize = 15.sp,
             textAlign = TextAlign.Center
         )
