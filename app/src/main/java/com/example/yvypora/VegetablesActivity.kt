@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -46,7 +47,7 @@ fun VegetablesMain(){
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = stringResource(id = R.string.vegetable),
-                    Modifier.padding(start = 150.dp),
+                    Modifier.padding(start = 120.dp),
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.green_options),
                     fontSize = 32.sp,
@@ -370,7 +371,7 @@ fun DataProductVegetable(product: ProductCardSale) {
         contentColor = colorResource(id = R.color.darkgreen_yvy),
         modifier = Modifier
             .width(130.dp)
-            .height(145.dp)
+            .height(175.dp)
 //            .clickable {
 //                val intent = Intent(context, DescriptionProducts()::class.java)
 //                context.startActivity(intent)
@@ -380,6 +381,18 @@ fun DataProductVegetable(product: ProductCardSale) {
 
     ) {
         Column {
+            if (promoProduct) {
+                Text(
+                    stringResource(id = R.string.promotion),
+                    modifier = Modifier
+                        .background(colorResource(id = R.color.green_yvy))
+                        .fillMaxWidth(),
+                    color = colorResource(id = R.color.white),
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center
+
+                )
+            }
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,

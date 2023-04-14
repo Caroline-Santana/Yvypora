@@ -55,6 +55,11 @@
             android:label="@string/title_activity_edit_profile_sreen"
             android:theme="@style/Theme.Yvypora" />
         <activity
+            android:name=".FairsActivity"
+            android:exported="false"
+            android:label="@string/fair"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".ProfileClient"
             android:exported="false"
             android:label="@string/title_activity_profile_client"
@@ -125,6 +130,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

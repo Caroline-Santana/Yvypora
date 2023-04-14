@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -51,7 +53,10 @@ fun FruitsResultMain() {
         Column(
             Modifier.fillMaxSize()
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = stringResource(id = R.string.fruits_result),
                     Modifier.padding(start = 150.dp),
@@ -371,93 +376,104 @@ fun DataProduct(product: ProductCardSale) {
     var priceProduct = product.price
     var promoProduct = product.promo
 
-//    if(promoProduct !== false){
-//        Column() {
-//        }
-//    }
-
-    Card(
-        elevation = 10.dp,
-        contentColor = colorResource(id = R.color.darkgreen_yvy),
-        modifier = Modifier
-            .width(130.dp)
-            .height(145.dp)
+    Surface {
+        Card(
+            elevation = 10.dp,
+            contentColor = colorResource(id = R.color.darkgreen_yvy),
+            modifier = Modifier
+                .width(130.dp)
+                .height(175.dp)
 //            .clickable {
 //                val intent = Intent(context, DescriptionProducts()::class.java)
 //                context.startActivity(intent)
 //            }
-            .padding(3.dp),
-        border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))
+                .padding(3.dp),
+            border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))
 
-    ) {
-        Column {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-
-            ) {
-                Text(
-                    text = nameProduct,
-                    modifier = Modifier.padding(top = 4.dp),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
-                )
-                // MODIFICAR PARA USAR URL
-                Image(
-                    painter = photoProduct,
-                    contentDescription = "Product",
-                    modifier = Modifier
-                        .width(97.dp)
-                        .height(70.dp),
-                )
-            }
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = qntProduct.toString() + typeProduct,
-                    modifier = Modifier.padding(top = 2.dp, start = 4.dp),
-                    color = colorResource(id = R.color.dark_gray),
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Left,
-                    fontSize = 12.sp
-                )
-                Row(
-                    horizontalArrangement = Arrangement.Center
+        ) {
+            Column(verticalArrangement = Arrangement.Center) {
+                if (promoProduct) {
+                    Text(
+                        stringResource(id = R.string.promotion),
+                        modifier = Modifier
+                            .background(colorResource(id = R.color.green_yvy))
+                            .fillMaxWidth(),
+                        color = colorResource(id = R.color.white),
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        text = "R$$priceProduct",
-                        modifier = Modifier.padding(top = 20.dp, start = 12.dp, end = 15.dp),
+                        text = nameProduct,
+                        modifier = Modifier.padding(top = 4.dp),
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Left,
                         fontSize = 14.sp
                     )
-                    OutlinedButton(
-                        onClick = { },
-                        modifier = Modifier.size(40.dp),
-                        shape = CircleShape,
-                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
-                        contentPadding = PaddingValues(0.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            backgroundColor = colorResource(
-                                id = R.color.darkgreen_yvy
-                            )
-                        )
+                    // MODIFICAR PARA USAR URL
+                    Image(
+                        painter = photoProduct,
+                        contentDescription = "Product",
+                        modifier = Modifier
+                            .width(97.dp)
+                            .height(70.dp),
+                    )
+                }
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = qntProduct.toString() + typeProduct,
+                        modifier = Modifier.padding(top = 2.dp, start = 4.dp),
+                        color = colorResource(id = R.color.dark_gray),
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Left,
+                        fontSize = 12.sp
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        // Adding an Icon "Add" inside the Button
-                        Icon(
-                            painter = painterResource(id = R.drawable.shopping_cart),
-                            modifier = Modifier.padding(start = 3.dp),
-                            contentDescription = "content description",
-                            tint = Color.White
+                        Text(
+                            text = "R$$priceProduct",
+                            modifier = Modifier.padding(top = 20.dp, start = 12.dp, end = 15.dp),
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Left,
+                            fontSize = 14.sp
                         )
+                        OutlinedButton(
+                            onClick = { },
+                            modifier = Modifier.size(40.dp),
+                            shape = CircleShape,
+                            border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
+                            contentPadding = PaddingValues(0.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                backgroundColor = colorResource(
+                                    id = R.color.darkgreen_yvy
+                                )
+                            )
+                        ) {
+                            // Adding an Icon "Add" inside the Button
+                            Icon(
+                                painter = painterResource(id = R.drawable.shopping_cart),
+                                modifier = Modifier.padding(start = 3.dp),
+                                contentDescription = "content description",
+                                tint = Color.White
+                            )
+                        }
                     }
                 }
+
             }
-        }
-    }
 /*
-*  TODO:
-*   - Add navbar
+*       TODO:
+*           - Add navbar
 * */
+        }
+
+    }
+
+
 }
 
 @Preview(showBackground = true)
@@ -466,5 +482,4 @@ fun FruitsPreview() {
     YvyporaTheme() {
         FruitsResultMain()
     }
-
 }

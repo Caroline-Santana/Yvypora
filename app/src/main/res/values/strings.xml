@@ -115,6 +115,7 @@
     <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
     <string name="my_shopping_cart">My shopping cart</string>
     <string name="date">Date:</string>
+    <string name="promotion" >Promotion!</string>
 
 
 </resources>

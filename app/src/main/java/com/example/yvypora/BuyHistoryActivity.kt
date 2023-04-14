@@ -134,7 +134,7 @@ val listMarketerCard = listOf<MarketerCard>(
                 photo = 1,
                 type_weight = "g",
                 weight_product = 800,
-                price = 24.00,
+                price = 10.00,
                 promo = false
             ),
             ProductCardSale(
@@ -154,7 +154,7 @@ val listMarketerCard = listOf<MarketerCard>(
                 photo = 1,
                 type_weight = "g",
                 weight_product = 800,
-                price = 24.00,
+                price = 10.00,
                 promo = false
             ),
             ProductCardSale(
@@ -174,7 +174,7 @@ val listMarketerCard = listOf<MarketerCard>(
                 photo = 1,
                 type_weight = "g",
                 weight_product = 800,
-                price = 24.00,
+                price = 15.00,
                 promo = false
             ),
             ProductCardSale(
@@ -184,7 +184,17 @@ val listMarketerCard = listOf<MarketerCard>(
                 photo = 1,
                 type_weight = "g",
                 weight_product = 800,
-                price = 24.00,
+                price = 25.00,
+                promo = false
+            ),
+            ProductCardSale(
+                id = 6,
+                name = "Abóbora",
+                qntd_product = 3,
+                photo = 1,
+                type_weight = "g",
+                weight_product = 800,
+                price = 25.00,
                 promo = false
             ),
         )
@@ -222,9 +232,29 @@ val listMarketerCard = listOf<MarketerCard>(
                 photo = 1,
                 type_weight = "g",
                 weight_product = 800,
-                price = 24.00,
+                price = 249.00,
                 promo = false
-            )
+            ),
+            ProductCardSale(
+                id = 4,
+                name = "Alface",
+                qntd_product = 3,
+                photo = 1,
+                type_weight = "g",
+                weight_product = 800,
+                price = 4.00,
+                promo = false
+            ),
+            ProductCardSale(
+                id = 5,
+                name = "Alface",
+                qntd_product = 3,
+                photo = 1,
+                type_weight = "g",
+                weight_product = 800,
+                price = 10.00,
+                promo = false
+            ),
         )
     )
 )
@@ -238,6 +268,13 @@ fun CardMarketer(marketer: MarketerCard) {
     var photo = painterResource(id = R.drawable.buy_history_card_marketer)
     var date = marketer.date
     var products = marketer.products
+
+
+    var total = 0.0
+
+    for (product in marketer.products) {
+        total += product.price
+    }
 
     Card(
         modifier = Modifier
@@ -258,7 +295,7 @@ fun CardMarketer(marketer: MarketerCard) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = nameCard,
@@ -276,18 +313,22 @@ fun CardMarketer(marketer: MarketerCard) {
                     Text(
                         text = date,
                         fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = colorResource(id = R.color.green_yvy)
+                    )
+                    Text(
+                        text = "Total: R$$total",
+                        fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
-                        color = colorResource(id = R.color.green_options)
+                        color = colorResource(id = R.color.green_yvy)
+
                     )
                 }
-
             }
             ListOfProductCardSale(cards = marketer.products)
         }
     }
 }
-
-
 @Composable
 fun CardProduct(card: ProductCardSale) {
     var nameProduct = card.name
@@ -297,6 +338,9 @@ fun CardProduct(card: ProductCardSale) {
     var typeProduct = card.type_weight
     var weightProduct = card.weight_product
     var priceProduct = card.price
+
+
+
 
 
     Card(
