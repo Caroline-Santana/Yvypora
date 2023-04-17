@@ -212,16 +212,11 @@ fun HomeScreen() {
 
 @Composable
 fun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {
+    val context = LocalContext.current
     FloatingActionButton(
         onClick = {
-            scope.launch {
-                scaffoldState.snackbarHostState
-                    .showSnackbar(
-                        "blbla",
-                        actionLabel = "bsljdjsskd",
-                        duration = SnackbarDuration.Indefinite
-                    )
-            }
+            val intent = Intent(context, ShoppingCartActivity()::class.java)
+            context.startActivity(intent)
         },
         backgroundColor = colorResource(id = R.color.green_yvy),
     ) {

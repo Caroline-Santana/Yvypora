@@ -15,9 +15,20 @@
         android:theme="@style/Theme.Yvypora"
         tools:targetApi="31">
         <activity
+            android:name=".ShoppingCartActivity"
+            android:exported="false"
+            android:label="@string/title_activity_shopping_cart"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".DescriptionProducts"
             android:exported="false"
             android:label="@string/title_activity_description_products"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ProfileClient"
+            android:exported="false"
+            android:label="@string/title_activity_profile_client"
+            android:parentActivityName=".ProfileClient"
             android:theme="@style/Theme.Yvypora" />
         <activity
             android:name=".AddAccount"
@@ -53,11 +64,6 @@
             android:name=".EditProfileSreen"
             android:exported="false"
             android:label="@string/title_activity_edit_profile_sreen"
-            android:theme="@style/Theme.Yvypora" />
-        <activity
-            android:name=".ProfileClient"
-            android:exported="false"
-            android:label="@string/title_activity_profile_client"
             android:theme="@style/Theme.Yvypora" />
         <activity
             android:name=".ScreenSearch"

@@ -112,6 +112,9 @@
     <string name="description">Description</string>
     <string name="buy_now">But now</string>
     <string name="add_affection">Add. to affection</string>
+    <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
+    <string name="my_shopping_cart">My shopping cart</string>
+    <string name="date">Date:</string>
 
 
 </resources>

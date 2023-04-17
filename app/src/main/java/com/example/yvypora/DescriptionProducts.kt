@@ -169,78 +169,7 @@ fun Rating(score: Int){
         }
     }
 }
-//@Composable
-//fun WidhtProduct(){
-//    var weight by remember { mutableStateOf(1.0f) }
-//
-//    Row(
-//        modifier = Modifier
-//            .width(105.dp)
-//            .height(27.dp),
-//        verticalAlignment = Alignment.CenterVertically
-//    ){
-//        Box(
-//            contentAlignment = Alignment.Center
-//        ){
-//            Button(
-//                onClick = { weight += 0.5f},
-//                modifier = Modifier
-//                    .height(25.dp)
-//                    .width(32.dp),
-//                colors = ButtonDefaults.buttonColors(Color(217, 217, 217, 255))
-//            ) {
-//            }
-//            Row(
-//                verticalAlignment = Alignment.Top) {
-//                Text(
-//                    text = "-",
-//                    color = Color.Black,
-//                    modifier = Modifier
-//                        .clickable { weight += 0.5f }
-//                        .height(100.dp),
-//                    fontSize = 32.sp,
-//                    textAlign = TextAlign.Center
-//
-//                )
-//            }
-//
-//        }
-//
-//
-//        Text(
-//            text = "$weight Kg",
-//            modifier = Modifier
-//                .background(color = colorResource(id = R.color.green_widht_transparent)),
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.Bold,
-//            color = colorResource(id = R.color.green_widht)
-//        )
-//
-//        Box(
-//            contentAlignment = Alignment.Center
-//        ){
-//            Button(
-//                onClick = { weight += 0.5f},
-//                modifier = Modifier
-//                    .height(25.dp)
-//                    .width(32.dp),
-//            ) {
-//            }
-//            Text(
-//                text = "+",
-//                color = Color.White,
-//                modifier = Modifier
-//                    .padding(bottom = 5.dp)
-//                    .clickable { weight += 0.5f }
-//                ,
-//                fontSize = 32.sp,
-//                textAlign = TextAlign.Center
-//
-//            )
-//        }
-//    }
-//
-//}
+
 @Composable
 fun MainDescriptionProducts() {
     Column(

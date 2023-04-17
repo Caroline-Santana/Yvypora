@@ -2,21 +2,15 @@ package com.example.yvypora
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,9 +27,6 @@ import com.example.yvypora.models.MarketerCard
 import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.launch
 
 class BuyHistory : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +77,7 @@ fun BuyHistoryMain() {
                             .fillMaxWidth(),
                         fontSize = 24.sp,
                         textAlign = TextAlign.Center,
-                        color = colorResource(id = R.color.darkgreen_yvy)
+                        color = colorResource(id = R.color.green_widht)
                     )
                 }
                 Column(
@@ -95,7 +86,7 @@ fun BuyHistoryMain() {
                         .fillMaxHeight()
                 ) {
                     Row() {
-                        ListOfMarketerCard(marketers = listMarketerCard)
+                        ListOfMarketerCard(marketers = listMarketerCardHistory)
 
                     }
                 }
@@ -123,7 +114,7 @@ fun ListOfProductCardSale(cards: List<ProductCardSale>) {
     }
 }
 
-val listMarketerCard = listOf<MarketerCard>(
+val listMarketerCardHistory = listOf<MarketerCard>(
     MarketerCard(
         name = "Barraca do Seu Zé",
         sub_name = "Vila Madalena",
@@ -240,8 +231,13 @@ fun CardMarketer(marketer: MarketerCard) {
     ) {
         Column() {
             Row(
-                Modifier.background(Color(227, 240, 227, 138)),
-                verticalAlignment = Alignment.CenterVertically
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, end = 8.dp)
+                    .background(
+                        Color(227, 240, 227, 138)
+
+                    ),
             ) {
                 Image(
                     painter = photo,
@@ -252,31 +248,48 @@ fun CardMarketer(marketer: MarketerCard) {
                 )
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(start = 3.dp, top = 35.dp),
                 ) {
                     Text(
                         text = nameCard,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 20.sp,
-                        color = colorResource(id = R.color.green_yvy)
+                        fontSize = 17.sp,
+                        textAlign = TextAlign.Start,
+                        color = colorResource(id = R.color.green_widht)
                     )
                     Text(
                         text = subnameCard,
                         fontWeight = FontWeight.Light,
-                        fontSize = 16.sp,
+                        textAlign = TextAlign.Start,
+                        fontSize = 15.sp,
                         color = colorResource(id = R.color.green_yvy)
 
+                    )
+
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxSize()
+                        .padding(top = 38.dp, start = 23.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.date),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.green_widht)
                     )
                     Text(
                         text = date,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = colorResource(id = R.color.green_options)
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.green_widht)
                     )
-                }
 
+                }
             }
+
             ListOfProductCardSale(cards = marketer.products)
         }
     }
@@ -286,7 +299,7 @@ fun CardMarketer(marketer: MarketerCard) {
 fun CardProduct(card: ProductCardSale) {
     var nameProduct = card.name
 //    var photoProduct = card.photo
-    var photoProduct = painterResource(id = R.drawable.abobora)
+    var photoProduct = painterResource(id = R.drawable.abobora_shopping)
     var qntProduct = card.qntd_product
     var typeProduct = card.type_weight
     var weightProduct = card.weight_product
