@@ -15,6 +15,7 @@
     <color name="gray_yvy">#C2C1BF</color>
     <color name="light_gray">#F0EFEF</color>
     <color name="green_camps">#AAD576</color>
+    <color name="green_camps_transparent">#46AAD576</color>
     <color name="green_button">#73A942</color>
     <color name="green_options">#245501</color>
     <color name="green_text_dark">#31572C</color>

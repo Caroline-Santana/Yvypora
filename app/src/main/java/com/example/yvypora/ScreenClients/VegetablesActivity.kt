@@ -1,4 +1,4 @@
-package com.example.yvypora
+package com.example.yvypora.ScreenClients
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,31 +23,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.R
 import com.example.yvypora.models.MarketerData
 import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.YvyporaTheme
 
-class OthersActivityActivity : ComponentActivity() {
+class VegetablesActivityActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                OthersMain()
+                VegetablesMain()
             }
         }
 
     }
 }
 @Composable
-fun OthersMain(){
+fun VegetablesMain(){
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier.fillMaxSize()
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
-                    text = stringResource(id = R.string.other),
-                    Modifier.padding(start = 150.dp),
+                    text = stringResource(id = R.string.vegetable),
+                    Modifier.padding(start = 120.dp),
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.green_options),
                     fontSize = 32.sp,
@@ -62,13 +63,13 @@ fun OthersMain(){
                     contentDescription = "logo",
                 )
             }
-            ListOfMarketerDataOthers(marketers = listMarketerDataOthers())
+            ListOfMarketerDataVegetables(marketers = listMarketerDataVegetables())
         }
 
     }
 }
 
-fun listMarketerDataOthers() = listOf<MarketerData>(
+fun listMarketerDataVegetables() = listOf<MarketerData>(
     MarketerData(
         name = "Zé do Alfácil",
         photo = R.drawable.perfil,
@@ -295,13 +296,13 @@ fun listMarketerDataOthers() = listOf<MarketerData>(
 )
 
 @Composable
-fun ListOfMarketerDataOthers(marketers: List<MarketerData>) {
+fun ListOfMarketerDataVegetables(marketers: List<MarketerData>) {
     LazyColumn() {
-        items(marketers) { marketerData -> DataMarketerOthers(marketer = marketerData) }
+        items(marketers) { marketerData -> DataMarketerVegetable(marketer = marketerData) }
     }
 }
 @Composable
-fun DataMarketerOthers(marketer: MarketerData) {
+fun DataMarketerVegetable(marketer: MarketerData) {
     val nameMarketer = marketer.name
 //        var photoMarketer = marketer.photo
     val photoMarketer = painterResource(id = R.drawable.perfil)
@@ -338,20 +339,20 @@ fun DataMarketerOthers(marketer: MarketerData) {
                         colorResource(id = R.color.transparentgreen_yvy)
                     )
                 ) {
-                    ListOfProductDataOthers(products = marketer.products)
+                    ListOfProductDataVegetable(products = marketer.products)
                 }
             }
         }
     }
 }
 @Composable
-fun ListOfProductDataOthers(products: List<ProductCardSale>) {
+fun ListOfProductDataVegetable(products: List<ProductCardSale>) {
     LazyRow() {
-        items(products) { productsData -> DataProductOthers(product = productsData) }
+        items(products) { productsData -> DataProductVegetable(product = productsData) }
     }
 }
 @Composable
-fun DataProductOthers(product: ProductCardSale) {
+fun DataProductVegetable(product: ProductCardSale) {
 //        val context = LocalContext.current
     var nameProduct = product.name
 //    var photoProduct = card.photo

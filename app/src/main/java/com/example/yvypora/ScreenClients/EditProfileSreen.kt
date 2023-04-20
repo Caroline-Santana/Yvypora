@@ -1,4 +1,4 @@
-package com.example.yvypora
+package com.example.yvypora.ScreenClients
 
 import android.content.Intent
 import android.os.Bundle
@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
+import com.example.yvypora.R
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.navbar.ItemsMenu
 import com.example.yvypora.navbar.NavigationHost

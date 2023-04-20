@@ -1,4 +1,4 @@
-package com.example.yvypora
+package com.example.yvypora.ScreenClients
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,31 +23,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.R
 import com.example.yvypora.models.MarketerData
 import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.YvyporaTheme
 
-class SpicesActivityActivity : ComponentActivity() {
+class OthersActivityActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                SpicesMain()
+                OthersMain()
             }
         }
 
     }
 }
 @Composable
-fun SpicesMain(){
+fun OthersMain(){
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier.fillMaxSize()
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
-                    text = stringResource(id = R.string.spices),
-                    Modifier.padding(start = 100.dp),
+                    text = stringResource(id = R.string.other),
+                    Modifier.padding(start = 150.dp),
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.green_options),
                     fontSize = 32.sp,
@@ -62,13 +63,13 @@ fun SpicesMain(){
                     contentDescription = "logo",
                 )
             }
-            ListOfMarketerDataSpices(marketers = listMarketerDataSpices())
+            ListOfMarketerDataOthers(marketers = listMarketerDataOthers())
         }
 
     }
 }
 
-fun listMarketerDataSpices() = listOf<MarketerData>(
+fun listMarketerDataOthers() = listOf<MarketerData>(
     MarketerData(
         name = "Zé do Alfácil",
         photo = R.drawable.perfil,
@@ -295,13 +296,13 @@ fun listMarketerDataSpices() = listOf<MarketerData>(
 )
 
 @Composable
-fun ListOfMarketerDataSpices(marketers: List<MarketerData>) {
+fun ListOfMarketerDataOthers(marketers: List<MarketerData>) {
     LazyColumn() {
-        items(marketers) { marketerData -> DataMarketerSpice(marketer = marketerData) }
+        items(marketers) { marketerData -> DataMarketerOthers(marketer = marketerData) }
     }
 }
 @Composable
-fun DataMarketerSpice(marketer: MarketerData) {
+fun DataMarketerOthers(marketer: MarketerData) {
     val nameMarketer = marketer.name
 //        var photoMarketer = marketer.photo
     val photoMarketer = painterResource(id = R.drawable.perfil)
@@ -338,20 +339,20 @@ fun DataMarketerSpice(marketer: MarketerData) {
                         colorResource(id = R.color.transparentgreen_yvy)
                     )
                 ) {
-                    ListOfProductDataSpice(products = marketer.products)
+                    ListOfProductDataOthers(products = marketer.products)
                 }
             }
         }
     }
 }
 @Composable
-fun ListOfProductDataSpice(products: List<ProductCardSale>) {
+fun ListOfProductDataOthers(products: List<ProductCardSale>) {
     LazyRow() {
-        items(products) { productsData -> DataProductSpice(product = productsData) }
+        items(products) { productsData -> DataProductOthers(product = productsData) }
     }
 }
 @Composable
-fun DataProductSpice(product: ProductCardSale) {
+fun DataProductOthers(product: ProductCardSale) {
 //        val context = LocalContext.current
     var nameProduct = product.name
 //    var photoProduct = card.photo

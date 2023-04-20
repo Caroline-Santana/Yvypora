@@ -1,4 +1,4 @@
-package com.example.yvypora
+package com.example.yvypora.ScreenClients
 
 
 import android.content.Intent
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.R
 import com.example.yvypora.models.HistoricSearchDBHelper
 
 import com.example.yvypora.ui.theme.YvyporaTheme

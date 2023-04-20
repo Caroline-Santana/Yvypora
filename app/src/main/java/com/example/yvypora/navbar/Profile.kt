@@ -6,8 +6,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.yvypora.HeaderProfile
-import com.example.yvypora.JoiningFields
+import com.example.yvypora.ScreenClients.HeaderProfile
+import com.example.yvypora.ScreenClients.JoiningFields
 
 @Composable
 fun Profile(){
