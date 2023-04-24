@@ -1,0 +1,247 @@
+Index: app/src/main/java/com/example/yvypora/AddAccount.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\nimport android.content.Intent\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.material.*\nimport androidx.compose.runtime.Composable\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.example.yvypora.ui.theme.YvyporaTheme\n\nclass AddAccount : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                // A surface container using the 'background' color from the theme\n                Surface(\n                    modifier = Modifier.fillMaxSize(),\n                    color = MaterialTheme.colors.background\n                ) {\n                    AdAccount()\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun AdAccount() {\n    val context = LocalContext.current\n    Image(\n        painter = painterResource(id = R.drawable.wave__5_),\n        modifier = Modifier\n            .height(80.dp)\n            .fillMaxWidth(),\n        alignment = Alignment.TopCenter,\n        contentDescription = stringResource(id = R.string.back_screen)\n    )\n    Column(modifier = Modifier\n        .fillMaxWidth()\n        .padding(start = 25.dp, end = 25.dp, top = 130.dp)\n        .fillMaxSize()\n    ) {\n        Text(\n            text = stringResource(id = R.string.add_account_pay_methods),\n            modifier = Modifier\n                .fillMaxWidth(),\n            fontSize = 24.sp,\n            color = colorResource(id = R.color.green_yvy),\n            textAlign = TextAlign.Center\n        )\n        NameInputCard()\n        Spacer(modifier = Modifier.height(15.dp))\n        NumberInputCard()\n        Spacer(modifier = Modifier.height(15.dp))\n        Row (modifier = Modifier\n            .fillMaxWidth(),\n            horizontalArrangement = Arrangement.SpaceBetween\n        ){\n            CvvInputCard()\n            DateInputCard()\n        }\n        Spacer(modifier = Modifier.height(25.dp))\n\n        Button(\n            onClick = {\n                val intent = Intent(context, PaymentMethodsActivity()::class.java)\n                context.startActivity(intent)\n            },\n            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),\n            modifier = Modifier\n                .width(217.dp)\n                .height(48.dp)\n                .align(Alignment.CenterHorizontally),\n            shape = RoundedCornerShape(5.dp),\n\n            ) {\n            Text(\n                text = stringResource(id = R.string.to_save),\n                color = Color.White,\n                fontSize = 20.sp\n            )\n        }\n\n    }\n}\n\n@Preview(showBackground = true)\n@Composable\nfun DefaultPreview3() {\n    YvyporaTheme {\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/AddAccount.kt b/app/src/main/java/com/example/yvypora/AddAccount.kt
+--- a/app/src/main/java/com/example/yvypora/AddAccount.kt	(revision 04ae1d4bf6f04b905c7781cd02daac3d94e1d09f)
++++ b/app/src/main/java/com/example/yvypora/AddAccount.kt	(date 1681901094070)
+@@ -4,11 +4,15 @@
+ import android.os.Bundle
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
++import androidx.compose.foundation.BorderStroke
+ import androidx.compose.foundation.Image
++import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.*
++import androidx.compose.foundation.lazy.LazyColumn
++import androidx.compose.foundation.lazy.items
+ import androidx.compose.foundation.shape.RoundedCornerShape
+ import androidx.compose.material.*
+-import androidx.compose.runtime.Composable
++import androidx.compose.runtime.*
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+@@ -16,10 +20,14 @@
+ import androidx.compose.ui.res.colorResource
+ import androidx.compose.ui.res.painterResource
+ import androidx.compose.ui.res.stringResource
++import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
++import com.example.yvypora.models.MarketerCardShopping
++import com.example.yvypora.models.ProductCardShopping
++import com.example.yvypora.ui.theme.SpaceGrotesk
+ import com.example.yvypora.ui.theme.YvyporaTheme
+ 
+ class AddAccount : ComponentActivity() {
+@@ -105,4 +113,4 @@
+     YvyporaTheme {
+ 
+     }
+-}
+\ No newline at end of file
++}
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <uses-permission android:name=\"android.permisson.READ_EXTERNAL_STORAGE\" />\n\n    <application\n        android:allowBackup=\"true\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\n        android:fullBackupContent=\"@xml/backup_rules\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.Yvypora\"\n        tools:targetApi=\"31\">\n        <activity\n            android:name=\".DescriptionProducts\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_description_products\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddAccount\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_account\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddCardAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_pay_methods_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".PaymentMethodsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_payment_methods\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AddAdressAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_adress_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".AdressesActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_adresses\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".BuyHistory\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_buy_history_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".EditProfileSreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_edit_profile_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ProfileClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_profile_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenSearch\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_screen_search\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".RegisterMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".InicialScreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".RegisterClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".DecisionSreenActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_decision_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".LoginActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_login\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MainActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_main\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".SplashScreenActivity\"\n            android:exported=\"true\"\n            android:label=\"@string/app_name\"\n            android:theme=\"@style/Theme.Yvypora\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 04ae1d4bf6f04b905c7781cd02daac3d94e1d09f)
++++ b/app/src/main/AndroidManifest.xml	(date 1681900990804)
+@@ -15,6 +15,11 @@
+         android:theme="@style/Theme.Yvypora"
+         tools:targetApi="31">
+         <activity
++            android:name=".ShoppingCartActivity"
++            android:exported="false"
++            android:label="@string/title_activity_shopping_cart"
++            android:theme="@style/Theme.Yvypora" />
++        <activity
+             android:name=".DescriptionProducts"
+             android:exported="false"
+             android:label="@string/title_activity_description_products"
+Index: app/src/main/java/com/example/yvypora/ShoppingCartActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.BorderStroke\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.clickable\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.lazy.LazyColumn\nimport androidx.compose.foundation.lazy.items\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.material.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.example.yvypora.models.*\nimport com.example.yvypora.ui.theme.SpaceGrotesk\nimport com.example.yvypora.ui.theme.YvyporaTheme\n\nclass ShoppingCartActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                // A surface container using the 'background' color from the theme\n                Surface(\n                    modifier = Modifier.fillMaxSize(),\n                    color = MaterialTheme.colors.background\n                ) {\n                        Header()\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun ShoppingCartMain(){\n        Column(modifier = Modifier\n            .fillMaxWidth()\n            .padding(top = 25.dp)\n            .fillMaxSize(),\n        horizontalAlignment = Alignment.CenterHorizontally\n        )\n        {\n            Text(\n                text = stringResource(id = R.string.my_shopping_cart),\n                fontSize = 24.sp,\n                color = colorResource(id = R.color.darkgreen_yvy)\n            )\n            Row() {\n                ListOfMarketerCardShopping(marketers = listMarketerCardShopping)\n\n            }\n        }\n}\nval listMarketerCardShopping = listOf<MarketerCardShopping>(\n    MarketerCardShopping(\n        name = \"Barraca do Seu Zé\",\n        sub_name = \"Vila Madalena\",\n        photo = R.drawable.buy_history_card_marketer,\n        products = listOf(\n            ProductCardShopping(\n                id = 1,\n                name = \"Abóbora\",\n                type_weight = \"g\",\n                weight_product = 800,\n                photo = 1,\n                price = 24.00,\n            ),\n            ProductCardShopping(\n                id = 1,\n                name = \"Abóbora\",\n                type_weight = \"g\",\n                weight_product = 800,\n                photo = 1,\n                price = 24.00,\n            )\n        )\n    ),\n    MarketerCardShopping(\n        name = \"Barraca do Seu Zé\",\n        sub_name = \"Vila Augusta\",\n        photo = R.drawable.buy_history_card_marketer,\n        products = listOf(\n                ProductCardShopping(\n                    id = 1,\n                    name = \"Abóbora\",\n                    type_weight = \"g\",\n                    weight_product = 800,\n                    photo = 1,\n                    price = 24.00,\n                ),\n                ProductCardShopping(\n                    id = 1,\n                    name = \"Abóbora\",\n                    type_weight = \"g\",\n                    weight_product = 800,\n                    photo = 1,\n                    price = 24.00,\n            )\n        )\n    )\n)\n\n@Composable\nfun ListOfMarketerCardShopping(marketers: List<MarketerCardShopping>) {\n\n    LazyColumn() {\n        items(marketers) { marketer -> CardMarketerShopping(marketer = marketer) }\n\n    }\n}\n\n@Composable\nfun CardMarketerShopping(marketer: MarketerCardShopping) {\n    var nameCard = marketer.name\n    var subnameCard = marketer.sub_name\n//    tem que descomentar e usar o que o banco retorna\n//    var photo = marketer.photo\n    var photo = painterResource(id = R.drawable.buy_history_card_marketer)\n    var products = marketer.products\n\n    Card(\n        modifier = Modifier\n            .fillMaxWidth()\n    ) {\n        Column() {\n            Row(\n                Modifier\n                    .fillMaxWidth()\n                    .padding(start = 8.dp, end = 8.dp),\n            ) {\n                Image(\n                    painter = photo,\n                    contentDescription = \"\",\n                    modifier = Modifier\n                        .width(120.dp)\n                        .height(120.dp)\n                )\n                Column(\n                    modifier = Modifier\n                        .padding(start = 3.dp, top = 35.dp),\n                ) {\n                    Text(\n                        text = nameCard,\n                        fontSize = 17.sp,\n                        textAlign = TextAlign.Start,\n                        color = colorResource(id = R.color.green_widht)\n                    )\n                    Text(\n                        text = subnameCard,\n                        fontWeight = FontWeight.Light,\n                        textAlign = TextAlign.Start,\n                        fontSize = 15.sp,\n                        color = colorResource(id = R.color.green_yvy)\n\n                    )\n\n                }\n            }\n\n            ListOfProductCardShopping(cards = marketer.products)\n        }\n    }\n}\n\n@Composable\nfun ListOfProductCardShopping(cards: List<ProductCardShopping>) {\n    LazyColumn(\n        modifier = Modifier.height(600.dp),\n//        userScrollEnabled = false\n    ) {\n        items(cards) { card -> CardProductShopping(card = card) }\n    }\n}\n\n@Composable\nfun CardProductShopping(card: ProductCardShopping) {\n    var qtde by remember { mutableStateOf(1) }\n    var nameProduct = card.name\n//    var photoProduct = card.photo\n    var photoProduct = painterResource(id = R.drawable.abobora_shopping)\n    var typeProduct = card.type_weight\n    var weightProduct = card.weight_product\n    var priceProduct = card.price\n\n    Column(modifier = Modifier\n        .padding(start = 56.dp, bottom = 25.dp)\n\n    ) {\n        Card(\n            Modifier\n                .width(273.dp)\n                .height(130.dp),\n            border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))\n        ) {\n            Row(\n                Modifier.width(100.dp),\n                horizontalArrangement = Arrangement.Center,\n                verticalAlignment = Alignment.CenterVertically\n            ) {\n                Column(\n                    modifier = Modifier.width(150.dp),\n                    horizontalAlignment = Alignment.Start,\n                    verticalArrangement = Arrangement.Center\n                ) {\n                    Text(\n                        text = nameProduct,\n                        Modifier.padding(start = 25.dp),\n                        fontWeight = FontWeight.Bold,\n                        fontSize = 16.sp,\n                        fontFamily = SpaceGrotesk,\n                        color = colorResource(id = R.color.darkgreen_yvy)\n                    )\n                    Image(\n                        painter = photoProduct,\n                        contentDescription = \"\",\n                        modifier = Modifier\n                            .width(128.dp)\n                            .padding(start = 5.dp, top = 5.dp)\n                            .height(63.dp)\n                    )\n                }\n                Column(\n                    Modifier\n                        .fillMaxWidth(0.7f),\n                    horizontalAlignment = Alignment.Start,\n                    verticalArrangement = Arrangement.Top\n                ) {\n                    Box(\n                        modifier = Modifier.fillMaxWidth(),\n                    ) {\n\n                        Text(\n                            text = weightProduct.toString(),\n                            fontWeight = FontWeight.Bold,\n                            fontSize = 12.sp,\n                            fontFamily = SpaceGrotesk,\n                            color = colorResource(id = R.color.dark_gray)\n                        )\n                        Text(\n                            text = typeProduct, fontWeight = FontWeight.Bold,\n                            fontSize = 12.sp,\n                            modifier = Modifier.padding(start = 25.dp),\n                            fontFamily = SpaceGrotesk,\n                            color = colorResource(id = R.color.dark_gray)\n                        )\n                    }\n                    Text(\n                        text = \"R$$priceProduct\",\n                        fontWeight = FontWeight.Bold,\n                        fontSize = 20.sp,\n                        fontFamily = SpaceGrotesk,\n                        color = colorResource(id = R.color.green_options)\n                    )\n                    Row(\n                        modifier = Modifier\n                            .padding(top = 8.dp)\n                            .width(105.dp)\n                            .height(30.dp),\n                        horizontalArrangement = Arrangement.SpaceBetween,\n                        verticalAlignment = Alignment.CenterVertically\n                    ) {\n                        Button(\n                            onClick = { qtde = (qtde - 1).coerceAtLeast(1)},\n                            modifier = Modifier\n                                .height(24.dp)\n                                .width(28.dp),\n                            shape = RoundedCornerShape(7.dp),\n                            colors = ButtonDefaults.buttonColors(Color(217, 217, 217, 255))\n                        ) {\n                            Icon(\n                                painter = painterResource(id = R.drawable.remove),\n                                modifier = Modifier\n                                    .clickable {  qtde = (qtde - 1).coerceAtLeast(1) },\n                                contentDescription = \"\"\n                            )\n                        }\n\n\n                        Text(\n                            text = \"$qtde\",\n                            fontSize = 20.sp,\n                            fontWeight = FontWeight.Bold,\n                            color = colorResource(id = R.color.darkgreen_yvy)\n                        )\n                        Box(contentAlignment = Alignment.Center) {\n                            Button(\n                                onClick = { qtde += 1 },\n                                modifier = Modifier\n                                    .height(24.dp)\n                                    .width(28.dp),\n                                shape = RoundedCornerShape(7.dp),\n                            ) {}\n                            Icon(\n                                painter = painterResource(id = R.drawable.more),\n                                modifier = Modifier\n                                    .width(15.dp)\n                                    .height(15.dp)\n                                    .clickable { qtde += 1 },\n                                contentDescription = \"\",\n                                tint = Color.White\n                            )\n                        }\n\n                    }\n\n\n                }\n                Box(modifier = Modifier\n                    .fillMaxSize()\n                    .padding(top = 11.dp, end = 5.dp)\n                )\n                {\n                    Icon(\n                        painter = painterResource(id = R.drawable.trash),\n                        contentDescription = \"\",\n                        modifier = Modifier\n                            .height(33.dp)\n                            .width(33.dp)\n                    )\n                }\n\n            }\n        }\n    }\n}\n\n\n@Preview(showBackground = true)\n@Composable\nfun DefaultPreview4() {\n    YvyporaTheme {\n        Column(\n            modifier = Modifier\n                .fillMaxSize()\n                .fillMaxWidth()\n        )\n        {\n            Header()\n            ShoppingCartMain()\n        }\n\n    }\n}\n\n//Janelinha que aparecia no flutton button\n// scope.launch {\n//    scaffoldState.snackbarHostState\n//        .showSnackbar(\n//            \"blbla\",\n//            actionLabel = \"bsljdjsskd\",\n//            duration = SnackbarDuration.Indefinite\n//        )\n//}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/ShoppingCartActivity.kt b/app/src/main/java/com/example/yvypora/ShoppingCartActivity.kt
+--- a/app/src/main/java/com/example/yvypora/ShoppingCartActivity.kt	(revision 04ae1d4bf6f04b905c7781cd02daac3d94e1d09f)
++++ b/app/src/main/java/com/example/yvypora/ShoppingCartActivity.kt	(date 1681902086258)
+@@ -23,7 +23,8 @@
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import com.example.yvypora.models.*
++import com.example.yvypora.models.MarketerCardShopping
++import com.example.yvypora.models.ProductCardShopping
+ import com.example.yvypora.ui.theme.SpaceGrotesk
+ import com.example.yvypora.ui.theme.YvyporaTheme
+ 
+@@ -37,32 +38,39 @@
+                     modifier = Modifier.fillMaxSize(),
+                     color = MaterialTheme.colors.background
+                 ) {
++                    Column(
++                        modifier = Modifier
++                            .fillMaxSize()
++                            .fillMaxWidth()
++                    )
++                    {
+                         Header()
++                        ShoppingCartMain()
++                    }
+                 }
+             }
+         }
+     }
+ }
+-
+ @Composable
+ fun ShoppingCartMain(){
+-        Column(modifier = Modifier
+-            .fillMaxWidth()
+-            .padding(top = 25.dp)
+-            .fillMaxSize(),
++    Column(modifier = Modifier
++        .fillMaxWidth()
++        .padding(top = 25.dp)
++        .fillMaxSize(),
+         horizontalAlignment = Alignment.CenterHorizontally
+-        )
+-        {
+-            Text(
+-                text = stringResource(id = R.string.my_shopping_cart),
+-                fontSize = 24.sp,
+-                color = colorResource(id = R.color.darkgreen_yvy)
+-            )
+-            Row() {
+-                ListOfMarketerCardShopping(marketers = listMarketerCardShopping)
++    )
++    {
++        Text(
++            text = stringResource(id = R.string.my_shopping_cart),
++            fontSize = 24.sp,
++            color = colorResource(id = R.color.darkgreen_yvy)
++        )
++        Row() {
++            ListOfMarketerCardShopping(marketers = listMarketerCardShopping)
+ 
+-            }
+-        }
++        }
++    }
+ }
+ val listMarketerCardShopping = listOf<MarketerCardShopping>(
+     MarketerCardShopping(
+@@ -93,21 +101,21 @@
+         sub_name = "Vila Augusta",
+         photo = R.drawable.buy_history_card_marketer,
+         products = listOf(
+-                ProductCardShopping(
+-                    id = 1,
+-                    name = "Abóbora",
+-                    type_weight = "g",
+-                    weight_product = 800,
+-                    photo = 1,
+-                    price = 24.00,
+-                ),
+-                ProductCardShopping(
+-                    id = 1,
+-                    name = "Abóbora",
+-                    type_weight = "g",
+-                    weight_product = 800,
+-                    photo = 1,
+-                    price = 24.00,
++            ProductCardShopping(
++                id = 1,
++                name = "Abóbora",
++                type_weight = "g",
++                weight_product = 800,
++                photo = 1,
++                price = 24.00,
++            ),
++            ProductCardShopping(
++                id = 1,
++                name = "Abóbora",
++                type_weight = "g",
++                weight_product = 800,
++                photo = 1,
++                price = 24.00,
+             )
+         )
+     )
+@@ -134,6 +142,7 @@
+     Card(
+         modifier = Modifier
+             .fillMaxWidth()
++
+     ) {
+         Column() {
+             Row(
+@@ -178,7 +187,9 @@
+ @Composable
+ fun ListOfProductCardShopping(cards: List<ProductCardShopping>) {
+     LazyColumn(
+-        modifier = Modifier.height(600.dp),
++        modifier = Modifier
++            .height(300.dp)
++            .padding(10.dp),
+ //        userScrollEnabled = false
+     ) {
+         items(cards) { card -> CardProductShopping(card = card) }
+@@ -196,7 +207,7 @@
+     var priceProduct = card.price
+ 
+     Column(modifier = Modifier
+-        .padding(start = 56.dp, bottom = 25.dp)
++        .padding(start = 56.dp, bottom = 10.dp)
+ 
+     ) {
+         Card(
+@@ -272,14 +283,17 @@
+                         horizontalArrangement = Arrangement.SpaceBetween,
+                         verticalAlignment = Alignment.CenterVertically
+                     ) {
+-                        Button(
+-                            onClick = { qtde = (qtde - 1).coerceAtLeast(1)},
+-                            modifier = Modifier
+-                                .height(24.dp)
+-                                .width(28.dp),
+-                            shape = RoundedCornerShape(7.dp),
+-                            colors = ButtonDefaults.buttonColors(Color(217, 217, 217, 255))
+-                        ) {
++                        Box(contentAlignment = Alignment.Center){
++                            Button(
++                                onClick = { qtde = (qtde - 1).coerceAtLeast(1)},
++                                modifier = Modifier
++                                    .height(24.dp)
++                                    .width(28.dp),
++                                shape = RoundedCornerShape(7.dp),
++                                colors = ButtonDefaults.buttonColors(Color(217, 217, 217, 255))
++                            ) {
++
++                            }
+                             Icon(
+                                 painter = painterResource(id = R.drawable.remove),
+                                 modifier = Modifier
+@@ -287,8 +301,6 @@
+                                 contentDescription = ""
+                             )
+                         }
+-
+-
+                         Text(
+                             text = "$qtde",
+                             fontSize = 20.sp,

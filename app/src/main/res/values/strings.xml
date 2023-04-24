@@ -116,6 +116,7 @@
     <string name="my_shopping_cart">My shopping cart</string>
     <string name="date">Date:</string>
     <string name="promotion" >Promotion!</string>
+    <string name="pay">Pay</string>
 
 
 </resources>

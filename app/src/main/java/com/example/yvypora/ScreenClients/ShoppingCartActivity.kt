@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,6 +32,7 @@ import com.example.yvypora.models.MarketerCardShopping
 import com.example.yvypora.models.ProductCardShopping
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class ShoppingCartActivity : ComponentActivity() {
@@ -61,7 +63,7 @@ class ShoppingCartActivity : ComponentActivity() {
 fun ShoppingCartMain(){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 25.dp)
+        .padding(top = 10.dp)
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     )
@@ -74,7 +76,7 @@ fun ShoppingCartMain(){
             ListOfMarketerCardShopping(marketers = listMarketerCardShopping)
     }
 }
-val listMarketerCardShopping = listOf<MarketerCardShopping>(
+val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
     MarketerCardShopping(
         name = "Barraca do Seu Zé",
         sub_name = "Vila Madalena",
@@ -86,7 +88,6 @@ val listMarketerCardShopping = listOf<MarketerCardShopping>(
                 type_weight = "g",
                 weight_product = 800,
                 isSelected = false,
-                showSnackBar = false,
                 photo = 1,
                 price = 24.00,
             ),
@@ -96,7 +97,6 @@ val listMarketerCardShopping = listOf<MarketerCardShopping>(
                 type_weight = "g",
                 weight_product = 800,
                 isSelected = false,
-                showSnackBar = false,
                 photo = 1,
                 price = 22.00,
             )
@@ -113,7 +113,6 @@ val listMarketerCardShopping = listOf<MarketerCardShopping>(
                 type_weight = "g",
                 weight_product = 800,
                 isSelected = false,
-                showSnackBar = false,
                 photo = 1,
                 price = 24.00,
             ),
@@ -123,7 +122,6 @@ val listMarketerCardShopping = listOf<MarketerCardShopping>(
                 type_weight = "g",
                 weight_product = 800,
                 isSelected = false,
-                showSnackBar = false,
                 photo = 1,
                 price = 22.00,
             )
@@ -201,6 +199,7 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
 fun ListOfProductCardShopping(cards: List<ProductCardShopping>) {
     val selectedCards = remember { mutableStateListOf<Int>() }
     var showSnackbar by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
     var valuePay by remember { mutableStateOf(0.0) }
     LazyColumn(
         modifier = Modifier
@@ -215,14 +214,64 @@ fun ListOfProductCardShopping(cards: List<ProductCardShopping>) {
                 card = card,
                 isSelected = card.id in selectedCards,
                 onCardSelected = { id->
-//                    valuePay = cards.find { }?.price ?: 0.0
                     showSnackbar = true
                     onCardProductClick(card.id, selectedCards)},
             )
         }
     }
     if (showSnackbar) {
-            SnackBarFunction()
+        CardPay()
+    }
+
+}
+
+@Composable
+fun CardPay() {
+
+    Card(
+        Modifier
+            .width(349.dp)
+            .height(62.dp),
+        elevation = 0.dp,
+        backgroundColor = colorResource(id = R.color.green_camps),
+        border = BorderStroke(3.dp, colorResource(id = R.color.green_camps))
+    ) {
+        Row(
+            modifier = Modifier.padding(start = 18.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Total:",
+                color = colorResource(id = R.color.full_dark_yvy),
+                modifier = Modifier.padding(end = 5.dp),
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+            Text(
+                text = "R$ 48,00",
+                modifier = Modifier.padding(end = 67.dp),
+                color = colorResource(id = R.color.full_dark_yvy),
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+            Button(
+                    modifier = Modifier
+                        .height(47.dp)
+                        .width(102.dp),
+                colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
+            onClick = { /*TODO*/ }
+            ) {
+            Text(
+                text = stringResource(id = R.string.pay),
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        }
+
+        }
+
+
     }
 }
 
@@ -261,7 +310,8 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                 Icon(
                     painter = painterResource(id = R.drawable.check_full),
                     modifier = Modifier
-                        .padding(end = 10.dp),
+                        .padding(end = 10.dp)
+                        .clickable { onCardSelected(isSelected) },
                     contentDescription = "",
                     tint = colorResource(id = R.color.green_button)
                 )
@@ -270,6 +320,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                     painter = painterResource(id = R.drawable.check_no_full),
                     modifier = Modifier
                         .padding(end = 10.dp)
+                        .clickable { onCardSelected(isSelected) }
                     ,
                     contentDescription = "",
                     tint = colorResource(id = R.color.green_button)
@@ -423,6 +474,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
 
 }
 
+
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun SnackBarFunction(){
@@ -450,8 +502,9 @@ fun DefaultPreview4() {
                 .fillMaxWidth()
         )
         {
-            Header()
-            ShoppingCartMain()
+//            Header()
+//            ShoppingCartMain()
+            CardPay()
         }
 
     }
