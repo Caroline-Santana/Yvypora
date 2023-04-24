@@ -1,27 +1,29 @@
 package com.example.yvypora.navbar
 
-import android.content.Intent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.example.yvypora.FairsActivity
+import androidx.compose.ui.unit.dp
+import com.example.yvypora.ScreenClients.*
+import com.example.yvypora.models.Fairs
+import com.example.yvypora.models.MarketerFairNear
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun Fair() {
-    val context = LocalContext.current
-    Column(Modifier. fillMaxSize()
-        .clickable {
-            val intent = Intent(context, FairsActivity::class.java)
-            context.startActivity(intent)
-        }) {
-        Text(
-            text = "Fair",
-            style = MaterialTheme.typography.h1
-        )
+    Column() {
+        Header()
+
+
+
     }
 }

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.yvypora.FairsActivity
+import com.example.yvypora.ScreenClients.FairsActivity
 
 
 @Composable
@@ -20,7 +20,7 @@ fun NavigationHost(navController: NavHostController){
            Live()
        }
        composable(ItemsMenu.Pantalla3.rota){
-           FairsActivity()
+           Fair()
        }
        composable(ItemsMenu.Pantalla4.rota){
            Profile()

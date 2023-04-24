@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Dp
 import coil.compose.rememberImagePainter
+import com.example.yvypora.R
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.*
 

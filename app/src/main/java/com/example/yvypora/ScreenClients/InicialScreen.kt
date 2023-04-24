@@ -94,10 +94,8 @@ fun Header() {
                 }
                 .height(50.dp)
                 .width(55.dp),
-
             contentDescription = "logo",
-
-            )
+        )
     }
 }
 
@@ -206,7 +204,6 @@ fun HomeScreen() {
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavigationHost(navController)
-
         }
     }
 }

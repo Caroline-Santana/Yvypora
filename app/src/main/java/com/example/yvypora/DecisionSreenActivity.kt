@@ -1,5 +1,6 @@
 package com.example.yvypora
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -35,9 +36,9 @@ class DecisionSreenActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
 
-                ) {
+                    ) {
                     Image(
-                        painter =  painterResource(id =R.drawable.logo_no_name),
+                        painter = painterResource(id = R.drawable.logo_no_name),
                         modifier = Modifier
                             .height(58.dp)
                             .width(55.dp)
@@ -45,7 +46,7 @@ class DecisionSreenActivity : ComponentActivity() {
                         alignment = Alignment.BottomEnd,
                         contentDescription = "logo",
 
-                    )
+                        )
                     Spacer(
                         modifier = Modifier.height(36.dp)
                     )
@@ -66,8 +67,7 @@ class DecisionSreenActivity : ComponentActivity() {
                                 .height(238.dp)
                                 .fillMaxWidth()
                                 .align(Alignment.Start)
-                                .padding(end = 70.dp)
-                                ,
+                                .padding(end = 70.dp),
                             contentDescription = "background"
                         )
                     }
@@ -116,7 +116,7 @@ fun TitleWithStyle() {
 @Composable
 fun FildDecision() {
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.Start,
@@ -139,8 +139,9 @@ fun FildDecision() {
     }
 }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun ButtonDecision(){
+fun ButtonDecision() {
 
     Row(
         modifier = Modifier
@@ -150,8 +151,8 @@ fun ButtonDecision(){
         val context = LocalContext.current
         Button(
             onClick = {
-                      val intent = Intent(context, RegisterClient()::class.java)
-                                    context.startActivity(intent)
+                val intent = Intent(context, RegisterClient()::class.java)
+                context.startActivity(intent)
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
@@ -169,8 +170,8 @@ fun ButtonDecision(){
         }
         Button(
             onClick = {
-                val intent = Intent(context,RegisterMarketer()::class.java)
-                context.startActivity(intent)
+//                val intent = Intent(context,RegisterMarketer()::class.java)
+//                context.startActivity(intent)
             },
 
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),

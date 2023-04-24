@@ -70,6 +70,7 @@ fun FruitsResultMain() {
                     painter = painterResource(id = R.drawable.logo_no_name),
                     modifier = Modifier
                         .height(64.dp)
+                        .height(64.dp)
                         .width(164.dp)
                         .padding(start = 80.dp),
                     contentDescription = "logo",
