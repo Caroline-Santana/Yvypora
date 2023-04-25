@@ -51,31 +51,43 @@ class ShoppingCartActivity : ComponentActivity() {
                             .fillMaxWidth()
                     )
                     {
+
                         Header()
                         ShoppingCartMain()
+
                     }
                 }
             }
         }
     }
 }
+
+var showPaymentBar by mutableStateOf(false)
+var total_value by mutableStateOf(0.0)
+//val selectedCards by mutableStateListOf(0)
 @Composable
 fun ShoppingCartMain(){
-    Column(modifier = Modifier
+    Text(
+        text = stringResource(id = R.string.my_shopping_cart),
+        modifier = Modifier.fillMaxWidth(),
+        fontSize = 24.sp,
+        textAlign = TextAlign.Center,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(top = 10.dp)
+        .padding(bottom = 10.dp)
         .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        contentAlignment = Alignment.BottomCenter
     )
     {
-        Text(
-            text = stringResource(id = R.string.my_shopping_cart),
-            fontSize = 24.sp,
-            color = colorResource(id = R.color.darkgreen_yvy)
-        )
-            ListOfMarketerCardShopping(marketers = listMarketerCardShopping)
+        ListOfMarketerCardShopping(marketers = listMarketerCardShopping)
+        CardPay()
+
     }
 }
+
+
 val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
     MarketerCardShopping(
         name = "Barraca do Seu Zé",
@@ -124,7 +136,25 @@ val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
                 isSelected = false,
                 photo = 1,
                 price = 22.00,
-            )
+            ),
+            ProductCardShopping(
+                id = 3,
+                name = "Abóbora",
+                type_weight = "g",
+                weight_product = 800,
+                isSelected = false,
+                photo = 1,
+                price = 24.00,
+            ),
+            ProductCardShopping(
+                id = 4,
+                name = "Abóbora",
+                type_weight = "g",
+                weight_product = 800,
+                isSelected = false,
+                photo = 1,
+                price = 24.00,
+            ),
         )
     )
 )
@@ -139,8 +169,10 @@ fun ListOfMarketerCardShopping(marketers: List<MarketerCardShopping>) {
 
 @Composable
 fun CardMarketerShopping(marketer: MarketerCardShopping) {
+
     var nameCard = marketer.name
     var subnameCard = marketer.sub_name
+    var showSnackbar by remember { mutableStateOf(false) }
 //    tem que descomentar e usar o que o banco retorna
 //    var photo = marketer.photo
     var photo = painterResource(id = R.drawable.buy_history_card_marketer)
@@ -190,21 +222,21 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
                 }
             }
 
-                ListOfProductCardShopping(cards = marketer.products)
+                ListOfProductCardShopping(cards = marketer.products, state = showSnackbar)
         }
     }
 }
 
 @Composable
-fun ListOfProductCardShopping(cards: List<ProductCardShopping>) {
-    val selectedCards = remember { mutableStateListOf<Int>() }
-    var showSnackbar by remember { mutableStateOf(false) }
+fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state : Boolean) {
+    val selectedCards = remember { mutableStateListOf<Int>() } // passar para o global
+    var stateSnack = state
     val coroutineScope = rememberCoroutineScope()
     var valuePay by remember { mutableStateOf(0.0) }
     LazyColumn(
         modifier = Modifier
             .height(300.dp)
-            .padding(top = 10.dp),
+            .padding(top = 5.dp, bottom = 50.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 //        userScrollEnabled = false
@@ -213,65 +245,61 @@ fun ListOfProductCardShopping(cards: List<ProductCardShopping>) {
             CardProductShopping(
                 card = card,
                 isSelected = card.id in selectedCards,
-                onCardSelected = { id->
-                    showSnackbar = true
+                onCardSelected = { id ->
+                    showPaymentBar = true
+                    stateSnack = true
                     onCardProductClick(card.id, selectedCards)},
             )
         }
     }
-    if (showSnackbar) {
-        CardPay()
-    }
-
 }
 
 @Composable
 fun CardPay() {
+    if (showPaymentBar) {
+        Card(
+            Modifier
+                .width(349.dp)
+                .height(52.dp),
+            elevation = 10.dp,
+            backgroundColor = colorResource(id = R.color.green_camps),
 
-    Card(
-        Modifier
-            .width(349.dp)
-            .height(62.dp),
-        elevation = 0.dp,
-        backgroundColor = colorResource(id = R.color.green_camps),
-        border = BorderStroke(3.dp, colorResource(id = R.color.green_camps))
-    ) {
-        Row(
-            modifier = Modifier.padding(start = 18.dp),
-            verticalAlignment = Alignment.CenterVertically
+            border = BorderStroke(3.dp, colorResource(id = R.color.green_camps))
         ) {
-            Text(
-                text = "Total:",
-                color = colorResource(id = R.color.full_dark_yvy),
-                modifier = Modifier.padding(end = 5.dp),
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-            Text(
-                text = "R$ 48,00",
-                modifier = Modifier.padding(end = 67.dp),
-                color = colorResource(id = R.color.full_dark_yvy),
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-            Button(
+            Row(
+                modifier = Modifier.padding(start = 18.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Total:",
+                    color = colorResource(id = R.color.full_dark_yvy),
+                    modifier = Modifier.padding(end = 5.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "R$ $total_value",
+                    modifier = Modifier.padding(end = 67.dp),
+                    color = colorResource(id = R.color.full_dark_yvy),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                Button(
                     modifier = Modifier
                         .height(47.dp)
                         .width(102.dp),
-                colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
-            onClick = { /*TODO*/ }
-            ) {
-            Text(
-                text = stringResource(id = R.string.pay),
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 20.sp
-            )
+                    colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
+                    onClick = { /*TODO*/ }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.pay),
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 20.sp
+                    )
+                }
+            }
         }
-
-        }
-
-
     }
 }
 
@@ -279,9 +307,18 @@ fun CardPay() {
 fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>){
     if (selectedCards.contains(cardId)){
         selectedCards.remove(cardId)
-
-    }else{
+    } else{
         selectedCards.add(cardId)
+    }
+    if (selectedCards.size == 0) {
+        showPaymentBar = false
+    } else {
+        // settar os valores para somar
+        var acc_price = 0.0;
+        listMarketerCardShopping.forEach { item ->
+            item.products.forEach { product -> if (product.id == cardId) acc_price += product.price }
+        }
+        total_value = acc_price
     }
 }
 @Composable
@@ -502,9 +539,9 @@ fun DefaultPreview4() {
                 .fillMaxWidth()
         )
         {
-//            Header()
-//            ShoppingCartMain()
-            CardPay()
+            Header()
+            ShoppingCartMain()
+//            CardPay()
         }
 
     }
