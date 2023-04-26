@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.ScreenClients.RegisterClient
+import com.example.yvypora.MarketerScreens.RegisterMarketer
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class DecisionSreenActivity : ComponentActivity() {
@@ -78,7 +79,6 @@ class DecisionSreenActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun TitleWithStyle() {
     Column(
@@ -170,8 +170,8 @@ fun ButtonDecision() {
         }
         Button(
             onClick = {
-//                val intent = Intent(context,RegisterMarketer()::class.java)
-//                context.startActivity(intent)
+                val intent = Intent(context,RegisterMarketer()::class.java)
+                context.startActivity(intent)
             },
 
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),

@@ -1,4 +1,4 @@
-package com.example.yvypora
+package com.example.yvypora.MarketerScreens
 
 import android.net.Uri
 import android.os.Bundle

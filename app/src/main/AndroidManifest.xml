@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +12,7 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.Yvypora"
         tools:targetApi="31">
 
@@ -76,7 +77,7 @@
             android:label="@string/title_activity_screen_search"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name=".RegisterMarketer"
+            android:name=".MarketerScreens.RegisterMarketer"
             android:exported="false"
             android:label="@string/title_activity_register_marketer"
             android:theme="@style/Theme.Yvypora" />
@@ -84,6 +85,11 @@
             android:name="com.example.yvypora.ScreenClients.InicialScreen"
             android:exported="false"
             android:label="@string/title_activity_inicial_screen"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name="com.example.yvypora.MarketerScreens.InicialMarketerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_inicial_screen_marketer"
             android:theme="@style/Theme.Yvypora" />
         <activity
             android:name="com.example.yvypora.ScreenClients.RegisterClient"

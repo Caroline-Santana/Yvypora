@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.yvypora.ScreenClients.FairsActivity
+import com.example.yvypora.MarketerScreens.InicialMarketerActivity
 import com.example.yvypora.ScreenClients.InicialScreen
 import com.example.yvypora.ui.theme.YvyporaTheme
 
@@ -104,13 +104,13 @@ fun MainLayout() {
             val intent = Intent(context, InicialScreen()::class.java)
             context.startActivity(intent)
         }) {
-            Text(text = "rapido")
+            Text(text = "consumidor")
         }
         Button(onClick = {
-            val intent = Intent(context, FairsActivity()::class.java)
+            val intent = Intent(context, InicialMarketerActivity()::class.java)
             context.startActivity(intent)
         }) {
-            Text(text = "feira")
+            Text(text = "feirante")
         }
 
 
