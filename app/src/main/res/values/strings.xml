@@ -115,8 +115,13 @@
     <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
     <string name="my_shopping_cart">My shopping cart</string>
     <string name="date">Date:</string>
-    <string name="promotion" >Promotion!</string>
+    <string name="promotion">Promotion!</string>
     <string name="pay">Pay</string>
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="checkout">Checkout</string>
+    <string name="change">Change</string>
+    <string name="edit">Edit</string>
+    <string name="make_main">Make Main</string>
 
 
 </resources>

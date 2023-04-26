@@ -64,7 +64,7 @@ class ShoppingCartActivity : ComponentActivity() {
 
 var showPaymentBar by mutableStateOf(false)
 var total_value by mutableStateOf(0.0)
-//val selectedCards by mutableStateListOf(0)
+val selectedCards = mutableStateListOf<Int>()
 @Composable
 fun ShoppingCartMain(){
     Text(
@@ -120,24 +120,6 @@ val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
         photo = R.drawable.buy_history_card_marketer,
         products = listOf(
             ProductCardShopping(
-                id = 1,
-                name = "Abóbora",
-                type_weight = "g",
-                weight_product = 800,
-                isSelected = false,
-                photo = 1,
-                price = 24.00,
-            ),
-            ProductCardShopping(
-                id = 2,
-                name = "Beterraba",
-                type_weight = "g",
-                weight_product = 800,
-                isSelected = false,
-                photo = 1,
-                price = 22.00,
-            ),
-            ProductCardShopping(
                 id = 3,
                 name = "Abóbora",
                 type_weight = "g",
@@ -148,6 +130,24 @@ val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
             ),
             ProductCardShopping(
                 id = 4,
+                name = "Beterraba",
+                type_weight = "g",
+                weight_product = 800,
+                isSelected = false,
+                photo = 1,
+                price = 22.00,
+            ),
+            ProductCardShopping(
+                id = 5,
+                name = "Abóbora",
+                type_weight = "g",
+                weight_product = 800,
+                isSelected = false,
+                photo = 1,
+                price = 24.00,
+            ),
+            ProductCardShopping(
+                id = 6,
                 name = "Abóbora",
                 type_weight = "g",
                 weight_product = 800,
@@ -229,7 +229,7 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
 
 @Composable
 fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state : Boolean) {
-    val selectedCards = remember { mutableStateListOf<Int>() } // passar para o global
+//    val selectedCards = remember { c } // passar para o global
     var stateSnack = state
     val coroutineScope = rememberCoroutineScope()
     var valuePay by remember { mutableStateOf(0.0) }
@@ -313,12 +313,16 @@ fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>){
     if (selectedCards.size == 0) {
         showPaymentBar = false
     } else {
+        var total = 0.0
         // settar os valores para somar
-        var acc_price = 0.0;
         listMarketerCardShopping.forEach { item ->
-            item.products.forEach { product -> if (product.id == cardId) acc_price += product.price }
+            item.products.forEach { product ->
+                if (product.id == cardId){
+                      total = selectedCards.sumOf { product.price }
+                }
+            }
         }
-        total_value = acc_price
+        total_value = total
     }
 }
 @Composable
@@ -330,6 +334,12 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
     var typeProduct = card.type_weight
     var weightProduct = card.weight_product
     var priceProduct = card.price
+    var accumulatorPrice = 0.0
+    if (qtde==1){
+        accumulatorPrice = priceProduct
+    }else{
+       accumulatorPrice = priceProduct * qtde
+    }
 
     Column(
         modifier = Modifier
@@ -428,7 +438,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                             )
                         }
                         Text(
-                            text = "R$$priceProduct",
+                            text = "R$ $accumulatorPrice",
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
                             fontFamily = SpaceGrotesk,
@@ -510,7 +520,6 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
     }
 
 }
-
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable

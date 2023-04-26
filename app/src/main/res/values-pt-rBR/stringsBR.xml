@@ -117,6 +117,11 @@
     <string name="date">Data:</string>
     <string name="promotion">Promoção!</string>
     <string name="pay">Pagar</string>
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="checkout">Confira</string>
+    <string name="change">Mudar</string>
+    <string name="edit">Editar</string>
+    <string name="make_main">Tornar principal</string>
 
 
 </resources>
