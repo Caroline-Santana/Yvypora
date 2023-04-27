@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.models.AddressCard
+import com.example.yvypora.models.MarketerCardShopping
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class AdressesActivity : ComponentActivity() {
@@ -93,14 +97,12 @@ fun MainAddress() {
             .padding(top = 25.dp, start = 28.dp, end = 25.dp),
             verticalArrangement = Arrangement.Center)
         {
-            CardPrincipalAdresses()
-//            CardAdresses()
-
             Spacer(modifier = Modifier.height(15.dp))
+            ListOfCardAddress(addresses = listAddress)
             Text(
                 text = stringResource(id = R.string.add_new_adress),
                 modifier = Modifier
-                    .padding(bottom = 3.dp)
+                    .padding(bottom = 3.dp, top = 8.dp)
                     .fillMaxWidth(),
                 fontSize = 16.sp,
                 color = colorResource(id = R.color.darkgreen_yvy),
@@ -142,7 +144,7 @@ val listAddress= mutableStateListOf<AddressCard>(
         cidade = "São Paulo",
         estado = "São Paulo",
         pais = "Brasil",
-        endereço_principal = true,
+        endereço_principal = false,
     ),
     AddressCard(
         titulo = "Escritório",
@@ -153,7 +155,7 @@ val listAddress= mutableStateListOf<AddressCard>(
         cidade = "São Paulo",
         estado = "São Paulo",
         pais = "Brasil",
-        endereço_principal = false,
+        endereço_principal = true,
     ),
     AddressCard(
         titulo = "Escritório",
@@ -170,14 +172,31 @@ val listAddress= mutableStateListOf<AddressCard>(
 )
 @Composable
 fun ListOfCardAddress(addresses: List<AddressCard>) {
+    val modifierList = addresses.sortedByDescending { it.endereço_principal }
     LazyColumn() {
-        items(addresses) { address -> CardAdresses(address = address) }
+        items(modifierList) { address ->
+            if (address.endereço_principal) {
+                CardPrincipalAdresses(address = address)
+            } else {
+//                CardAdresses(address = address)
+            }
+        }
+
 
     }
 }
+
 @Composable
-fun CardPrincipalAdresses(){
-    Column(modifier = Modifier.padding(top = 23.dp)) {
+fun CardPrincipalAdresses(address: AddressCard){
+    var titleAddress = address.titulo
+    var name_remetente = address.name_remetente
+    var email_remetente = address.email_remetente
+    var rua = address.rua
+    var numero = address.numero
+    var cidade = address.cidade
+    var estado = address.estado
+    var pais = address.pais
+    Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -253,13 +272,13 @@ fun CardPrincipalAdresses(){
                         contentDescription = "icon"
                     )
                     Text(
-                        text = "Casa",
+                        text = titleAddress,
                         modifier = Modifier
                             .padding(start = 6.dp),
                         fontSize = 23.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
-                    OpcoesMenu()
+//                    OpcoesMenu()
                 }
                 Row(modifier = Modifier
                     .padding(start = 15.dp, top = 5.dp),
@@ -267,7 +286,7 @@ fun CardPrincipalAdresses(){
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = "Carlos Arcanjo",
+                        text = name_remetente,
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
@@ -275,7 +294,7 @@ fun CardPrincipalAdresses(){
 
                     )
                     Text(
-                        text = " ${'-'} carlao*****@gmail.com",
+                        text = " ${'-'} $email_remetente",
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
 
@@ -287,21 +306,21 @@ fun CardPrincipalAdresses(){
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = "Rua Oscar Freire",
+                        text = rua,
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
                     Text(
-                        text = "nº126${','}",
+                        text = "$numero${','} ",
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
                     Text(
-                        text = " São Paulo${','}",
+                        text = " $cidade${','} ",
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
@@ -315,12 +334,12 @@ fun CardPrincipalAdresses(){
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = " São Paulo${','}",
+                        text = " $estado${','} ",
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
                     Text(
-                        text = " Brasil",
+                        text = pais,
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
@@ -330,8 +349,8 @@ fun CardPrincipalAdresses(){
     }
 }
 @Composable
-fun CardAdresses(address : AddressCard){
-
+fun CardAdresses(address : AddressCard, onDrag: (AddressCard) -> Unit, onDrop: (AddressCard) -> Unit){
+    val dragState = rememberDraggableState(onDelta = { dy-> onDrag(address)})
     var titleAddress = address.titulo
     var name_remetente = address.name_remetente
     var email_remetente = address.email_remetente
@@ -345,6 +364,11 @@ fun CardAdresses(address : AddressCard){
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp)
+            .draggable(
+                state = dragState,
+                orientation = Orientation.Vertical,
+                onDragStopped = {onDrop(address)}
+            )
             .height(140.dp),
             backgroundColor = colorResource(id = R.color.green_camps),
             shape = RoundedCornerShape(
@@ -370,7 +394,7 @@ fun CardAdresses(address : AddressCard){
                         contentDescription = "icon"
                     )
                     Text(
-                        text = "Escritório",
+                        text = titleAddress,
                         modifier = Modifier
                             .padding(start = 6.dp),
                         fontSize = 23.sp,
@@ -384,7 +408,7 @@ fun CardAdresses(address : AddressCard){
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = "Carlos Arcanjo",
+                        text = name_remetente,
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
@@ -392,7 +416,7 @@ fun CardAdresses(address : AddressCard){
 
                     )
                     Text(
-                        text = " ${'-'} carlao*****@gmail.com",
+                        text = " ${'-'} $email_remetente",
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
 
@@ -404,21 +428,21 @@ fun CardAdresses(address : AddressCard){
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = "Rua Oscar Freire",
+                        text = rua,
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
                     Text(
-                        text = "nº126${','}",
+                        text = "$numero${','} ",
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
                     Text(
-                        text = " São Paulo${','}",
+                        text = "$cidade${','} ",
                         modifier = Modifier
                             .padding(start = 2.dp),
                         fontSize = 15.sp,
@@ -432,12 +456,12 @@ fun CardAdresses(address : AddressCard){
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Text(
-                        text = " São Paulo${','}",
+                        text = "$estado${','} ",
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
                     Text(
-                        text = " Brasil",
+                        text = pais,
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
@@ -480,15 +504,12 @@ fun OpcoesMenu() {
                 )
             }
             DropdownMenuItem(onClick = { }) {
-                Text(text = stringResource(id = R.string.make_main),
+                Text(text = stringResource(id = R.string.delete_address),
                     color = colorResource(id = R.color.green_yvy)
                 )
             }
         }
     }
-
-
-
 }
 @Preview(showBackground = true)
 @Composable

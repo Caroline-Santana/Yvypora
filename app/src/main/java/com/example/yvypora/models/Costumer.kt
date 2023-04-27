@@ -1,10 +1,10 @@
 package com.example.yvypora.models
-data class Costumer (
+data class Costumer(
     var name: String = "",
     var email: String = "",
     var password: String = "",
     var gender: Char = 'M',
-    var address: Address,
+    var address: AddressRegister,
     var birthday: String,
     var cpf: String
 )

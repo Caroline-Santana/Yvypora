@@ -121,7 +121,7 @@
     <string name="checkout">Checkout</string>
     <string name="change">Change</string>
     <string name="edit">Edit</string>
-    <string name="make_main">Make Main</string>
+    <string name="delete_address">Delete address</string>
 
 
 </resources>
