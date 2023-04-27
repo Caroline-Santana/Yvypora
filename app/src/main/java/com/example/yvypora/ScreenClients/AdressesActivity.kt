@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
+import com.example.yvypora.models.AddressCard
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class AdressesActivity : ComponentActivity() {
@@ -53,7 +56,6 @@ fun MainAddress() {
     val context = LocalContext.current
     Column(modifier = Modifier
         .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
         .fillMaxSize()
     ) {
         Row(
@@ -92,8 +94,7 @@ fun MainAddress() {
             verticalArrangement = Arrangement.Center)
         {
             CardPrincipalAdresses()
-            CardAdresses()
-            CardAdressesTeste()
+//            CardAdresses()
 
             Spacer(modifier = Modifier.height(15.dp))
             Text(
@@ -127,6 +128,50 @@ fun MainAddress() {
             }
             Spacer(modifier = Modifier.height(15.dp))
         }
+
+    }
+}
+
+val listAddress= mutableStateListOf<AddressCard>(
+    AddressCard(
+        titulo = "Casa",
+        name_remetente = "Carlos Arcanjo",
+        email_remetente = "carlao*****@gmail.com",
+        rua = "Rua Oscar Freire",
+        numero = 126,
+        cidade = "São Paulo",
+        estado = "São Paulo",
+        pais = "Brasil",
+        endereço_principal = true,
+    ),
+    AddressCard(
+        titulo = "Escritório",
+        name_remetente = "Carlos Arcanjo",
+        email_remetente = "carlao*****@gmail.com",
+        rua = "Brás",
+        numero = 136,
+        cidade = "São Paulo",
+        estado = "São Paulo",
+        pais = "Brasil",
+        endereço_principal = false,
+    ),
+    AddressCard(
+        titulo = "Escritório",
+        name_remetente = "Carlos Arcanjo",
+        email_remetente = "carlao*****@gmail.com",
+        rua = "25 de março",
+        numero = 126,
+        cidade = "São Paulo",
+        estado = "São Paulo",
+        pais = "Brasil",
+        endereço_principal = false,
+    ),
+
+)
+@Composable
+fun ListOfCardAddress(addresses: List<AddressCard>) {
+    LazyColumn() {
+        items(addresses) { address -> CardAdresses(address = address) }
 
     }
 }
@@ -285,117 +330,18 @@ fun CardPrincipalAdresses(){
     }
 }
 @Composable
-fun CardAdresses(){
+fun CardAdresses(address : AddressCard){
+
+    var titleAddress = address.titulo
+    var name_remetente = address.name_remetente
+    var email_remetente = address.email_remetente
+    var rua = address.rua
+    var numero = address.numero
+    var cidade = address.cidade
+    var estado = address.estado
+    var pais = address.pais
+
     Column(modifier = Modifier.padding(top = 15.dp)) {
-
-        Card(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 2.dp)
-            .height(140.dp),
-            backgroundColor = colorResource(id = R.color.green_camps),
-            shape = RoundedCornerShape(
-                topStart = 0.dp,
-                topEnd = 10.dp,
-                bottomEnd = 0.dp,
-                bottomStart = 10.dp
-            )
-        ) {
-            Column() {
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 12.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.house2),
-                        modifier = Modifier
-                            .width(28.dp)
-                            .height(28.dp)
-                        ,
-                        tint = colorResource(id = R.color.darkgreen_yvy),
-                        contentDescription = "icon"
-                    )
-                    Text(
-                        text = "Escritório",
-                        modifier = Modifier
-                            .padding(start = 6.dp),
-                        fontSize = 23.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                    OpcoesMenu()
-                }
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 5.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Text(
-                        text = "Carlos Arcanjo",
-                        modifier = Modifier
-                            .padding(start = 2.dp),
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-
-                    )
-                    Text(
-                        text = " ${'-'} carlao*****@gmail.com",
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-
-                    )
-                }
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 5.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Text(
-                        text = "Rua Oscar Freire",
-                        modifier = Modifier
-                            .padding(start = 2.dp),
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                    Text(
-                        text = "nº126${','}",
-                        modifier = Modifier
-                            .padding(start = 2.dp),
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                    Text(
-                        text = " São Paulo${','}",
-                        modifier = Modifier
-                            .padding(start = 2.dp),
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                }
-
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 5.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Text(
-                        text = " São Paulo${','}",
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                    Text(
-                        text = " Brasil",
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                }
-            }
-        }
-    }
-}
-@Composable
-fun CardAdressesTeste(){
-    Column(modifier = Modifier.padding(top = 15.dp)) {
-
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp)
@@ -529,12 +475,12 @@ fun OpcoesMenu() {
         ) {
             DropdownMenuItem(onClick = { /* ação 1 */ }) {
                 Text(
-                    text = "Opção 1",
+                    text = stringResource(id = R.string.edit),
                     color = colorResource(id = R.color.green_yvy)
                 )
             }
-            DropdownMenuItem(onClick = { /* ação 2 */ }) {
-                Text(text = "Opção 2",
+            DropdownMenuItem(onClick = { }) {
+                Text(text = stringResource(id = R.string.make_main),
                     color = colorResource(id = R.color.green_yvy)
                 )
             }
