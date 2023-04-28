@@ -74,7 +74,7 @@ fun MainCheckout() {
                     context.startActivity(intent)
                 },
             contentDescription = "back",
-            tint = colorResource(id = R.color.green_widht)
+            tint = colorResource(id = R.color.green_width)
         )
         Text(
             text = stringResource(id = R.string.checkout),

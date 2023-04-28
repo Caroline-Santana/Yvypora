@@ -49,8 +49,7 @@ fun Fair() {
                 Marker(
                     state = MarkerState(item.first),
                     title = item.second.name,
-
-                    )
+                )
             }
         }
         Spacer(modifier = Modifier.padding(top = 20.dp))

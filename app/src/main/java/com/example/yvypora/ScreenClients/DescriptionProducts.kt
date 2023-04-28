@@ -293,7 +293,7 @@ fun WidhtProductTeste() {
             text = "$weight Kg",
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            color = colorResource(id = R.color.green_widht)
+            color = colorResource(id = R.color.green_width)
         )
             Box(contentAlignment = Alignment.Center) {
                 Button(

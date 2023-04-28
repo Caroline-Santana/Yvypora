@@ -66,8 +66,9 @@ class ShoppingCartActivity : ComponentActivity() {
 var showPaymentBar by mutableStateOf(false)
 var total_value by mutableStateOf(0.0)
 val selectedCards = mutableStateListOf<Int>()
+
 @Composable
-fun ShoppingCartMain(){
+fun ShoppingCartMain() {
     Text(
         text = stringResource(id = R.string.my_shopping_cart),
         modifier = Modifier.fillMaxWidth(),
@@ -75,10 +76,11 @@ fun ShoppingCartMain(){
         textAlign = TextAlign.Center,
         color = colorResource(id = R.color.darkgreen_yvy)
     )
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(bottom = 10.dp)
-        .fillMaxSize(),
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp)
+            .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     )
     {
@@ -190,9 +192,9 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .padding(start = 8.dp, end = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, end = 8.dp),
             ) {
                 Image(
                     painter = photo,
@@ -209,7 +211,7 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
                         text = nameCard,
                         fontSize = 17.sp,
                         textAlign = TextAlign.Start,
-                        color = colorResource(id = R.color.green_widht)
+                        color = colorResource(id = R.color.green_width)
                     )
                     Text(
                         text = subnameCard,
@@ -223,13 +225,13 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
                 }
             }
 
-                ListOfProductCardShopping(cards = marketer.products, state = showSnackbar)
+            ListOfProductCardShopping(cards = marketer.products, state = showSnackbar)
         }
     }
 }
 
 @Composable
-fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state : Boolean) {
+fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state: Boolean) {
 //    val selectedCards = remember { c } // passar para o global
     var stateSnack = state
     val coroutineScope = rememberCoroutineScope()
@@ -249,7 +251,8 @@ fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state : Boolean)
                 onCardSelected = { id ->
                     showPaymentBar = true
                     stateSnack = true
-                    onCardProductClick(card.id, selectedCards)},
+                    onCardProductClick(card.id, selectedCards)
+                },
             )
         }
     }
@@ -291,8 +294,10 @@ fun CardPay() {
                         .height(47.dp)
                         .width(102.dp),
                     colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
-                    onClick = {  val intent = Intent(context, CheckoutActivity::class.java)
-                        context.startActivity(intent)  }
+                    onClick = {
+                        val intent = Intent(context, CheckoutActivity::class.java)
+                        context.startActivity(intent)
+                    }
                 ) {
                     Text(
                         text = stringResource(id = R.string.pay),
@@ -307,10 +312,10 @@ fun CardPay() {
 }
 
 
-fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>){
-    if (selectedCards.contains(cardId)){
+fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>) {
+    if (selectedCards.contains(cardId)) {
         selectedCards.remove(cardId)
-    } else{
+    } else {
         selectedCards.add(cardId)
     }
     if (selectedCards.size == 0) {
@@ -320,16 +325,21 @@ fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>){
         // settar os valores para somar
         listMarketerCardShopping.forEach { item ->
             item.products.forEach { product ->
-                if (product.id == cardId){
-                      total = selectedCards.sumOf { product.price }
+                if (product.id == cardId) {
+                    total = selectedCards.sumOf { product.price }
                 }
             }
         }
         total_value = total
     }
 }
+
 @Composable
-fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSelected: (Boolean) -> Unit){
+fun CardProductShopping(
+    card: ProductCardShopping,
+    isSelected: Boolean,
+    onCardSelected: (Boolean) -> Unit
+) {
     var qtde by remember { mutableStateOf(1) }
     var nameProduct = card.name
 //    var photoProduct = card.photo
@@ -338,10 +348,10 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
     var weightProduct = card.weight_product
     var priceProduct = card.price
     var accumulatorPrice = 0.0
-    if (qtde==1){
+    if (qtde == 1) {
         accumulatorPrice = priceProduct
-    }else{
-       accumulatorPrice = priceProduct * qtde
+    } else {
+        accumulatorPrice = priceProduct * qtde
     }
 
     Column(
@@ -356,7 +366,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Center
         ) {
-            if(isSelected){
+            if (isSelected) {
                 Icon(
                     painter = painterResource(id = R.drawable.check_full),
                     modifier = Modifier
@@ -365,13 +375,12 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                     contentDescription = "",
                     tint = colorResource(id = R.color.green_button)
                 )
-            }else{
+            } else {
                 Icon(
                     painter = painterResource(id = R.drawable.check_no_full),
                     modifier = Modifier
                         .padding(end = 10.dp)
-                        .clickable { onCardSelected(isSelected) }
-                    ,
+                        .clickable { onCardSelected(isSelected) },
                     contentDescription = "",
                     tint = colorResource(id = R.color.green_button)
                 )
@@ -385,7 +394,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                     }
                     .height(130.dp),
                 elevation = 0.dp,
-                backgroundColor = if (isSelected)colorResource(id = R.color.green_camps_transparent) else Color.White,
+                backgroundColor = if (isSelected) colorResource(id = R.color.green_camps_transparent) else Color.White,
                 border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
             ) {
                 Row(
@@ -526,19 +535,19 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun SnackBarFunction(){
+fun SnackBarFunction() {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 //Janelinha que aparecia no flutton button
 
- scope.launch {
-    scaffoldState.snackbarHostState
-        .showSnackbar(
-            "blbla",
-            actionLabel = "bsljdjsskd",
-            duration = SnackbarDuration.Indefinite
-        )
-}
+    scope.launch {
+        scaffoldState.snackbarHostState
+            .showSnackbar(
+                "blbla",
+                actionLabel = "bsljdjsskd",
+                duration = SnackbarDuration.Indefinite
+            )
+    }
 }
 
 @Preview(showBackground = true)

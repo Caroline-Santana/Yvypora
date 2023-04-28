@@ -123,6 +123,11 @@
     <string name="change">Change</string>
     <string name="edit">Edit</string>
     <string name="delete_address">Delete address</string>
+    <string name="title_card_inicial_marketer">START EARNING WITH YVYPORÃ TODAY!</string>
+    <string name="description_card_inicial_marketer">Start add your products ou register the fairs you are part of</string>
+    <string name="your_sales_today">Your sales today</string>
+    <string name="history_complete">Your complete sales history</string>
+    <string name="total">Total :</string>
 
 
 </resources>
