@@ -122,6 +122,7 @@
     <string name="change">Mudar</string>
     <string name="edit">Editar</string>
     <string name="delete_address">Excluir endereço</string>
+    <string name="make_mainn">Tornar principal</string>
 
 
 </resources>

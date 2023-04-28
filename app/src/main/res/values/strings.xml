@@ -122,6 +122,9 @@
     <string name="change">Change</string>
     <string name="edit">Edit</string>
     <string name="delete_address">Delete address</string>
+    <string name="make_mainn">Make main</string>
+    <string name="title_activity_edit_address_activty">EditAddressActivty</string>
+    <string name="title_activity_edit_address">EditAddress</string>
 
 
 </resources>

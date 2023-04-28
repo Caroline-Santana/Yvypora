@@ -16,6 +16,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.example.yvypora.R
 import com.example.yvypora.models.AddressCard
 import com.example.yvypora.models.MarketerCardShopping
@@ -54,7 +56,6 @@ class AdressesActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun MainAddress() {
     val context = LocalContext.current
@@ -94,15 +95,14 @@ fun MainAddress() {
         }
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(top = 25.dp, start = 28.dp, end = 25.dp),
+            .padding(top = 15.dp, start = 28.dp, end = 25.dp),
             verticalArrangement = Arrangement.Center)
         {
-            Spacer(modifier = Modifier.height(15.dp))
             ListOfCardAddress(addresses = listAddress)
             Text(
                 text = stringResource(id = R.string.add_new_adress),
                 modifier = Modifier
-                    .padding(bottom = 3.dp, top = 8.dp)
+                    .padding(bottom = 3.dp)
                     .fillMaxWidth(),
                 fontSize = 16.sp,
                 color = colorResource(id = R.color.darkgreen_yvy),
@@ -138,7 +138,7 @@ val listAddress= mutableStateListOf<AddressCard>(
     AddressCard(
         titulo = "Casa",
         name_remetente = "Carlos Arcanjo",
-        email_remetente = "carlao*****@gmail.com",
+        telefone_remetente = "(11) 954009469",
         rua = "Rua Oscar Freire",
         numero = 126,
         cidade = "São Paulo",
@@ -149,18 +149,18 @@ val listAddress= mutableStateListOf<AddressCard>(
     AddressCard(
         titulo = "Escritório",
         name_remetente = "Carlos Arcanjo",
-        email_remetente = "carlao*****@gmail.com",
+        telefone_remetente = "(11) 954009469",
         rua = "Brás",
         numero = 136,
         cidade = "São Paulo",
         estado = "São Paulo",
         pais = "Brasil",
-        endereço_principal = true,
+        endereço_principal = false,
     ),
     AddressCard(
         titulo = "Escritório",
         name_remetente = "Carlos Arcanjo",
-        email_remetente = "carlao*****@gmail.com",
+        telefone_remetente = "(11) 954009469",
         rua = "25 de março",
         numero = 126,
         cidade = "São Paulo",
@@ -178,7 +178,7 @@ fun ListOfCardAddress(addresses: List<AddressCard>) {
             if (address.endereço_principal) {
                 CardPrincipalAdresses(address = address)
             } else {
-//                CardAdresses(address = address)
+                CardAdresses(address = address)
             }
         }
 
@@ -190,7 +190,7 @@ fun ListOfCardAddress(addresses: List<AddressCard>) {
 fun CardPrincipalAdresses(address: AddressCard){
     var titleAddress = address.titulo
     var name_remetente = address.name_remetente
-    var email_remetente = address.email_remetente
+    var telefone_remetente = address.telefone_remetente
     var rua = address.rua
     var numero = address.numero
     var cidade = address.cidade
@@ -294,7 +294,7 @@ fun CardPrincipalAdresses(address: AddressCard){
 
                     )
                     Text(
-                        text = " ${'-'} $email_remetente",
+                        text = " ${'-'} $telefone_remetente",
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
 
@@ -349,26 +349,22 @@ fun CardPrincipalAdresses(address: AddressCard){
     }
 }
 @Composable
-fun CardAdresses(address : AddressCard, onDrag: (AddressCard) -> Unit, onDrop: (AddressCard) -> Unit){
-    val dragState = rememberDraggableState(onDelta = { dy-> onDrag(address)})
+fun CardAdresses(address : AddressCard){
     var titleAddress = address.titulo
     var name_remetente = address.name_remetente
-    var email_remetente = address.email_remetente
+    var telefone_remetente = address.telefone_remetente
     var rua = address.rua
     var numero = address.numero
     var cidade = address.cidade
     var estado = address.estado
     var pais = address.pais
 
-    Column(modifier = Modifier.padding(top = 15.dp)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(bottom = 15.dp)) {
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp)
-            .draggable(
-                state = dragState,
-                orientation = Orientation.Vertical,
-                onDragStopped = {onDrop(address)}
-            )
             .height(140.dp),
             backgroundColor = colorResource(id = R.color.green_camps),
             shape = RoundedCornerShape(
@@ -400,7 +396,10 @@ fun CardAdresses(address : AddressCard, onDrag: (AddressCard) -> Unit, onDrop: (
                         fontSize = 23.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
-                    OpcoesMenu()
+
+                        OpcoesMenu()
+
+
                 }
                 Row(modifier = Modifier
                     .padding(start = 15.dp, top = 5.dp),
@@ -416,7 +415,7 @@ fun CardAdresses(address : AddressCard, onDrag: (AddressCard) -> Unit, onDrop: (
 
                     )
                     Text(
-                        text = " ${'-'} $email_remetente",
+                        text = " ${'-'} $telefone_remetente",
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
 
@@ -473,10 +472,14 @@ fun CardAdresses(address : AddressCard, onDrag: (AddressCard) -> Unit, onDrop: (
 
 @Composable
 fun OpcoesMenu() {
+    val selectedAddress = remember { mutableStateOf(listAddress.first()) }
+//    var mainCard by remember { mutableStateOf(listAddress.firstOrNull()) }
     var showPopup by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
-    Row(modifier = Modifier
-        .fillMaxWidth(),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.Top
     ) {
@@ -494,23 +497,33 @@ fun OpcoesMenu() {
 
         DropdownMenu(
             expanded = showPopup,
-            offset = DpOffset(x = (140).dp, y = (5).dp),
+            offset = DpOffset(x = (20).dp, y = (5).dp),
             onDismissRequest = { showPopup = false }
         ) {
-            DropdownMenuItem(onClick = { /* ação 1 */ }) {
+            DropdownMenuItem(onClick = {
+                val intent = Intent(context, EditAddress::class.java)
+                intent.putExtra("formData",ArrayList(listAddress))
+                context.startActivity(intent)
+            }) {
                 Text(
                     text = stringResource(id = R.string.edit),
                     color = colorResource(id = R.color.green_yvy)
                 )
             }
-            DropdownMenuItem(onClick = { }) {
-                Text(text = stringResource(id = R.string.delete_address),
+            DropdownMenuItem(
+                onClick = {}
+            ) {
+                Text(
+                    text = stringResource(id = R.string.delete_address),
                     color = colorResource(id = R.color.green_yvy)
                 )
             }
         }
     }
+
 }
+
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview2() {

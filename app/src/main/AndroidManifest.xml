@@ -15,52 +15,62 @@
         android:theme="@style/Theme.Yvypora"
         tools:targetApi="31">
         <activity
-            android:name="com.example.yvypora.ScreenClients.CheckoutActivity"
+            android:name=".EditAddress"
+            android:exported="false"
+            android:label="@string/title_activity_edit_address"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".EditAddressActivty"
+            android:exported="false"
+            android:label="@string/title_activity_edit_address_activty"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".CheckoutActivity"
             android:exported="false"
             android:label="@string/title_activity_checkout"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.ShoppingCartActivity"
+            android:name=".ShoppingCartActivity"
             android:exported="false"
             android:label="@string/title_activity_shopping_cart"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.DescriptionProducts"
+            android:name=".DescriptionProducts"
             android:exported="false"
             android:label="@string/title_activity_description_products"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.AddAccount"
+            android:name=".AddAccount"
             android:exported="false"
             android:label="@string/title_activity_add_account"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.AddCardAcitivity"
+            android:name=".AddCardAcitivity"
             android:exported="false"
             android:label="@string/title_activity_add_pay_methods_acitivity"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.PaymentMethodsActivity"
+            android:name=".PaymentMethodsActivity"
             android:exported="false"
             android:label="@string/title_activity_payment_methods"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.AddAdressAcitivity"
+            android:name=".AddAdressAcitivity"
             android:exported="false"
             android:label="@string/title_activity_add_adress_acitivity"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.AdressesActivity"
+            android:name=".AdressesActivity"
             android:exported="false"
             android:label="@string/title_activity_adresses"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.BuyHistory"
+            android:name=".BuyHistory"
             android:exported="false"
             android:label="@string/title_activity_buy_history_acitivity"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.EditProfileSreen"
+            android:name=".EditProfileSreen"
             android:exported="false"
             android:label="@string/title_activity_edit_profile_sreen"
             android:theme="@style/Theme.Yvypora" />
@@ -70,12 +80,12 @@
             android:label="@string/fair"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.ProfileClient"
+            android:name=".ProfileClient"
             android:exported="false"
             android:label="@string/title_activity_profile_client"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.ScreenSearch"
+            android:name=".ScreenSearch"
             android:exported="false"
             android:label="@string/title_activity_screen_search"
             android:theme="@style/Theme.Yvypora" />
@@ -85,12 +95,12 @@
             android:label="@string/title_activity_register_marketer"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.InicialScreen"
+            android:name=".InicialScreen"
             android:exported="false"
             android:label="@string/title_activity_inicial_screen"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.RegisterClient"
+            android:name=".RegisterClient"
             android:exported="false"
             android:label="@string/title_activity_register_client"
             android:theme="@style/Theme.Yvypora" />
@@ -110,22 +120,22 @@
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.FruitsResultActivity"
+            android:name=".FruitsResultActivity"
             android:exported="false"
             android:label="@string/fruits_result"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.VegetablesActivityActivity"
+            android:name=".VegetablesActivityActivity"
             android:exported="false"
             android:label="@string/vegetable"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.SpicesActivityActivity"
+            android:name=".SpicesActivityActivity"
             android:exported="false"
             android:label="@string/spices"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name="com.example.yvypora.ScreenClients.OthersActivityActivity"
+            android:name=".OthersActivityActivity"
             android:exported="false"
             android:label="@string/spices"
             android:theme="@style/Theme.Yvypora" />
