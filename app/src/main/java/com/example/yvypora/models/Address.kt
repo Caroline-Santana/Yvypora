@@ -1,6 +1,6 @@
 package com.example.yvypora.models
 
-data class Address(
+data class AddressRegister(
  var cep: String,
  var number: Int,
  var complemento: String,

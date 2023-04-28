@@ -1,8 +1,10 @@
 package com.example.yvypora.ScreenClients
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Icon
@@ -42,6 +44,7 @@ class CheckoutActivity : ComponentActivity() {
                         .fillMaxWidth())
                     {
                         Header()
+                        MainCheckout()
                     }
 
                 }
@@ -64,8 +67,12 @@ fun MainCheckout() {
         Icon(
             painter = painterResource(id = R.drawable.arrow),
             modifier = Modifier
-                .width(53.dp)
-                .height(56.dp),
+                .width(43.dp)
+                .height(46.dp)
+                .clickable {
+                    val intent = Intent(context, ShoppingCartActivity()::class.java)
+                    context.startActivity(intent)
+                },
             contentDescription = "back",
             tint = colorResource(id = R.color.green_widht)
         )

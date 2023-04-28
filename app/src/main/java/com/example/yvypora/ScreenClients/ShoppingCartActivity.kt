@@ -1,6 +1,7 @@
 package com.example.yvypora.ScreenClients
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -256,6 +257,7 @@ fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state : Boolean)
 
 @Composable
 fun CardPay() {
+    val context = LocalContext.current
     if (showPaymentBar) {
         Card(
             Modifier
@@ -289,7 +291,8 @@ fun CardPay() {
                         .height(47.dp)
                         .width(102.dp),
                     colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
-                    onClick = { /*TODO*/ }
+                    onClick = {  val intent = Intent(context, CheckoutActivity::class.java)
+                        context.startActivity(intent)  }
                 ) {
                     Text(
                         text = stringResource(id = R.string.pay),
