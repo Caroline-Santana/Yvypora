@@ -75,6 +75,7 @@
     <string name="address">Endereço</string>
     <string name="edit_account">Editar conta</string>
     <string name="payment_methods">Formas de pagamento</string>
+    <string name="payment_method">Forma de pagamento</string>
     <string name="purchase_history">Histórico de compra</string>
     <string name="logout">Sair</string>
     <string name="title_activity_edit_profile_sreen">EditProfileSreen</string>
@@ -128,6 +129,8 @@
     <string name="your_sales_today">Sua atividade hoje</string>
     <string name="history_complete">Ver histórico de vendas completo</string>
     <string name="total">Total :</string>
+    <string name="order">Pedido</string>
+    <string name="delivery_fee">Taxa de entrega  </string>
 
 
 </resources>

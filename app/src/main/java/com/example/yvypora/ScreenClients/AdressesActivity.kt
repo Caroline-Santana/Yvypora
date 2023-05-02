@@ -1,9 +1,12 @@
 package com.example.yvypora.ScreenClients
 
 import android.content.Intent
+import android.location.Address
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -36,6 +39,7 @@ import com.example.yvypora.ui.theme.YvyporaTheme
 class AdressesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             YvyporaTheme {
                 // A surface container using the 'background' color from the theme
@@ -111,7 +115,7 @@ fun MainAddress() {
             Spacer(modifier = Modifier.height(15.dp))
             Button(
                 onClick = {
-                    val intent = Intent(context, AddAdressAcitivity()::class.java)
+                        val intent = Intent(context, AddAdressAcitivity()::class.java)
                     context.startActivity(intent)
                 },
                 colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
@@ -133,7 +137,13 @@ fun MainAddress() {
 
     }
 }
+class AddressActivity : AppCompatActivity(){
+    private val viewModel: CheckOutViewModel by viewModels()
 
+    private fun onAddressSelected(address: Address){
+        viewModel.setMainAddress(address)
+    }
+}
 val listAddress= mutableStateListOf<AddressCard>(
     AddressCard(
         titulo = "Casa",
@@ -177,8 +187,9 @@ fun ListOfCardAddress(addresses: List<AddressCard>) {
         items(modifierList) { address ->
             if (address.endereço_principal) {
                 CardPrincipalAdresses(address = address)
+
             } else {
-//                CardAdresses(address = address)
+                CardAdresses(address = address)
             }
         }
 
@@ -349,8 +360,8 @@ fun CardPrincipalAdresses(address: AddressCard){
     }
 }
 @Composable
-fun CardAdresses(address : AddressCard, onDrag: (AddressCard) -> Unit, onDrop: (AddressCard) -> Unit){
-    val dragState = rememberDraggableState(onDelta = { dy-> onDrag(address)})
+fun CardAdresses(address : AddressCard){
+//    val dragState = rememberDraggableState(onDelta = { dy-> onDrag(address)})
     var titleAddress = address.titulo
     var name_remetente = address.name_remetente
     var email_remetente = address.email_remetente
@@ -364,11 +375,11 @@ fun CardAdresses(address : AddressCard, onDrag: (AddressCard) -> Unit, onDrop: (
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp)
-            .draggable(
-                state = dragState,
-                orientation = Orientation.Vertical,
-                onDragStopped = {onDrop(address)}
-            )
+//            .draggable(
+//                state = dragState,
+//                orientation = Orientation.Vertical,
+//                onDragStopped = { onDrop(address) }
+//            )
             .height(140.dp),
             backgroundColor = colorResource(id = R.color.green_camps),
             shape = RoundedCornerShape(
@@ -513,7 +524,7 @@ fun OpcoesMenu() {
 }
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview2() {
+fun AdressesActivityPreview() {
     YvyporaTheme {
         Column(
             modifier = Modifier
