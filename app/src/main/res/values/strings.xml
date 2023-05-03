@@ -128,6 +128,9 @@
     <string name="your_sales_today">Your sales today</string>
     <string name="history_complete">Your complete sales history</string>
     <string name="total">Total :</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="order">Order</string>
+    <string name="delivery_fee">Delivery Fee</string>
 
 
 </resources>

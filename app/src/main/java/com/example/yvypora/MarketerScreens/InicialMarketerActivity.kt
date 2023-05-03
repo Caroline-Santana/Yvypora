@@ -1,6 +1,7 @@
 package com.example.yvypora.MarketerScreens
 
 import android.os.Bundle
+import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -8,19 +9,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -44,6 +50,7 @@ class InicialMarketerActivity : ComponentActivity() {
 @Composable
 fun InicialMarketerMain() {
     val context = LocalContext.current
+    var statePrice by remember { mutableStateOf(false) }
     val wave = painterResource(id = R.drawable.wave_marketer)
     val user = painterResource(id = R.drawable.icon_user)
     val total_sale = 10.56
@@ -156,38 +163,105 @@ fun InicialMarketerMain() {
                 )
         ) {
             Column(Modifier.fillMaxWidth()) {
-                Text(
-                    text = stringResource(id = R.string.your_sales_today),
-                    color = colorResource(
-                        id = R.color.green_options
-                    ),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                )
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.your_sales_today),
+                        color = colorResource(
+                            id = R.color.green_options
+                        ),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                    )
+                }
                 Text(
                     text = stringResource(id = R.string.total),
                     color = colorResource(
                         id = R.color.gray_text
                     ),
-                    fontSize = 15.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start,
                 )
-                Text(
-                    text = "R$$total_sale",
-                    color = colorResource(
-                        id = R.color.darkgreen_yvy
-                    ),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start,
-                )
+                Row(Modifier.fillMaxWidth()) {
+                    if (statePrice) {
+                        Text(
+                            text = "R$$total_sale",
+                            color = colorResource(
+                                id = R.color.darkgreen_yvy
+                            ),
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Start,
+
+                            )
+                        Spacer(Modifier.padding(15.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.olho_off),
+                            contentDescription = "",
+                            Modifier
+                                .clickable { statePrice = false }
+                                .height(50.dp)
+                                .width(50.dp)
+                        )
+                    } else {
+                        Text(
+                            text = "R$****",
+                            color = colorResource(
+                                id = R.color.darkgreen_yvy
+                            ),
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Start,
+
+                            )
+                        Spacer(Modifier.padding(15.dp))
+                        Image(
+                            painter = painterResource(id = R.drawable.olho_on),
+                            contentDescription = "",
+                            Modifier
+                                .clickable { statePrice = true }
+                                .height(50.dp)
+                                .width(50.dp)
+                        )
+                    }
+                }
+               Row(Modifier.fillMaxWidth()) {
+                   Text(text = "venda as 12:99", color = colorResource(id = R.color.gray_text))
+                   Text(text = "+ 5,00", color = colorResource(id = R.color.green_yvy))
+               }
+                Row(Modifier.fillMaxWidth()) {
+                    Text(text = "venda as 12:99", color = colorResource(id = R.color.gray_text))
+                    Text(text = "+ 5,00", color = colorResource(id = R.color.green_yvy))
+                }
+                Row(Modifier.fillMaxWidth()) {
+                    Text(text = "venda as 12:99", color = colorResource(id = R.color.gray_text))
+                    Text(text = "+ 5,00", color = colorResource(id = R.color.green_yvy))
+                }
+                Spacer(modifier = Modifier.padding(5.dp))
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.history_complete),
+                        color = colorResource(
+                            id = R.color.darkgreen_yvy
+                        ),
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        textDecoration = TextDecoration.Underline,
+                    )
+                }
             }
-
-
         }
     }
-
-
 }
+
+
+
+
+
