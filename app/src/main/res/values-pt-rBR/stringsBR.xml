@@ -119,7 +119,7 @@
     <string name="pay">Pagar</string>
     <string name="title_activity_inicial_screen_marketer">Página Inicial do Feirante</string>
     <string name="title_activity_checkout">Tela de recibo</string>
-    <string name="checkout">Recibo</string>
+    <string name="checkout">Confira</string>
     <string name="change">Mudar</string>
     <string name="edit">Editar</string>
     <string name="delete_address">Apagar endereço</string>
@@ -128,6 +128,13 @@
     <string name="your_sales_today">Sua atividade hoje</string>
     <string name="history_complete">Ver histórico de vendas completo</string>
     <string name="total">Total :</string>
+    <string name="payment_method">Método de pagamento</string>
+    <string name="order">Pedido</string>
+    <string name="delivery_fee">Taxa de entrega</string>
+    <string name="num">Número</string>
+    <string name="is_main">Endereço principal?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 
 
 </resources>

@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -130,6 +131,11 @@ fun MainEditAdress() {
 
 @Composable
 fun EditAddresses(){
+    val items = listOf(
+        Text(text = stringResource(id =  R.string.yes)),
+        Text(text = stringResource(id =  R.string.no)),
+    )
+    var selectedItem by remember { mutableStateOf(items[0]) }
     Column(modifier = Modifier.padding(top = 15.dp)) {
 
         Card(modifier = Modifier
@@ -161,6 +167,20 @@ fun EditAddresses(){
                 CepEditAdress()
                 NumEditAddress()
                 Spacer(modifier = Modifier.height(15.dp))
+              Column() {
+                  items.forEach{item ->
+                      Row(
+                          modifier = Modifier.fillMaxWidth()
+                          .selectable(
+                              selected = (item == selectedItem),
+                              onClick = { selectedItem = item }
+                          ),
+                      ) {
+
+                      } }
+
+
+                  }
 
             }
         }
@@ -320,10 +340,10 @@ fun PhoneEditAdress() {
 
 @Composable
 fun CepEditAdress() {
-    var phoneState by rememberSaveable {
+    var cepState by rememberSaveable {
         mutableStateOf("")
     }
-    var isPhoneErrorEmpty by remember {
+    var isCepErrorEmpty by remember {
         mutableStateOf(false)
     }
     val inputsFocusRequest = FocusRequester()
@@ -337,13 +357,13 @@ fun CepEditAdress() {
         color = colorResource(id = R.color.darkgreen_yvy)
     )
     TextField(
-        value = phoneState,
-        onValueChange = { newPhone ->
-            isPhoneErrorEmpty = newPhone.isEmpty()
+        value = cepState,
+        onValueChange = { newCep ->
+            isCepErrorEmpty = newCep.isEmpty()
 
-            if (phoneState.length > 10) newPhone.dropLast(1)
+            if (cepState.length > 10) newCep.dropLast(1)
 
-            phoneState = newPhone
+            cepState = newCep
         },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
@@ -361,7 +381,7 @@ fun CepEditAdress() {
         ),
         singleLine = true,
     )
-    if (isPhoneErrorEmpty) {
+    if (isCepErrorEmpty) {
         Text(
             text = stringResource(id = R.string.cep_error_empty),
             modifier = Modifier.fillMaxWidth(),
@@ -373,7 +393,47 @@ fun CepEditAdress() {
 
 @Composable
 fun NumEditAddress(){
+    var numState by rememberSaveable {
+        mutableStateOf("")
+    }
+    var isNumErrorEmpty by remember {
+        mutableStateOf(false)
+    }
+    val inputsFocusRequest = FocusRequester()
 
+    Text(
+        text = stringResource(id = R.string.num),
+        modifier = Modifier.padding(top = 15.dp),
+        fontSize = 16.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = numState,
+        onValueChange = { newNum ->
+            isNumErrorEmpty = newNum.isEmpty()
+
+            if (numState.length > 2) newNum.dropLast(1)
+
+            numState = newNum
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .width(50.dp)
+            .height(53.dp)
+            .focusRequester(inputsFocusRequest),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences
+        ),
+        singleLine = true,
+
+        )
 }
 
 
