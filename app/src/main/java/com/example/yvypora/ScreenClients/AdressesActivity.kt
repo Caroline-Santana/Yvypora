@@ -1,9 +1,12 @@
 package com.example.yvypora.ScreenClients
 
 import android.content.Intent
+import android.location.Address
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -38,6 +41,7 @@ import com.example.yvypora.ui.theme.YvyporaTheme
 class AdressesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             YvyporaTheme {
                 // A surface container using the 'background' color from the theme
@@ -56,6 +60,7 @@ class AdressesActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun MainAddress() {
     val context = LocalContext.current
@@ -95,14 +100,15 @@ fun MainAddress() {
         }
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(top = 15.dp, start = 28.dp, end = 25.dp),
+            .padding(top = 25.dp, start = 28.dp, end = 25.dp),
             verticalArrangement = Arrangement.Center)
         {
+            Spacer(modifier = Modifier.height(15.dp))
             ListOfCardAddress(addresses = listAddress)
             Text(
                 text = stringResource(id = R.string.add_new_adress),
                 modifier = Modifier
-                    .padding(bottom = 3.dp)
+                    .padding(bottom = 3.dp, top = 8.dp)
                     .fillMaxWidth(),
                 fontSize = 16.sp,
                 color = colorResource(id = R.color.darkgreen_yvy),
@@ -133,7 +139,13 @@ fun MainAddress() {
 
     }
 }
+class AddressActivity : AppCompatActivity(){
+    private val viewModel: CheckOutViewModel by viewModels()
 
+    private fun onAddressSelected(address: Address){
+        viewModel.setMainAddress(address)
+    }
+}
 val listAddress= mutableStateListOf<AddressCard>(
     AddressCard(
         titulo = "Casa",
@@ -177,6 +189,7 @@ fun ListOfCardAddress(addresses: List<AddressCard>) {
         items(modifierList) { address ->
             if (address.endereço_principal) {
                 CardPrincipalAdresses(address = address)
+
             } else {
                 CardAdresses(address = address)
             }
@@ -350,6 +363,8 @@ fun CardPrincipalAdresses(address: AddressCard){
 }
 @Composable
 fun CardAdresses(address : AddressCard){
+//    val dragState = rememberDraggableState(onDelta = { dy-> onDrag(address)})
+fun CardAdresses(address : AddressCard){
     var titleAddress = address.titulo
     var name_remetente = address.name_remetente
     var telefone_remetente = address.telefone_remetente
@@ -365,6 +380,11 @@ fun CardAdresses(address : AddressCard){
         Card(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 2.dp)
+//            .draggable(
+//                state = dragState,
+//                orientation = Orientation.Vertical,
+//                onDragStopped = { onDrop(address) }
+//            )
             .height(140.dp),
             backgroundColor = colorResource(id = R.color.green_camps),
             shape = RoundedCornerShape(
@@ -526,7 +546,7 @@ fun OpcoesMenu() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview2() {
+fun AdressesActivityPreview() {
     YvyporaTheme {
         Column(
             modifier = Modifier

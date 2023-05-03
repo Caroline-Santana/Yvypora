@@ -47,6 +47,7 @@
     <string name="phone_error_empty">Provide a phone!</string>
     <string name="title_phone">Phone</string>
     <string name="title_activity_inicial_screen">InicialScreen</string>
+    <string name="title_activity_inicial_screen_marketer">InicialScreenMarketer</string>
     <string name="title_cnpj">CNPJ:</string>
     <string name="cnpj_error_empty">Provide a CNPJ!</string>
     <string name="cnpj_error_invalid">Invalid CNPJ!</string>
@@ -127,9 +128,6 @@
     <string name="your_sales_today">Your sales today</string>
     <string name="history_complete">Your complete sales history</string>
     <string name="total">Total :</string>
-    <string name="make_mainn">Make main</string>
-    <string name="title_activity_edit_address_activty">EditAddressActivty</string>
-    <string name="title_activity_edit_address">EditAddress</string>
 
 
 </resources>

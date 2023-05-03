@@ -36,6 +36,7 @@ import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
+
 class ShoppingCartActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +48,7 @@ class ShoppingCartActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Column(
-                        modifier = Modifier
+                        modifier = androidx.compose.ui.Modifier
                             .fillMaxSize()
                             .fillMaxWidth()
                     )
@@ -71,13 +72,13 @@ val selectedCards = mutableStateListOf<Int>()
 fun ShoppingCartMain() {
     Text(
         text = stringResource(id = R.string.my_shopping_cart),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
         color = colorResource(id = R.color.darkgreen_yvy)
     )
     Box(
-        modifier = Modifier
+        modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
             .padding(bottom = 10.dp)
             .fillMaxSize(),
