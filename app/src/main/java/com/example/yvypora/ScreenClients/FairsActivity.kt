@@ -134,7 +134,8 @@ fun FairsComponent(fair: Fairs) {
     val user = painterResource(id = R.drawable.user)
 
     Card(
-        Modifier.padding(10.dp),
+        Modifier.padding(6.dp),
+        elevation = 10.dp
     ) {
         Column(
             Modifier

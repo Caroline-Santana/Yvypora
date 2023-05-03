@@ -31,8 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
-import com.example.yvypora.ScreenClients.ui.theme.YvyporaTheme
 import com.example.yvypora.models.AddressCard
+import com.example.yvypora.ui.theme.YvyporaTheme
 
 class EditAddress : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -437,10 +437,10 @@ fun NumEditAddress(){
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun EditAddressPreview() {
-    YvyporaTheme {
-            MainEditAdress()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun EditAddressPreview() {
+//    YvyporaTheme {
+//            MainEditAdress()
+//    }
+//}
