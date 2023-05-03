@@ -24,7 +24,7 @@ class RetrofitApi {
         }
 
         fun commonsRetrofitService(): CommonsApiService {
-            return getRetrofit(Constants.BASE_URL).create(CommonsApiService::class.java)
+            return getRetrofit(Constants.BASE_URL + "/commons/").create(CommonsApiService::class.java)
         }
 
         fun cepRetrofitService(): CepApiService {

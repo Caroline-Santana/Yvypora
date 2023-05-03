@@ -322,7 +322,7 @@ fun Inputs() {
                         ),
                         cpf = cpfState,
                         birthday = formatBirthday(birthState),
-                        gender = gender[0]
+                        gender = gender[0].toString()
                     )
                     // send to create the costumer without a picture
                     createCostumer(costumer) { _costumer ->
