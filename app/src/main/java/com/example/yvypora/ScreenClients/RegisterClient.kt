@@ -1,6 +1,7 @@
 package com.example.yvypora.ScreenClients
 
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -135,7 +136,6 @@ fun Inputs() {
     var isCepError by remember {
         mutableStateOf(false)
     }
-
     var emailState by remember {
         mutableStateOf("")
     }
@@ -319,6 +319,7 @@ fun Inputs() {
 
 
                 getCep(cepState) {
+
                             val cep = it
                             Log.i("teste", cep.toString())
 
@@ -385,18 +386,20 @@ fun Inputs() {
                                 }
                             }
                         },
-            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
-            modifier = Modifier
-                .width(217.dp)
-                .height(48.dp)
-                .align(Alignment.CenterHorizontally),
-            shape = RoundedCornerShape(5.dp),
+            Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+                modifier = Modifier
+                    .width(217.dp)
+                    .height(48.dp)
+                    .align(Alignment.CenterHorizontally),
+                shape = RoundedCornerShape(5.dp),) {
+
+                
+            }
+
+            
 
             ) {
-            Text(
-                text = stringResource(id = R.string.button_register),
-                color = Color.White,
-                fontSize = 20.sp
+
             )
         }
         //*********************************************************************
