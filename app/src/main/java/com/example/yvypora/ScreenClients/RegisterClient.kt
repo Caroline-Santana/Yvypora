@@ -35,15 +35,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
+import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.api.cep.getCep
+import com.example.yvypora.api.commons.addPictureToUser
+import com.example.yvypora.api.commons.auth
 import com.example.yvypora.api.commons.createCostumer
 import com.example.yvypora.models.Address
 import com.example.yvypora.models.Costumer
+import com.example.yvypora.models.Credentials
+import com.example.yvypora.models.Token
+import com.example.yvypora.service.datastore.TokenStore
 import com.example.yvypora.ui.theme.YvyporaTheme
-import com.example.yvypora.utils.MaskBirth
-import com.example.yvypora.utils.MaskCep
-import com.example.yvypora.utils.MaskCpf
-import com.example.yvypora.utils.ValidationCpf
+import com.example.yvypora.utils.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 
 
 class RegisterClient : ComponentActivity() {
@@ -90,6 +101,12 @@ class RegisterClient : ComponentActivity() {
     }
 }
 
+
+
+
+
+val imageUri = mutableStateOf("")
+
 @Composable
 fun Inputs() {
     var birthState by rememberSaveable {
@@ -118,6 +135,7 @@ fun Inputs() {
     var isCepError by remember {
         mutableStateOf(false)
     }
+
     var emailState by remember {
         mutableStateOf("")
     }
@@ -189,7 +207,7 @@ fun Inputs() {
 
         // Input senha
         PassInput(passwordState, isPasswordError, onPasswordChange = { newPass ->
-            val mMaxLength = 8
+            val mMaxLength = 24
             isPasswordError = if (newPass.length >= mMaxLength) {
                 true
             } else {
@@ -294,36 +312,79 @@ fun Inputs() {
             modifier = Modifier.height(35.dp)
         )
 
+        val scope = rememberCoroutineScope()
+
         Button(
             onClick = {
-                getCep(cepState) {
-                    val cep = it
-                    Log.i("teste", cep.toString())
 
-                    val costumer = Costumer(
-                        name = nameState,
-                        email = emailState,
-                        password = passwordState,
-                        address = Address(
-                            cep = cep.cep,
-                            addressTypeId = 1,
-                            city = cep.localidade,
-                            uf = cep.uf,
-                            number = 0,
-                            complemento = "",
-                            logradouro = cep.logradouro,
-                            neighborhood = cep.bairro,
-                        ),
-                        cpf = cpfState,
-                        birthday = formatBirthday(birthState),
-                        gender = gender[0].toString()
-                    )
-                    // send to create the costumer without a picture
-                    createCostumer(costumer) { _costumer ->
-                        Log.i("teste", _costumer.toString())
-                    }
-                }
-            },
+
+                getCep(cepState) {
+                            val cep = it
+                            Log.i("teste", cep.toString())
+
+                            val costumer = Costumer(
+                                name = nameState,
+                                email = emailState,
+                                password = passwordState,
+                                address = Address(
+                                    cep = cep.cep,
+                                    addressTypeId = 1,
+                                    city = cep.localidade,
+                                    uf = cep.uf,
+                                    number = 0,
+                                    complemento = "",
+                                    logradouro = cep.logradouro,
+                                    neighborhood = cep.bairro,
+                                ),
+                                cpf = cpfState,
+                                birthday = formatBirthday(birthState),
+                                gender = gender[0].toString()
+                            )
+
+                            createCostumer(costumer) { _costumer ->
+                                auth(credentials = Credentials(costumer.email, costumer.password)) { res ->
+                                    if (!res.error) {
+                                        val tokenStore = TokenStore(context)
+                                        scope.launch {
+                                            tokenStore.saveToken(res.token)
+                                        }
+                                        val uri = Uri.parse(imageUri.value)
+                                        val inputStream =
+                                            context.contentResolver.openInputStream(uri)
+
+                                        if (inputStream != null) {
+                                            val file = File(context.cacheDir, "image.jpg")
+                                            val outputStream = FileOutputStream(file)
+
+                                            inputStream.use { input ->
+                                                outputStream.use { output ->
+                                                    input.copyTo(output)
+                                                }
+                                            }
+
+                                            val requestBody = RequestBody.create(
+                                                "image/*".toMediaTypeOrNull(),
+                                                file
+                                            )
+
+                                            val imagePart = MultipartBody.Part.createFormData(
+                                                "picture",
+                                                file.name,
+                                                requestBody
+                                            )
+
+                                            scope.launch {
+                                                addPictureToUser(res.token, imagePart) { it ->
+                                                    Log.i("teste", it)
+                                                }
+                                            }
+                                        } else {
+                                            Log.e("Error", "Cannot get input stream from URI") }
+                                      }
+                                    }
+                                }
+                            }
+                        },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
                 .width(217.dp)
@@ -344,6 +405,7 @@ fun Inputs() {
         )
     }
 }
+
 
 @Composable
 fun NameInput(nameState: String, isNameError: Boolean, onNameChange: (String) -> Unit) {
@@ -462,7 +524,6 @@ fun PassInput(passwordState: String, isPasswordError: Boolean, onPasswordChange:
 
 @Composable
 fun PhotoInput() {
-    val imageUri = rememberSaveable { mutableStateOf("") }
     val painter = rememberImagePainter(
         if (imageUri.value.isEmpty())
             R.drawable.adicionar_foto

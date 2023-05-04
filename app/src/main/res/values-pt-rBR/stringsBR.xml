@@ -128,9 +128,9 @@
     <string name="your_sales_today">Sua atividade hoje</string>
     <string name="history_complete">Ver histórico completo</string>
     <string name="total">Total :</string>
-    <string name="payment_method">Método de Pagamento</string>
+    <string name="payment_method">Metodo de Pagamento</string>
     <string name="order">Pedido</string>
-    <string name="delivery_fee">Taxa de entrega</string>
+    <string name="delivery_fee">Taxa de Entrega</string>
 
 
 </resources>
