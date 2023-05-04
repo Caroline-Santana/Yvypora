@@ -3,6 +3,7 @@ package com.example.yvypora
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +27,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.MarketerScreens.InicialMarketerActivity
+import com.example.yvypora.ScreenClients.InicialScreen
+import com.example.yvypora.api.commons.fieldsForCostumer
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 
@@ -33,7 +38,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
@@ -103,8 +107,16 @@ fun MainLayout() {
             val intent = Intent(context, InicialScreen()::class.java)
             context.startActivity(intent)
         }) {
-            Text(text = "rapido")
+            Text(text = "consumidor")
         }
+        Button(onClick = {
+            val intent = Intent(context, InicialMarketerActivity()::class.java)
+            context.startActivity(intent)
+        }) {
+            Text(text = "feirante")
+        }
+
+
 
         Button(
             onClick = {

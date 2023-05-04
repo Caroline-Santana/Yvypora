@@ -21,3 +21,4 @@ data class Address(
  var locationId: Int? = null,
  var type: AddressType? = null
 )
+
