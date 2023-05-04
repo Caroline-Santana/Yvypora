@@ -85,6 +85,11 @@
             android:label="@string/title_activity_register_marketer"
             android:theme="@style/Theme.Yvypora" />
         <activity
+            android:name=".MarketerScreens.ProductsMarketer"
+            android:exported="false"
+            android:label="@string/title_activity_register_marketer"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name="com.example.yvypora.ScreenClients.InicialScreen"
             android:exported="false"
             android:label="@string/title_activity_inicial_screen"

@@ -11,4 +11,6 @@ sealed class ItemsMenu(
     object Pantalla2: ItemsMenu(R.drawable.video,R.string.live.toString(),"pantalla2")
     object Pantalla3: ItemsMenu(R.drawable.fair,R.string.fair.toString(),"pantalla3")
     object Pantalla4: ItemsMenu(R.drawable.profile_icon,R.string.profile.toString(),"pantalla4")
+
+
 }
