@@ -1,5 +1,9 @@
 package com.example.yvypora.models
 
+import com.example.yvypora.ScreenClients.listMarketerCardShopping
+import com.example.yvypora.ScreenClients.showPaymentBar
+import com.example.yvypora.ScreenClients.total_value
+
 data class ProductCardShopping(
     val id : Int,
     val name : String,
@@ -9,3 +13,6 @@ data class ProductCardShopping(
     val weight_product : Int,
     val price : Double
 )
+
+
+
