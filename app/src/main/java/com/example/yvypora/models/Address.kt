@@ -22,3 +22,4 @@ data class Address(
  var type: AddressType? = null
 )
 
+

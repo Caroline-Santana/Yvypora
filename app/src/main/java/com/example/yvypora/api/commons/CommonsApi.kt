@@ -69,27 +69,7 @@ fun createCostumer(costumer: Costumer, onComplete: (CostumerInfoResponse) -> Uni
 }
 
 
-fun fieldsForCostumer(onComplete: (String) -> Unit) {
-    val call = RetrofitApi.commonsRetrofitService().fieldsForCostumer()
-    call.enqueue(object: Callback<Any> {
-        override fun onResponse(call: Call<Any>, response: Response<Any>) {
 
-            val res = response.body()
-
-            if (response.isSuccessful) {
-                return onComplete.invoke(res.toString())
-            }
-
-            Log.i("teste", response.code().toString())
-
-            return onComplete.invoke(res.toString())
-        }
-
-        override fun onFailure(call: Call<Any>, t: Throwable) {
-            t.printStackTrace()
-        }
-    })
-}
 
 fun addPictureToUser(token: String, picture: MultipartBody.Part, onComplete: (String) -> Unit) {
     val _token = "Bearer $token"
@@ -114,6 +94,29 @@ fun addPictureToUser(token: String, picture: MultipartBody.Part, onComplete: (St
         }
     })
 }
+fun fieldsForCostumer(onComplete: (String) -> Unit) {
+    val call = RetrofitApi.commonsRetrofitService().fieldsForCostumer()
+    call.enqueue(object: Callback<Any> {
+        override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+            val res = response.body()
+
+            if (response.isSuccessful) {
+                return onComplete.invoke(res.toString())
+            }
+
+            Log.i("teste", response.code().toString())
+
+            return onComplete.invoke(res.toString())
+        }
+
+        override fun onFailure(call: Call<Any>, t: Throwable) {
+            t.printStackTrace()
+        }
+    })
+}
+
+
 
 
 

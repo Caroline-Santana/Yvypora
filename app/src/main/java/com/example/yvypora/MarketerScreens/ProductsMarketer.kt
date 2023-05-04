@@ -60,8 +60,8 @@ fun HeaderProduct(){
             painter = painterResource(id = R.drawable.add),
             modifier = Modifier
                 .clickable {
-//                    val intent = Intent(context, ProfileClient()::class.java)
-//                    context.startActivity(intent)
+                    val intent = Intent(context,AddProducts()::class.java)
+                    context.startActivity(intent)
                 }
                 .height(50.dp)
                 .width(55.dp),

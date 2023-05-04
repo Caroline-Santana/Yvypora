@@ -1,0 +1,319 @@
+Index: app/src/main/java/com/example/yvypora/MarketerScreens/InicialMarketerActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.MarketerScreens\n\nimport android.content.Intent\nimport android.os.Bundle\nimport android.util.Log\nimport android.widget.Space\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.background\nimport androidx.compose.foundation.clickable\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.shape.CornerSize\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.material.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.draw.blur\nimport androidx.compose.ui.draw.shadow\nimport androidx.compose.ui.focus.onFocusChanged\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.font.FontStyle\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.text.style.TextDecoration\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport androidx.compose.ui.zIndex\nimport androidx.navigation.NavHostController\nimport androidx.navigation.compose.currentBackStackEntryAsState\nimport androidx.navigation.compose.rememberNavController\nimport com.example.yvypora.R\nimport com.example.yvypora.ScreenClients.InicialScreen\nimport com.example.yvypora.ScreenClients.ShoppingCartActivity\nimport com.example.yvypora.navbar.ItemsMenu\nimport com.example.yvypora.navbar.NavigationHost\nimport com.example.yvypora.ui.theme.YvyporaTheme\nimport kotlinx.coroutines.CoroutineScope\n\nclass InicialMarketerActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                Surface() {\n                    InicialMarketerMain()\n                }\n\n            }\n        }\n    }\n}\n\n@Composable\nfun InicialMarketerMain() {\n    val context = LocalContext.current\n    var statePrice by remember { mutableStateOf(false) }\n    val wave = painterResource(id = R.drawable.wave_marketer)\n    val user = painterResource(id = R.drawable.icon_user)\n    val total_sale = 100.56\n\n\n\n\n/*\n* TODO :\n*   - INTEGRAR OS DADOS DA VENDA NEM QUE SEJAM MOCKADOS\n*   - FAZER A NAVBAR DO FEIRANTE QUE É DIFERENTE DO CONSUMIDOR ou concertar a do consumidor e assim fazer\n* a do feirante\n*\n*   E DEPOIS DE TERMINAR ESSA TELA, TEM QUE FAZER TUDO SOBRE PRODUTO\n*\n* */\n\n    Column(Modifier.fillMaxSize()) {\n        Box(contentAlignment = Alignment.TopEnd) {\n            Image(\n                painter = wave, contentDescription = \"\",\n                Modifier\n                    .width(430.dp)\n                    .height(176.dp)\n                    .zIndex(1f)\n            )\n            Image(\n                painter = user, contentDescription = \"\",\n                Modifier\n                    .width(105.dp)\n                    .height(83.dp)\n                    .zIndex(2f)\n                    .padding(top = 20.dp, end = 30.dp)\n\n\n            )\n        }\n        Card(\n            Modifier\n                .fillMaxWidth()\n                .padding(20.dp)\n                .shadow(\n                    elevation = 50.dp,\n                    shape = RoundedCornerShape(15.dp),\n                    ambientColor = colorResource(id = R.color.green_yvy),\n                    spotColor = colorResource(id = R.color.green_yvy)\n                )\n        ) {\n            Column(\n                Modifier\n                    .fillMaxWidth()\n                    .height(250.dp),\n                horizontalAlignment = Alignment.CenterHorizontally,\n                verticalArrangement = Arrangement.Center\n            ) {\n                Text(\n                    text = stringResource(id = R.string.title_card_inicial_marketer),\n                    color = colorResource(\n                        id = R.color.green_options\n                    ),\n                    fontSize = 20.sp,\n                    fontWeight = FontWeight.Bold,\n                    textAlign = TextAlign.Center,\n                )\n                Text(\n                    text = stringResource(id = R.string.description_card_inicial_marketer),\n                    color = colorResource(\n                        id = R.color.gray_text\n                    ),\n                    fontSize = 12.sp,\n                    textAlign = TextAlign.Center,\n                )\n                Row(\n                    modifier = Modifier.fillMaxWidth(),\n                    verticalAlignment = Alignment.CenterVertically,\n                    horizontalArrangement = Arrangement.SpaceEvenly\n                ) {\n                    Image(\n                        painter = painterResource(id = R.drawable.add_products_icon),\n                        contentDescription = \"\",\n                        modifier = Modifier\n                            .width(80.dp)\n                            .height(100.dp)\n                            .clickable {}\n                    )\n                    Spacer(\n                        modifier = Modifier\n                            .width(1.7.dp)\n                            .height(80.dp)\n                            .background(\n                                color = colorResource(id = R.color.green_width)\n                            )\n                    )\n                    Image(\n                        painter = painterResource(id = R.drawable.fair_add_icon),\n                        contentDescription = \"\",\n                        modifier = Modifier\n                            .width(80.dp)\n                            .height(100.dp)\n                            .clickable {}\n                    )\n                }\n            }\n        }\n        Card(\n            Modifier\n                .fillMaxWidth()\n                .padding(20.dp)\n                .shadow(\n                    elevation = 50.dp,\n                    shape = RoundedCornerShape(15.dp),\n                    ambientColor = colorResource(id = R.color.green_yvy),\n                    spotColor = colorResource(id = R.color.green_yvy)\n                )\n        ) {\n            Column(Modifier.fillMaxWidth()) {\n                Column(\n                    Modifier.fillMaxWidth(),\n                    horizontalAlignment = Alignment.CenterHorizontally\n                ) {\n                    Text(\n                        text = stringResource(id = R.string.your_sales_today),\n                        color = colorResource(\n                            id = R.color.green_options\n                        ),\n                        fontSize = 24.sp,\n                        fontWeight = FontWeight.Bold,\n                        textAlign = TextAlign.Center,\n                    )\n                }\n                Text(\n                    text = stringResource(id = R.string.total),\n                    color = colorResource(\n                        id = R.color.gray_text\n                    ),\n                    fontSize = 20.sp,\n                    fontWeight = FontWeight.Bold,\n                    textAlign = TextAlign.Start,\n                )\n                Row(Modifier.fillMaxWidth()) {\n                    if (statePrice) {\n                        Text(\n                            text = \"R$$total_sale\",\n                            color = colorResource(\n                                id = R.color.darkgreen_yvy\n                            ),\n                            fontSize = 32.sp,\n                            fontWeight = FontWeight.Bold,\n                            textAlign = TextAlign.Start,\n\n                            )\n                        Spacer(Modifier.padding(15.dp))\n                        Image(\n                            painter = painterResource(id = R.drawable.olho_off),\n                            contentDescription = \"\",\n                            Modifier\n                                .clickable { statePrice = false }\n                                .height(50.dp)\n                                .width(50.dp)\n                        )\n                    } else {\n                        if (total_sale<100){\n                            Text(\n                                text = \"R$$****\",\n                                color = colorResource(\n                                    id = R.color.darkgreen_yvy\n                                ),\n                                fontSize = 32.sp,\n                                fontWeight = FontWeight.Bold,\n                                textAlign = TextAlign.Start,\n\n                                )\n                        }\n                        else{\n                            Text(\n                                text = \"R$*****\",\n                                color = colorResource(\n                                    id = R.color.darkgreen_yvy\n                                ),\n                                fontSize = 32.sp,\n                                fontWeight = FontWeight.Bold,\n                                textAlign = TextAlign.Start,\n\n                                )\n                        }\n                        Spacer(Modifier.padding(15.dp))\n                        Image(\n                            painter = painterResource(id = R.drawable.olho_on),\n                            contentDescription = \"\",\n                            Modifier\n                                .clickable { statePrice = true }\n                                .height(50.dp)\n                                .width(50.dp)\n                        )\n                    }\n                }\n               Row(Modifier.fillMaxWidth()) {\n                   Text(text = \"venda as 12:99\", color = colorResource(id = R.color.gray_text))\n                   Text(text = \"+ 5,00\", color = colorResource(id = R.color.green_yvy))\n               }\n                Row(Modifier.fillMaxWidth()) {\n                    Text(text = \"venda as 12:99\", color = colorResource(id = R.color.gray_text))\n                    Text(text = \"+ 5,00\", color = colorResource(id = R.color.green_yvy))\n                }\n                Row(Modifier.fillMaxWidth()) {\n                    Text(text = \"venda as 12:99\", color = colorResource(id = R.color.gray_text))\n                    Text(text = \"+ 5,00\", color = colorResource(id = R.color.green_yvy))\n                }\n                Spacer(modifier = Modifier.padding(5.dp))\n                Column(\n                    Modifier.fillMaxWidth(),\n                    horizontalAlignment = Alignment.CenterHorizontally\n                ) {\n                    Text(\n                        text = stringResource(id = R.string.history_complete),\n                        color = colorResource(\n                            id = R.color.darkgreen_yvy\n                        ),\n                        fontSize = 22.sp,\n                        fontWeight = FontWeight.Bold,\n                        textDecoration = TextDecoration.Underline,\n                    )\n                }\n            }\n        }\n//        HomeScreenMarketer()\n        Button(onClick = {\n            val intent = Intent(context, ProductsMarketer::class.java)\n            context.startActivity(intent)\n        }) {\n            Text(text = \"produtos\")\n        }\n    }}\n//}\n//@Composable\n//fun HomeScreenMarketer() {\n//    val navController = rememberNavController()\n//    val scaffoldState = rememberScaffoldState()\n//    val scope = rememberCoroutineScope()\n//    val navigation_item = listOf(\n//        ItemsMenu.Pantalla1,\n//        ItemsMenu.Pantalla2,\n//        ItemsMenu.Pantalla3,\n//        ItemsMenu.Pantalla4,\n//    )\n//\n//    Scaffold(\n//        scaffoldState = scaffoldState,\n//        bottomBar = {\n//            NavegationInferior(navController, navigation_item)\n//        },\n//        floatingActionButtonPosition = FabPosition.Center,\n//        floatingActionButton = { FabMarketer(scope, scaffoldState) },\n//        isFloatingActionButtonDocked = true,\n//        modifier = Modifier.fillMaxHeight()\n//    ) { innerPadding ->\n//        Box(modifier = Modifier.padding(innerPadding)) {\n//            NavigationHost(navController)\n//        }\n//    }\n//}\n//\n//@Composable\n//fun FabMarketer(scope: CoroutineScope, scaffoldState: ScaffoldState) {\n//    val context = LocalContext.current\n//    FloatingActionButton(\n//        onClick = {\n//            val intent = Intent(context, ShoppingCartActivity()::class.java)\n//            context.startActivity(intent)\n//        },\n//        backgroundColor = colorResource(id = R.color.green_yvy),\n//    ) {\n//        Icon(\n//            painter = painterResource(id = R.drawable.bag),\n//            contentDescription = \"shopping\",\n//            modifier = Modifier\n//                .height(44.dp)\n//                .width(44.dp)\n//                .padding(start = 5.dp)\n//        )\n//    }\n//}\n//\n//@Composable\n//fun currentRoute(navController: NavHostController): String? {\n//    val entrada by navController.currentBackStackEntryAsState()\n//    return entrada?.destination?.route\n//}\n//\n//@Composable\n//fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsMenu>) {\n//    BottomAppBar(\n//        cutoutShape = MaterialTheme.shapes.medium.copy(\n//            CornerSize(percent = 50)\n//        ),\n//    ) {\n//        BottomNavigation(\n//            modifier = Modifier.fillMaxSize(),\n//        )\n//        {\n//            val currentRoute = currentRoute(navController = navController)\n//            menu_items.forEachIndexed() { index, item ->\n//                if (index == 1) {\n//                    BottomNavigationItem(\n//                        selected = currentRoute == item.rota,\n//                        modifier = Modifier\n//                            .height(50.dp)\n//                            .width(50.dp)\n//                            .weight(2f)\n//                            .padding(end = 75.dp),\n//                        onClick = { navController.navigate(item.rota) },\n//                        icon = {\n//                            Icon(\n//                                painter = painterResource(id = item.icon),\n//                                contentDescription = item.title\n//                            )\n//                        },\n//                    )\n//                } else {\n//                    BottomNavigationItem(\n//                        selected = currentRoute == item.rota,\n//                        modifier = Modifier\n//                            .height(50.dp)\n//                            .width(50.dp),\n//                        onClick = { navController.navigate(item.rota) },\n//                        icon = {\n//                            Icon(\n//                                painter = painterResource(id = item.icon),\n//                                contentDescription = item.title\n//                            )\n//                        },\n//                    )\n//                }\n//            }\n//        }\n//    }\n//}\n//\n//\n//\n//\n//\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/MarketerScreens/InicialMarketerActivity.kt b/app/src/main/java/com/example/yvypora/MarketerScreens/InicialMarketerActivity.kt
+--- a/app/src/main/java/com/example/yvypora/MarketerScreens/InicialMarketerActivity.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/MarketerScreens/InicialMarketerActivity.kt	(date 1683205141760)
+@@ -284,120 +284,122 @@
+                 }
+             }
+         }
+-//        HomeScreenMarketer()
++
+         Button(onClick = {
+             val intent = Intent(context, ProductsMarketer::class.java)
+             context.startActivity(intent)
+         }) {
+             Text(text = "produtos")
+         }
+-    }}
+-//}
+-//@Composable
+-//fun HomeScreenMarketer() {
+-//    val navController = rememberNavController()
+-//    val scaffoldState = rememberScaffoldState()
+-//    val scope = rememberCoroutineScope()
+-//    val navigation_item = listOf(
+-//        ItemsMenu.Pantalla1,
+-//        ItemsMenu.Pantalla2,
+-//        ItemsMenu.Pantalla3,
+-//        ItemsMenu.Pantalla4,
+-//    )
+-//
+-//    Scaffold(
+-//        scaffoldState = scaffoldState,
+-//        bottomBar = {
+-//            NavegationInferior(navController, navigation_item)
+-//        },
+-//        floatingActionButtonPosition = FabPosition.Center,
+-//        floatingActionButton = { FabMarketer(scope, scaffoldState) },
+-//        isFloatingActionButtonDocked = true,
+-//        modifier = Modifier.fillMaxHeight()
+-//    ) { innerPadding ->
+-//        Box(modifier = Modifier.padding(innerPadding)) {
+-//            NavigationHost(navController)
+-//        }
+-//    }
+-//}
+-//
+-//@Composable
+-//fun FabMarketer(scope: CoroutineScope, scaffoldState: ScaffoldState) {
+-//    val context = LocalContext.current
+-//    FloatingActionButton(
+-//        onClick = {
+-//            val intent = Intent(context, ShoppingCartActivity()::class.java)
+-//            context.startActivity(intent)
+-//        },
+-//        backgroundColor = colorResource(id = R.color.green_yvy),
+-//    ) {
+-//        Icon(
+-//            painter = painterResource(id = R.drawable.bag),
+-//            contentDescription = "shopping",
+-//            modifier = Modifier
+-//                .height(44.dp)
+-//                .width(44.dp)
+-//                .padding(start = 5.dp)
+-//        )
+-//    }
+-//}
+-//
+-//@Composable
+-//fun currentRoute(navController: NavHostController): String? {
+-//    val entrada by navController.currentBackStackEntryAsState()
+-//    return entrada?.destination?.route
+-//}
+-//
+-//@Composable
+-//fun NavegationInferior(navController: NavHostController, menu_items: List<ItemsMenu>) {
+-//    BottomAppBar(
+-//        cutoutShape = MaterialTheme.shapes.medium.copy(
+-//            CornerSize(percent = 50)
+-//        ),
+-//    ) {
+-//        BottomNavigation(
+-//            modifier = Modifier.fillMaxSize(),
+-//        )
+-//        {
+-//            val currentRoute = currentRoute(navController = navController)
+-//            menu_items.forEachIndexed() { index, item ->
+-//                if (index == 1) {
+-//                    BottomNavigationItem(
+-//                        selected = currentRoute == item.rota,
+-//                        modifier = Modifier
+-//                            .height(50.dp)
+-//                            .width(50.dp)
+-//                            .weight(2f)
+-//                            .padding(end = 75.dp),
+-//                        onClick = { navController.navigate(item.rota) },
+-//                        icon = {
+-//                            Icon(
+-//                                painter = painterResource(id = item.icon),
+-//                                contentDescription = item.title
+-//                            )
+-//                        },
+-//                    )
+-//                } else {
+-//                    BottomNavigationItem(
+-//                        selected = currentRoute == item.rota,
+-//                        modifier = Modifier
+-//                            .height(50.dp)
+-//                            .width(50.dp),
+-//                        onClick = { navController.navigate(item.rota) },
+-//                        icon = {
+-//                            Icon(
+-//                                painter = painterResource(id = item.icon),
+-//                                contentDescription = item.title
+-//                            )
+-//                        },
+-//                    )
+-//                }
+-//            }
+-//        }
+-//    }
+-//}
+-//
+-//
+-//
+-//
+-//
++        HomeScreenMarketer()
++    }
++       }
++
++@Composable
++fun HomeScreenMarketer() {
++    val navController = rememberNavController()
++    val scaffoldState = rememberScaffoldState()
++    val scope = rememberCoroutineScope()
++    val navigation_item = listOf(
++        ItemsMenu.Pantalla1,
++        ItemsMenu.Pantalla2,
++        ItemsMenu.Pantalla3,
++        ItemsMenu.Pantalla4,
++    )
++
++    Scaffold(
++        scaffoldState = scaffoldState,
++        bottomBar = {
++            NavegationInferiorMarketer(navController, navigation_item)
++        },
++        floatingActionButtonPosition = FabPosition.Center,
++        floatingActionButton = { FabMarketer(scope, scaffoldState) },
++        isFloatingActionButtonDocked = true,
++        modifier = Modifier.fillMaxHeight()
++    ) { innerPadding ->
++        Box(modifier = Modifier.padding(innerPadding)) {
++            NavigationHost(navController)
++        }
++    }
++}
++
++@Composable
++fun FabMarketer(scope: CoroutineScope, scaffoldState: ScaffoldState) {
++    val context = LocalContext.current
++    FloatingActionButton(
++        onClick = {
++            val intent = Intent(context, ProductsMarketer()::class.java)
++            context.startActivity(intent)
++        },
++        backgroundColor = colorResource(id = R.color.green_yvy),
++    ) {
++        Icon(
++            painter = painterResource(id = R.drawable.bag),
++            contentDescription = "shopping",
++            modifier = Modifier
++                .height(44.dp)
++                .width(44.dp)
++                .padding(start = 5.dp)
++        )
++    }
++}
++
++@Composable
++fun currentRouteMarketer(navController: NavHostController): String? {
++    val entrada by navController.currentBackStackEntryAsState()
++    return entrada?.destination?.route
++}
++
++@Composable
++fun NavegationInferiorMarketer(navController: NavHostController, menu_items: List<ItemsMenu>) {
++    BottomAppBar(
++        cutoutShape = MaterialTheme.shapes.medium.copy(
++            CornerSize(percent = 50)
++        ),
++    ) {
++        BottomNavigation(
++            modifier = Modifier.fillMaxSize(),
++        )
++        {
++            val currentRoute = currentRouteMarketer(navController = navController)
++            menu_items.forEachIndexed() { index, item ->
++                if (index == 1) {
++                    BottomNavigationItem(
++                        selected = currentRoute == item.rota,
++                        modifier = Modifier
++                            .height(50.dp)
++                            .width(50.dp)
++                            .weight(2f)
++                            .padding(end = 75.dp),
++                        onClick = { navController.navigate(item.rota) },
++                        icon = {
++                            Icon(
++                                painter = painterResource(id = item.icon),
++                                contentDescription = item.title
++                            )
++                        },
++                    )
++                } else {
++                    BottomNavigationItem(
++                        selected = currentRoute == item.rota,
++                        modifier = Modifier
++                            .height(50.dp)
++                            .width(50.dp),
++                        onClick = { navController.navigate(item.rota) },
++                        icon = {
++                            Icon(
++                                painter = painterResource(id = item.icon),
++                                contentDescription = item.title
++                            )
++                        },
++                    )
++                }
++            }
++        }
++    }
++}
++
++
++
++
++
+Index: app/src/main/java/com/example/yvypora/MarketerScreens/ProductsMarketer.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.MarketerScreens\n\nimport android.content.Intent\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.clickable\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.material.Surface\nimport androidx.compose.material.Text\nimport androidx.compose.runtime.Composable\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.unit.dp\nimport com.example.yvypora.R\nimport com.example.yvypora.ScreenClients.CardProduct\nimport com.example.yvypora.ScreenClients.Header\nimport com.example.yvypora.ScreenClients.ListOfProductCardSale\nimport com.example.yvypora.ScreenClients.ProfileClient\nimport com.example.yvypora.models.ProductCardSale\nimport com.example.yvypora.ui.theme.YvyporaTheme\n\nclass ProductsMarketer : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                Surface {\n                    HeaderProduct()\n//                    ListOfProductCardSale(cards = listProductMarketer)\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun HeaderProduct(){\n    val context = LocalContext.current\n    Row(\n        modifier = Modifier\n            .fillMaxWidth()\n            .height(90.dp)\n            .padding(top = 35.dp, start = 15.dp, end = 15.dp),\n        horizontalArrangement = Arrangement.SpaceBetween,\n    ) {\n        Image(\n            painter = painterResource(id = R.drawable.logo_no_name),\n            modifier = Modifier\n                .height(55.dp)\n                .width(55.dp),\n            alignment = Alignment.BottomStart,\n            contentDescription = \"logo\",\n\n            )\n        Image(\n            painter = painterResource(id = R.drawable.add),\n            modifier = Modifier\n                .clickable {\n//                    val intent = Intent(context, ProfileClient()::class.java)\n//                    context.startActivity(intent)\n                }\n                .height(50.dp)\n                .width(55.dp),\n            contentDescription = \"add\",\n        )\n    }\n}\n\n//val listProductMarketer = listOf<ProductCardSale>(\n//    ProductCardSale(\n//        id = 1,\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 10.00,\n//        promo = false\n//    ),\n//    ProductCardSale(\n//        id = 2,\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 24.00,\n//        promo = false\n//    ),\n//    ProductCardSale(\n//        id = 3,\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 10.00,\n//        promo = false\n//    ),\n//    ProductCardSale(\n//        id = 4,\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 24.00,\n//        promo = false\n//    ),\n//    ProductCardSale(\n//        id = 5,\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 15.00,\n//        promo = false\n//    ),\n//    ProductCardSale(\n//        id = 6,\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 25.00,\n//        promo = false\n//    ),\n//    ProductCardSale(\n//        id = 6,\n//        name = \"Abóbora\",\n//        qntd_product = 3,\n//        photo = 1,\n//        type_weight = \"g\",\n//        weight_product = 800,\n//        price = 25.00,\n//        promo = false\n//    ),\n//)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/MarketerScreens/ProductsMarketer.kt b/app/src/main/java/com/example/yvypora/MarketerScreens/ProductsMarketer.kt
+--- a/app/src/main/java/com/example/yvypora/MarketerScreens/ProductsMarketer.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/MarketerScreens/ProductsMarketer.kt	(date 1683204544487)
+@@ -60,8 +60,8 @@
+             painter = painterResource(id = R.drawable.add),
+             modifier = Modifier
+                 .clickable {
+-//                    val intent = Intent(context, ProfileClient()::class.java)
+-//                    context.startActivity(intent)
++                    val intent = Intent(context, AddProducts()::class.java)
++                    context.startActivity(intent)
+                 }
+                 .height(50.dp)
+                 .width(55.dp),
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <uses-permission android:name=\"android.permisson.READ_EXTERNAL_STORAGE\" />\n\n    <application\n        android:allowBackup=\"true\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\n        android:fullBackupContent=\"@xml/backup_rules\"\n        android:icon=\"@drawable/logo\"\n        android:label=\"@string/app_name\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.Yvypora\"\n        tools:targetApi=\"31\">\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.CheckoutActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_checkout\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.ShoppingCartActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_shopping_cart\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.DescriptionProducts\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_description_products\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AddAccount\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_account\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AddCardAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_pay_methods_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.PaymentMethodsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_payment_methods\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AddAdressAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_adress_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AdressesActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_adresses\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.BuyHistory\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_buy_history_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.EditProfileSreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_edit_profile_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.FairsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/fair\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.ProfileClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_profile_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.ScreenSearch\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_screen_search\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.RegisterMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.ProductsMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.InicialScreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.MarketerScreens.InicialMarketerActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.RegisterClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".DecisionSreenActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_decision_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".LoginActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_login\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MainActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_main\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.FruitsResultActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/fruits_result\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.VegetablesActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/vegetable\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.SpicesActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/spices\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.OthersActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/spices\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".SplashScreenActivity\"\n            android:exported=\"true\"\n            android:label=\"@string/app_name\"\n            android:theme=\"@style/Theme.Yvypora\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n\n        <meta-data\n            android:name=\"com.google.android.geo.API_KEY\"\n            android:value=\"${MAPS_API_KEY}\" />\n        <meta-data\n            android:name=\"com.google.android.gms.version\"\n            android:value=\"@integer/google_play_services_version\" />\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/AndroidManifest.xml	(date 1683204571906)
+@@ -90,6 +90,11 @@
+             android:label="@string/title_activity_register_marketer"
+             android:theme="@style/Theme.Yvypora" />
+         <activity
++            android:name=".MarketerScreens.AddProducts"
++            android:exported="false"
++            android:label="@string/title_activity_register_marketer"
++            android:theme="@style/Theme.Yvypora" />
++        <activity
+             android:name="com.example.yvypora.ScreenClients.InicialScreen"
+             android:exported="false"
+             android:label="@string/title_activity_inicial_screen"
+Index: app/src/main/java/com/example/yvypora/MarketerScreens/AddProducts.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/MarketerScreens/AddProducts.kt b/app/src/main/java/com/example/yvypora/MarketerScreens/AddProducts.kt
+new file mode 100644
+--- /dev/null	(date 1683204607564)
++++ b/app/src/main/java/com/example/yvypora/MarketerScreens/AddProducts.kt	(date 1683204607564)
+@@ -0,0 +1,21 @@
++package com.example.yvypora.MarketerScreens
++
++import android.os.Bundle
++import androidx.activity.ComponentActivity
++import androidx.activity.compose.setContent
++import androidx.compose.material.Surface
++import androidx.compose.material.Text
++import com.example.yvypora.ui.theme.YvyporaTheme
++
++class AddProducts : ComponentActivity()  {
++    override fun onCreate(savedInstanceState: Bundle?) {
++        super.onCreate(savedInstanceState)
++        setContent {
++            YvyporaTheme {
++                Surface {
++                    Text(text = "quer add product?")
++                }
++            }
++        }
++    }
++}
+\ No newline at end of file

@@ -103,9 +103,6 @@ class RegisterClient : ComponentActivity() {
 }
 
 
-
-
-
 val imageUri = mutableStateOf("")
 
 @Composable
@@ -320,88 +317,86 @@ fun Inputs() {
 
                 getCep(cepState) {
 
-                            val cep = it
-                            Log.i("teste", cep.toString())
+                    val cep = it
+                    Log.i("teste", cep.toString())
 
-                            val costumer = Costumer(
-                                name = nameState,
-                                email = emailState,
-                                password = passwordState,
-                                address = Address(
-                                    cep = cep.cep,
-                                    addressTypeId = 1,
-                                    city = cep.localidade,
-                                    uf = cep.uf,
-                                    number = 0,
-                                    complemento = "",
-                                    logradouro = cep.logradouro,
-                                    neighborhood = cep.bairro,
-                                ),
-                                cpf = cpfState,
-                                birthday = formatBirthday(birthState),
-                                gender = gender[0].toString()
-                            )
+                    val costumer = Costumer(
+                        name = nameState,
+                        email = emailState,
+                        password = passwordState,
+                        address = Address(
+                            cep = cep.cep,
+                            addressTypeId = 1,
+                            city = cep.localidade,
+                            uf = cep.uf,
+                            number = 0,
+                            complemento = "",
+                            logradouro = cep.logradouro,
+                            neighborhood = cep.bairro,
+                        ),
+                        cpf = cpfState,
+                        birthday = formatBirthday(birthState),
+                        gender = gender[0].toString()
+                    )
 
-                            createCostumer(costumer) { _costumer ->
-                                auth(credentials = Credentials(costumer.email, costumer.password)) { res ->
-                                    if (!res.error) {
-                                        val tokenStore = TokenStore(context)
-                                        scope.launch {
-                                            tokenStore.saveToken(res.token)
+                    createCostumer(costumer) { _costumer ->
+                        auth(credentials = Credentials(costumer.email, costumer.password)) { res ->
+                            if (!res.error) {
+                                val tokenStore = TokenStore(context)
+                                scope.launch {
+                                    tokenStore.saveToken(res.token)
+                                }
+                                val uri = Uri.parse(imageUri.value)
+                                val inputStream =
+                                    context.contentResolver.openInputStream(uri)
+
+                                if (inputStream != null) {
+                                    val file = File(context.cacheDir, "image.jpg")
+                                    val outputStream = FileOutputStream(file)
+
+                                    inputStream.use { input ->
+                                        outputStream.use { output ->
+                                            input.copyTo(output)
                                         }
-                                        val uri = Uri.parse(imageUri.value)
-                                        val inputStream =
-                                            context.contentResolver.openInputStream(uri)
-
-                                        if (inputStream != null) {
-                                            val file = File(context.cacheDir, "image.jpg")
-                                            val outputStream = FileOutputStream(file)
-
-                                            inputStream.use { input ->
-                                                outputStream.use { output ->
-                                                    input.copyTo(output)
-                                                }
-                                            }
-
-                                            val requestBody = RequestBody.create(
-                                                "image/*".toMediaTypeOrNull(),
-                                                file
-                                            )
-
-                                            val imagePart = MultipartBody.Part.createFormData(
-                                                "picture",
-                                                file.name,
-                                                requestBody
-                                            )
-
-                                            scope.launch {
-                                                addPictureToUser(res.token, imagePart) { it ->
-                                                    Log.i("teste", it)
-                                                }
-                                            }
-                                        } else {
-                                            Log.e("Error", "Cannot get input stream from URI") }
-                                      }
                                     }
+
+                                    val requestBody = RequestBody.create(
+                                        "image/*".toMediaTypeOrNull(),
+                                        file
+                                    )
+
+                                    val imagePart = MultipartBody.Part.createFormData(
+                                        "picture",
+                                        file.name,
+                                        requestBody
+                                    )
+
+                                    scope.launch {
+                                        addPictureToUser(res.token, imagePart) { it ->
+                                            Log.i("teste", it)
+                                        }
+                                    }
+                                } else {
+                                    Log.e("Error", "Cannot get input stream from URI")
                                 }
                             }
-                        },
-            Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
-                modifier = Modifier
-                    .width(217.dp)
-                    .height(48.dp)
-                    .align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(5.dp),) {
+                        }
+                    }
+                }
+            },
 
-                
-            }
+            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
+            modifier = Modifier
+                .width(217.dp)
+                .height(48.dp)
+                .align(Alignment.CenterHorizontally),
+            shape = RoundedCornerShape(5.dp)
+        ) {
 
-            
 
-            ) {
-
-            )
         }
+
+
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(15.dp)
@@ -769,6 +764,7 @@ fun formatBirthday(birthday: String): String {
 
     return "$year-$month-$day"
 }
+
 @Preview
 @Composable
 fun InputsPriview() {
