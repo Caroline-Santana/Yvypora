@@ -68,7 +68,7 @@
             android:label="@string/title_activity_edit_profile_sreen"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name=".FairsActivity"
+            android:name=".ScreenClients.FairsActivity"
             android:exported="false"
             android:label="@string/fair"
             android:theme="@style/Theme.Yvypora" />
@@ -83,12 +83,22 @@
             android:label="@string/title_activity_screen_search"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name=".RegisterMarketer"
+            android:name=".MarketerScreens.RegisterMarketer"
+            android:exported="false"
+            android:label="@string/title_activity_register_marketer"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".MarketerScreens.ProductsMarketer"
             android:exported="false"
             android:label="@string/title_activity_register_marketer"
             android:theme="@style/Theme.Yvypora" />
         <activity
             android:name="com.example.yvypora.ScreenClients.InicialScreen"
+            android:exported="false"
+            android:label="@string/title_activity_inicial_screen"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name="com.example.yvypora.MarketerScreens.InicialMarketerActivity"
             android:exported="false"
             android:label="@string/title_activity_inicial_screen"
             android:theme="@style/Theme.Yvypora" />

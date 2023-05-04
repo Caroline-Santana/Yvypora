@@ -364,6 +364,10 @@ fun CardPrincipalAdresses(address: AddressCard){
 @Composable
 fun CardAdresses(address : AddressCard){
 //    val dragState = rememberDraggableState(onDelta = { dy-> onDrag(address)})
+<<<<<<< HEAD
+=======
+
+>>>>>>> b9dfd244123f72bf2b037f9896ab87a2c48a8aa4
     var titleAddress = address.titulo
     var name_remetente = address.name_remetente
     var telefone_remetente = address.telefone_remetente
@@ -415,7 +419,11 @@ fun CardAdresses(address : AddressCard){
                         fontSize = 23.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
+<<<<<<< HEAD
 
+=======
+//
+>>>>>>> b9dfd244123f72bf2b037f9896ab87a2c48a8aa4
 //                        OpcoesMenu()
 
 

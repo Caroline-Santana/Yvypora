@@ -377,10 +377,10 @@ fun NumEditAddress(){
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun EditAddressPreview() {
-    YvyporaTheme {
-            MainEditAdress()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun EditAddressPreview() {
+//    YvyporaTheme {
+//            MainEditAdress()
+//    }
+//}

@@ -126,11 +126,17 @@
     <string name="title_card_inicial_marketer">COMECE A FATURAR COM A YVYPORÃ HOJE!</string>
     <string name="description_card_inicial_marketer">Comece adicionando seus produtos ou cadastre as feiras qual faz parte</string>
     <string name="your_sales_today">Sua atividade hoje</string>
-    <string name="history_complete">Ver histórico de vendas completo</string>
+    <string name="history_complete">Ver histórico completo</string>
     <string name="total">Total :</string>
+<<<<<<< HEAD
     <string name="payment_method">Metodo de Pagamento</string>
     <string name="order">Pedido</string>
     <string name="delivery_fee">Taxa de Entrega</string>
+=======
+    <string name="payment_method">Método de Pagamento</string>
+    <string name="order">Pedido</string>
+    <string name="delivery_fee">Taxa de entrega</string>
+>>>>>>> b9dfd244123f72bf2b037f9896ab87a2c48a8aa4
 
 
 </resources>
