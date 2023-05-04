@@ -1,37 +1,38 @@
 package com.example.yvypora.MarketerScreens
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.yvypora.R
+import com.example.yvypora.navbar.ItemsMenu
+import com.example.yvypora.navbar.NavegationMarketer
 import com.example.yvypora.ui.theme.YvyporaTheme
+import kotlinx.coroutines.CoroutineScope
 
 class InicialMarketerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,7 @@ class InicialMarketerActivity : ComponentActivity() {
         setContent {
             YvyporaTheme {
                 Surface() {
-                    InicialMarketerMain()
+                    HomeScreenMarketer()
                 }
 
             }
@@ -53,12 +54,14 @@ fun InicialMarketerMain() {
     var statePrice by remember { mutableStateOf(false) }
     val wave = painterResource(id = R.drawable.wave_marketer)
     val user = painterResource(id = R.drawable.icon_user)
-    val total_sale = 10.56
+    val total_sale = 100.56
+
 
 /*
 * TODO :
 *   - INTEGRAR OS DADOS DA VENDA NEM QUE SEJAM MOCKADOS
-*   - FAZER A NAVBAR DO FEIRANTE QUE É DIFERENTE DO CONSUMIDOR
+*   - FAZER A NAVBAR DO FEIRANTE QUE É DIFERENTE DO CONSUMIDOR ou concertar a do consumidor e assim fazer
+* a do feirante
 *
 *   E DEPOIS DE TERMINAR ESSA TELA, TEM QUE FAZER TUDO SOBRE PRODUTO
 *
@@ -208,16 +211,29 @@ fun InicialMarketerMain() {
                                 .width(50.dp)
                         )
                     } else {
-                        Text(
-                            text = "R$****",
-                            color = colorResource(
-                                id = R.color.darkgreen_yvy
-                            ),
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Start,
+                        if (total_sale < 100) {
+                            Text(
+                                text = "R$$****",
+                                color = colorResource(
+                                    id = R.color.darkgreen_yvy
+                                ),
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Start,
 
-                            )
+                                )
+                        } else {
+                            Text(
+                                text = "R$*****",
+                                color = colorResource(
+                                    id = R.color.darkgreen_yvy
+                                ),
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Start,
+
+                                )
+                        }
                         Spacer(Modifier.padding(15.dp))
                         Image(
                             painter = painterResource(id = R.drawable.olho_on),
@@ -229,10 +245,10 @@ fun InicialMarketerMain() {
                         )
                     }
                 }
-               Row(Modifier.fillMaxWidth()) {
-                   Text(text = "venda as 12:99", color = colorResource(id = R.color.gray_text))
-                   Text(text = "+ 5,00", color = colorResource(id = R.color.green_yvy))
-               }
+                Row(Modifier.fillMaxWidth()) {
+                    Text(text = "venda as 12:99", color = colorResource(id = R.color.gray_text))
+                    Text(text = "+ 5,00", color = colorResource(id = R.color.green_yvy))
+                }
                 Row(Modifier.fillMaxWidth()) {
                     Text(text = "venda as 12:99", color = colorResource(id = R.color.gray_text))
                     Text(text = "+ 5,00", color = colorResource(id = R.color.green_yvy))
@@ -254,6 +270,112 @@ fun InicialMarketerMain() {
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         textDecoration = TextDecoration.Underline,
+                    )
+                }
+            }
+        }
+
+
+
+    }
+}
+
+@Composable
+fun HomeScreenMarketer() {
+    val navController = rememberNavController()
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+    val navigation = listOf(
+        ItemsMenu.Pantalla5,
+        ItemsMenu.Pantalla6,
+        ItemsMenu.Pantalla7,
+        ItemsMenu.Pantalla8,
+    )
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            NavegationInferiorMarketer(navController, navigation)
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButton = { FabMarketer(scope, scaffoldState) },
+        isFloatingActionButtonDocked = true,
+        modifier = Modifier.fillMaxHeight()
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            NavegationMarketer(navController)
+        }
+    }
+}
+
+@Composable
+fun FabMarketer(scope: CoroutineScope, scaffoldState: ScaffoldState) {
+    val context = LocalContext.current
+    FloatingActionButton(
+        onClick = {
+            val intent = Intent(context, ProductsMarketer()::class.java)
+            context.startActivity(intent)
+        },
+        backgroundColor = colorResource(id = R.color.green_yvy),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.bag),
+            contentDescription = "shopping",
+            modifier = Modifier
+                .height(44.dp)
+                .width(44.dp)
+        )
+    }
+}
+
+@Composable
+fun currentRouteMarketer(navController: NavHostController): String? {
+    val entrada by navController.currentBackStackEntryAsState()
+    return entrada?.destination?.route
+}
+
+@Composable
+fun NavegationInferiorMarketer(navController: NavHostController, menu_items: List<ItemsMenu>) {
+    BottomAppBar(
+        cutoutShape = MaterialTheme.shapes.medium.copy(
+            CornerSize(percent = 50)
+        ),
+    ) {
+        BottomNavigation(
+            modifier = Modifier.fillMaxSize(),
+        )
+        {
+            val currentRoute = currentRouteMarketer(navController = navController)
+            menu_items.forEachIndexed() { index, item ->
+                if (index == 1) {
+                    BottomNavigationItem(
+                        selected = currentRoute == item.rota,
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(50.dp)
+                            .weight(2f)
+                            .padding(end = 75.dp),
+                        onClick = { navController.navigate(item.rota) },
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = item.icon),
+                                contentDescription = item.title
+                            )
+                        },
+                    )
+                } else {
+                    BottomNavigationItem(
+                        selected = currentRoute == item.rota,
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(50.dp),
+                        onClick = { navController.navigate(item.rota) },
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = item.icon),
+                                contentDescription = item.title
+                            )
+                        },
                     )
                 }
             }

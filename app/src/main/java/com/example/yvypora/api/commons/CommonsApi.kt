@@ -1,15 +1,20 @@
 package com.example.yvypora.api.commons
 
+import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.models.Costumer
+import com.example.yvypora.models.CostumerInfoResponse
 import com.example.yvypora.models.Credentials
 import com.example.yvypora.models.Token
+import com.example.yvypora.models.costumer.CostumerInfoError
+import com.example.yvypora.service.datastore.TokenStore
+import okhttp3.MultipartBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 fun auth(credentials: Credentials, onComplete: (Token) -> Unit) {
     val call = RetrofitApi.commonsRetrofitService().auth(credentials)
@@ -36,29 +41,84 @@ fun auth(credentials: Credentials, onComplete: (Token) -> Unit) {
 }
 
 
-fun createCostumer(costumer: Costumer, onComplete: (Any) -> Unit) {
+fun createCostumer(costumer: Costumer, onComplete: (CostumerInfoResponse) -> Unit) {
     val call = RetrofitApi.commonsRetrofitService().createCostumer(costumer)
-    Log.i("teste", costumer.toString())
-    call.enqueue(object : Callback<Any> {
+    call.enqueue(object : Callback<CostumerInfoResponse> {
         override fun onResponse(
-            call: Call<Any>,
-            response: Response<Any>
+            call: Call<CostumerInfoResponse>,
+            response: Response<CostumerInfoResponse>
         ) {
+            val res = response.body()
 
+            Log.i("teste", response.toString())
 
             if (response.isSuccessful) {
-                return onComplete.invoke(true)
+                return onComplete.invoke(res!!)
             }
 
             Log.i("teste", response.code().toString())
-            return onComplete.invoke(false)
+            return onComplete.invoke(CostumerInfoResponse())
         }
 
-        override fun onFailure(call: Call<Any>, t: Throwable) {
+        override fun onFailure(call: Call<CostumerInfoResponse>, t: Throwable) {
             t.printStackTrace();
         }
 
 
     })
 }
+
+
+
+
+fun addPictureToUser(token: String, picture: MultipartBody.Part, onComplete: (String) -> Unit) {
+    val _token = "Bearer $token"
+
+    val call = RetrofitApi.commonsRetrofitService().uploadPictureToUser(_token, picture)
+
+    call.enqueue(object: Callback<Any> {
+        override fun onResponse(call: Call<Any>, response: Response<Any>) {
+            val res = response.body()
+
+            Log.i("teste", response.toString())
+
+            if (response.isSuccessful) {
+                return onComplete.invoke(res.toString())
+            }
+
+            return onComplete.invoke(res.toString())
+        }
+
+        override fun onFailure(call: Call<Any>, t: Throwable) {
+            t.printStackTrace()
+        }
+    })
+}
+fun fieldsForCostumer(onComplete: (String) -> Unit) {
+    val call = RetrofitApi.commonsRetrofitService().fieldsForCostumer()
+    call.enqueue(object: Callback<Any> {
+        override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+            val res = response.body()
+
+            if (response.isSuccessful) {
+                return onComplete.invoke(res.toString())
+            }
+
+            Log.i("teste", response.code().toString())
+
+            return onComplete.invoke(res.toString())
+        }
+
+        override fun onFailure(call: Call<Any>, t: Throwable) {
+            t.printStackTrace()
+        }
+    })
+}
+
+
+
+
+
+
 
