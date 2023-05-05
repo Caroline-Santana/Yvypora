@@ -131,6 +131,9 @@
     <string name="payment_method">Payment Method</string>
     <string name="order">Order</string>
     <string name="delivery_fee">Delivery Fee</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="num">Num</string>
 
 
 </resources>
