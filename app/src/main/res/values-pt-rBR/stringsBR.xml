@@ -134,6 +134,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="num">Número</string>
+    <string name="title_activity_register_client">RegistroCliente</string>
+    <string name="my_products">Meus produtos</string>
+    <string name="qnt">Quantidade Disponível</string>
 
 
 </resources>

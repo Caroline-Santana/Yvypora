@@ -93,7 +93,7 @@ fun InicialMarketerMain() {
                 .padding(20.dp)
                 .shadow(
                     elevation = 50.dp,
-                    shape = RoundedCornerShape(15.dp),
+                    shape = RoundedCornerShape(10.dp),
                     ambientColor = colorResource(id = R.color.green_yvy),
                     spotColor = colorResource(id = R.color.green_yvy)
                 )
@@ -133,7 +133,10 @@ fun InicialMarketerMain() {
                         modifier = Modifier
                             .width(80.dp)
                             .height(100.dp)
-                            .clickable {}
+                            .clickable {
+                                val intent = Intent(context, ProductsMarketer::class.java)
+                                context.startActivity(intent)
+                            }
                     )
                     Spacer(
                         modifier = Modifier
@@ -160,7 +163,7 @@ fun InicialMarketerMain() {
                 .padding(20.dp)
                 .shadow(
                     elevation = 50.dp,
-                    shape = RoundedCornerShape(15.dp),
+                    shape = RoundedCornerShape(10.dp),
                     ambientColor = colorResource(id = R.color.green_yvy),
                     spotColor = colorResource(id = R.color.green_yvy)
                 )
@@ -182,6 +185,7 @@ fun InicialMarketerMain() {
                 }
                 Text(
                     text = stringResource(id = R.string.total),
+
                     color = colorResource(
                         id = R.color.gray_text
                     ),
@@ -193,6 +197,7 @@ fun InicialMarketerMain() {
                     if (statePrice) {
                         Text(
                             text = "R$$total_sale",
+                            Modifier.padding(start = 10.dp),
                             color = colorResource(
                                 id = R.color.darkgreen_yvy
                             ),
@@ -214,6 +219,7 @@ fun InicialMarketerMain() {
                         if (total_sale < 100) {
                             Text(
                                 text = "R$$****",
+                                Modifier.padding(start = 10.dp),
                                 color = colorResource(
                                     id = R.color.darkgreen_yvy
                                 ),
@@ -225,6 +231,7 @@ fun InicialMarketerMain() {
                         } else {
                             Text(
                                 text = "R$*****",
+                                Modifier.padding(start = 10.dp),
                                 color = colorResource(
                                     id = R.color.darkgreen_yvy
                                 ),

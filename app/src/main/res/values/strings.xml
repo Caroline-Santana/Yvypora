@@ -28,7 +28,7 @@
     <string name="question_decision_sreen">How will you use the app?</string>
     <string name="decision_option1">CLIENT</string>
     <string name="decision_option2">MARKETER</string>
-    <string name="title_activity_register_client" translatable="false">RegisterClient</string>
+    <string name="title_activity_register_client">RegisterClient</string>
     <string name="password">Password:</string>
     <string name="message_error_pass1">Provide a password!</string>
     <string name="message_error_pass2">Cannot be more than 8 characters!</string>
@@ -134,6 +134,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="num">Num</string>
+    <string name="my_products">My Products</string>
+    <string name="qnt">Amount:</string>
 
 
 </resources>
