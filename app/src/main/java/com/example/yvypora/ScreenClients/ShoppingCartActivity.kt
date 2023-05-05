@@ -1,15 +1,12 @@
 package com.example.yvypora.ScreenClients
 
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,8 +31,6 @@ import com.example.yvypora.models.MarketerCardShopping
 import com.example.yvypora.models.ProductCardShopping
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 
 class ShoppingCartActivity : ComponentActivity() {
@@ -68,11 +63,12 @@ class ShoppingCartActivity : ComponentActivity() {
 var showPaymentBar by mutableStateOf(false)
 var total_value by mutableStateOf(0.0)
 val selectedCards = mutableStateListOf<Int>()
+
 val qtde = mutableMapOf<Int,Int>()
 
 @Composable
 fun ShoppingCartMain() {
-    val selectedQuantity = remember { mutableStateOf(1) }
+    val selectedPrice = remember { mutableStateOf(0.0) }
     Text(
         text = stringResource(id = R.string.my_shopping_cart),
         modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
@@ -88,10 +84,11 @@ fun ShoppingCartMain() {
         contentAlignment = Alignment.BottomCenter
     )
     {
-        ListOfMarketerCardShopping(marketers = listMarketerCardShopping, onQuantityChanged = { quantity ->
-            selectedQuantity.value = quantity
-        })
-        CardPay(selectedQuantity.value)
+        ListOfMarketerCardShopping(marketers = listMarketerCardShopping){ price ->
+            selectedPrice.value = price
+        }
+        CardPay(total_value)
+
 
     }
 }
@@ -99,6 +96,7 @@ fun ShoppingCartMain() {
 
 val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
     MarketerCardShopping(
+        id_feirante = 1,
         name = "Barraca do Seu Zé",
         sub_name = "Vila Madalena",
         photo = R.drawable.buy_history_card_marketer,
@@ -124,6 +122,7 @@ val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
         )
     ),
     MarketerCardShopping(
+        id_feirante = 2,
         name = "Barraca do Seu Zé",
         sub_name = "Vila Augusta",
         photo = R.drawable.buy_history_card_marketer,
@@ -169,22 +168,27 @@ val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
 )
 
 @Composable
-fun ListOfMarketerCardShopping(marketers: List<MarketerCardShopping>, onQuantityChanged: (Int) -> Unit) {
+fun ListOfMarketerCardShopping(marketers: List<MarketerCardShopping>,onPriceChanged: (Double) -> Unit) {
     LazyColumn {
         items(marketers) { marketer ->
-            CardMarketerShopping(marketer = marketer, onQuantityChanged)
+            CardMarketerShopping(
+                marketer = marketer,
+                onPriceChanged = onPriceChanged
+            )
         }
 
     }
 }
 
 @Composable
-fun CardMarketerShopping(marketer: MarketerCardShopping, onQuantityChanged: (Int) -> Unit) {
-
+fun CardMarketerShopping(
+    marketer: MarketerCardShopping,
+    onPriceChanged: (Double) -> Unit
+) {
+//    val targetMarketerId = marketer.id_feirante
     var nameCard = marketer.name
     var subnameCard = marketer.sub_name
     var showSnackbar by remember { mutableStateOf(false) }
-//    tem que descomentar e usar o que o banco retorna
 //    var photo = marketer.photo
     var photo = painterResource(id = R.drawable.buy_history_card_marketer)
     var products = marketer.products
@@ -232,39 +236,25 @@ fun CardMarketerShopping(marketer: MarketerCardShopping, onQuantityChanged: (Int
 
                 }
             }
-
             ListOfProductCardShopping(
                 cards = marketer.products,
                 state = showSnackbar,
-                onQuantityChanged = { card, quantity ->
-                    val index = marketer.products.indexOf(card)
-                    if (index >= 0){
-                        val updateProducts = marketer.products.toMutableList()
-                        updateProducts[index] = card.copy(weight_product = quantity)
-//                        listMarketerCardShopping[i] = marketer.copy(products = updateProducts)
-                    }
-                    onQuantityChanged(quantity)
+                onPriceChanged = { card, price ->
+                    card.copy(price = price )
+                    onPriceChanged(price)
                 }
             )
         }
     }
 }
 
-//val updateMarketers = listMarketerCardShopping.map { marketer ->
-//    val updateProducts = marketer.products.map { card ->
-//        val index = products.indexOf(card)
-//        if (index >= 0){
-//            card.copy(quantity = products[index].quantity)
-//        } else {
-//            card
-//        }
-//    }
-//    marketer.copy(products = updateProducts)
-//}
-//listMarketerCardShopping.clear()
-//listMarketerCardShopping.addAll(updateMarketers)
+
 @Composable
-fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state: Boolean, onQuantityChanged: (ProductCardShopping, Int) -> Unit) {
+fun ListOfProductCardShopping(
+    cards: List<ProductCardShopping>,
+    state: Boolean,
+    onPriceChanged: (ProductCardShopping, Double) -> Unit
+) {
     var stateSnack = state
     val coroutineScope = rememberCoroutineScope()
     var valuePay by remember { mutableStateOf(0.0) }
@@ -283,11 +273,18 @@ fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state: Boolean, 
                 onCardSelected = { id ->
                     showPaymentBar = true
                     stateSnack = true
-                    onCardProductClick(card.id, selectedCards,qtde)
+                    onCardProductClick(card.id, selectedCards, card.qtde)
                 },
-                onQuantityChanged = { quantity ->
-                    onQuantityChanged(card, quantity)
+                onPriceChanged = { quantity ->
+                    listMarketerCardShopping.map { item ->
+                        val product = item.products.find {product ->
+                            product.id == card.id
+                        }
 
+                        val newPrice = product?.price?.times(quantity)
+                        card.weight_product = quantity
+                        onPriceChanged(card, newPrice ?: 0.0)
+                    }
                 }
             )
         }
@@ -295,8 +292,7 @@ fun ListOfProductCardShopping(cards: List<ProductCardShopping>, state: Boolean, 
 }
 
 @Composable
-fun CardPay(selectedQuantity: Int) {
-//    val totalPrice = selectedQuantity * 10
+fun CardPay(total: Double) {
     val context = LocalContext.current
     if (showPaymentBar) {
         Card(
@@ -320,7 +316,7 @@ fun CardPay(selectedQuantity: Int) {
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "R$ $total_value",
+                    text = "R$ $total",
                     modifier = Modifier.padding(end = 67.dp),
                     color = colorResource(id = R.color.full_dark_yvy),
                     fontWeight = FontWeight.Bold,
@@ -348,7 +344,7 @@ fun CardPay(selectedQuantity: Int) {
     }
 }
 
-fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>, qtde: MutableMap<Int, Int>) {
+fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>, qtde: Int) {
 
     if (selectedCards.contains(cardId)) {
         selectedCards.remove(cardId)
@@ -363,14 +359,8 @@ fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>, qtde: Mutab
         listMarketerCardShopping.forEach { item ->
             item.products.forEach { product ->
                 if (selectedCards.contains(product.id)) {
-                    val quantity = qtde[product.id] ?: 1
-                    val price =
-                        if (product.weight_product == 1)
-                            product.price
-                        else
-                            quantity * product.price
+                    val price = qtde * product.price
                     total += price
-
                 }
             }
         }
@@ -384,24 +374,27 @@ fun CardProductShopping(
     card: ProductCardShopping,
     isSelected: Boolean,
     onCardSelected: (Boolean) -> Unit,
-    onQuantityChanged: (Int) -> Unit
+    onPriceChanged: (Int) -> Unit
+
 ) {
-    var qtde by remember { mutableStateOf(1) }
+
+//    var qtde by remember {
+//        mutableStateOf(card.qtde)
+//    }
+    var (qtde, setQtde) = remember { mutableStateOf(card.qtde) }
     var nameProduct = card.name
 //    var photoProduct = card.photo
     var photoProduct = painterResource(id = R.drawable.abobora_shopping)
     var typeProduct = card.type_weight
     var weightProduct = card.weight_product
-    var priceProduct = card.price
-    var accumulatorPrice = 0.0
-    if (qtde == 1) {
-        accumulatorPrice = priceProduct
-    } else {
-        accumulatorPrice = priceProduct * qtde
+
+    var priceProduct = card.price * qtde
+    var accumulatorPrice = priceProduct
+
+    LaunchedEffect(qtde){
+        onPriceChanged(card.id)
     }
-        LaunchedEffect(qtde){
-            onQuantityChanged(qtde)
-        }
+
     Column(
         modifier = Modifier
             .padding(bottom = 10.dp),
@@ -514,7 +507,9 @@ fun CardProductShopping(
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Button(
-                                    onClick = { qtde = (qtde - 1).coerceAtLeast(1) },
+                                    onClick = {
+                                        setQtde(qtde - 1)
+                                              },
                                     modifier = Modifier
                                         .height(24.dp)
                                         .width(28.dp),
@@ -526,19 +521,21 @@ fun CardProductShopping(
                                 Icon(
                                     painter = painterResource(id = R.drawable.remove),
                                     modifier = Modifier
-                                        .clickable { qtde = (qtde - 1).coerceAtLeast(1) },
+                                        .clickable {
+                                            setQtde(qtde -1)
+                                            },
                                     contentDescription = ""
                                 )
                             }
                             Text(
-                                text = "$qtde",
+                                text = "${qtde} ",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = colorResource(id = R.color.darkgreen_yvy)
                             )
                             Box(contentAlignment = Alignment.Center) {
                                 Button(
-                                    onClick = { qtde += 1 },
+                                    onClick = { setQtde(qtde + 1) },
                                     modifier = Modifier
                                         .height(24.dp)
                                         .width(28.dp),
@@ -549,7 +546,10 @@ fun CardProductShopping(
                                     modifier = Modifier
                                         .width(15.dp)
                                         .height(15.dp)
-                                        .clickable { qtde += 1 },
+                                        .clickable {
+
+                                            setQtde(qtde + 1)
+                                        },
                                     contentDescription = "",
                                     tint = Color.White
                                 )
@@ -580,6 +580,7 @@ fun CardProductShopping(
     }
 
 }
+
 
 //@SuppressLint("CoroutineCreationDuringComposition")
 //@Composable
