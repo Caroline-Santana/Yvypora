@@ -431,7 +431,7 @@ fun NumEditAddress(){
 
 @Composable
 fun ChangeForMain(){
-    var selectAnswer by remember { mutableStateOf(0) }
+    var selectAnswer by remember { mutableStateOf(0)  }
     val radioOption = listOf(
         Text(text = stringResource(id = R.string.yes)),
         Text(text = stringResource(id = R.string.no))
