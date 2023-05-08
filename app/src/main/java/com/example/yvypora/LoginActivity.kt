@@ -34,11 +34,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.MarketerScreens.InicialMarketerActivity
+import com.example.yvypora.ScreenClients.InicialScreen
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.api.commons.auth
+import com.example.yvypora.api.commons.getDetailsOfUser
 import com.example.yvypora.models.Credentials
 import com.example.yvypora.models.Token
+import com.example.yvypora.models.dto.TypeOfUser
+import com.example.yvypora.service.datastore.TokenStore
+import com.example.yvypora.service.datastore.UserStore
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+
 //import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
@@ -255,16 +264,41 @@ fun LoginLayout() {
             modifier = Modifier.height(44.dp)
         )
 
+        val scope = rememberCoroutineScope()
+
         Button(
             onClick = {
                 val credentials = Credentials(emailState, passState)
-
                 auth(credentials) {
                     if (it.token.isNotEmpty()) {
+                        scope.launch {
+                            val dataStore = TokenStore(context)
+
+                            dataStore.saveToken(it.token)
+
+                            scope.launch {
+                                getDetailsOfUser(it.token) { user ->
+                                    val userStore = UserStore(context)
+                                    scope.launch {
+                                        val gson = Gson()
+                                        userStore.saveDetails(gson.toJson(user))
+                                        if (user.typeOf == TypeOfUser.COSTUMER) {
+                                            val intent = Intent(context, InicialScreen()::class.java)
+                                            context.startActivity(intent)
+                                        }
+                                        if (user.typeOf == TypeOfUser.MARKETER) {
+                                            val intent = Intent(context, InicialMarketerActivity()::class.java)
+                                            context.startActivity(intent)
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        }
                         // OPEN NEXT Activity
 //                        val intent = Intent(context, InicialScreen()::class.java)
 //                        context.startActivity(intent)
-                        Toast.makeText(context, token, Toast.LENGTH_SHORT).show()
                     }
                     else {
                         Toast.makeText(context, "Nao foi possivel fazer Login!", Toast.LENGTH_SHORT).show()
