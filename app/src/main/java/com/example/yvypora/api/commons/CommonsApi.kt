@@ -1,14 +1,13 @@
 package com.example.yvypora.api.commons
 
 import android.content.Context
+import android.icu.text.Collator.ReorderCodes
 import android.util.Log
 import androidx.compose.runtime.collectAsState
 import com.example.yvypora.api.RetrofitApi
-import com.example.yvypora.models.Costumer
-import com.example.yvypora.models.CostumerInfoResponse
-import com.example.yvypora.models.Credentials
-import com.example.yvypora.models.Token
+import com.example.yvypora.models.*
 import com.example.yvypora.models.costumer.CostumerInfoError
+import com.example.yvypora.models.marketer.Marketer
 import com.example.yvypora.service.datastore.TokenStore
 import okhttp3.MultipartBody
 import org.json.JSONObject
@@ -107,6 +106,49 @@ fun addPictureToUser(token: String, picture: MultipartBody.Part, onComplete: (St
             }
 
             return onComplete.invoke(res.toString())
+        }
+
+        override fun onFailure(call: Call<Any>, t: Throwable) {
+            t.printStackTrace()
+        }
+    })
+}
+
+
+fun getDetailsOfUser(token: String, onComplete: (User) -> Unit) {
+    val _token = "Bearer $token"
+
+    val call = RetrofitApi.commonsRetrofitService().getDetailsOfUser(_token)
+
+    call.enqueue(object: Callback<User> {
+        override fun onFailure(call: Call<User>, t: Throwable) {
+            t.printStackTrace()
+        }
+
+        override fun onResponse(call: Call<User>, response: Response<User>) {
+            val res = response.body()
+
+            if (response.isSuccessful) {
+               return onComplete.invoke(res!!)
+            }
+
+            return onComplete.invoke(User())
+        }
+    })
+}
+
+
+fun createMarketer(marketer: Marketer, onComplete: (String?) -> Unit) {
+    val call = RetrofitApi.commonsRetrofitService().createMarketer(marketer)
+    call.enqueue(object:  Callback<Any> {
+        override fun onResponse(call: Call<Any>, response: Response<Any>) {
+            val res = response.body()
+
+            if (response.isSuccessful) {
+                return onComplete.invoke(res.toString())
+            }
+
+            return onComplete.invoke(null)
         }
 
         override fun onFailure(call: Call<Any>, t: Throwable) {

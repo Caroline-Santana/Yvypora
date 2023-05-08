@@ -1,15 +1,14 @@
 package com.example.yvypora.ScreenClients
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.RatingBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -23,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
@@ -40,15 +38,23 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.yvypora.R
+import com.example.yvypora.api.product.ProductService
 import com.example.yvypora.model.template
 import com.example.yvypora.models.Product
+import com.example.yvypora.models.User
 import com.example.yvypora.navbar.ItemsMenu
 import com.example.yvypora.navbar.NavigationHost
+import com.example.yvypora.service.datastore.TokenStore
+import com.example.yvypora.service.datastore.UserStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import kotlin.math.absoluteValue
@@ -60,15 +66,31 @@ class InicialScreen : ComponentActivity() {
         setContent {
             YvyporaTheme {
                 HomeScreen()
+                getLists()
             }
 
         }
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Header() {
     val context = LocalContext.current
+    var scope = rememberCoroutineScope()
+    
+    val store = UserStore(context)
+    var userParsed by remember { mutableStateOf<User?>(null) }
+    scope.launch {
+        store.getDetails.collect {_user ->
+            val gson = Gson()
+            val parsed = gson.fromJson(_user, User::class.java)
+            userParsed = parsed
+        }
+    }
+
+    val profileImage = rememberImagePainter(data = userParsed?.picture_uri ?: "")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,7 +108,7 @@ fun Header() {
 
             )
         Image(
-            painter = painterResource(id = R.drawable.icon_user),
+            painter = profileImage,
             modifier = Modifier
                 .clickable {
                     val intent = Intent(context, ProfileClient()::class.java)
@@ -344,9 +366,9 @@ fun TabLayoutScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 when (tabIndex) {
-                    0 -> ListOfProducts(products = list)
-                    1 -> ListOfProducts(products = list)
-                    2 -> ListOfProducts(products = list)
+                    0 -> ListOfProducts(products = allList)
+                    1 -> ListOfProducts(products = saleOffList)
+                    2 -> ListOfProducts(products = nearToYouList)
                 }
 
             }
@@ -356,38 +378,110 @@ fun TabLayoutScreen() {
 }
 
 
-// MOCKEAD
-// TODO PEGAR A LISTA
+var saleOffList = mutableListOf<Product>()
+var allList = mutableListOf<Product>()
+var nearToYouList = mutableListOf<Product>()
 
-val list = listOf<Product>(
-    Product(
-        name = "Beterraba",
-        photo = "https://campeol.com.br/fotos/1/1/shutterstock_1195597369.jpg",
-        price = 7.50F,
-        qtdeProduct = 200
-    ), Product(
-        name = "Abobrinha",
-        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
-        price = 6.00F,
-        qtdeProduct = 200
-    ), Product(
-        name = "Abobrinha",
-        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
-        price = 6.00F,
-        qtdeProduct = 200
-    ), Product(
-        name = "Abobrinha",
-        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
-        price = 6.00F,
-        qtdeProduct = 200
-    ), Product(
-        name = "Abobrinha",
-        photo = "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_450x337.jpg",
-        price = 6.00F,
-        qtdeProduct = 200
-    )
-)
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun getLists() {
+    val context = LocalContext.current
+    saleOffList.clear()
+    allList.clear()
+    nearToYouList.clear()
 
+    val scope = rememberCoroutineScope()
+    scope.launch {
+        ProductService.atSaleOff { res ->
+            res?.data?.forEach { _product ->
+                saleOffList.add(Product(
+                    photo = _product.imageOfProduct[0].image.uri,
+                    name = _product.name,
+                    price = _product.price.toFloat(),
+                    qtdeProduct = _product.availableQuantity
+                ))
+            }
+        }
+        ProductService.listAllProducts(
+            0,
+            0,
+            higherPrice = 10000,
+            lowerPrice = 0,
+        ) { res ->
+            Log.i("teste", res.toString())
+            res?.data?.forEach { _product ->
+                allList.add(Product(
+                    photo = _product.imageOfProduct[0].image.uri,
+                    name = _product.name,
+                    price = _product.price.toFloat(),
+                    qtdeProduct = _product.availableQuantity
+                ))
+            }
+        }
+        ProductService.listAllProducts(
+            1,
+            0,
+            higherPrice = 10000,
+            lowerPrice = 0,
+        ) { res ->
+            Log.i("teste", res.toString())
+            res?.data?.forEach { _product ->
+                allList.add(Product(
+                    photo = _product.imageOfProduct[0].image.uri,
+                    name = _product.name,
+                    price = _product.price.toFloat(),
+                    qtdeProduct = _product.availableQuantity
+                ))
+            }
+        }
+        ProductService.listAllProducts(
+            2,
+            0,
+            higherPrice = 10000,
+            lowerPrice = 0,
+        ) { res ->
+            Log.i("teste", res.toString())
+            res?.data?.forEach { _product ->
+                allList.add(Product(
+                    photo = _product.imageOfProduct[0].image.uri,
+                    name = _product.name,
+                    price = _product.price.toFloat(),
+                    qtdeProduct = _product.availableQuantity
+                ))
+            }
+        }
+        ProductService.listAllProducts(
+            3,
+            0,
+            higherPrice = 10000,
+            lowerPrice = 0,
+        ) { res ->
+            Log.i("teste", res.toString())
+            res?.data?.forEach { _product ->
+                allList.add(Product(
+                    photo = _product.imageOfProduct[0].image.uri,
+                    name = _product.name,
+                    price = _product.price.toFloat(),
+                    qtdeProduct = _product.availableQuantity
+                ))
+            }
+        }
+        scope.launch {
+            TokenStore(context).getToken.collect {token ->
+                ProductService.closeToClient("Bearer $token") { res ->
+                    res?.data?.forEach { _product ->
+                        nearToYouList.add(Product(
+                            photo = _product.imageOfProduct[0].image.uri,
+                            name = _product.name,
+                            price = _product.price.toFloat(),
+                            qtdeProduct = _product.availableQuantity
+                        ))
+                    }
+                }
+            }
+        }
+    }
+}
 @Composable
 fun ListOfProducts(products: List<Product>) {
     LazyRow(
@@ -406,7 +500,7 @@ fun ListOfProducts(products: List<Product>) {
 fun CardProducts(data: Product) {
     val context = LocalContext.current
     var titleCard = data.name
-    var photoProduct = painterResource(id = R.drawable.beterraba)
+    var photoProduct = rememberImagePainter(data = data.photo)
     var qtdeProduct = data.qtdeProduct.toString() + "g"
     var priceProduct = "R$" + data.price.toString()
     Card(
@@ -434,7 +528,6 @@ fun CardProducts(data: Product) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
                 )
-                // MODIFICAR PARA USAR URL
                 Image(
                     painter = photoProduct,
                     contentDescription = "Product",

@@ -1,9 +1,7 @@
 package com.example.yvypora.api.commons
 
-import com.example.yvypora.models.Costumer
-import com.example.yvypora.models.CostumerInfoResponse
-import com.example.yvypora.models.Credentials
-import com.example.yvypora.models.Token
+import com.example.yvypora.models.*
+import com.example.yvypora.models.marketer.Marketer
 import okhttp3.MultipartBody
 
 import retrofit2.Call
@@ -16,23 +14,22 @@ import retrofit2.http.PUT
 import retrofit2.http.Part
 
 
-interface CommonsApiService {
+interface _CommonsAPIService {
     @POST("commons/login/")
     fun auth(@Body credentials: Credentials): Call<Token>
 
     @POST("commons/register/costumer")
     fun createCostumer(@Body costumer: Costumer): Call<CostumerInfoResponse>
 
+    @POST("commons/register/marketer")
+    fun createMarketer(@Body marketer: Marketer): Call<Any>
+
     @GET("commons/forms/costumer")
     fun fieldsForCostumer(): Call<Any>
 
+    @GET("commons/user/details")
+    fun getDetailsOfUser(@Header("Authorization") token: String): Call<User>
 
-    // TODO get details of user
-//    @GET("commons/user/details")
-//    fun getDetailsOfUser(): Call<User>
-
-
-    // TODO add JWT TOKEN
     @Multipart
     @PUT("commons/picture/")
     fun uploadPictureToUser(@Header("Authorization") token: String, @Part picture: MultipartBody.Part): Call<Any>

@@ -316,10 +316,7 @@ fun Inputs() {
 
         Button(
             onClick = {
-
-
                 getCep(cepState) {
-<<<<<<< HEAD
                             val cep = it
                             Log.i("teste", cep.toString())
 
@@ -386,35 +383,6 @@ fun Inputs() {
                                 }
                             }
                         },
-=======
-                    val cep = it
-                    Log.i("teste", cep.toString())
-
-                    val costumer = Costumer(
-                        name = nameState,
-                        email = emailState,
-                        password = passwordState,
-                        address = Address(
-                            cep = cep.cep,
-                            addressTypeId = 1,
-                            city = cep.localidade,
-                            uf = cep.uf,
-                            number = 0,
-                            complemento = "",
-                            logradouro = cep.logradouro,
-                            neighborhood = cep.bairro,
-                        ),
-                        cpf = cpfState,
-                        birthday = formatBirthday(birthState),
-                        gender = gender[0].toString()
-                    )
-                    // send to create the costumer without a picture
-                    createCostumer(costumer) { _costumer ->
-                        Log.i("teste", _costumer.toString())
-                    }
-                }
-            },
->>>>>>> b9dfd244123f72bf2b037f9896ab87a2c48a8aa4
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
                 .width(217.dp)
@@ -788,14 +756,6 @@ fun GenderInputClient(selected: String, onFemClick: () -> Unit, onManClick: () -
     }
 }
 
-
-fun formatBirthday(birthday: String): String {
-    val year = birthday.takeLast(4)
-    val month = (birthday[2].toString() + birthday[3].toString()).toString()
-    val day = (birthday[0].toString() + birthday[1].toString()).toString()
-
-    return "$year-$month-$day"
-}
 @Preview
 @Composable
 fun InputsPriview() {

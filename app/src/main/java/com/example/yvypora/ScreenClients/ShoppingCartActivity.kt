@@ -68,6 +68,7 @@ var showPaymentBar by mutableStateOf(false)
 var total_value by mutableStateOf(0.0)
 val selectedCards = mutableStateListOf<Int>()
 
+val selectedProducts = mutableStateListOf<MarketerCardShopping>()
 @Composable
 fun ShoppingCartMain() {
     Text(
@@ -323,7 +324,6 @@ fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>) {
         showPaymentBar = false
     } else {
         var total = 0.0
-        // settar os valores para somar
         listMarketerCardShopping.forEach { item ->
             item.products.forEach { product ->
                 if (product.id == cardId) {
@@ -334,6 +334,12 @@ fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>) {
         total_value = total
     }
 }
+
+fun saveToDataStore() {
+
+//88
+    }
+
 
 @Composable
 fun CardProductShopping(

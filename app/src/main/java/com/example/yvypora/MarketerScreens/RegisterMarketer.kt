@@ -2,6 +2,7 @@ package com.example.yvypora.MarketerScreens
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -36,10 +37,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Dp
+import androidx.datastore.preferences.protobuf.Empty
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
+import com.example.yvypora.api.commons.addPictureToUser
+import com.example.yvypora.api.commons.auth
+import com.example.yvypora.api.commons.createMarketer
+import com.example.yvypora.models.Credentials
+import com.example.yvypora.models.dto.Location
+import com.example.yvypora.models.marketer.Marketer
+import com.example.yvypora.service.datastore.TokenStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.*
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 
 //import androidx.compose.ui.platform.ContextAmbient
 
@@ -60,7 +75,6 @@ class RegisterMarketer : ComponentActivity() {
                             .padding(horizontal = 28.dp),
                         alignment = Alignment.BottomStart,
                         contentDescription = "logo",
-
                         )
                     Spacer(
                         modifier = Modifier.height(36.dp)
@@ -102,23 +116,122 @@ fun InputsMarketer() {
 
         ) {
         //Input nome
-        NameInputMarketer()
+        var tentNameState by rememberSaveable {
+            mutableStateOf("")
+        }
+
+        var nameState by rememberSaveable {
+            mutableStateOf("")
+        }
+
+        var isTentNameError by remember {
+            mutableStateOf(false)
+        }
+
+        var isNameError by remember {
+            mutableStateOf(false)
+        }
+        val scope = rememberCoroutineScope()
+
+
+
+        NameInputMarketer(tentNameState, isTentNameError,{ newName ->
+            var lastChar = if (newName.isEmpty()) {
+                isTentNameError = true
+                newName
+
+            } else {
+                newName.get(newName.length - 1)
+                isTentNameError = false
+            }
+            var newValue = if (lastChar == '.' || lastChar == ',')
+                newName.dropLast(1)
+            else newName
+            tentNameState = newValue
+        })
+
+
+        Spacer(
+            modifier = Modifier.height(35.dp)
+        )
+
+        NameInputMarketer(nameState, isNameError, { newName ->
+            var lastChar = if (newName.isEmpty()) {
+                isNameError = true
+                newName
+
+            } else {
+                newName.get(newName.length - 1)
+                isNameError = false
+            }
+            var newValue = if (lastChar == '.' || lastChar == ',')
+                newName.dropLast(1)
+            else newName
+            nameState = newValue
+        })
 
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(35.dp)
         )
+
+        var emailState by rememberSaveable {
+            mutableStateOf("")
+        }
+
+        var isEmailError by remember {
+            mutableStateOf(false)
+        }
 
         //Input Email
-        EmailInputMarketer()
+        EmailInputMarketer(emailState, isEmailError, { newEmail ->
+            if (newEmail.isEmpty()) {
+                isEmailError = true
+            } else if (isEmailValid(newEmail) == false) {
+                isEmailError = true
+            } else {
+                newEmail.get(newEmail.length - 1)
+                isEmailError = false
+            }
+
+            emailState = newEmail
+        })
 
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(35.dp)
         )
 
+
+        var passwordState by rememberSaveable {
+            mutableStateOf("")
+        }
+
+
+        var isPasswordError by remember {
+            mutableStateOf(false)
+        }
+        var isPasswordErrorEmpty by remember {
+            mutableStateOf(false)
+        }
+
+
         // Input senha
-        PassInputMarketer()
+        PassInputMarketer(passwordState, isPasswordError, isPasswordErrorEmpty, { newPass ->
+            val mMaxLength = 8
+            if (newPass.isEmpty()) {
+                isPasswordErrorEmpty = true
+            } else if (newPass.length >= mMaxLength) {
+                isPasswordError = true
+            } else {
+                newPass.get(newPass.length - 1)
+                isPasswordError = false
+            }
+
+            if (isPasswordError) newPass.dropLast(1)
+
+            passwordState = newPass
+        })
 
         //*********************************************************************
         Spacer(
@@ -132,24 +245,52 @@ fun InputsMarketer() {
             modifier = Modifier.height(15.dp)
         )
 
+        var cpfState by rememberSaveable {
+            mutableStateOf("")
+        }
+        var isCpfErrorEmpty by remember {
+            mutableStateOf(false)
+        }
+        var isCpfError by remember {
+            mutableStateOf(false)
+        }
+
         //Input cpf
-        CnpjInputMarketer()
+        CpfInputMarketer(cpfState, isCpfErrorEmpty, isCpfError, { newCpf ->
+            isCpfErrorEmpty = newCpf.isEmpty()
+            if (cpfState.length > 11) newCpf.dropLast(1)
+
+            if (!ValidationCpf.myValidateCPF(newCpf)) {
+                isCpfError = true
+            } else {
+                isCpfError = false
+                isCpfErrorEmpty = false
+            }
+
+            cpfState = newCpf
+        })
 
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(15.dp)
         )
 
-        //Input cpf
-        CpfInputMarketer()
 
-        //*********************************************************************
-        Spacer(
-            modifier = Modifier.height(15.dp)
-        )
+        var phoneState by rememberSaveable {
+            mutableStateOf("")
+        }
+        var isPhoneErrorEmpty by rememberSaveable {
+            mutableStateOf(false)
+        }
 
         //Input telefone
-        PhoneInputMarketer()
+        PhoneInputMarketer(phoneState, isPhoneErrorEmpty, onValueChange = { newPhone ->
+            isPhoneErrorEmpty = newPhone.isEmpty()
+
+            if (phoneState.length > 10) newPhone.dropLast(1)
+
+            phoneState = newPhone
+        })
 
         //*********************************************************************
         Spacer(
@@ -157,21 +298,95 @@ fun InputsMarketer() {
         )
 
         //Input birth
-        BirthMarketer()
+        var birthState by rememberSaveable {
+            mutableStateOf("")
+        }
+        var isBirthErrorEmpty by remember {
+            mutableStateOf(false)
+        }
+
+        BirthMarketer(birthState, isBirthErrorEmpty,{ newBirth ->
+            isBirthErrorEmpty = newBirth.isEmpty()
+
+            if (birthState.length > 8) newBirth.dropLast(1)
+            birthState = newBirth
+        },)
 
         //*********************************************************************
         Spacer(
             modifier = Modifier.height(35.dp)
         )
+
+        var gender by remember { mutableStateOf("") }
         //Input genero
-        GenderInputMarketer()
+        GenderInputMarketer(gender, onFemClick = { gender = "F" }, onManClick = { gender = "M" })
 
-
-        //Butão de cadastro
         Button(
             onClick = {
-//                val intent = Intent(context,RegisterClient()::class.java)
-//                context.startActivity(intent)
+                      val marketer = Marketer(
+                          name = nameState,
+                          birthday = formatBirthday(birthState),
+                          gender = gender[0].toString(),
+                          cpf = cpfState,
+                          phone = phoneState,
+                          email = emailState,
+                          tent_name = tentNameState,
+                          password = passwordState,
+                          location = Location(
+                              latitude = 0.0,
+                              longitude = 0.0
+                          ),
+                      )
+                scope.launch {
+                    createMarketer(marketer) {it ->
+                        if (it.isNullOrEmpty()) {
+                            Log.i("teste", "Erro no Cadastro")
+                        } else {
+                            scope.launch {
+                                auth(credentials = Credentials(marketer.email, marketer.password)) { res ->
+                                    if (!res.error) {
+                                        val tokenStore = TokenStore(context)
+                                        scope.launch {
+                                            tokenStore.saveToken(res.token)
+                                        }
+                                        val uri = Uri.parse(imageUri.value)
+                                        val inputStream =
+                                            context.contentResolver.openInputStream(uri)
+
+                                        if (inputStream != null) {
+                                            val file = File(context.cacheDir, "image.jpg")
+                                            val outputStream = FileOutputStream(file)
+
+                                            inputStream.use { input ->
+                                                outputStream.use { output ->
+                                                    input.copyTo(output)
+                                                }
+                                            }
+
+                                            val requestBody = RequestBody.create(
+                                                "image/*".toMediaTypeOrNull(),
+                                                file
+                                            )
+
+                                            val imagePart = MultipartBody.Part.createFormData(
+                                                "picture",
+                                                file.name,
+                                                requestBody
+                                            )
+
+                                            scope.launch {
+                                                addPictureToUser(res.token, imagePart) { it ->
+                                                    Log.i("teste", it)
+                                                }
+                                            }
+                                        } else {
+                                            Log.e("Error", "Cannot get input stream from URI") }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
@@ -194,14 +409,10 @@ fun InputsMarketer() {
     }
 }
 
+
 @Composable
-fun NameInputMarketer() {
-    var nameState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isNameError by remember {
-        mutableStateOf(false)
-    }
+fun NameInputMarketer(nameState: String, isNameError: Boolean, onValueChange: (String) -> Unit) {
+
     val inputsFocusRequest = FocusRequester()
 
     Text(
@@ -213,21 +424,7 @@ fun NameInputMarketer() {
     )
     TextField(
         value = nameState,
-        onValueChange = { newName ->
-            var lastChar = if (newName.isEmpty()) {
-                isNameError = true
-                newName
-
-            } else {
-                newName.get(newName.length - 1)
-                isNameError = false
-
-            }
-            var newValue = if (lastChar == '.' || lastChar == ',')
-                newName.dropLast(1)
-            else newName
-            nameState = newValue
-        },
+        onValueChange = onValueChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -257,20 +454,8 @@ fun NameInputMarketer() {
 }
 
 @Composable
-fun EmailInputMarketer() {
-    var emailState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isEmailError by remember {
-        mutableStateOf(false)
-    }
+fun EmailInputMarketer(emailState: String, isEmailError: Boolean, onValueChange: (String) -> Unit) {
     val inputsFocusRequest = FocusRequester()
-
-    val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
-    fun isEmailValid(email: String): Boolean {
-        return EMAIL_REGEX.toRegex().matches(email);
-
-    }
 
     Text(
         text = stringResource(id = R.string.email),
@@ -280,18 +465,7 @@ fun EmailInputMarketer() {
     )
     TextField(
         value = emailState,
-        onValueChange = { newEmail ->
-            if (newEmail.isEmpty()) {
-                isEmailError = true
-            } else if (isEmailValid(newEmail) == false) {
-                isEmailError = true
-            } else {
-                newEmail.get(newEmail.length - 1)
-                isEmailError = false
-            }
-
-            emailState = newEmail
-        },
+        onValueChange = onValueChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -318,20 +492,8 @@ fun EmailInputMarketer() {
 }
 
 @Composable
-fun PassInputMarketer() {
-    var passwordState by rememberSaveable {
-        mutableStateOf("")
-    }
+fun PassInputMarketer(passwordState: String, isPasswordError: Boolean, isPasswordErrorEmpty: Boolean, onValueChange: (String) -> Unit) {
 
-
-    var isPasswordError by remember {
-        mutableStateOf(false)
-    }
-    var isPasswordErrorEmpty by remember {
-        mutableStateOf(false)
-    }
-
-    val mMaxLength = 8
 
     val inputsFocusRequest = FocusRequester()
 
@@ -344,20 +506,7 @@ fun PassInputMarketer() {
     )
     TextField(
         value = passwordState,
-        onValueChange = { newPass ->
-            if (newPass.isEmpty()) {
-                isPasswordErrorEmpty = true
-            } else if (newPass.length >= mMaxLength) {
-                isPasswordError = true
-            } else {
-                newPass.get(newPass.length - 1)
-                isPasswordError = false
-            }
-
-            if (isPasswordError) newPass.dropLast(1)
-
-            passwordState = newPass
-        },
+        onValueChange = onValueChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -390,10 +539,11 @@ fun PassInputMarketer() {
     }
 }
 
+var imageUri =  mutableStateOf("")
+
 @Composable
 fun PhotoInputMarketer() {
-    val imageUri = rememberSaveable { mutableStateOf("") }
-    val painter = rememberImagePainter(
+        val painter = rememberImagePainter(
         if (imageUri.value.isEmpty())
             R.drawable.adicionar_foto
         else
@@ -443,16 +593,8 @@ fun PhotoInputMarketer() {
 }
 
 @Composable
-fun CpfInputMarketer() {
-    var cpfState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isCpfErrorEmpty by remember {
-        mutableStateOf(false)
-    }
-    var isCpfError by remember {
-        mutableStateOf(false)
-    }
+fun CpfInputMarketer(cpfState: String, isCpfErrorEmpty: Boolean, isCpfError: Boolean, onValueChange: (String) -> Unit) {
+
     val inputsFocusRequest = FocusRequester()
 
     val context = LocalContext.current
@@ -465,22 +607,7 @@ fun CpfInputMarketer() {
     )
     TextField(
         value = cpfState,
-        onValueChange = { newCpf ->
-            isCpfErrorEmpty = newCpf.isEmpty()
-
-            if (cpfState.length > 11) newCpf.dropLast(1)
-
-
-            if (!ValidationCpf.myValidateCPF(newCpf)) {
-                isCpfError = true
-            } else {
-                isCpfError = false
-                isCpfErrorEmpty = false
-            }
-
-
-            cpfState = newCpf
-        },
+        onValueChange = onValueChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -516,13 +643,7 @@ fun CpfInputMarketer() {
 
 
 @Composable
-fun PhoneInputMarketer() {
-    var phoneState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isPhoneErrorEmpty by remember {
-        mutableStateOf(false)
-    }
+fun PhoneInputMarketer(phoneState: String, isPhoneErrorEmpty: Boolean, onValueChange: (String) -> Unit) {
     val inputsFocusRequest = FocusRequester()
 
     val context = LocalContext.current
@@ -533,15 +654,10 @@ fun PhoneInputMarketer() {
         textAlign = TextAlign.Start,
         color = colorResource(id = R.color.darkgreen_yvy)
     )
+
     TextField(
         value = phoneState,
-        onValueChange = { newPhone ->
-            isPhoneErrorEmpty = newPhone.isEmpty()
-
-            if (phoneState.length > 10) newPhone.dropLast(1)
-
-            phoneState = newPhone
-        },
+        onValueChange = onValueChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -554,7 +670,7 @@ fun PhoneInputMarketer() {
             .focusRequester(inputsFocusRequest),
         isError = isPhoneErrorEmpty,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        visualTransformation = MaskPhone(),
+//        visualTransformation = MaskPhone(),
         singleLine = true,
         shape = RoundedCornerShape(8.dp),
     )
@@ -577,9 +693,11 @@ fun CnpjInputMarketer() {
     var isCnpjErrorEmpty by remember {
         mutableStateOf(false)
     }
+
     var isCnpjError by remember {
         mutableStateOf(false)
     }
+
     val inputsFocusRequest = FocusRequester()
 
     val context = LocalContext.current
@@ -643,13 +761,7 @@ fun CnpjInputMarketer() {
     }
 }
 @Composable
-fun BirthMarketer() {
-    var birthState by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isBirthErrorEmpty by remember {
-        mutableStateOf(false)
-    }
+fun BirthMarketer(birthState: String, isBirthErrorEmpty: Boolean, onValueChange: (String) -> Unit) {
 
     val inputsFocusRequest = FocusRequester()
 
@@ -663,18 +775,7 @@ fun BirthMarketer() {
     )
     TextField(
         value = birthState,
-        onValueChange = { newBirth ->
-            isBirthErrorEmpty = newBirth.isEmpty()
-
-            if (birthState.length > 8) newBirth.dropLast(1)
-
-
-                birthState = newBirth
-
-
-
-
-        },
+        onValueChange = onValueChange,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -701,30 +802,30 @@ fun BirthMarketer() {
     }
 }
 @Composable
-fun GenderInputMarketer(){
-
-    var selected by remember { mutableStateOf("") }
+fun GenderInputMarketer(selected: String, onFemClick: () -> Unit, onManClick: () -> Unit){
     Row {
         RadioButton(
-            selected = selected == "woman",
-            onClick = { selected = "woman" },
-            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy)) )
+            selected = selected == "F",
+            onClick = onFemClick,
+            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))
+        )
         Text(
             text = stringResource(id = R.string.gender_f),
             modifier = Modifier
-                .clickable(onClick = { selected = "woman" })
+                .clickable(onClick = onFemClick)
                 .padding(top = 12.dp, start = 4.dp)
         )
         Spacer(modifier = Modifier.size(60.dp))
 
         RadioButton(
-            selected = selected == "man",
-            onClick = { selected = "man" } ,
-            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy)))
+            selected = selected == "M",
+            onClick = onManClick,
+            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))
+        )
         Text(
             text = stringResource(id = R.string.gender_m),
             modifier = Modifier
-                .clickable(onClick = { selected = "man" })
+                .clickable(onClick = onManClick)
                 .padding(top = 15.dp)
         )
     }

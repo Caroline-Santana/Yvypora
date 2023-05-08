@@ -65,11 +65,14 @@ class MainActivity : ComponentActivity() {
 
                 }
                 MainLayout()
+
             }
 
         }
     }
 }
+
+
 
 
 @Composable

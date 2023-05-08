@@ -1,7 +1,8 @@
 package com.example.yvypora.api
 
 import com.example.yvypora.api.cep.CepApiService
-import com.example.yvypora.api.commons.CommonsApiService
+import com.example.yvypora.api.commons._CommonsAPIService
+import com.example.yvypora.api.product.ProductAPIService
 import com.example.yvypora.constants.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,8 +19,12 @@ class RetrofitApi {
                 .build()
         }
 
-        fun commonsRetrofitService(): CommonsApiService {
-            return getRetrofit(Constants.BASE_URL).create(CommonsApiService::class.java)
+        fun commonsRetrofitService(): _CommonsAPIService {
+            return getRetrofit(Constants.BASE_URL).create(_CommonsAPIService::class.java)
+        }
+
+        fun productRetrofitService(): ProductAPIService {
+            return getRetrofit(Constants.BASE_URL).create(ProductAPIService::class.java)
         }
 
         fun cepRetrofitService(): CepApiService {
