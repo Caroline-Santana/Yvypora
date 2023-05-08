@@ -13,6 +13,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -178,10 +180,10 @@ fun CardProductMarketer(product: ProductCardSale) {
     var nameProduct = product.name
 //    var photoProduct = card.photo
     var photoProduct = painterResource(id = R.drawable.abobora_shopping)
-    var qntProduct = product.qntd_product
     var typeProduct = product.type_weight
     var weightProduct = product.weight_product
     var priceProduct = product.price
+    var (qtde, setQtde) = remember { mutableStateOf(product.qntd_product) }
 
     Column() {
         Card(
@@ -249,16 +251,18 @@ fun CardProductMarketer(product: ProductCardSale) {
         }
         Row(
             modifier = Modifier
-//                .padding(top = 8.dp)
-                .width(300.dp)
+                .padding(top = 8.dp)
+                .fillMaxWidth()
                 .height(30.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = stringResource(id = R.string.qnt), Modifier.width(100.dp))
+            Text(text = stringResource(id = R.string.qnt), Modifier.width(210.dp))
             Box(contentAlignment = Alignment.Center) {
                 Button(
-                    onClick = { qntProduct = (qntProduct - 1).coerceAtLeast(1) },
+                    onClick = {
+                        setQtde(qtde - 1)
+                    },
                     modifier = Modifier
                         .height(24.dp)
                         .width(28.dp),
@@ -270,19 +274,31 @@ fun CardProductMarketer(product: ProductCardSale) {
                 Icon(
                     painter = painterResource(id = R.drawable.remove),
                     modifier = Modifier
-                        .clickable { qntProduct = (qntProduct - 1).coerceAtLeast(1) },
+                        .clickable {
+                            setQtde(qtde -1)
+                        },
                     contentDescription = ""
                 )
             }
-            Text(
-                text = "$qntProduct",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = colorResource(id = R.color.darkgreen_yvy)
-            )
+            if (qtde <0){
+                Text(
+                    text = "0",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = R.color.darkgreen_yvy)
+                )
+            }
+            else{
+                Text(
+                    text = "${qtde}",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = R.color.darkgreen_yvy)
+                )
+            }
             Box(contentAlignment = Alignment.Center) {
                 Button(
-                    onClick = { qntProduct += 1 },
+                    onClick = { setQtde(qtde + 1) },
                     modifier = Modifier
                         .height(24.dp)
                         .width(28.dp),
@@ -293,15 +309,22 @@ fun CardProductMarketer(product: ProductCardSale) {
                     modifier = Modifier
                         .width(15.dp)
                         .height(15.dp)
-                        .clickable { qntProduct += 1 },
+                        .clickable {
+                            setQtde(qtde + 1)
+                        },
                     contentDescription = "",
                     tint = Color.White
                 )
             }
+            Image(painter = painterResource(id = R.drawable.trash), contentDescription = "" )
+            Image(painter = painterResource(id = R.drawable.atualizacao), contentDescription = "", Modifier.width(24.dp).height(24.dp) )
+            Image(painter = painterResource(id = R.drawable.pause), contentDescription = "" )
 
         }
+        }
+    
     }
-}
+
 
 
 
