@@ -417,7 +417,7 @@ fun CardAdresses(address : AddressCard){
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
 //
-//                        OpcoesMenu()
+                        OpcoesMenu()
 
 
                 }
@@ -544,15 +544,15 @@ fun OpcoesMenu() {
 }
 
 
-//@Preview(showBackground = true)
-//@Composable
-//fun AdressesActivityPreview() {
-//    YvyporaTheme {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//        ) {
-//            MainAddress()
-//        }
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun AdressesActivityPreview() {
+    YvyporaTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            MainAddress()
+        }
+    }
+}

@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -92,7 +93,6 @@ fun ShoppingCartMain() {
 
     }
 }
-
 
 val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
     MarketerCardShopping(
@@ -256,8 +256,8 @@ fun ListOfProductCardShopping(
     onPriceChanged: (ProductCardShopping, Double) -> Unit
 ) {
     var stateSnack = state
-    val coroutineScope = rememberCoroutineScope()
-    var valuePay by remember { mutableStateOf(0.0) }
+//    val coroutineScope = rememberCoroutineScope()
+//    var valuePay by remember { mutableStateOf(0.0) }
     LazyColumn(
         modifier = Modifier
             .height(300.dp)
@@ -281,11 +281,11 @@ fun ListOfProductCardShopping(
                             product.id == card.id
                         }
 
-                        val newPrice = product?.price?.times(quantity)
-                        card.weight_product = quantity
-                        onPriceChanged(card, newPrice ?: 0.0)
+//                        val newPrice = product?.price?.times(quantity)
+//                        onPriceChanged(card, newPrice ?: 0.0)
                     }
-                }
+                },
+
             )
         }
     }
@@ -345,7 +345,6 @@ fun CardPay(total: Double) {
 }
 
 fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>, qtde: Int) {
-
     if (selectedCards.contains(cardId)) {
         selectedCards.remove(cardId)
     } else {
@@ -359,7 +358,8 @@ fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>, qtde: Int) 
         listMarketerCardShopping.forEach { item ->
             item.products.forEach { product ->
                 if (selectedCards.contains(product.id)) {
-                    val price = qtde * product.price
+                    var price = product.price * product.qtde
+                    price = price.coerceAtLeast(product.price)
                     total += price
                 }
             }
@@ -374,23 +374,21 @@ fun CardProductShopping(
     card: ProductCardShopping,
     isSelected: Boolean,
     onCardSelected: (Boolean) -> Unit,
-    onPriceChanged: (Int) -> Unit
-
+    onPriceChanged: (Int) -> Unit,
 ) {
 
 //    var qtde by remember {
 //        mutableStateOf(card.qtde)
 //    }
     var (qtde, setQtde) = remember { mutableStateOf(card.qtde) }
+    qtde = qtde.coerceAtLeast(1)
     var nameProduct = card.name
 //    var photoProduct = card.photo
     var photoProduct = painterResource(id = R.drawable.abobora_shopping)
     var typeProduct = card.type_weight
     var weightProduct = card.weight_product
-
     var priceProduct = card.price * qtde
     var accumulatorPrice = priceProduct
-
     LaunchedEffect(qtde){
         onPriceChanged(card.id)
     }
@@ -476,7 +474,7 @@ fun CardProductShopping(
                         ) {
 
                             Text(
-                                text = weightProduct.toString(),
+                                text = "$weightProduct",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 fontFamily = SpaceGrotesk,
@@ -509,6 +507,7 @@ fun CardProductShopping(
                                 Button(
                                     onClick = {
                                         setQtde(qtde - 1)
+                                        card.qtde = card.qtde - 1
                                               },
                                     modifier = Modifier
                                         .height(24.dp)
@@ -522,7 +521,8 @@ fun CardProductShopping(
                                     painter = painterResource(id = R.drawable.remove),
                                     modifier = Modifier
                                         .clickable {
-                                            setQtde(qtde -1)
+                                            setQtde(qtde -1 )
+                                            card.qtde = card.qtde - 1
                                             },
                                     contentDescription = ""
                                 )
@@ -535,7 +535,8 @@ fun CardProductShopping(
                             )
                             Box(contentAlignment = Alignment.Center) {
                                 Button(
-                                    onClick = { setQtde(qtde + 1) },
+                                    onClick = { setQtde(qtde + 1)
+                                        card.qtde = card.qtde + 1},
                                     modifier = Modifier
                                         .height(24.dp)
                                         .width(28.dp),
@@ -547,7 +548,7 @@ fun CardProductShopping(
                                         .width(15.dp)
                                         .height(15.dp)
                                         .clickable {
-
+                                            card.qtde = card.qtde + 1
                                             setQtde(qtde + 1)
                                         },
                                     contentDescription = "",
@@ -571,6 +572,7 @@ fun CardProductShopping(
                             modifier = Modifier
                                 .height(33.dp)
                                 .width(33.dp)
+                                .clickable {}
                         )
                     }
 
@@ -580,6 +582,40 @@ fun CardProductShopping(
     }
 
 }
+
+@Composable
+fun deleteProduct(cards: MutableList<ProductCardShopping>){
+
+
+}
+
+
+
+//fun deleteProduct(cards: List<ProductCardShopping>){
+//    LazyColumn(){
+//        itemsIndexed(items = cards, key = {_, listItem ->
+//            listItem.hashCode()
+//        }){index, item ->
+//            val state = rememberDismissState(
+//                confirmStateChange = {
+//                    if (it == DismissValue.DismissedToStart){
+//                        cards.remove(item)
+//                    }
+//                    true
+//                }
+//            )
+//            SwipeToDismiss(state = state, background ={
+//                val color = when(state.dismissDirection){
+//                    DismissDirection.StartToEnd -> Color.Transparent,
+//                        DismissDirection.EndToStart -> Color.Black,
+//                        null -> Color.Magenta
+//                }
+//            } ) {
+//
+//            }
+//        }
+//    }
+//}
 
 
 //@SuppressLint("CoroutineCreationDuringComposition")

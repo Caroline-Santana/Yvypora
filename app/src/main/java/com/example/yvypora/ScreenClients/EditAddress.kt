@@ -2,6 +2,7 @@ package com.example.yvypora.ScreenClients
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -45,7 +46,7 @@ class EditAddress : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
+                    MainEditAdress()
                 }
             }
         }
@@ -53,7 +54,11 @@ class EditAddress : ComponentActivity() {
 }
 
 
-
+//object Choose{
+//    val yes =  Text(text = stringResource(id = R.string.yes))
+//    val no = Text(text = stringResource(id = R.string.no))
+//
+//}
 
 //var numero = address.numero
 
@@ -131,11 +136,11 @@ fun MainEditAdress() {
 
 @Composable
 fun EditAddresses(){
-    val items = listOf(
-        Text(text = stringResource(id =  R.string.yes)),
-        Text(text = stringResource(id =  R.string.no)),
-    )
-    var selectedItem by remember { mutableStateOf(items[0]) }
+//    val items = listOf(
+//        Text(text = stringResource(id =  R.string.yes)),
+//        Text(text = stringResource(id =  R.string.no)),
+//    )
+
     Column(modifier = Modifier.padding(top = 15.dp)) {
 
         Card(modifier = Modifier
@@ -163,24 +168,12 @@ fun EditAddresses(){
                 )
                 NameEditAdress()
                 NameRecipterEditAdress()
-                PhoneEditAdress()
                 CepEditAdress()
                 NumEditAddress()
+                PhoneEditAdress()
+
                 Spacer(modifier = Modifier.height(15.dp))
-              Column() {
-                  items.forEach{item ->
-                      Row(
-                          modifier = Modifier.fillMaxWidth()
-                          .selectable(
-                              selected = (item == selectedItem),
-                              onClick = { selectedItem = item }
-                          ),
-                      ) {
-
-                      } }
-
-
-                  }
+                ChangeForMain()
 
             }
         }
@@ -424,8 +417,8 @@ fun NumEditAddress(){
             cursorColor = colorResource(id = R.color.darkgreen_yvy)
         ),
         modifier = Modifier
-            .width(50.dp)
-            .height(53.dp)
+            .width(70.dp)
+            .height(50.dp)
             .focusRequester(inputsFocusRequest),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -436,11 +429,41 @@ fun NumEditAddress(){
         )
 }
 
+@Composable
+fun ChangeForMain(){
+    var selectAnswer by remember { mutableStateOf(0) }
+    val radioOption = listOf(
+        Text(text = stringResource(id = R.string.yes)),
+        Text(text = stringResource(id = R.string.no))
+    )
+    Column() {
+        Text(
+            text = stringResource(id = R.string.question_main_address)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row() {
+            radioOption.forEachIndexed{ i, option ->
+                Row(modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(
+                        selected = selectAnswer == i,
+                        onClick = { selectAnswer = i }
+                    )
+                    Text(option.toString())
 
-//@Preview(showBackground = true)
-//@Composable
-//fun EditAddressPreview() {
-//    YvyporaTheme {
-//            MainEditAdress()
-//    }
-//}
+                }
+            }
+        }
+
+
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun EditAddressPreview() {
+    YvyporaTheme {
+            MainEditAdress()
+    }
+}

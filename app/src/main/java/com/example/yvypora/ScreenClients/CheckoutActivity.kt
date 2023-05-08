@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.yvypora.R
+import com.example.yvypora.models.AddressCard
 import com.example.yvypora.models.CardPayment
 import com.example.yvypora.models.PaymentMethodDescription
 import com.example.yvypora.theme.YvyporaTheme
@@ -73,8 +74,7 @@ class CheckOutViewModel : ViewModel() {
 }
 
 @Composable
-fun MainCheckout(viewModel: CheckOutViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
-    val mainAddress = viewModel.mainAddress.value
+fun MainCheckout() {
     var subtotal = 48.00
     var taxa_entrega = 8.32
     var total = subtotal.plus(taxa_entrega)
@@ -143,17 +143,8 @@ fun MainCheckout(viewModel: CheckOutViewModel = androidx.lifecycle.viewmodel.com
 
                 })
         }
-        if (mainAddress != null) {
-            Text(text = "Endereço principal")
-        } else {
-            Text(
-                text = "Selecione um endereço",
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth()
-            )
-        }
+        CardAddressDelivery()
+        Spacer(modifier = Modifier.height(25.dp))
         Text(
             text = stringResource(id = R.string.payment_method),
             fontSize = 22.sp,
@@ -352,7 +343,7 @@ fun CardMethodPayment(methods: PaymentMethodDescription, selected: Boolean, onSe
                         color = colorResource(id = R.color.green_camps),
                         shape = RoundedCornerShape(10.dp)
                     )
-                    .clickable {onSelected() }
+                    .clickable { onSelected() }
                     .padding(start = 15.dp),
                 verticalAlignment = Alignment.CenterVertically
 
@@ -391,7 +382,130 @@ fun CardMethodPayment(methods: PaymentMethodDescription, selected: Boolean, onSe
 
 }
 
+@Composable
+fun CardAddressDelivery(){
+//    var titleAddress = address.titulo
+//    var name_remetente = address.name_remetente
+//    var telefone_remetente = address.telefone_remetente
+//    var rua = address.rua
+//    var numero = address.numero
+//    var cidade = address.cidade
+//    var estado = address.estado
+//    var pais = address.pais
+    var titleAddress = "Casa"
+    var name_remetente = "Caroline"
+    var telefone_remetente = "11 954009469"
+    var rua = "Rua Rita Paes Bustamante"
+    var numero = 90
+    var cidade = "Carapicuíba"
+    var estado = "São Paulo"
+    var pais = "Brasil"
+        Column (modifier = Modifier.padding(start= 15.dp, end = 15.dp)) {
 
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp)
+            .height(140.dp),
+            backgroundColor = colorResource(id = R.color.green_camps),
+            shape = RoundedCornerShape(
+                topStart = 0.dp,
+                topEnd = 10.dp,
+                bottomEnd = 0.dp,
+                bottomStart = 10.dp
+            )
+        ) {
+            Column() {
+                Row(modifier = Modifier
+                    .padding(start = 15.dp, top = 12.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.house2),
+                        modifier = Modifier
+                            .width(28.dp)
+                            .height(28.dp)
+                        ,
+                        tint = colorResource(id = R.color.darkgreen_yvy),
+                        contentDescription = "icon"
+                    )
+                    Text(
+                        text = titleAddress,
+                        modifier = Modifier
+                            .padding(start = 6.dp),
+                        fontSize = 23.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+                    )
+//                    OpcoesMenu()
+                }
+                Row(modifier = Modifier
+                    .padding(start = 15.dp, top = 5.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = name_remetente,
+                        modifier = Modifier
+                            .padding(start = 2.dp),
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+
+                    )
+                    Text(
+                        text = " ${'-'} $telefone_remetente",
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+
+                    )
+                }
+                Row(modifier = Modifier
+                    .padding(start = 15.dp, top = 5.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = rua,
+                        modifier = Modifier
+                            .padding(start = 2.dp),
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+                    )
+                    Text(
+                        text = "$numero${','} ",
+                        modifier = Modifier
+                            .padding(start = 2.dp),
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+                    )
+                    Text(
+                        text = " $cidade${','} ",
+                        modifier = Modifier
+                            .padding(start = 2.dp),
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+                    )
+                }
+
+                Row(modifier = Modifier
+                    .padding(start = 15.dp, top = 5.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = " $estado${','} ",
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+                    )
+                    Text(
+                        text = pais,
+                        fontSize = 15.sp,
+                        color = colorResource(id = R.color.darkgreen_yvy)
+                    )
+                }
+            }
+        }
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun CheckoutPreview() {

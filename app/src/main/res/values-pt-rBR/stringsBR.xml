@@ -137,6 +137,7 @@
     <string name="title_activity_register_client">RegistroCliente</string>
     <string name="my_products">Meus produtos</string>
     <string name="qnt">Quantidade Disponível</string>
+    <string name="question_main_address">Este é o seu endereço principal?</string>
 
 
 </resources>

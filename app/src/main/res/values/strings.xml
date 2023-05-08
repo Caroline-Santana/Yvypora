@@ -136,6 +136,8 @@
     <string name="num">Num</string>
     <string name="my_products">My Products</string>
     <string name="qnt">Amount:</string>
+    <string name="question_main_address">Is this your main address?</string>
+    <string name="title_activity_edit_address">EditAddress</string>
 
 
 </resources>
