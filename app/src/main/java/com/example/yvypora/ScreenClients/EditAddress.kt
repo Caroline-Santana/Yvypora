@@ -443,13 +443,13 @@ fun ChangeForMain(){
         Spacer(modifier = Modifier.height(8.dp))
         Row() {
             radioOption.forEachIndexed{ i, option ->
-                Row(modifier = Modifier.fillMaxWidth(),
+                Row(
                     verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = selectAnswer == i,
                         onClick = { selectAnswer = i }
                     )
-                    Text(option.toString())
+//                    Text()
 
                 }
             }
