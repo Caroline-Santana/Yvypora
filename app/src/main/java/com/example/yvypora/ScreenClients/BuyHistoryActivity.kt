@@ -268,7 +268,7 @@ fun CardMarketer(marketer: MarketerCard) {
 //    var photo = marketer.photo
     var photo = painterResource(id = R.drawable.buy_history_card_marketer)
     var date = marketer.date
-    var products = marketer.products
+//    var products = marketer.products
 
 
     var total = 0.0

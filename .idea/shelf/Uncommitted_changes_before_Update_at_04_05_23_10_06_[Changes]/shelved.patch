@@ -1,0 +1,476 @@
+Index: app/src/main/java/com/example/yvypora/service/constants/Constants.kt
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/service/constants/Constants.kt b/app/src/main/java/com/example/yvypora/service/constants/Constants.kt
+deleted file mode 100644
+--- a/app/src/main/java/com/example/yvypora/service/constants/Constants.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ /dev/null	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
+@@ -1,6 +0,0 @@
+-package com.example.yvypora.service.constants
+-
+-object Constants {
+-    const val BASE_URL = "http://localhost:3333/"
+-    const val CEP_URL = "https://viacep.com.br/ws/"
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/example/yvypora/constants/Constants.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/constants/Constants.kt b/app/src/main/java/com/example/yvypora/constants/Constants.kt
+new file mode 100644
+--- /dev/null	(date 1683205399729)
++++ b/app/src/main/java/com/example/yvypora/constants/Constants.kt	(date 1683205399729)
+@@ -0,0 +1,6 @@
++package com.example.yvypora.constants
++
++object Constants {
++    const val BASE_URL = "http://10.0.2.2:8080/"
++    const val CEP_URL = "https://viacep.com.br/ws/"
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoResponse.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.models\n\nimport com.example.yvypora.models.costumer.CustomerAddress\nimport com.example.yvypora.models.dto.Gender\n\ndata class CustomerInfoResponse(\n    val gender: Gender,\n    val name: String,\n    val email: String,\n    val costumer_addresses: List<CustomerAddress>\n)\n\n\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoResponse.kt b/app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoResponse.kt
+--- a/app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoResponse.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoResponse.kt	(date 1683205399730)
+@@ -3,11 +3,11 @@
+ import com.example.yvypora.models.costumer.CustomerAddress
+ import com.example.yvypora.models.dto.Gender
+ 
+-data class CustomerInfoResponse(
+-    val gender: Gender,
+-    val name: String,
+-    val email: String,
+-    val costumer_addresses: List<CustomerAddress>
++data class CostumerInfoResponse(
++    var gender: Gender? = null,
++    var name: String? = null,
++    var email: String? = null,
++    var costumer_addresses: List<CustomerAddress>? = null
+ )
+ 
+ 
+Index: app/src/main/java/com/example/yvypora/api/commons/CommonsApiService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.api.commons\n\nimport com.example.yvypora.models.Costumer\nimport com.example.yvypora.models.Credentials\nimport com.example.yvypora.models.Token\nimport retrofit2.Call\nimport retrofit2.http.Body\nimport retrofit2.http.POST\n\n\ninterface CommonsApiService {\n    @POST(\"login/\")\n    fun auth(@Body credentials: Credentials): Call<Token>\n\n    @POST(\"register/costumer\")\n    fun createCostumer(@Body costumer: Costumer): Call<Any>\n\n\n//    @POST(\"register/marketer\")\n//    fun createMarketer(@Body marketer: Marketer): Call<Any>\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/api/commons/CommonsApiService.kt b/app/src/main/java/com/example/yvypora/api/commons/CommonsApiService.kt
+--- a/app/src/main/java/com/example/yvypora/api/commons/CommonsApiService.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/api/commons/CommonsApiService.kt	(date 1683205399729)
+@@ -1,20 +1,41 @@
+ package com.example.yvypora.api.commons
+ 
+ import com.example.yvypora.models.Costumer
++import com.example.yvypora.models.CostumerInfoResponse
+ import com.example.yvypora.models.Credentials
+ import com.example.yvypora.models.Token
++import okhttp3.MultipartBody
++
+ import retrofit2.Call
+ import retrofit2.http.Body
++import retrofit2.http.GET
++import retrofit2.http.Header
++import retrofit2.http.Multipart
+ import retrofit2.http.POST
++import retrofit2.http.PUT
++import retrofit2.http.Part
+ 
+ 
+ interface CommonsApiService {
+-    @POST("login/")
++    @POST("commons/login/")
+     fun auth(@Body credentials: Credentials): Call<Token>
+ 
+-    @POST("register/costumer")
+-    fun createCostumer(@Body costumer: Costumer): Call<Any>
++    @POST("commons/register/costumer")
++    fun createCostumer(@Body costumer: Costumer): Call<CostumerInfoResponse>
++
++    @GET("commons/forms/costumer")
++    fun fieldsForCostumer(): Call<Any>
++
++
++    // TODO get details of user
++//    @GET("commons/user/details")
++//    fun getDetailsOfUser(): Call<User>
+ 
++
++    // TODO add JWT TOKEN
++    @Multipart
++    @PUT("commons/picture/")
++    fun uploadPictureToUser(@Header("Authorization") token: String, @Part picture: MultipartBody.Part): Call<Any>
+ 
+ //    @POST("register/marketer")
+ //    fun createMarketer(@Body marketer: Marketer): Call<Any>
+Index: app/src/main/java/com/example/yvypora/service/datastore/TokenStore.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/service/datastore/TokenStore.kt b/app/src/main/java/com/example/yvypora/service/datastore/TokenStore.kt
+new file mode 100644
+--- /dev/null	(date 1683205399730)
++++ b/app/src/main/java/com/example/yvypora/service/datastore/TokenStore.kt	(date 1683205399730)
+@@ -0,0 +1,28 @@
++package com.example.yvypora.service.datastore
++
++import android.content.Context
++import androidx.datastore.core.DataStore
++import androidx.datastore.preferences.core.Preferences
++import androidx.datastore.preferences.core.edit
++import androidx.datastore.preferences.core.stringPreferencesKey
++import androidx.datastore.preferences.preferencesDataStore
++import kotlinx.coroutines.flow.Flow
++import kotlinx.coroutines.flow.map
++
++
++class TokenStore(private val context: Context) {
++    // to make sure there's only one instance
++    companion object {
++        private val Context.dataStoree: DataStore<Preferences> by preferencesDataStore("userToken")
++        val USER_TOKEN_KEY = stringPreferencesKey("user_token")
++    }
++
++    val getToken: Flow<String> = context.dataStoree.data.map { preferences -> preferences[USER_TOKEN_KEY] ?: "" }
++
++    //save email into datastore
++    suspend fun saveToken(token: String) {
++        context.dataStoree.edit { preferences ->
++            preferences[USER_TOKEN_KEY] = token
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <uses-permission android:name=\"android.permisson.READ_EXTERNAL_STORAGE\" />\n\n    <application\n        android:allowBackup=\"true\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\n        android:fullBackupContent=\"@xml/backup_rules\"\n        android:icon=\"@drawable/logo\"\n        android:label=\"@string/app_name\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.Yvypora\"\n        tools:targetApi=\"31\">\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.CheckoutActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_checkout\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.ShoppingCartActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_shopping_cart\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.DescriptionProducts\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_description_products\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AddAccount\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_account\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AddCardAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_pay_methods_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.PaymentMethodsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_payment_methods\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AddAdressAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_adress_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.AdressesActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_adresses\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.BuyHistory\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_buy_history_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.EditProfileSreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_edit_profile_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.FairsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/fair\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.ProfileClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_profile_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.ScreenSearch\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_screen_search\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.RegisterMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.ProductsMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.InicialScreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.MarketerScreens.InicialMarketerActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.RegisterClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".DecisionSreenActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_decision_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".LoginActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_login\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MainActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_main\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.FruitsResultActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/fruits_result\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.VegetablesActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/vegetable\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.SpicesActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/spices\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\"com.example.yvypora.ScreenClients.OthersActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/spices\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".SplashScreenActivity\"\n            android:exported=\"true\"\n            android:label=\"@string/app_name\"\n            android:theme=\"@style/Theme.Yvypora\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n\n        <meta-data\n            android:name=\"com.google.android.geo.API_KEY\"\n            android:value=\"${MAPS_API_KEY}\" />\n        <meta-data\n            android:name=\"com.google.android.gms.version\"\n            android:value=\"@integer/google_play_services_version\" />\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/AndroidManifest.xml	(date 1683205399752)
+@@ -3,10 +3,13 @@
+     xmlns:tools="http://schemas.android.com/tools">
+ 
+     <uses-permission android:name="android.permission.INTERNET" />
++
+     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+ 
+     <application
+         android:allowBackup="true"
++        android:usesCleartextTraffic="true"
+         android:dataExtractionRules="@xml/data_extraction_rules"
+         android:fullBackupContent="@xml/backup_rules"
+         android:icon="@drawable/logo"
+Index: app/src/main/java/com/example/yvypora/api/commons/CommonsApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.api.commons\n\nimport android.util.Log\nimport com.example.yvypora.api.RetrofitApi\nimport com.example.yvypora.models.Costumer\nimport com.example.yvypora.models.Credentials\nimport com.example.yvypora.models.Token\nimport org.json.JSONObject\nimport retrofit2.Call\nimport retrofit2.Callback\nimport retrofit2.Response\n\n\nfun auth(credentials: Credentials, onComplete: (Token) -> Unit) {\n    val call = RetrofitApi.commonsRetrofitService().auth(credentials)\n\n    call.enqueue(object : Callback<Token> {\n        override fun onResponse(call: Call<Token>, response: Response<Token>) {\n            val res = response.body()\n\n            Log.i(\"teste\", res.toString())\n\n            if (res?.error == true) onComplete.invoke(Token())\n\n            try {\n                onComplete.invoke(res!!)\n            } catch (error: NullPointerException) {\n                onComplete.invoke(Token())\n            }\n        }\n\n        override fun onFailure(call: Call<Token>, t: Throwable) {\n\n        }\n    })\n}\n\n\nfun createCostumer(costumer: Costumer, onComplete: (Any) -> Unit) {\n    val call = RetrofitApi.commonsRetrofitService().createCostumer(costumer)\n    Log.i(\"teste\", costumer.toString())\n    call.enqueue(object : Callback<Any> {\n        override fun onResponse(\n            call: Call<Any>,\n            response: Response<Any>\n        ) {\n\n\n            if (response.isSuccessful) {\n                return onComplete.invoke(true)\n            }\n\n            Log.i(\"teste\", response.code().toString())\n            return onComplete.invoke(false)\n        }\n\n        override fun onFailure(call: Call<Any>, t: Throwable) {\n            t.printStackTrace();\n        }\n\n\n    })\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/api/commons/CommonsApi.kt b/app/src/main/java/com/example/yvypora/api/commons/CommonsApi.kt
+--- a/app/src/main/java/com/example/yvypora/api/commons/CommonsApi.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/api/commons/CommonsApi.kt	(date 1683205399729)
+@@ -1,16 +1,21 @@
+ package com.example.yvypora.api.commons
+ 
++import android.content.Context
+ import android.util.Log
++import androidx.compose.runtime.collectAsState
+ import com.example.yvypora.api.RetrofitApi
+ import com.example.yvypora.models.Costumer
++import com.example.yvypora.models.CostumerInfoResponse
+ import com.example.yvypora.models.Credentials
+ import com.example.yvypora.models.Token
++import com.example.yvypora.models.costumer.CostumerInfoError
++import com.example.yvypora.service.datastore.TokenStore
++import okhttp3.MultipartBody
+ import org.json.JSONObject
+ import retrofit2.Call
+ import retrofit2.Callback
+ import retrofit2.Response
+ 
+-
+ fun auth(credentials: Credentials, onComplete: (Token) -> Unit) {
+     val call = RetrofitApi.commonsRetrofitService().auth(credentials)
+ 
+@@ -36,25 +41,26 @@
+ }
+ 
+ 
+-fun createCostumer(costumer: Costumer, onComplete: (Any) -> Unit) {
++fun createCostumer(costumer: Costumer, onComplete: (CostumerInfoResponse) -> Unit) {
+     val call = RetrofitApi.commonsRetrofitService().createCostumer(costumer)
+-    Log.i("teste", costumer.toString())
+-    call.enqueue(object : Callback<Any> {
++    call.enqueue(object : Callback<CostumerInfoResponse> {
+         override fun onResponse(
+-            call: Call<Any>,
+-            response: Response<Any>
++            call: Call<CostumerInfoResponse>,
++            response: Response<CostumerInfoResponse>
+         ) {
++            val res = response.body()
+ 
++            Log.i("teste", response.toString())
+ 
+             if (response.isSuccessful) {
+-                return onComplete.invoke(true)
++                return onComplete.invoke(res!!)
+             }
+ 
+             Log.i("teste", response.code().toString())
+-            return onComplete.invoke(false)
++            return onComplete.invoke(CostumerInfoResponse())
+         }
+ 
+-        override fun onFailure(call: Call<Any>, t: Throwable) {
++        override fun onFailure(call: Call<CostumerInfoResponse>, t: Throwable) {
+             t.printStackTrace();
+         }
+ 
+@@ -62,3 +68,54 @@
+     })
+ }
+ 
++
++fun fieldsForCostumer(onComplete: (String) -> Unit) {
++    val call = RetrofitApi.commonsRetrofitService().fieldsForCostumer()
++    call.enqueue(object: Callback<Any> {
++        override fun onResponse(call: Call<Any>, response: Response<Any>) {
++
++            val res = response.body()
++
++            if (response.isSuccessful) {
++                return onComplete.invoke(res.toString())
++            }
++
++            Log.i("teste", response.code().toString())
++
++            return onComplete.invoke(res.toString())
++        }
++
++        override fun onFailure(call: Call<Any>, t: Throwable) {
++            t.printStackTrace()
++        }
++    })
++}
++
++fun addPictureToUser(token: String, picture: MultipartBody.Part, onComplete: (String) -> Unit) {
++    val _token = "Bearer $token"
++
++    val call = RetrofitApi.commonsRetrofitService().uploadPictureToUser(_token, picture)
++
++    call.enqueue(object: Callback<Any> {
++        override fun onResponse(call: Call<Any>, response: Response<Any>) {
++            val res = response.body()
++
++            Log.i("teste", response.toString())
++
++            if (response.isSuccessful) {
++                return onComplete.invoke(res.toString())
++            }
++
++            return onComplete.invoke(res.toString())
++        }
++
++        override fun onFailure(call: Call<Any>, t: Throwable) {
++            t.printStackTrace()
++        }
++    })
++}
++
++
++
++
++
+Index: app/src/main/java/com/example/yvypora/utils/ImagesChoose.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.utils\n\nimport androidx.compose.ui.text.AnnotatedString\nimport androidx.compose.ui.text.input.TransformedText\nimport androidx.compose.ui.text.input.VisualTransformation\n\nclass ImagesChoose : VisualTransformation {\n    override fun filter(text: AnnotatedString): TransformedText {\n        return maskFilterCpf(text)\n    }\n}\n\nprivate fun PermissaoGaleria(){\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/utils/ImagesChoose.kt b/app/src/main/java/com/example/yvypora/utils/ImagesChoose.kt
+--- a/app/src/main/java/com/example/yvypora/utils/ImagesChoose.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/utils/ImagesChoose.kt	(date 1683205399730)
+@@ -1,8 +1,13 @@
+ package com.example.yvypora.utils
+ 
++import android.content.Context
++import android.net.Uri
++import android.webkit.MimeTypeMap
+ import androidx.compose.ui.text.AnnotatedString
+ import androidx.compose.ui.text.input.TransformedText
+ import androidx.compose.ui.text.input.VisualTransformation
++import java.io.File
++import java.io.FileOutputStream
+ 
+ class ImagesChoose : VisualTransformation {
+     override fun filter(text: AnnotatedString): TransformedText {
+@@ -12,4 +17,22 @@
+ 
+ private fun PermissaoGaleria(){
+ 
++}
++
++
++fun createImageFileFromUri(imageUri: Uri, context: Context): File {
++    val file = File(imageUri.path!!)
++    val extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(context.contentResolver.getType(imageUri))
++    val fileName = "${System.currentTimeMillis()}.$extension"
++    val destinationFile = File(context.cacheDir, fileName)
++    try {
++        val source = context.contentResolver.openInputStream(imageUri)
++        val destination = FileOutputStream(destinationFile)
++        source!!.copyTo(destination)
++        source.close()
++        destination.close()
++    } catch (e: Exception) {
++        e.printStackTrace()
++    }
++    return destinationFile
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/yvypora/models/Address.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.models\n\nimport com.example.yvypora.models.dto.AddressType\n\ndata class Address(\n var uf: String? = null,\n var city: String? = null,\n var neighborhood: String? = null,\n var addressTypeId: Int? = null,\n var id: Int? = null,\n var cep: String? = null,\n var logradouro: String? = null,\n var number: Int? = null,\n var created_at: String? = null,\n var updated_at: String? = null,\n var address_typeId: Int? = null,\n var complemento: String? = null,\n var cityId: Int? = null,\n var uFId: Int? = null,\n var neighborhoodId: Int? = null,\n var locationId: Int? = null,\n var type: AddressType? = null\n)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/Address.kt b/app/src/main/java/com/example/yvypora/models/Address.kt
+--- a/app/src/main/java/com/example/yvypora/models/Address.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/models/Address.kt	(date 1683205437892)
+@@ -21,3 +21,4 @@
+  var locationId: Int? = null,
+  var type: AddressType? = null
+ )
++
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'org.jetbrains.kotlin.android'\n    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'\n}\n\nandroid {\n    namespace 'com.example.yvypora'\n    compileSdk 33\n\n    defaultConfig {\n        applicationId \"com.example.yvypora\"\n        minSdk 26\n        targetSdk 33\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        vectorDrawables {\n            useSupportLibrary true\n        }\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n    buildFeatures {\n        compose true\n        viewBinding true\n    }\n    composeOptions {\n        kotlinCompilerExtensionVersion '1.2.0'\n    }\n    packagingOptions {\n        resources {\n            excludes += '/META-INF/{AL2.0,LGPL2.1}'\n        }\n    }\n}\n\ndependencies {\n\n    implementation \"androidx.compose.ui:ui-text-google-fonts:1.3.3\"\n    implementation 'androidx.core:core-ktx:1.7.0'\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'\n    implementation 'androidx.activity:activity-compose:1.3.1'\n    implementation \"androidx.compose.ui:ui-util:$compose_ui_version\"\n    implementation \"androidx.compose.ui:ui-tooling-preview:$compose_ui_version\"\n    implementation 'androidx.compose.material:material:1.2.0'\n    implementation 'androidx.appcompat:appcompat:1.4.1'\n    implementation 'com.google.android.material:material:1.5.0'\n    implementation 'androidx.annotation:annotation:1.3.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'\n    implementation 'io.coil-kt:coil-compose:1.3.2'\n    implementation \"androidx.compose.ui:ui:$compose_ui_version\"\n    testImplementation 'junit:junit:4.13.2'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n    androidTestImplementation \"androidx.compose.ui:ui-test-junit4:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-tooling:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-test-manifest:$compose_ui_version\"\n\n\n    implementation(\"androidx.navigation:navigation-compose:2.4.0-beta02\")\n//RetroFit Dependencies\n    implementation 'com.google.code.gson:gson:2.8.9'\n    implementation 'com.squareup.retrofit2:retrofit:2.9.0'\n    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'\n    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.1'\n\n//Coroutains\"\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2\"\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1' //viewModel scope\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1' //lifecycle scope\n    implementation 'androidx.fragment:fragment-ktx:1.4.1'\n\n//Lifecycle\n    implementation 'androidx.lifecycle:lifecycle-common:2.4.1'\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'\n//size dp/sp\n    implementation 'com.intuit.sdp:sdp-android:1.0.6'\n    implementation 'com.intuit.ssp:ssp-android:1.0.6'\n\n    implementation \"androidx.preference:preference-ktx:1.2.0\"\n\n    //FireBase\n    implementation platform('com.google.firebase:firebase-bom:31.2.3')\n    implementation 'com.google.firebase:firebase-analytics-ktx'\n    implementation 'com.google.firebase:firebase-auth:21.1.0'\n\n    //Paging Compose\n    implementation \"com.google.accompanist:accompanist-pager:0.17.0\"\n    implementation \"com.google.accompanist:accompanist-pager-indicators:0.17.0\"\n\n\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0\"\n\n    implementation \"androidx.compose.runtime:runtime-livedata:$compose_ui_version\"\n\n    implementation \"androidx.navigation:navigation-compose:2.5.2\"\n\n   // Dependencias do Google Maps\n    implementation 'com.google.maps.android:maps-compose:2.11.0'\n    implementation 'com.google.android.gms:play-services-maps:18.1.0'\n\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/build.gradle	(date 1683205399725)
+@@ -50,6 +50,10 @@
+ 
+ dependencies {
+ 
++    // Data Store
++    implementation "androidx.datastore:datastore-preferences:1.0.0"
++    implementation "androidx.datastore:datastore-core:1.0.0"
++
+     implementation "androidx.compose.ui:ui-text-google-fonts:1.3.3"
+     implementation 'androidx.core:core-ktx:1.7.0'
+     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+Index: app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoError.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoError.kt b/app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoError.kt
+new file mode 100644
+--- /dev/null	(date 1683205399729)
++++ b/app/src/main/java/com/example/yvypora/models/costumer/CostumerInfoError.kt	(date 1683205399729)
+@@ -0,0 +1,6 @@
++package com.example.yvypora.models.costumer
++
++data class CostumerInfoError (
++    var error: Boolean,
++    var cause: String,
++)
+\ No newline at end of file
+Index: app/src/main/java/com/example/yvypora/api/RetrofitApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.api\n\nimport com.example.yvypora.api.cep.CepApiService\nimport com.example.yvypora.api.commons.CommonsApiService\nimport com.example.yvypora.service.constants.Constants\nimport retrofit2.Retrofit\nimport retrofit2.converter.gson.GsonConverterFactory\n\nclass RetrofitApi {\n    companion object {\n        private lateinit var instance: Retrofit\n\n        private fun getRetrofit(URL: String): Retrofit {\n            if (::instance.isInitialized) {\n                return instance\n            }\n\n            instance = Retrofit\n                .Builder()\n                .baseUrl(URL)\n                .addConverterFactory(GsonConverterFactory.create())\n                .build()\n            return instance\n        }\n\n        fun commonsRetrofitService(): CommonsApiService {\n            return getRetrofit(Constants.BASE_URL + \"/commons/\").create(CommonsApiService::class.java)\n        }\n\n        fun cepRetrofitService(): CepApiService {\n            return getRetrofit(Constants.CEP_URL).create(CepApiService::class.java)\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/api/RetrofitApi.kt b/app/src/main/java/com/example/yvypora/api/RetrofitApi.kt
+--- a/app/src/main/java/com/example/yvypora/api/RetrofitApi.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/api/RetrofitApi.kt	(date 1683205399727)
+@@ -2,7 +2,7 @@
+ 
+ import com.example.yvypora.api.cep.CepApiService
+ import com.example.yvypora.api.commons.CommonsApiService
+-import com.example.yvypora.service.constants.Constants
++import com.example.yvypora.constants.Constants
+ import retrofit2.Retrofit
+ import retrofit2.converter.gson.GsonConverterFactory
+ 
+@@ -11,20 +11,15 @@
+         private lateinit var instance: Retrofit
+ 
+         private fun getRetrofit(URL: String): Retrofit {
+-            if (::instance.isInitialized) {
+-                return instance
+-            }
+-
+-            instance = Retrofit
++            return Retrofit
+                 .Builder()
+                 .baseUrl(URL)
+                 .addConverterFactory(GsonConverterFactory.create())
+                 .build()
+-            return instance
+         }
+ 
+         fun commonsRetrofitService(): CommonsApiService {
+-            return getRetrofit(Constants.BASE_URL + "/commons/").create(CommonsApiService::class.java)
++            return getRetrofit(Constants.BASE_URL).create(CommonsApiService::class.java)
+         }
+ 
+         fun cepRetrofitService(): CepApiService {
+Index: app/src/main/java/com/example/yvypora/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora\n\n\nimport android.content.Intent\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.foundation.text.ClickableText\nimport androidx.compose.material.*\nimport androidx.compose.runtime.Composable\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.layout.ContentScale\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.AnnotatedString\nimport androidx.compose.ui.text.SpanStyle\nimport androidx.compose.ui.text.style.TextDecoration\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.example.yvypora.MarketerScreens.InicialMarketerActivity\nimport com.example.yvypora.ScreenClients.InicialScreen\nimport com.example.yvypora.ui.theme.YvyporaTheme\n\n\nclass MainActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                Surface(\n                    modifier = Modifier.fillMaxSize(),\n                ) {\n                    Image(\n                        painter = painterResource(id = R.drawable.background),\n                        contentDescription = \"\",\n                        contentScale = ContentScale.Crop\n                    )\n                    Column(\n                        modifier = Modifier\n                            .fillMaxSize(),\n                        horizontalAlignment = Alignment.End,\n                        verticalArrangement = Arrangement.Top\n\n                    ) {\n                        Text(\n                            modifier = Modifier.padding(top = 35.dp, end = 10.dp),\n                            text = stringResource(id = R.string.yvypora),\n                            color = colorResource(id = R.color.green_yvy),\n                            fontSize = 32.sp,\n                        )\n\n                    }\n\n\n                }\n                MainLayout()\n            }\n\n        }\n    }\n}\n\n\n@Composable\nfun MainLayout() {\n    Column(\n        modifier =\n        Modifier\n            .fillMaxSize()\n            .padding(25.dp),\n        verticalArrangement = Arrangement.Center,\n        horizontalAlignment = Alignment.CenterHorizontally\n\n    ) {\n        //Main\n        Text(\n            text = stringResource(id = R.string.slogan),\n            fontSize = 45.sp,\n            color = androidx.compose.ui.graphics.Color.White,\n\n            letterSpacing = 4.sp\n        )\n    }\n    Column(\n        modifier =\n        Modifier\n            .fillMaxSize()\n            .padding(bottom = 34.dp),\n        verticalArrangement = Arrangement.Bottom,\n        horizontalAlignment = Alignment.CenterHorizontally\n    )\n    {\n        val context = LocalContext.current\n\n        Button(onClick = {\n            val intent = Intent(context, InicialScreen()::class.java)\n            context.startActivity(intent)\n        }) {\n            Text(text = \"consumidor\")\n        }\n        Button(onClick = {\n            val intent = Intent(context, InicialMarketerActivity()::class.java)\n            context.startActivity(intent)\n        }) {\n            Text(text = \"feirante\")\n        }\n\n\n\n        Button(\n            onClick = {\n                val intent = Intent(context, LoginActivity()::class.java)\n                context.startActivity(intent)\n            },\n            modifier = Modifier\n                .width(330.dp)\n                .height(135.dp)\n                .padding(bottom = 85.dp)\n                .padding(),\n            shape = RoundedCornerShape(5.dp),\n            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),\n\n            ) {\n            Text(\n                text = stringResource(id = R.string.login),\n                color = Color.White,\n                fontSize = 24.sp\n            )\n        }\n        Text(\n            text = stringResource(id = R.string.question),\n            fontSize = 18.sp,\n            color = androidx.compose.ui.graphics.Color.White,\n\n            letterSpacing = 4.sp\n        )\n        ClickableText(\n            text = AnnotatedString(text = stringResource(id = R.string.register),\n               SpanStyle(\n                   fontSize = 18.sp,\n                    color = androidx.compose.ui.graphics.Color.White,\n                    textDecoration = TextDecoration.Underline,\n                    letterSpacing = 4.sp\n               )\n            ), onClick = {\n            val intent = Intent(context, DecisionSreenActivity()::class.java)\n            context.startActivity(intent)\n\n        })\n    }\n}\n@Preview(showBackground = true, showSystemUi = true)\n\n@Composable\nfun DefaultPreview() {\n    YvyporaTheme{\n        MainLayout()\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/MainActivity.kt b/app/src/main/java/com/example/yvypora/MainActivity.kt
+--- a/app/src/main/java/com/example/yvypora/MainActivity.kt	(revision b9dfd244123f72bf2b037f9896ab87a2c48a8aa4)
++++ b/app/src/main/java/com/example/yvypora/MainActivity.kt	(date 1683205399727)
+@@ -3,6 +3,7 @@
+ 
+ import android.content.Intent
+ import android.os.Bundle
++import android.util.Log
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
+ import androidx.compose.foundation.Image
+@@ -11,6 +12,7 @@
+ import androidx.compose.foundation.text.ClickableText
+ import androidx.compose.material.*
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+@@ -27,6 +29,7 @@
+ import androidx.compose.ui.unit.sp
+ import com.example.yvypora.MarketerScreens.InicialMarketerActivity
+ import com.example.yvypora.ScreenClients.InicialScreen
++import com.example.yvypora.api.commons.fieldsForCostumer
+ import com.example.yvypora.ui.theme.YvyporaTheme
+ 
+ 
