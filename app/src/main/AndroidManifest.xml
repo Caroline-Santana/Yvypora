@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permisson.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -70,6 +69,11 @@
             android:name=".ScreenClients.EditProfileSreen"
             android:exported="false"
             android:label="@string/title_activity_edit_profile_sreen"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ScreenClients.FruitsResultActivity"
+            android:exported="false"
+            android:label="@string/fruits_result"
             android:theme="@style/Theme.Yvypora" />
         <activity
             android:name=".ScreenClients.FairsActivity"
@@ -166,9 +170,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>
