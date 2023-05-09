@@ -36,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.Dp
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.api.commons.addPictureToUser
@@ -55,7 +54,6 @@ import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
 
-//import androidx.compose.ui.platform.ContextAmbient
 
 class RegisterMarketer : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
