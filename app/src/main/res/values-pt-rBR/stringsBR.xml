@@ -112,6 +112,32 @@
     <string name="description">Descrição</string>
     <string name="buy_now">Comprar</string>
     <string name="add_affection">Add. ao carrinho</string>
+    <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
+    <string name="my_shopping_cart">Meu carrinho</string>
+    <string name="date">Data:</string>
+    <string name="promotion">Promoção!</string>
+    <string name="pay">Pagar</string>
+    <string name="title_activity_inicial_screen_marketer">Página Inicial do Feirante</string>
+    <string name="title_activity_checkout">Tela de recibo</string>
+    <string name="checkout">Recibo</string>
+    <string name="change">Mudar</string>
+    <string name="edit">Editar</string>
+    <string name="delete_address">Apagar endereço</string>
+    <string name="title_card_inicial_marketer">COMECE A FATURAR COM A YVYPORÃ HOJE!</string>
+    <string name="description_card_inicial_marketer">Comece adicionando seus produtos ou cadastre as feiras qual faz parte</string>
+    <string name="your_sales_today">Sua atividade hoje</string>
+    <string name="history_complete">Ver histórico completo</string>
+    <string name="total">Total :</string>
+    <string name="payment_method">Método de Pagamento</string>
+    <string name="order">Pedido</string>
+    <string name="delivery_fee">Taxa de entrega</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="num">Número</string>
+    <string name="title_activity_register_client">RegistroCliente</string>
+    <string name="my_products">Meus produtos</string>
+    <string name="qnt">Quantidade Disponível</string>
+    <string name="question_main_address">Este é o seu endereço principal?</string>
 
 
 </resources>

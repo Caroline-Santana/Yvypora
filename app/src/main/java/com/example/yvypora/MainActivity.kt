@@ -61,11 +61,14 @@ class MainActivity : ComponentActivity() {
 
                 }
                 MainLayout()
+
             }
 
         }
     }
 }
+
+
 
 
 @Composable
@@ -103,14 +106,16 @@ fun MainLayout() {
             val intent = Intent(context, InicialScreen()::class.java)
             context.startActivity(intent)
         }) {
-            Text(text = "rapido")
+            Text(text = "consumidor")
         }
         Button(onClick = {
-            val intent = Intent(context, FairsActivity()::class.java)
+            val intent = Intent(context, InicialMarketerActivity()::class.java)
             context.startActivity(intent)
         }) {
-            Text(text = "feira")
+            Text(text = "feirante")
         }
+
+
 
         Button(
             onClick = {

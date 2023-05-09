@@ -9,11 +9,27 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Yvypora"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ScreenClients.EditAddress"
+            android:exported="false"
+            android:label="@string/title_activity_edit_address"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ScreenClients.CheckoutActivity"
+            android:exported="false"
+            android:label="@string/title_activity_checkout"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ScreenClients.ShoppingCartActivity"
+            android:exported="false"
+            android:label="@string/title_activity_shopping_cart"
+            android:theme="@style/Theme.Yvypora" />
         <activity
             android:name=".ScreenClients.DescriptionProducts"
             android:exported="false"
@@ -60,7 +76,7 @@
             android:label="@string/fruits_result"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name=".FairsActivity"
+            android:name=".ScreenClients.FairsActivity"
             android:exported="false"
             android:label="@string/fair"
             android:theme="@style/Theme.Yvypora" />
@@ -75,12 +91,27 @@
             android:label="@string/title_activity_screen_search"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name=".RegisterMarketer"
+            android:name=".MarketerScreens.RegisterMarketer"
+            android:exported="false"
+            android:label="@string/title_activity_register_marketer"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".MarketerScreens.ProductsMarketer"
+            android:exported="false"
+            android:label="@string/title_activity_register_marketer"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".MarketerScreens.AddProducts"
             android:exported="false"
             android:label="@string/title_activity_register_marketer"
             android:theme="@style/Theme.Yvypora" />
         <activity
             android:name=".ScreenClients.InicialScreen"
+            android:exported="false"
+            android:label="@string/title_activity_inicial_screen"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".MarketerScreens.InicialMarketerActivity"
             android:exported="false"
             android:label="@string/title_activity_inicial_screen"
             android:theme="@style/Theme.Yvypora" />
@@ -105,6 +136,26 @@
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Yvypora" />
         <activity
+            android:name=".ScreenClients.FruitsResultActivity"
+            android:exported="false"
+            android:label="@string/fruits_result"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ScreenClients.VegetablesActivityActivity"
+            android:exported="false"
+            android:label="@string/vegetable"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ScreenClients.SpicesActivityActivity"
+            android:exported="false"
+            android:label="@string/spices"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ScreenClients.OthersActivityActivity"
+            android:exported="false"
+            android:label="@string/spices"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".SplashScreenActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -115,6 +166,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

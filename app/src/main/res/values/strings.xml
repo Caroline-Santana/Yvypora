@@ -28,7 +28,7 @@
     <string name="question_decision_sreen">How will you use the app?</string>
     <string name="decision_option1">CLIENT</string>
     <string name="decision_option2">MARKETER</string>
-    <string name="title_activity_register_client" translatable="false">RegisterClient</string>
+    <string name="title_activity_register_client">RegisterClient</string>
     <string name="password">Password:</string>
     <string name="message_error_pass1">Provide a password!</string>
     <string name="message_error_pass2">Cannot be more than 8 characters!</string>
@@ -47,6 +47,7 @@
     <string name="phone_error_empty">Provide a phone!</string>
     <string name="title_phone">Phone</string>
     <string name="title_activity_inicial_screen">InicialScreen</string>
+    <string name="title_activity_inicial_screen_marketer">InicialScreenMarketer</string>
     <string name="title_cnpj">CNPJ:</string>
     <string name="cnpj_error_empty">Provide a CNPJ!</string>
     <string name="cnpj_error_invalid">Invalid CNPJ!</string>
@@ -115,8 +116,28 @@
     <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
     <string name="my_shopping_cart">My shopping cart</string>
     <string name="date">Date:</string>
-    <string name="promotion" >Promotion!</string>
+    <string name="promotion">Promotion!</string>
     <string name="pay">Pay</string>
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="checkout">Checkout</string>
+    <string name="change">Change</string>
+    <string name="edit">Edit</string>
+    <string name="delete_address">Delete address</string>
+    <string name="title_card_inicial_marketer">START EARNING WITH YVYPORÃ TODAY!</string>
+    <string name="description_card_inicial_marketer">Start add your products ou register the fairs you are part of</string>
+    <string name="your_sales_today">Your sales today</string>
+    <string name="history_complete">Your complete sales history</string>
+    <string name="total">Total :</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="order">Order</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="num">Num</string>
+    <string name="my_products">My Products</string>
+    <string name="qnt">Amount:</string>
+    <string name="question_main_address">Is this your main address?</string>
+    <string name="title_activity_edit_address">EditAddress</string>
 
 
 </resources>

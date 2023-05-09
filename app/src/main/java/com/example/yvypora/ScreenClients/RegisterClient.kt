@@ -4,7 +4,6 @@ package com.example.yvypora.ScreenClients
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -39,18 +38,12 @@ import com.example.yvypora.R
 import com.example.yvypora.api.cep.getCep
 import com.example.yvypora.api.commons.createCostumer
 import com.example.yvypora.models.Address
-import com.example.yvypora.models.Cep
 import com.example.yvypora.models.Costumer
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.MaskBirth
 import com.example.yvypora.utils.MaskCep
 import com.example.yvypora.utils.MaskCpf
 import com.example.yvypora.utils.ValidationCpf
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class RegisterClient : ComponentActivity() {
@@ -317,13 +310,14 @@ fun Inputs() {
                             addressTypeId = 1,
                             city = cep.localidade,
                             uf = cep.uf,
+                            number = 0,
                             complemento = "",
                             logradouro = cep.logradouro,
                             neighborhood = cep.bairro,
                         ),
                         cpf = cpfState,
                         birthday = formatBirthday(birthState),
-                        gender = gender[0]
+                        gender = gender[0].toString()
                     )
                     // send to create the costumer without a picture
                     createCostumer(costumer) { _costumer ->

@@ -1,17 +1,17 @@
 package com.example.yvypora.ScreenClients
 
-import android.annotation.SuppressLint
+
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -32,8 +32,7 @@ import com.example.yvypora.models.MarketerCardShopping
 import com.example.yvypora.models.ProductCardShopping
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+
 
 class ShoppingCartActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,38 +45,58 @@ class ShoppingCartActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Column(
-                        modifier = Modifier
+                        modifier = androidx.compose.ui.Modifier
                             .fillMaxSize()
                             .fillMaxWidth()
                     )
                     {
+
                         Header()
                         ShoppingCartMain()
+
                     }
                 }
             }
         }
     }
 }
+
+var showPaymentBar by mutableStateOf(false)
+var total_value by mutableStateOf(0.0)
+val selectedCards = mutableStateListOf<Int>()
+
+val qtde = mutableMapOf<Int,Int>()
+
 @Composable
-fun ShoppingCartMain(){
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp)
-        .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+fun ShoppingCartMain() {
+    val selectedPrice = remember { mutableStateOf(0.0) }
+    Text(
+        text = stringResource(id = R.string.my_shopping_cart),
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
+        fontSize = 24.sp,
+        textAlign = TextAlign.Center,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    Box(
+        modifier = androidx.compose.ui.Modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp)
+            .fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
     )
     {
-        Text(
-            text = stringResource(id = R.string.my_shopping_cart),
-            fontSize = 24.sp,
-            color = colorResource(id = R.color.darkgreen_yvy)
-        )
-            ListOfMarketerCardShopping(marketers = listMarketerCardShopping)
+        ListOfMarketerCardShopping(marketers = listMarketerCardShopping){ price ->
+            selectedPrice.value = price
+        }
+        CardPay(total_value)
+
+
     }
 }
+
 val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
     MarketerCardShopping(
+        id_feirante = 1,
         name = "Barraca do Seu Zé",
         sub_name = "Vila Madalena",
         photo = R.drawable.buy_history_card_marketer,
@@ -103,12 +122,13 @@ val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
         )
     ),
     MarketerCardShopping(
+        id_feirante = 2,
         name = "Barraca do Seu Zé",
         sub_name = "Vila Augusta",
         photo = R.drawable.buy_history_card_marketer,
         products = listOf(
             ProductCardShopping(
-                id = 1,
+                id = 3,
                 name = "Abóbora",
                 type_weight = "g",
                 weight_product = 800,
@@ -117,31 +137,58 @@ val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
                 price = 24.00,
             ),
             ProductCardShopping(
-                id = 2,
+                id = 4,
                 name = "Beterraba",
                 type_weight = "g",
                 weight_product = 800,
                 isSelected = false,
                 photo = 1,
                 price = 22.00,
-            )
+            ),
+            ProductCardShopping(
+                id = 5,
+                name = "Abóbora",
+                type_weight = "g",
+                weight_product = 800,
+                isSelected = false,
+                photo = 1,
+                price = 24.00,
+            ),
+            ProductCardShopping(
+                id = 6,
+                name = "Abóbora",
+                type_weight = "g",
+                weight_product = 800,
+                isSelected = false,
+                photo = 1,
+                price = 24.00,
+            ),
         )
     )
 )
 
 @Composable
-fun ListOfMarketerCardShopping(marketers: List<MarketerCardShopping>) {
-    LazyColumn() {
-        items(marketers) { marketer -> CardMarketerShopping(marketer = marketer) }
+fun ListOfMarketerCardShopping(marketers: List<MarketerCardShopping>,onPriceChanged: (Double) -> Unit) {
+    LazyColumn {
+        items(marketers) { marketer ->
+            CardMarketerShopping(
+                marketer = marketer,
+                onPriceChanged = onPriceChanged
+            )
+        }
 
     }
 }
 
 @Composable
-fun CardMarketerShopping(marketer: MarketerCardShopping) {
+fun CardMarketerShopping(
+    marketer: MarketerCardShopping,
+    onPriceChanged: (Double) -> Unit
+) {
+//    val targetMarketerId = marketer.id_feirante
     var nameCard = marketer.name
     var subnameCard = marketer.sub_name
-//    tem que descomentar e usar o que o banco retorna
+    var showSnackbar by remember { mutableStateOf(false) }
 //    var photo = marketer.photo
     var photo = painterResource(id = R.drawable.buy_history_card_marketer)
     var products = marketer.products
@@ -157,9 +204,9 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .padding(start = 8.dp, end = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, end = 8.dp),
             ) {
                 Image(
                     painter = photo,
@@ -176,7 +223,7 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
                         text = nameCard,
                         fontSize = 17.sp,
                         textAlign = TextAlign.Start,
-                        color = colorResource(id = R.color.green_widht)
+                        color = colorResource(id = R.color.green_width)
                     )
                     Text(
                         text = subnameCard,
@@ -189,22 +236,32 @@ fun CardMarketerShopping(marketer: MarketerCardShopping) {
 
                 }
             }
-
-                ListOfProductCardShopping(cards = marketer.products)
+            ListOfProductCardShopping(
+                cards = marketer.products,
+                state = showSnackbar,
+                onPriceChanged = { card, price ->
+                    card.copy(price = price )
+                    onPriceChanged(price)
+                }
+            )
         }
     }
 }
 
+
 @Composable
-fun ListOfProductCardShopping(cards: List<ProductCardShopping>) {
-    val selectedCards = remember { mutableStateListOf<Int>() }
-    var showSnackbar by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
-    var valuePay by remember { mutableStateOf(0.0) }
+fun ListOfProductCardShopping(
+    cards: List<ProductCardShopping>,
+    state: Boolean,
+    onPriceChanged: (ProductCardShopping, Double) -> Unit
+) {
+    var stateSnack = state
+//    val coroutineScope = rememberCoroutineScope()
+//    var valuePay by remember { mutableStateOf(0.0) }
     LazyColumn(
         modifier = Modifier
             .height(300.dp)
-            .padding(top = 10.dp),
+            .padding(top = 5.dp, bottom = 50.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 //        userScrollEnabled = false
@@ -213,86 +270,128 @@ fun ListOfProductCardShopping(cards: List<ProductCardShopping>) {
             CardProductShopping(
                 card = card,
                 isSelected = card.id in selectedCards,
-                onCardSelected = { id->
-                    showSnackbar = true
-                    onCardProductClick(card.id, selectedCards)},
+                onCardSelected = { id ->
+                    showPaymentBar = true
+                    stateSnack = true
+                    onCardProductClick(card.id, selectedCards, card.qtde)
+                },
+                onPriceChanged = { quantity ->
+                    listMarketerCardShopping.map { item ->
+                        val product = item.products.find {product ->
+                            product.id == card.id
+                        }
+
+//                        val newPrice = product?.price?.times(quantity)
+//                        onPriceChanged(card, newPrice ?: 0.0)
+                    }
+                },
+
             )
         }
     }
-    if (showSnackbar) {
-        CardPay()
-    }
-
 }
 
 @Composable
-fun CardPay() {
+fun CardPay(total: Double) {
+    val context = LocalContext.current
+    if (showPaymentBar) {
+        Card(
+            Modifier
+                .width(349.dp)
+                .height(52.dp),
+            elevation = 10.dp,
+            backgroundColor = colorResource(id = R.color.green_camps),
 
-    Card(
-        Modifier
-            .width(349.dp)
-            .height(62.dp),
-        elevation = 0.dp,
-        backgroundColor = colorResource(id = R.color.green_camps),
-        border = BorderStroke(3.dp, colorResource(id = R.color.green_camps))
-    ) {
-        Row(
-            modifier = Modifier.padding(start = 18.dp),
-            verticalAlignment = Alignment.CenterVertically
+            border = BorderStroke(3.dp, colorResource(id = R.color.green_camps))
         ) {
-            Text(
-                text = "Total:",
-                color = colorResource(id = R.color.full_dark_yvy),
-                modifier = Modifier.padding(end = 5.dp),
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-            Text(
-                text = "R$ 48,00",
-                modifier = Modifier.padding(end = 67.dp),
-                color = colorResource(id = R.color.full_dark_yvy),
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-            Button(
+            Row(
+                modifier = Modifier.padding(start = 18.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Total:",
+                    color = colorResource(id = R.color.full_dark_yvy),
+                    modifier = Modifier.padding(end = 5.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "R$ $total",
+                    modifier = Modifier.padding(end = 67.dp),
+                    color = colorResource(id = R.color.full_dark_yvy),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                Button(
                     modifier = Modifier
                         .height(47.dp)
                         .width(102.dp),
-                colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
-            onClick = { /*TODO*/ }
-            ) {
-            Text(
-                text = stringResource(id = R.string.pay),
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 20.sp
-            )
+                    colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
+                    onClick = {
+                        val intent = Intent(context, CheckoutActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.pay),
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 20.sp
+                    )
+                }
+            }
         }
-
-        }
-
-
     }
 }
 
-
-fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>){
-    if (selectedCards.contains(cardId)){
+fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>, qtde: Int) {
+    if (selectedCards.contains(cardId)) {
         selectedCards.remove(cardId)
-
-    }else{
+    } else {
         selectedCards.add(cardId)
     }
+    if (selectedCards.size == 0) {
+        showPaymentBar = false
+    } else {
+        var total = 0.0
+        // settar os valores para somar
+        listMarketerCardShopping.forEach { item ->
+            item.products.forEach { product ->
+                if (selectedCards.contains(product.id)) {
+                    var price = product.price * product.qtde
+                    price = price.coerceAtLeast(product.price)
+                    total += price
+                }
+            }
+        }
+        total_value = total
+    }
 }
+
+
 @Composable
-fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSelected: (Boolean) -> Unit){
-    var qtde by remember { mutableStateOf(1) }
+fun CardProductShopping(
+    card: ProductCardShopping,
+    isSelected: Boolean,
+    onCardSelected: (Boolean) -> Unit,
+    onPriceChanged: (Int) -> Unit,
+) {
+
+//    var qtde by remember {
+//        mutableStateOf(card.qtde)
+//    }
+    var (qtde, setQtde) = remember { mutableStateOf(card.qtde) }
+    qtde = qtde.coerceAtLeast(1)
     var nameProduct = card.name
 //    var photoProduct = card.photo
     var photoProduct = painterResource(id = R.drawable.abobora_shopping)
     var typeProduct = card.type_weight
     var weightProduct = card.weight_product
-    var priceProduct = card.price
+    var priceProduct = card.price * qtde
+    var accumulatorPrice = priceProduct
+    LaunchedEffect(qtde){
+        onPriceChanged(card.id)
+    }
 
     Column(
         modifier = Modifier
@@ -306,7 +405,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Center
         ) {
-            if(isSelected){
+            if (isSelected) {
                 Icon(
                     painter = painterResource(id = R.drawable.check_full),
                     modifier = Modifier
@@ -315,13 +414,12 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                     contentDescription = "",
                     tint = colorResource(id = R.color.green_button)
                 )
-            }else{
+            } else {
                 Icon(
                     painter = painterResource(id = R.drawable.check_no_full),
                     modifier = Modifier
                         .padding(end = 10.dp)
-                        .clickable { onCardSelected(isSelected) }
-                    ,
+                        .clickable { onCardSelected(isSelected) },
                     contentDescription = "",
                     tint = colorResource(id = R.color.green_button)
                 )
@@ -335,7 +433,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                     }
                     .height(130.dp),
                 elevation = 0.dp,
-                backgroundColor = if (isSelected)colorResource(id = R.color.green_camps_transparent) else Color.White,
+                backgroundColor = if (isSelected) colorResource(id = R.color.green_camps_transparent) else Color.White,
                 border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
             ) {
                 Row(
@@ -376,7 +474,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                         ) {
 
                             Text(
-                                text = weightProduct.toString(),
+                                text = "$weightProduct",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp,
                                 fontFamily = SpaceGrotesk,
@@ -391,7 +489,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                             )
                         }
                         Text(
-                            text = "R$$priceProduct",
+                            text = "R$ $accumulatorPrice",
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
                             fontFamily = SpaceGrotesk,
@@ -407,7 +505,10 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Button(
-                                    onClick = { qtde = (qtde - 1).coerceAtLeast(1) },
+                                    onClick = {
+                                        setQtde(qtde - 1)
+                                        card.qtde = card.qtde - 1
+                                              },
                                     modifier = Modifier
                                         .height(24.dp)
                                         .width(28.dp),
@@ -419,19 +520,23 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                                 Icon(
                                     painter = painterResource(id = R.drawable.remove),
                                     modifier = Modifier
-                                        .clickable { qtde = (qtde - 1).coerceAtLeast(1) },
+                                        .clickable {
+                                            setQtde(qtde -1 )
+                                            card.qtde = card.qtde - 1
+                                            },
                                     contentDescription = ""
                                 )
                             }
                             Text(
-                                text = "$qtde",
+                                text = "${qtde} ",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = colorResource(id = R.color.darkgreen_yvy)
                             )
                             Box(contentAlignment = Alignment.Center) {
                                 Button(
-                                    onClick = { qtde += 1 },
+                                    onClick = { setQtde(qtde + 1)
+                                        card.qtde = card.qtde + 1},
                                     modifier = Modifier
                                         .height(24.dp)
                                         .width(28.dp),
@@ -442,7 +547,10 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                                     modifier = Modifier
                                         .width(15.dp)
                                         .height(15.dp)
-                                        .clickable { qtde += 1 },
+                                        .clickable {
+                                            card.qtde = card.qtde + 1
+                                            setQtde(qtde + 1)
+                                        },
                                     contentDescription = "",
                                     tint = Color.White
                                 )
@@ -464,6 +572,7 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
                             modifier = Modifier
                                 .height(33.dp)
                                 .width(33.dp)
+                                .clickable {}
                         )
                     }
 
@@ -474,23 +583,57 @@ fun CardProductShopping(card: ProductCardShopping, isSelected: Boolean,onCardSel
 
 }
 
-
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun SnackBarFunction(){
-    val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
-//Janelinha que aparecia no flutton button
+fun deleteProduct(cards: MutableList<ProductCardShopping>){
 
- scope.launch {
-    scaffoldState.snackbarHostState
-        .showSnackbar(
-            "blbla",
-            actionLabel = "bsljdjsskd",
-            duration = SnackbarDuration.Indefinite
-        )
+
 }
-}
+
+
+
+//fun deleteProduct(cards: List<ProductCardShopping>){
+//    LazyColumn(){
+//        itemsIndexed(items = cards, key = {_, listItem ->
+//            listItem.hashCode()
+//        }){index, item ->
+//            val state = rememberDismissState(
+//                confirmStateChange = {
+//                    if (it == DismissValue.DismissedToStart){
+//                        cards.remove(item)
+//                    }
+//                    true
+//                }
+//            )
+//            SwipeToDismiss(state = state, background ={
+//                val color = when(state.dismissDirection){
+//                    DismissDirection.StartToEnd -> Color.Transparent,
+//                        DismissDirection.EndToStart -> Color.Black,
+//                        null -> Color.Magenta
+//                }
+//            } ) {
+//
+//            }
+//        }
+//    }
+//}
+
+
+//@SuppressLint("CoroutineCreationDuringComposition")
+//@Composable
+//fun SnackBarFunction() {
+//    val scaffoldState = rememberScaffoldState()
+//    val scope = rememberCoroutineScope()
+////Janelinha que aparecia no flutton button
+//
+//    scope.launch {
+//        scaffoldState.snackbarHostState
+//            .showSnackbar(
+//                "blbla",
+//                actionLabel = "bsljdjsskd",
+//                duration = SnackbarDuration.Indefinite
+//            )
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable
@@ -502,11 +645,9 @@ fun DefaultPreview4() {
                 .fillMaxWidth()
         )
         {
-//            Header()
-//            ShoppingCartMain()
-            CardPay()
+            Header()
+            ShoppingCartMain()
         }
 
     }
 }
-
