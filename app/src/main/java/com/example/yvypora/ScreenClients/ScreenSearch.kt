@@ -60,74 +60,15 @@ fun Search() {
 
     var historySearchState = remember { list.toMutableStateList() }
 
-    Column( modifier = Modifier
-        .padding(top = 10.dp, start = 20.dp)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.arrow),
-            modifier = Modifier
-                .height(45.dp)
-                .width(50.dp)
-                .clickable {
-                    val intent = Intent(context, InicialScreen::class.java)
-                    context.startActivity(intent)
-                },
-            alignment = Alignment.BottomStart,
-            contentDescription = stringResource(id = R.string.back_screen)
-        )
-        Row(modifier = Modifier.padding(top = 10.dp)) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(start = 25.dp, end = 25.dp),
-                value = searchState,
-                onValueChange = { newText ->
-                    searchState = newText
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = androidx.compose.ui.text.input.ImeAction.Search
-                ),
-                keyboardActions = KeyboardActions(
-                    onSearch = {
-                        if (searchState.isNotBlank()){
-                            dbHelper.insertSearch(searchState)
-                            historySearchState.add(searchState)
-                        }
 
-                    }
-                ),
-                colors = TextFieldDefaults.textFieldColors(
-                    textColor = Color.White,
-                    backgroundColor = colorResource(id = R.color.green_yvy),
-                    focusedIndicatorColor = colorResource(id = R.color.green_yvy),
-                    unfocusedIndicatorColor = colorResource(id = R.color.green_yvy),
-                    cursorColor = Color.White
-                ),
-                shape = RoundedCornerShape(20.dp),
-                trailingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.lupa_icon),
-                        contentDescription = stringResource(id = R.string.lupa),
-                        modifier = Modifier
-                            .width(35.dp)
-                            .height(35.dp)
-                            .padding(end = 10.dp)
-                            .clickable { dbHelper.insertSearch(searchState)
-                                historySearchState.add(searchState)},
-                        tint = Color.White
-                    )
-                }
-            )
-        }
         Column (modifier = Modifier
             .fillMaxWidth()
             .fillMaxSize()) {
+            CampSearch()
             Text(
                 text = stringResource(id = R.string.latest_search),
                 modifier = Modifier
-                    .padding(top = 25.dp, start = 10.dp, bottom = 44.dp)
+                    .padding(top = 25.dp, start = 30.dp, bottom = 44.dp)
                     .fillMaxWidth(),
                 fontSize = 30.sp,
                 color = colorResource(id = R.color.darkgreen_yvy)
@@ -157,17 +98,104 @@ fun Search() {
                             .clickable {
                                 dbHelper.deleteSearch(search)
                                 historySearchState.remove(search)
-                                       },
+                            },
                         contentDescription = stringResource(id = R.string.delete_search))
                 }
             }
+            Button(
+                onClick = {
+                    val intent = Intent(context, ResultSearch::class.java)
+                    context.startActivity(intent) },
+                modifier = Modifier
+                    .height(12.dp)
+                    .width(12.dp)
+
+            ) {}
         }
+
+    }
+
+@Composable
+fun CampSearch(){
+    var searchState by remember {
+        mutableStateOf("")
+    }
+    val context = LocalContext.current
+    val dbHelper = remember { HistoricSearchDBHelper(context)}
+
+    var list = dbHelper.obeterHistorico()
+
+    var historySearchState = remember { list.toMutableStateList() }
+
+    Column( modifier = Modifier
+        .padding(top = 10.dp, start = 20.dp)
+    ) {
+    Image(
+        painter = painterResource(id = R.drawable.arrow),
+        modifier = Modifier
+            .height(45.dp)
+            .width(50.dp)
+            .clickable {
+                val intent = Intent(context, InicialScreen::class.java)
+                context.startActivity(intent)
+            },
+        alignment = Alignment.BottomStart,
+        contentDescription = stringResource(id = R.string.back_screen)
+    )
+    Row(modifier = Modifier.padding(top = 10.dp)) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(start = 25.dp, end = 25.dp),
+            value = searchState,
+            onValueChange = { newText ->
+                searchState = newText
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = androidx.compose.ui.text.input.ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    if (searchState.isNotBlank()) {
+                        dbHelper.insertSearch(searchState)
+                        historySearchState.add(searchState)
+                    }
+
+                }
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.White,
+                backgroundColor = colorResource(id = R.color.green_yvy),
+                focusedIndicatorColor = colorResource(id = R.color.green_yvy),
+                unfocusedIndicatorColor = colorResource(id = R.color.green_yvy),
+                cursorColor = Color.White
+            ),
+            shape = RoundedCornerShape(20.dp),
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.lupa_icon),
+                    contentDescription = stringResource(id = R.string.lupa),
+                    modifier = Modifier
+                        .width(35.dp)
+                        .height(35.dp)
+                        .padding(end = 10.dp)
+                        .clickable {
+                            dbHelper.insertSearch(searchState)
+                            historySearchState.add(searchState)
+                        },
+                    tint = Color.White
+                )
+            }
+        )
+    }
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun SearchScreen() {
     YvyporaTheme {
-
+        Search()
     }
 }

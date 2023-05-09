@@ -138,6 +138,7 @@
     <string name="qnt">Amount:</string>
     <string name="question_main_address">Is this your main address?</string>
     <string name="title_activity_edit_address">EditAddress</string>
+    <string name="title_activity_result_search">ResultSearch</string>
 
 
 </resources>
