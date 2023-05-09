@@ -105,6 +105,12 @@ fun MainLayout() {
         }) {
             Text(text = "rapido")
         }
+        Button(onClick = {
+            val intent = Intent(context, FairsActivity()::class.java)
+            context.startActivity(intent)
+        }) {
+            Text(text = "feira")
+        }
 
         Button(
             onClick = {
