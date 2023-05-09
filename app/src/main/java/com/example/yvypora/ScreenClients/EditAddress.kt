@@ -14,6 +14,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -21,7 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,6 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
+import coil.size.Size
 import com.example.yvypora.R
 import com.example.yvypora.models.AddressCard
 import com.example.yvypora.ui.theme.YvyporaTheme
@@ -52,15 +59,6 @@ class EditAddress : ComponentActivity() {
         }
     }
 }
-
-
-//object Choose{
-//    val yes =  Text(text = stringResource(id = R.string.yes))
-//    val no = Text(text = stringResource(id = R.string.no))
-//
-//}
-
-//var numero = address.numero
 
 @Composable
 fun MainEditAdress() {
@@ -429,12 +427,64 @@ fun NumEditAddress(){
         )
 }
 
+//@Composable
+//fun ChangeForMain(){
+//    var expanded by remember { mutableStateOf(false) }
+//    val list = listOf(
+//        stringResource(id = R.string.yes),
+//        stringResource(id = R.string.no)
+//    )
+//    var selectedItem by remember { mutableStateOf("")}
+//    var textFiledSize by remember { mutableStateOf(androidx.compose.ui.geometry.Size.Zero) }
+//    val icon = if (expanded){
+//        Icons.Filled.KeyboardArrowUp
+//    }else
+//        Icons.Filled.KeyboardArrowDown
+//
+//    Column(modifier = Modifier.padding(20.dp)) {
+//        OutlinedTextField(
+//            value = selectedItem,
+//            onValueChange = {null},
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .onGloballyPositioned { coordinates ->
+//                    textFiledSize = coordinates.size.toSize()
+//                },
+//            label = { Text(text = "OOI")},
+//            trailingIcon = {
+//                Icon(icon, "", Modifier.clickable { expanded = !expanded } )
+//            }
+//        )
+//
+//        DropdownMenu(
+//            expanded = expanded ,
+//            onDismissRequest = { expanded = false },
+//            modifier = Modifier
+//                .width(with(LocalDensity.current){textFiledSize.width.toDp()})
+//        ) {
+//                list.forEach { label ->
+//                    DropdownMenuItem(onClick = {
+//                        selectedItem = label
+//                        expanded = false
+//                    }) {
+//                        Text(text = label)
+//                    }
+//                }
+//        }
+//    }
+//}
+
 @Composable
 fun ChangeForMain(){
     var selectAnswer by remember { mutableStateOf(0)  }
     val radioOption = listOf(
-        Text(text = stringResource(id = R.string.yes)),
-        Text(text = stringResource(id = R.string.no))
+         stringResource(id = R.string.yes),
+         stringResource(id = R.string.no)
+    )
+    val colors = RadioButtonDefaults.colors(
+        selectedColor = colorResource(id = R.color.darkgreen_yvy),
+        unselectedColor = colorResource(id = R.color.green_yvy),
+        disabledColor = Color.DarkGray
     )
     Column() {
         Text(
@@ -447,9 +497,10 @@ fun ChangeForMain(){
                     verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = selectAnswer == i,
-                        onClick = { selectAnswer = i }
+                        onClick = { selectAnswer = i },
+                        colors = colors
                     )
-//                    Text()
+                    Text(option)
 
                 }
             }
@@ -458,7 +509,6 @@ fun ChangeForMain(){
 
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

@@ -167,7 +167,7 @@ val listAddress= mutableStateListOf<AddressCard>(
         cidade = "São Paulo",
         estado = "São Paulo",
         pais = "Brasil",
-        endereço_principal = false,
+        endereço_principal = true,
     ),
     AddressCard(
         titulo = "Escritório",
@@ -376,15 +376,10 @@ fun CardAdresses(address : AddressCard){
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .padding(bottom = 15.dp)) {
+        ) {
         Card(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 2.dp)
-//            .draggable(
-//                state = dragState,
-//                orientation = Orientation.Vertical,
-//                onDragStopped = { onDrop(address) }
-//            )
+            .padding(top = 15.dp)
             .height(140.dp),
             backgroundColor = colorResource(id = R.color.green_camps),
             shape = RoundedCornerShape(

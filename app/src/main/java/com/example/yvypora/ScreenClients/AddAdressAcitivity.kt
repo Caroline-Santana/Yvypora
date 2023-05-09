@@ -155,6 +155,8 @@ fun AddAdresses(){
                 CepInputAdress()
                 Spacer(modifier = Modifier.height(15.dp))
 
+                ChangeForMain()
+
             }
         }
     }
