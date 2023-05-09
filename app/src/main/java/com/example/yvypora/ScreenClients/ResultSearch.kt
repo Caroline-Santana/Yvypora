@@ -121,7 +121,7 @@ fun CampResultSearch() {
             ) {
                 Box(
                     modifier = Modifier
-                        .width(48.dp)
+                        .fillMaxWidth()
                         .height(48.dp)
                         .padding(end = 5.dp)
                         .background(
