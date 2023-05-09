@@ -136,8 +136,12 @@
     <string name="num">Número</string>
     <string name="title_activity_register_client">RegistroCliente</string>
     <string name="my_products">Meus produtos</string>
-    <string name="qnt">Quantidade Disponível</string>
+    <string name="qnt">Quantidade:</string>
     <string name="question_main_address">Este é o seu endereço principal?</string>
+    <string name="title_activity_edit_address">EditarEndereço</string>
+    <string name="add_product">Inserir um novo produto</string>
+    <string name="category_title">Categoria:</string>
+    <string name="prices_sizes">Preços e tamanhos :</string>
 
 
 </resources>

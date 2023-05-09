@@ -139,6 +139,9 @@
     <string name="question_main_address">Is this your main address?</string>
     <string name="title_activity_edit_address">EditAddress</string>
     <string name="title_activity_result_search">ResultSearch</string>
+    <string name="add_product">Add a new product</string>
+    <string name="category_title">Category:</string>
+    <string name="prices_sizes" >Prices and sizes :</string>
 
 
 </resources>

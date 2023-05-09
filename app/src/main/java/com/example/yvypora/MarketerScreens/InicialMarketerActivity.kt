@@ -88,7 +88,7 @@ fun InicialMarketerMain() {
         Card(
             Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(20.dp)
                 .shadow(
                     elevation = 50.dp,
                     shape = RoundedCornerShape(10.dp),
@@ -158,7 +158,7 @@ fun InicialMarketerMain() {
         Card(
             Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(20.dp)
                 .shadow(
                     elevation = 50.dp,
                     shape = RoundedCornerShape(10.dp),

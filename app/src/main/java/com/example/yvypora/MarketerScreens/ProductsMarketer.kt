@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.yvypora.R
 import com.example.yvypora.ScreenClients.CardProduct
 import com.example.yvypora.ScreenClients.Header
@@ -89,8 +91,8 @@ fun HeaderProduct() {
                     val intent = Intent(context, AddProducts()::class.java)
                     context.startActivity(intent)
                 }
-                .height(100.dp)
-                .width(75.dp),
+                .height(400.dp)
+                .width(200.dp),
             contentDescription = "add",
         )
     }
@@ -253,17 +255,17 @@ fun CardProductMarketer(product: ProductCardSale) {
         Row(
             modifier = Modifier
                 .padding(top = 8.dp)
-                .fillMaxWidth()
-                .height(30.dp),
+                .height(30.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(Modifier.height(1000.dp) .width(150.dp)){
-                Text(
-                    text = stringResource(id = R.string.qnt),
-                    color = colorResource(id = R.color.green_options),
-                )
-            }
+
+            Text(
+                text = stringResource(id = R.string.qnt),
+                color = colorResource(id = R.color.green_options),
+            )
+
             Box(contentAlignment = Alignment.Center) {
                 Button(
                     onClick = {
@@ -324,16 +326,23 @@ fun CardProductMarketer(product: ProductCardSale) {
             Image(
                 painter = painterResource(id = R.drawable.trash),
                 contentDescription = "",
-                modifier = Modifier.clickable { })
+                modifier = Modifier
+                    .clickable { }
+                    .width(40.dp)
+                    .height(100.dp))
             Image(painter = painterResource(id = R.drawable.atualizacao), contentDescription = "",
                 Modifier
-                    .width(24.dp)
-                    .height(24.dp)
-                    .clickable {})
+                    .clickable { }
+                    .width(40.dp)
+                    .height(100.dp))
+
             Image(
                 painter = painterResource(id = R.drawable.pause),
                 contentDescription = "",
-                modifier = Modifier.clickable { })
+                modifier = Modifier
+                    .clickable { }
+                    .width(40.dp)
+                    .height(100.dp))
 
         }
     }
