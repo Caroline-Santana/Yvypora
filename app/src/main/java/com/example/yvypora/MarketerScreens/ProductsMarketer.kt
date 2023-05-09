@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
@@ -254,10 +255,15 @@ fun CardProductMarketer(product: ProductCardSale) {
                 .padding(top = 8.dp)
                 .fillMaxWidth()
                 .height(30.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = stringResource(id = R.string.qnt), Modifier.width(210.dp))
+            Column(Modifier.height(1000.dp) .width(150.dp)){
+                Text(
+                    text = stringResource(id = R.string.qnt),
+                    color = colorResource(id = R.color.green_options),
+                )
+            }
             Box(contentAlignment = Alignment.Center) {
                 Button(
                     onClick = {
@@ -275,20 +281,19 @@ fun CardProductMarketer(product: ProductCardSale) {
                     painter = painterResource(id = R.drawable.remove),
                     modifier = Modifier
                         .clickable {
-                            setQtde(qtde -1)
+                            setQtde(qtde - 1)
                         },
                     contentDescription = ""
                 )
             }
-            if (qtde <0){
+            if (qtde < 0) {
                 Text(
                     text = "0",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = colorResource(id = R.color.darkgreen_yvy)
                 )
-            }
-            else{
+            } else {
                 Text(
                     text = "${qtde}",
                     fontSize = 20.sp,
@@ -316,15 +321,31 @@ fun CardProductMarketer(product: ProductCardSale) {
                     tint = Color.White
                 )
             }
-            Image(painter = painterResource(id = R.drawable.trash), contentDescription = "" )
-            Image(painter = painterResource(id = R.drawable.atualizacao), contentDescription = "", Modifier.width(24.dp).height(24.dp) )
-            Image(painter = painterResource(id = R.drawable.pause), contentDescription = "" )
+            Image(
+                painter = painterResource(id = R.drawable.trash),
+                contentDescription = "",
+                modifier = Modifier.clickable { })
+            Image(painter = painterResource(id = R.drawable.atualizacao), contentDescription = "",
+                Modifier
+                    .width(24.dp)
+                    .height(24.dp)
+                    .clickable {})
+            Image(
+                painter = painterResource(id = R.drawable.pause),
+                contentDescription = "",
+                modifier = Modifier.clickable { })
 
         }
-        }
-    
     }
 
+}
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewProduct() {
+    YvyporaTheme {
+        ProductsMarketer()
+    }
+}
 
 
