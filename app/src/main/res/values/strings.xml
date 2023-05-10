@@ -142,6 +142,7 @@
     <string name="add_product">Add a new product</string>
     <string name="category_title">Category:</string>
     <string name="prices_sizes" >Prices and sizes :</string>
+    <string name="title_result_search" >Results for:</string>
 
 
 </resources>

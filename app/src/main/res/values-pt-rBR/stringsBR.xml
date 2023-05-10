@@ -139,9 +139,11 @@
     <string name="qnt">Quantidade:</string>
     <string name="question_main_address">Este é o seu endereço principal?</string>
     <string name="title_activity_edit_address">EditarEndereço</string>
+    <string name="title_activity_result_search">ResultSearch</string>
     <string name="add_product">Inserir um novo produto</string>
     <string name="category_title">Categoria:</string>
     <string name="prices_sizes">Preços e tamanhos :</string>
+    <string name="title_result_search" >Resultados para:</string>
 
 
 </resources>
