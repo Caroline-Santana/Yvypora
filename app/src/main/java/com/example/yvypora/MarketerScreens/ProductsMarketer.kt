@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -264,7 +265,8 @@ fun CardProductMarketer(product: ProductCardSale) {
             Text(
                 text = stringResource(id = R.string.qnt),
                 color = colorResource(id = R.color.green_options),
-            )
+
+                )
 
             Box(contentAlignment = Alignment.Center) {
                 Button(
@@ -329,12 +331,14 @@ fun CardProductMarketer(product: ProductCardSale) {
                 modifier = Modifier
                     .clickable { }
                     .width(40.dp)
-                    .height(100.dp))
+                    .height(400.dp),
+            contentScale = ContentScale.Fit)
             Image(painter = painterResource(id = R.drawable.atualizacao), contentDescription = "",
                 Modifier
                     .clickable { }
                     .width(40.dp)
-                    .height(100.dp))
+                    .height(400.dp),
+            contentScale = ContentScale.Fit)
 
             Image(
                 painter = painterResource(id = R.drawable.pause),
@@ -342,8 +346,8 @@ fun CardProductMarketer(product: ProductCardSale) {
                 modifier = Modifier
                     .clickable { }
                     .width(40.dp)
-                    .height(100.dp))
-
+                    .height(400.dp),
+                contentScale = ContentScale.Fit)
         }
     }
 
