@@ -13,18 +13,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,6 +86,15 @@ fun HeaderAddProduct() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddProductMain() {
+    var isSelectedPhoto = painterResource(id = R.drawable.check_product_off)
+
+
+    var isSelected by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var checkState by rememberSaveable {
+        mutableStateOf(false)
+    }
 
 
     var nameStateProduct by rememberSaveable {
@@ -94,16 +106,35 @@ fun AddProductMain() {
     var isNameErrorProduct by rememberSaveable {
         mutableStateOf(false)
     }
+    var customizedStateProduct by remember {
+        mutableStateOf("")
+    }
+    var gramaStateProduct by remember {
+        mutableStateOf("")
+    }
+    var kiloStateProduct by remember {
+        mutableStateOf("")
+    }
+    var kiloemeioStateProduct by remember {
+        mutableStateOf("")
+    }
+    var promoStateProduct by remember {
+        mutableStateOf("")
+    }
 
     val typeProduct = arrayOf("Frutas", "Vegetais", "Especiarias", "Outros")
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(typeProduct[0]) }
-    Column(Modifier.fillMaxSize()) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(state = rememberScrollState(), enabled = true),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         HeaderAddProduct()
 
         Column(
-            Modifier.verticalScroll(state = rememberScrollState(), enabled = true),
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
@@ -113,7 +144,13 @@ fun AddProductMain() {
                 color = colorResource(id = R.color.darkgreen_yvy2)
             )
 
-            Text(text = stringResource(id = R.string.category_title))
+            Text(
+                text = stringResource(id = R.string.category_title),
+                fontWeight = FontWeight.Medium,
+                fontSize = 24.sp,
+                color = colorResource(id = R.color.darkgreen_yvy2)
+
+            )
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = {
@@ -153,15 +190,18 @@ fun AddProductMain() {
                 }
             }
 
-            Text(text = stringResource(id = R.string.name))
+            Text(
+                text = stringResource(id = R.string.name),
+                fontWeight = FontWeight.Medium,
+                fontSize = 24.sp,
+                color = colorResource(id = R.color.darkgreen_yvy2)
+            )
             TextField(
                 value = nameStateProduct,
                 onValueChange = {
                     nameStateProduct = it
                     if (it.length == 0) {
                         isNameErrorProduct = true
-
-
                     }
                 },
                 Modifier
@@ -174,15 +214,26 @@ fun AddProductMain() {
 
 
             )
-            Text(
-                text = stringResource(id = R.string.description),
-            )
+            Row(horizontalArrangement = Arrangement.Center) {
+                Text(
+                    text = stringResource(id = R.string.description),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 24.sp,
+                    color = colorResource(id = R.color.darkgreen_yvy2)
+                )
+                Text(
+                    text = descriptionStateProduct.length.toString(),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
+                    color = colorResource(id = R.color.darkgreen_yvy2)
+                )
+            }
             TextField(
                 value = descriptionStateProduct,
                 onValueChange = { descriptionStateProduct = it },
                 Modifier
-                    .height(120.dp)
-                    .width(188.dp)
+                    .height(200.dp)
+                    .width(288.dp)
                     .border(
                         width = 2.dp,
                         color = colorResource(id = R.color.green_yvy),
@@ -192,19 +243,170 @@ fun AddProductMain() {
             )
         }
         PhotoInputProduct()
-        Text(text = stringResource(id = R.string.prices_sizes))
-        Row() {
-            Image(
-                painter = painterResource(id = R.drawable.check_product_on),
-                contentDescription = ""
-            )
-            Text(text = "")
+        Text(
+            text = stringResource(id = R.string.prices_sizes),
+            fontWeight = FontWeight.Medium,
+            fontSize = 30.sp,
+            color = colorResource(id = R.color.darkgreen_yvy2),
+            textAlign = TextAlign.Start
+        );
+        Row(
+            Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Column() {
+                Row() {
+                    Image(
+                        painter = isSelectedPhoto,
+                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                    )
+                    Text(
+                        text = stringResource(id = R.string.customized),
+                        Modifier
+                            .height(40.dp)
+                            .width(116.dp)
+
+                    )
+                }
+                TextField(
+                    value = customizedStateProduct,
+                    onValueChange = { customizedStateProduct = it },
+                    Modifier
+                        .width(150.dp)
+                        .border(
+                            width = 2.dp,
+                            color = colorResource(id = R.color.green_yvy),
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clip(RoundedCornerShape(10.dp)),
+                    label = {
+                        Text(text = "R$")
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
+
+            Column() {
+                Row() {
+                    Image(
+                        painter = isSelectedPhoto,
+                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                    )
+                    Text(text = stringResource(id = R.string.g500))
+                }
+                TextField(
+                    value = gramaStateProduct,
+                    onValueChange = { gramaStateProduct = it },
+                    Modifier
+                        .width(154.dp)
+                        .border(
+                            width = 2.dp,
+                            color = colorResource(id = R.color.green_yvy),
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clip(RoundedCornerShape(10.dp)),
+                    label = {
+                        Text(text = "R$")
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
 
         }
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Column() {
+                Row() {
+                    Image(
+                        painter = isSelectedPhoto,
+                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                    )
+                    Text(
+                        text = stringResource(id = R.string.kg1), Modifier
+                            .width(150.dp)
+                    )
+                }
+                TextField(
+                    value = kiloStateProduct,
+                    onValueChange = { kiloStateProduct = it },
+                    Modifier
+                        .width(154.dp)
+                        .border(
+                            width = 2.dp,
+                            color = colorResource(id = R.color.green_yvy),
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clip(RoundedCornerShape(10.dp)),
+                    label = {
+                        Text(text = "R$")
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
+            Column() {
+                Row() {
+                    Image(
+                        painter = isSelectedPhoto,
+                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                    )
+                    Text(text = stringResource(id = R.string.kg15))
+                }
+                TextField(
+                    value = kiloemeioStateProduct,
+                    onValueChange = { kiloemeioStateProduct = it },
+                    Modifier
+                        .width(154.dp)
+                        .border(
+                            width = 2.dp,
+                            color = colorResource(id = R.color.green_yvy),
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clip(RoundedCornerShape(10.dp)),
+                    label = {
+                        Text(text = "R$")
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
+
+        }
+        Row(
+            Modifier.fillMaxSize()
+        ) {
+            Column(Modifier.height(200.dp)) {
+                Text(
+                    text = stringResource(id = R.string.promotion_question),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 24.sp,
+                    color = colorResource(id = R.color.darkgreen_yvy2)
+                )
+                Switch(checked = checkState, onCheckedChange = { checkState = it })
+            }
+            if (checkState) {
+                TextField(
+                    value = promoStateProduct,
+                    onValueChange = { promoStateProduct = it },
+                    Modifier
+                        .width(154.dp)
+                        .border(
+                            width = 2.dp,
+                            color = colorResource(id = R.color.green_yvy),
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clip(RoundedCornerShape(10.dp)) ,
+                    label = {
+                        Text(text = "% da Promoção")
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
+        }
     }
-
 }
-
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
@@ -233,15 +435,27 @@ fun PhotoInputProduct() {
     ) {
         Text(
             text = stringResource(id = R.string.product_picture),
-            fontSize = 20.sp,
+            fontSize = 24.sp,
             textAlign = TextAlign.Start,
             color = colorResource(id = R.color.darkgreen_yvy)
         )
+        Text(
+            text = stringResource(id = R.string.photo_product_description),
+            Modifier.width(168.dp),
+            fontSize = 14.sp,
+            textAlign = TextAlign.Start,
+            color = colorResource(id = R.color.gray_text)
+        )
         Card(
-            shape = CircleShape,
             modifier = Modifier
                 .padding(8.dp)
                 .size(115.dp)
+                .border(
+                    width = 2.5.dp,
+                    color = colorResource(id = R.color.green_yvy),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .clip(RoundedCornerShape(10.dp))
         ) {
             Image(
                 painter = painter,
