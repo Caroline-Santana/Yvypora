@@ -1,6 +1,8 @@
 package com.example.yvypora.ScreenClients
 
+
 import android.content.Intent
+import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,7 +11,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -26,10 +27,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.yvypora.R
-import com.example.yvypora.models.MarketerData
+import com.example.yvypora.models.Filter
 import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.YvyporaTheme
+
 
 class ResultSearch : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,14 +68,128 @@ fun ResultSearchMain() {
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         ListOfProductData(products = listProductsData())
 
     }
 
 }
 
+val OptionFilter = listOf<Filter>(
+    Filter(
+        id = 1,
+        titulo = "Próx. a mim",
+        isEnabled = false
+    ),
+    Filter(
+        id = 2,
+        titulo = "R$ 5,00",
+        isEnabled = false
+    ),
+    Filter(
+        id = 3,
+        titulo = "R$ 25,00",
+        isEnabled = false
+    ),
+    Filter(
+        id = 4,
+        titulo = "2 ou mais",
+        isEnabled = false
+    ),
+    Filter(
+        id = 5,
+        titulo = "2 ou mais",
+        isEnabled = false
+    ),
+    Filter(
+        id = 6,
+        titulo = "3 ou mais",
+        isEnabled = false
+    ),
+    Filter(
+        id = 7,
+        titulo = "4 ou mais",
+        isEnabled = false
+    ),
+    Filter(
+        id = 8,
+        titulo = "5 apenas",
+        isEnabled = false
+    ),
+)
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun FilterSearch(
+    showDialog: Boolean,
+    onDismiss: () -> Unit,
+    onApplyFilter: (filter: String) -> Unit
+){
+    var selectedFilter by remember { mutableStateOf("") }
+
+    if (showDialog){
+        Dialog(onDismissRequest =  onDismiss ) {
+            Surface(
+                modifier = Modifier.padding(16.dp)
+            )  {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                )  {
+                    Text(
+                        text = "Selecione um filtro:"
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        FilterButton(
+                            text = "Filtro 1",
+                            isSelected = selectedFilter == "Filter 1",
+                            onClick = {
+                                selectedFilter = "Filter 1"
+                            }
+                        )
+                        FilterButton(
+                            text = "Filtro 2",
+                            isSelected = selectedFilter == "Filter 2",
+                            onClick = {
+                                selectedFilter = "Filter 2"
+                            }
+                        )
+                        FilterButton(
+                            text = "Filtro 3",
+                            isSelected = selectedFilter == "Filter 3",
+                            onClick = {
+                                selectedFilter = "Filter 3"
+                            }
+                        )
+                    }
+                    Button(onClick = {
+                        onApplyFilter(selectedFilter)
+                        onDismiss
+                    }) {
+                        Text(text = "Aplicar filtro")
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun FilterButton(text: String, isSelected: Boolean, onClick: () -> Unit) {
+
+        Button(
+            onClick = onClick,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = if (isSelected) Color.Magenta else Color.Black,
+                contentColor = if (isSelected) Color.Magenta else Color.Black,
+            )
+        ) {
+            Text(text = text)
+        }
+}
 
 fun listProductsData() = listOf<ProductCardSale>(
 
@@ -175,11 +292,15 @@ fun CampResultSearch() {
                     )
                 }
             )
+
             Box(
                 modifier = Modifier
                     .width(56.dp)
                     .height(48.dp)
                     .padding(end = 5.dp)
+                    .clickable {
+//                        FilterSearch(showDialog = , onDismiss = { /*TODO*/ }, onApplyFilter = )
+                    }
                     .background(
                         color = colorResource(id = R.color.green_width),
                         shape = RoundedCornerShape(5.dp)
