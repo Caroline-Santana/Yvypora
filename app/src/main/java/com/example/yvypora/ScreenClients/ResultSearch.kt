@@ -237,6 +237,7 @@ fun listProductsData() = listOf<ProductCardSale>(
 
 @Composable
 fun CampResultSearch() {
+    var showDialog by remember { mutableStateOf(false) }
     var searchState by remember {
         mutableStateOf("")
     }
@@ -299,7 +300,13 @@ fun CampResultSearch() {
                     .height(48.dp)
                     .padding(end = 5.dp)
                     .clickable {
-//                        FilterSearch(showDialog = , onDismiss = { /*TODO*/ }, onApplyFilter = )
+//                        FilterSearch(
+//                            showDialog = showDialog,
+//                            onDismiss = {
+//                                        showDialog =
+//                            },
+//                            onApplyFilter =
+//                        )
                     }
                     .background(
                         color = colorResource(id = R.color.green_width),
