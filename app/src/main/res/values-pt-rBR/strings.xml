@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="g500">500g</string>
-    <string name="kg1">1Kg</string>
-    <string name="kg15">1.5Kg</string>
-    <string name="customized">Personalizado pelo cliente</string>
-    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>
-</resources>
