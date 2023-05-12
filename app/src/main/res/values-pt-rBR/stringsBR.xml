@@ -140,11 +140,17 @@
     <string name="qnt">Quantidade:</string>
     <string name="question_main_address">Este é o seu endereço principal?</string>
     <string name="title_activity_edit_address">EditarEndereço</string>
+    <string name="title_activity_result_search">ResultSearch</string>
     <string name="add_product">Inserir um novo produto</string>
     <string name="category_title">Categoria:</string>
     <string name="prices_sizes">Preços e tamanhos :</string>
     <string name="product_picture" >Adicione uma foto ao produto</string>
     <string name="title_result_search" >Resultados para:</string>
     <string name="filter" >Filtro</string>
+    <string name="g500">500g</string>
+    <string name="kg1">1Kg</string>
+    <string name="kg15">1.5Kg</string>
+    <string name="customized">Personalizado pelo cliente</string>
+    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>
 
 </resources>
