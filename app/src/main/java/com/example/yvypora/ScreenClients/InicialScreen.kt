@@ -175,7 +175,6 @@ fun UpsideLayout() {
     }
 }
 
-
 @Composable
 fun ReadonlyTextField(
     value: TextFieldValue,
@@ -405,103 +404,122 @@ var nearToYouList = mutableListOf<Product>()
 @Composable
 fun getLists() {
     val context = LocalContext.current
-    saleOffList.clear()
-    allList.clear()
-    nearToYouList.clear()
-
     val scope = rememberCoroutineScope()
-    scope.launch {
-        ProductService.atSaleOff { res ->
-            res?.data?.forEach { _product ->
-                saleOffList.add(Product(
-                    id = _product.id,
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
-            }
-        }
-        ProductService.listAllProducts(
-            0,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
-        ) { res ->
-            Log.i("teste", res.toString())
-            res?.data?.forEach { _product ->
-                allList.add(Product(
-                    id = _product.id,
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
-            }
-        }
-        ProductService.listAllProducts(
-            1,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
-        ) { res ->
-            Log.i("teste", res.toString())
-            res?.data?.forEach { _product ->
-                allList.add(Product(
-                    id = _product.id,
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
-            }
-        }
-        ProductService.listAllProducts(
-            2,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
-        ) { res ->
-            Log.i("teste", res.toString())
-            res?.data?.forEach { _product ->
-                allList.add(Product(
-                    id = _product.id,
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
-            }
-        }
-        ProductService.listAllProducts(
-            3,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
-        ) { res ->
-            Log.i("teste", res.toString())
-            res?.data?.forEach { _product ->
-                allList.add(Product(
-                    id = _product.id,
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
-            }
-        }
+    if (allList.isEmpty()) {
+        val productService = ProductService()
         scope.launch {
-            TokenStore(context).getToken.collect {token ->
-                ProductService.closeToClient("Bearer $token") { res ->
-                    res?.data?.forEach { _product ->
-                        nearToYouList.add(Product(
+            productService.atSaleOff { res ->
+                res?.data?.forEach { _product ->
+                    saleOffList.add(
+                        Product(
                             id = _product.id,
                             photo = _product.imageOfProduct[0].image.uri,
                             name = _product.name,
                             price = _product.price.toFloat(),
                             qtdeProduct = _product.availableQuantity
-                        ))
+                        )
+                    )
+                }
+            }
+        }
+        scope.launch {
+            TokenStore(context).getToken.collect { token ->
+                productService.closeToClient("Bearer $token") { res ->
+                    res?.data?.forEach { _product ->
+                        nearToYouList.add(
+                            Product(
+                                id = _product.id,
+                                photo = _product.imageOfProduct[0].image.uri,
+                                name = _product.name,
+                                price = _product.price.toFloat(),
+                                qtdeProduct = _product.availableQuantity
+                            )
+                        )
                     }
+                }
+            }
+        }
+        scope.launch {
+            productService.listAllProducts(
+                0,
+                0,
+                higherPrice = 100000,
+                lowerPrice = 0,
+            ) { res ->
+                Log.i("teste", res.toString())
+                res?.data?.forEach { _product ->
+                    allList.add(
+                        Product(
+                            id = _product.id,
+                            photo = _product.imageOfProduct[0].image.uri,
+                            name = _product.name,
+                            price = _product.price.toFloat(),
+                            qtdeProduct = _product.availableQuantity
+                        )
+                    )
+                }
+            }
+        }
+        scope.launch {
+            productService.listAllProducts(
+                1,
+                0,
+                higherPrice = 100000,
+                lowerPrice = 0,
+            ) { res ->
+                Log.i("teste", res.toString())
+                res?.data?.forEach { _product ->
+                    allList.add(
+                        Product(
+                            id = _product.id,
+                            photo = _product.imageOfProduct[0].image.uri,
+                            name = _product.name,
+                            price = _product.price.toFloat(),
+                            qtdeProduct = _product.availableQuantity
+                        )
+                    )
+                }
+            }
+        }
+        scope.launch {
+            productService.listAllProducts(
+                2,
+                0,
+                higherPrice = 100000,
+                lowerPrice = 0,
+            ) { res ->
+                Log.i("teste", res.toString())
+                res?.data?.forEach { _product ->
+                    allList.add(
+                        Product(
+                            id = _product.id,
+                            photo = _product.imageOfProduct[0].image.uri,
+                            name = _product.name,
+                            price = _product.price.toFloat(),
+                            qtdeProduct = _product.availableQuantity
+                        )
+                    )
+                }
+            }
+        }
+        scope.launch {
+            productService.listAllProducts(
+                3,
+                0,
+                higherPrice = 100000,
+                lowerPrice = 0,
+            ) { res ->
+                Log.i("teste", res.toString())
+                res?.data?.forEach { _product ->
+                    allList.add(
+                        Product(
+                            id = _product.id,
+                            photo = _product.imageOfProduct[0].image.uri,
+                            name = _product.name,
+                            price = _product.price.toFloat(),
+                            qtdeProduct = _product.availableQuantity
+                        )
+                    )
                 }
             }
         }
@@ -520,7 +538,6 @@ fun ListOfProducts(products: List<Product>) {
 }
 
 
-// TODO COMPONENETE DE LISTA --> CARD PRODUCTS
 @Composable
 fun CardProducts(data: Product) {
     val context = LocalContext.current
@@ -535,7 +552,8 @@ fun CardProducts(data: Product) {
             .width(130.dp)
             .height(145.dp)
             .clickable {
-                val intent = Intent(context, DescriptionProducts(data.id)::class.java)
+                val intent = Intent(context, DescriptionProducts::class.java)
+                intent.putExtra("productId", data.id.toString())
                 context.startActivity(intent)
             }
             .padding(3.dp),

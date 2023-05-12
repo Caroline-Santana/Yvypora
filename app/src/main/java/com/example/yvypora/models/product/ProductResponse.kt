@@ -1,5 +1,6 @@
 package com.example.yvypora.models.product
 
+import androidx.compose.runtime.MutableState
 import com.example.yvypora.models.dto.SaleOff
 import com.example.yvypora.models.dto.TypeOfPrice
 import com.example.yvypora.models.marketer.Marketer
@@ -13,7 +14,7 @@ data class ProductResponse (
     val price: Double,
     val discount: Double?,
     val quantity: Int?,
-    val review: Int,
+    val review: Float,
     val avaliations: Int,
     @SerializedName("active_for_selling")
     val activeForSelling: Boolean,
@@ -30,7 +31,7 @@ data class ProductResponse (
     @SerializedName("type_of_productId")
     val typeOfProductId: Int,
     @SerializedName("sale_off")
-    val saleOff: List<SaleOff?>,
+    var saleOff: List<SaleOff?>? = null,
     @SerializedName("type_of_price")
     val typeOfPrice: TypeOfPrice,
     @SerializedName("image_of_product")
@@ -39,4 +40,3 @@ data class ProductResponse (
     var latitude: Boolean? = null,
     var longitude: Boolean? = null,
 )
-

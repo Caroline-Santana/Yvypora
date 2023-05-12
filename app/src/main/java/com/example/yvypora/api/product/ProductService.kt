@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.models.Token
 import com.example.yvypora.models.product.BaseResponse
+import com.example.yvypora.models.product.BaseResponseAsObject
 import com.example.yvypora.models.product.ProductResponse
 import com.example.yvypora.service.datastore.TokenStore
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 
 class ProductService {
-    companion object {
+
         private val API = RetrofitApi.productRetrofitService()
 
         fun listAllProducts(
@@ -26,6 +27,7 @@ class ProductService {
             higherPrice: Int,
             onComplete: (BaseResponse<ProductResponse>?) -> Unit
         ) {
+            Log.i("teste", category.toString())
             val call = API.listAllProducts(category, score, lowerPrice, higherPrice)
 
             call.enqueue(object : Callback<BaseResponse<ProductResponse>?> {
@@ -38,6 +40,7 @@ class ProductService {
                     Log.i("teste", body.toString())
 
                     if (response.isSuccessful) {
+                        Log.i("teste", body.toString())
                         return onComplete.invoke(body)
                     }
 
@@ -97,16 +100,16 @@ class ProductService {
             })
         }
 
-        fun get(id: Int, onComplete: (BaseResponse<ProductResponse>?) -> Unit) {
+        fun get(id: Int, onComplete: (BaseResponseAsObject<ProductResponse>?) -> Unit) {
             val call = API.get(id)
-            call.enqueue(object : Callback<BaseResponse<ProductResponse>> {
-                override fun onFailure(call: Call<BaseResponse<ProductResponse>>, t: Throwable) {
+            call.enqueue(object : Callback<BaseResponseAsObject<ProductResponse>>{
+                override fun onFailure(call: Call<BaseResponseAsObject<ProductResponse>>, t: Throwable) {
                     t.printStackTrace()
                 }
 
                 override fun onResponse(
-                    call: Call<BaseResponse<ProductResponse>>,
-                    response: Response<BaseResponse<ProductResponse>>
+                    call: Call<BaseResponseAsObject<ProductResponse>>,
+                    response: Response<BaseResponseAsObject<ProductResponse>>
                 ) {
                     val body = response.body()
 
@@ -118,5 +121,5 @@ class ProductService {
                 }
             })
         }
-    }
+
 }

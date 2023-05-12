@@ -3,6 +3,7 @@ package com.example.yvypora.api.product
 import com.example.yvypora.models.*
 import com.example.yvypora.models.marketer.Marketer
 import com.example.yvypora.models.product.BaseResponse
+import com.example.yvypora.models.product.BaseResponseAsObject
 import com.example.yvypora.models.product.ProductResponse
 import okhttp3.MultipartBody
 
@@ -37,6 +38,6 @@ interface ProductAPIService {
 
 
    @GET("costumer/product/{id}")
-   fun get(@Path("id") id: Int): Call<BaseResponse<ProductResponse>>
+   fun get(@Path("id") id: Int): Call<BaseResponseAsObject<ProductResponse>>
 
 }

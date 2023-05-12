@@ -141,7 +141,16 @@
     <string name="title_activity_result_search">ResultSearch</string>
     <string name="add_product">Add a new product</string>
     <string name="category_title">Category:</string>
+    <string name="title_result_search" >Result for:</string>
+    <string name="filter" >Filter</string>
     <string name="prices_sizes" >Prices and sizes :</string>
+    <string name="product_picture">Add a product picture</string>
+    <string name="promotion_question">Promoção :</string>
+    <string name="customized">Personalizado pelo cliente</string>
+    <string name="g500">500g</string>
+    <string name="kg1">1Kg</string>
+    <string name="kg15">1.5Kg</string>
+    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>
 
 
 </resources>

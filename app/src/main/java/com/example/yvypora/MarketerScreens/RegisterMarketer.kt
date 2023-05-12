@@ -321,6 +321,9 @@ fun InputsMarketer() {
         Button(
             onClick = {
                       val marketer = Marketer(
+                          online = false,
+                          review = 0F,
+                          avaliations = 0F,
                           name = nameState,
                           birthday = formatBirthday(birthState),
                           gender = gender[0].toString(),

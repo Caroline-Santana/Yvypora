@@ -1,7 +1,9 @@
 package com.example.yvypora.ScreenClients
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,10 +27,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.api.commons.auth
+import com.example.yvypora.api.product.ProductService
 import com.example.yvypora.models.Credentials
+import com.example.yvypora.models.product.BaseResponse
+import com.example.yvypora.models.product.BaseResponseAsObject
+import com.example.yvypora.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
+import kotlinx.coroutines.launch
 
-class DescriptionProducts(val id: Int) : ComponentActivity() {
+class DescriptionProducts : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -38,9 +45,30 @@ class DescriptionProducts(val id: Int) : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background)
                 {
-                        HeaderDescriptionProducts()
+                    HeaderDescriptionProducts()
+                    SetData()
+                    Log.i("teste", product.toString())
                 }
             }
+        }
+    }
+}
+
+val product = mutableStateOf<ProductResponse?>(null)
+
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun SetData() {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    scope.launch {
+        val service = ProductService()
+        val intent = (context as DescriptionProducts).intent
+        val id = intent.getStringExtra("productId")?.toInt()
+        service.get(id!!) { it ->
+            Log.i("teste", it?.data.toString())
+            product.value = it?.data
         }
     }
 }
@@ -95,7 +123,7 @@ fun HeaderDescriptionProducts() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Beterraba",
+                    text = product?.value?.name ?: "",
                     modifier = Modifier
                         .padding(start = 8.dp),
                     fontSize = 32.sp,
