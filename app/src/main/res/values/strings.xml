@@ -152,6 +152,16 @@
     <string name="kg15">1.5Kg</string>
 <!--    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>-->
     <string name="photo_product_description">Attach an image that will be visible to costumer </string>
+    <string name="distance_filter">Distance </string>
+    <string name="price_filter">Price </string>
+    <string name="rating">Rating </string>
+    <string name="next_to_me">Next to me</string>
+    <string name="two_more">2 or more</string>
+    <string name="three_more">3 or more</string>
+    <string name="four_more">4 or more</string>
+    <string name="five_only">5 only</string>
+    <string name="apply_filter">Apply filter</string>
+    <string name="to">To</string>
 
 
 </resources>

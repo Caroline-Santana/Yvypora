@@ -6,6 +6,12 @@ import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,13 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -124,52 +133,194 @@ fun FilterSearch(
     showDialog: Boolean,
     onDismiss: () -> Unit,
     onApplyFilter: (filter: String) -> Unit
-){
+) {
     var selectedFilter by remember { mutableStateOf("") }
+    var inicialPrice = 0.0
+    var finalPrice = 50.0
 
-    if (showDialog){
-        Dialog(onDismissRequest =  onDismiss ) {
+    if (showDialog) {
+        Dialog(
+            onDismissRequest = onDismiss
+        ) {
             Surface(
-                modifier = Modifier.padding(16.dp)
-            )  {
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(550.dp)
+            ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
-                )  {
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, top = 10.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.arrow),
+                        modifier = Modifier
+                            .height(35.dp)
+                            .width(40.dp)
+                            .clickable {
+                                onDismiss()
+                            },
+                        alignment = Alignment.BottomStart,
+                        contentDescription = stringResource(id = R.string.back_screen)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Selecione um filtro:"
+                        text = stringResource(id = R.string.filter),
+                        modifier = Modifier.fillMaxWidth(),
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 25.sp,
+                        color = colorResource(id = R.color.green_width),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        text = stringResource(id = R.string.distance_filter),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = colorResource(id = R.color.green_options),
+                        textAlign = TextAlign.Start
+                    )
+                    FilterButton(
+                        text = stringResource(id = R.string.next_to_me),
+                        isSelected = selectedFilter == "Filter 1",
+                        onClick = {
+                            selectedFilter = "Filter 1"
+                        }
+                    )
+                    Text(
+                        text = stringResource(id = R.string.price_filter),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = colorResource(id = R.color.green_options),
+                        textAlign = TextAlign.Start
                     )
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        FilterButton(
-                            text = "Filtro 1",
-                            isSelected = selectedFilter == "Filter 1",
-                            onClick = {
-                                selectedFilter = "Filter 1"
-                            }
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Card(
+                            modifier = Modifier
+                                .padding(start = 10.dp)
+                                .width(87.dp)
+                                .height(35.dp)
+                            ,
+                            backgroundColor = Color.White,
+                            border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
+                        ) {
+                            Text(
+                                text = "R$ 5,00",
+                                fontSize = 15.sp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                color = colorResource(id = R.color.green_width),
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        Text(
+                            text = stringResource(id = R.string.to),
+                            fontSize = 15.sp,
+                            color = colorResource(id = R.color.green_width),
+                            fontWeight = FontWeight.Bold
                         )
-                        FilterButton(
-                            text = "Filtro 2",
-                            isSelected = selectedFilter == "Filter 2",
-                            onClick = {
-                                selectedFilter = "Filter 2"
-                            }
-                        )
-                        FilterButton(
-                            text = "Filtro 3",
+                        Card(
+                            modifier = Modifier
+                                .padding(start = 10.dp)
+                                .width(87.dp)
+                                .height(35.dp)
+                            ,
+                            backgroundColor = Color.White,
+                            border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
+                        ) {
+                            Text(
+                                text = "R$ 25,00",
+                                fontSize = 15.sp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                color = colorResource(id = R.color.green_width),
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                    Text(
+                        text = stringResource(id = R.string.rating),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = colorResource(id = R.color.green_options),
+                        textAlign = TextAlign.Start
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, end = 20.dp, top = 10.dp)
+                        ,
+                        horizontalArrangement = Arrangement.SpaceBetween) {
+                        FilterButtonRating(
+                            text = stringResource(id = R.string.two_more),
                             isSelected = selectedFilter == "Filter 3",
                             onClick = {
                                 selectedFilter = "Filter 3"
                             }
                         )
+                        FilterButtonRating(
+                            text = stringResource(id = R.string.three_more),
+                            isSelected = selectedFilter == "Filter 4",
+                            onClick = {
+                                selectedFilter = "Filter 4"
+                            }
+                        )
                     }
-                    Button(onClick = {
-                        onApplyFilter(selectedFilter)
-                        onDismiss
-                    }) {
-                        Text(text = "Aplicar filtro")
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, end = 20.dp, top = 10.dp)
+                        ,
+                        horizontalArrangement = Arrangement.SpaceBetween)
+                    {
+                        FilterButtonRating(
+                            text = stringResource(id = R.string.four_more),
+                            isSelected = selectedFilter == "Filter 5",
+                            onClick = {
+                                selectedFilter = "Filter 5"
+                            }
+                        )
+                        FilterButtonRating(
+                            text = stringResource(id = R.string.five_only),
+                            isSelected = selectedFilter == "Filter 6",
+                            onClick = {
+                                selectedFilter = "Filter 6"
+                            }
+                        )
                     }
+                    Spacer(modifier = Modifier.height(35.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            onClick =
+                            {
+                                onApplyFilter(selectedFilter)
+                                onDismiss
+                            },
+                            modifier = Modifier
+                                .width(128.dp)
+                                .height(39.dp),
+                            shape = RoundedCornerShape(7.dp),
+                            colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255))
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.apply_filter),
+                                fontSize = 12.sp,
+                                color = Color.White
+                            )
+                        }
+                    }
+
                 }
             }
 
@@ -179,17 +330,59 @@ fun FilterSearch(
 
 @Composable
 fun FilterButton(text: String, isSelected: Boolean, onClick: () -> Unit) {
+ var colorText = colorResource(id = R.color.green_width)
+    if (isSelected)
+        colorText = Color.White
+    else
+        colorText
 
         Button(
             onClick = onClick,
+            modifier = Modifier.padding(start = 10.dp),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = if (isSelected) Color.Magenta else Color.Black,
-                contentColor = if (isSelected) Color.Magenta else Color.Black,
-            )
+                backgroundColor = if (isSelected) colorResource(id = R.color.green_width) else Color.White,
+                contentColor = if (isSelected) colorResource(id = R.color.green_width) else Color.White,
+            ),
+            border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
         ) {
-            Text(text = text)
+            Text(text = text, color = colorText)
         }
 }
+@Composable
+fun FilterButtonRating(text: String, isSelected: Boolean, onClick: () -> Unit) {
+
+    var colorText = colorResource(id = R.color.green_width)
+    if (isSelected)
+        colorText = Color.White
+    else
+        colorText
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .height(46.dp)
+            .width(124.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (isSelected) colorResource(id = R.color.green_width) else Color.White,
+            contentColor = if (isSelected) colorResource(id = R.color.green_width) else Color.White,
+        ),
+        border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
+    ) {
+        Row() {
+            Icon(
+                painter = painterResource(id = R.drawable.star),
+                contentDescription = "",
+                tint = colorResource(id = R.color.yellow_star)
+            )
+            Text(
+                text = text,
+                modifier = Modifier.fillMaxWidth(),
+                color = colorText
+            )
+        }
+
+    }
+}
+
 
 fun listProductsData() = listOf<ProductCardSale>(
 
@@ -293,26 +486,16 @@ fun CampResultSearch() {
                     )
                 }
             )
-
-            Box(
+            IconButton(
+                onClick = { showDialog = true },
                 modifier = Modifier
                     .width(56.dp)
                     .height(48.dp)
                     .padding(end = 5.dp)
-                    .clickable {
-//                        FilterSearch(
-//                            showDialog = showDialog,
-//                            onDismiss = {
-//                                        showDialog =
-//                            },
-//                            onApplyFilter =
-//                        )
-                    }
                     .background(
                         color = colorResource(id = R.color.green_width),
                         shape = RoundedCornerShape(5.dp)
                     ),
-                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.filter),
@@ -320,16 +503,26 @@ fun CampResultSearch() {
                     tint = Color.White
                 )
             }
-
-
+            FilterSearch(
+                showDialog = showDialog,
+                onDismiss = {
+                    showDialog = false
+                },
+                onApplyFilter = { filter ->
+                    showDialog = false
+                }
+            )
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
 fun ResultSearchPreview() {
     YvyporaTheme {
         ResultSearchMain()
+
     }
 }
