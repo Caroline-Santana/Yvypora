@@ -1,0 +1,672 @@
+Index: app/src/main/java/com/example/yvypora/ScreenClients/DescriptionProducts.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.ScreenClients\n\nimport android.content.Intent\nimport android.os.Bundle\nimport android.widget.Toast\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.*\nimport kotlin.math.max\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.material.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport com.example.yvypora.R\nimport com.example.yvypora.api.commons.auth\nimport com.example.yvypora.models.Credentials\nimport com.example.yvypora.ui.theme.YvyporaTheme\n\nclass DescriptionProducts : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                // A surface container using the 'background' color from the theme\n                Surface(\n                    modifier = Modifier.fillMaxSize(),\n                    color = MaterialTheme.colors.background)\n                {\n                        HeaderDescriptionProducts()\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun HeaderDescriptionProducts() {\n    val context = LocalContext.current\n    var rating by remember{mutableStateOf(4)}\n    Box(modifier = Modifier\n        .fillMaxWidth()\n        .fillMaxSize()\n        .statusBarsPadding(),\n        contentAlignment = Alignment.TopStart\n    ){\n        Image(\n            painter = painterResource(id = R.drawable.wave_products),\n            modifier = Modifier\n                .fillMaxWidth()\n                .height(310.dp),\n            contentDescription = stringResource(id = R.string.back_screen)\n        )\n        Image(\n            painter = painterResource(id = R.drawable.arrow_white),\n            modifier = Modifier\n                .height(65.dp)\n                .width(65.dp)\n                .padding(start = 15.dp, top = 30.dp)\n                .clickable {\n                    val intent = Intent(context, InicialScreen::class.java)\n                    context.startActivity(intent)\n                },\n            alignment = Alignment.BottomStart,\n            contentDescription = stringResource(id = R.string.back_screen)\n        )\n        Column(modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .padding(top = 90.dp),\n            verticalArrangement = Arrangement.Top,\n            horizontalAlignment = Alignment.CenterHorizontally\n        ) {\n            Image(\n                painter = painterResource(id = R.drawable.beterraba),\n                modifier = Modifier\n                    .height(265.dp)\n                    .width(260.dp),\n                contentDescription = \"product\",\n                alignment = Alignment.Center\n            )\n            Row(modifier = Modifier\n                .fillMaxWidth(),\n                verticalAlignment = Alignment.CenterVertically\n            ) {\n                Text(\n                    text = \"Beterraba\",\n                    modifier = Modifier\n                        .padding(start = 8.dp),\n                    fontSize = 32.sp,\n                    color = colorResource(id = R.color.green_text_dark)\n                )\n                Row(\n                    modifier = Modifier.fillMaxWidth(),\n                    verticalAlignment = Alignment.CenterVertically,\n                    horizontalArrangement = Arrangement.Center\n                ) {\n                    Rating(score = rating)\n                    Text(\n                        text = \"4.2\",\n                        modifier = Modifier.padding(start = 20.dp),\n                        fontWeight = FontWeight.Bold,\n                        fontSize = 14.sp,\n                        color = colorResource(id = R.color.darkgreen_yvy)\n                    )\n                }\n\n\n            }\n\n            Text(\n                text = \"ZédoAlfácil\",\n                modifier = Modifier\n                    .fillMaxWidth()\n                    .padding(start = 24.dp),\n                fontSize = 18.sp,\n                color = colorResource(id = R.color.gray_yvy)\n            )\n            MainDescriptionProducts()\n        }\n    }\n\n}\n\n@Composable\nfun Star(isFilled: Boolean){\n    if (isFilled){\n        Icon(\n            painter = painterResource(id = R.drawable.star),\n            modifier = Modifier\n                .height(16.dp)\n                .padding(end = 5.dp)\n                .width(18.dp),\n            contentDescription = \"Star\",\n            tint = colorResource(id = R.color.yellow_star)\n        )\n    }else{\n        Icon(\n            painter = painterResource(id = R.drawable.star),\n            contentDescription = \"Star\",\n            modifier = Modifier\n                .height(16.dp)\n                .padding(end = 5.dp)\n                .width(18.dp),\n            tint = colorResource(id = R.color.gray_star)\n        )\n    }\n\n}\n\n@Composable\nfun Rating(score: Int){\n    Row {\n       repeat(score){\n           Star(isFilled = true)\n       }\n        repeat(5 - score){\n            Star(isFilled = false)\n        }\n    }\n}\n\n@Composable\nfun MainDescriptionProducts() {\n    Column(\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .padding(top = 10.dp, start = 15.dp)\n    ) {\n        Row (verticalAlignment = Alignment.CenterVertically,\n            horizontalArrangement = Arrangement.Center){\n            Text(\n                text = \"R$7,50\",\n                fontSize = 36.sp,\n                modifier = Modifier.padding(end = 90.dp),\n                color = colorResource(id = R.color.green_options)\n            )\n            WidhtProductTeste()\n        }\n\n        Text(\n            text = stringResource(id = R.string.description),\n            modifier = Modifier.padding(top = 10.dp),\n            fontSize = 32.sp,\n            color = colorResource(id = R.color.green_text_dark)\n        )\n        Text(\n            text = \"A beterraba é uma planta herbácea da família das Quenopodiáceas,\" +\n                    \" por Cronquist, ou das Amarantáceas, pela APG. Nome derivado do \" +\n                    \"substantivo francês betterave. O colo tuberizado serve, para além \" +\n                    \"dos fins culinários, produção de açúcar.\",\n            modifier = Modifier.padding(top = 15.dp, end = 8.dp),\n            fontWeight = FontWeight.Bold,\n            textAlign = TextAlign.Left,\n            fontSize = 15.sp,\n            color = colorResource(id = R.color.green_text_dark)\n        )\n        Spacer(modifier = Modifier.height(15.dp))\n        Row(modifier = Modifier\n            .fillMaxWidth()\n            .padding(start = 35.dp, end = 45.dp),\n            horizontalArrangement = Arrangement.SpaceBetween\n        ) {\n            Button(\n                onClick = { },\n                modifier = Modifier\n                    .width(128.dp)\n                    .height(45.dp),\n                border = BorderStroke(1.dp, colorResource(id = R.color.green_button)),\n                shape = RoundedCornerShape(5.dp),\n                colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 255)),\n\n\n                ) {\n                Icon(\n                    painter = painterResource(id = R.drawable.shopadd),\n                    modifier = Modifier.padding(end = 3.dp),\n                    contentDescription = \"content description\",\n                    tint = colorResource(id =R.color.green_button )\n                )\n                Text(\n                    text = stringResource(id = R.string.add_affection),\n                    modifier = Modifier.fillMaxWidth(),\n                    color = colorResource(id = R.color.green_button),\n                    fontSize = 12.sp\n                )\n            }\n            Button(\n                onClick = { },\n                modifier = Modifier\n                    .width(128.dp)\n                    .height(45.dp)\n                    ,\n                shape = RoundedCornerShape(5.dp),\n                colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),\n\n\n                ) {\n                Text(\n                    text = stringResource(id = R.string.buy_now),\n                    modifier = Modifier.fillMaxWidth(),\n                    textAlign = TextAlign.Center,\n                    color = Color.White,\n                    fontSize = 12.sp\n                )\n            }\n        }\n    }\n}\n\n@Composable\nfun WidhtProductTeste() {\n    var weight by remember { mutableStateOf(1.0f) }\n    Box(\n        contentAlignment = Alignment.TopStart,\n        modifier = Modifier\n            .background(\n                color = colorResource(id = R.color.green_widht_transparent),\n                RoundedCornerShape(7.dp)\n            )\n            .width(105.dp)\n            .height(30.dp)\n    ) {\n        Row(\n            modifier = Modifier\n                .width(105.dp)\n                .height(30.dp),\n            horizontalArrangement = Arrangement.SpaceBetween,\n            verticalAlignment = Alignment.CenterVertically\n        ) {\n            Button(\n                onClick = { weight = (weight - 0.5f).coerceAtLeast(1f)},\n                modifier = Modifier\n                    .height(30.dp)\n                    .width(32.dp),\n                shape = RoundedCornerShape(7.dp),\n                colors = ButtonDefaults.buttonColors(Color(217, 217, 217, 255))\n            ) {}\n\n            Text(\n            text = \"$weight Kg\",\n            fontSize = 12.sp,\n            fontWeight = FontWeight.Bold,\n            color = colorResource(id = R.color.green_width)\n        )\n            Box(contentAlignment = Alignment.Center) {\n                Button(\n                    onClick = { weight += 0.5f },\n                    modifier = Modifier\n                        .height(30.dp)\n                        .width(32.dp),\n                    shape = RoundedCornerShape(7.dp),\n                ) {}\n                Icon(\n                    painter = painterResource(id = R.drawable.more),\n                    modifier = Modifier\n                        .clickable { weight += 0.5f },\n                    contentDescription = \"\",\n                    tint = Color.White\n                )\n            }\n\n        }\n\n        Icon(\n            painter = painterResource(id = R.drawable.remove),\n            modifier = Modifier.clickable {  weight = (weight - 0.5f).coerceAtLeast(1f) },\n            contentDescription = \"\"\n        )\n    }\n}\n\n@Preview(showBackground = true)\n@Composable\nfun DescriptionProductsPreview() {\n    YvyporaTheme {\n\n            HeaderDescriptionProducts()\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/ScreenClients/DescriptionProducts.kt b/app/src/main/java/com/example/yvypora/ScreenClients/DescriptionProducts.kt
+--- a/app/src/main/java/com/example/yvypora/ScreenClients/DescriptionProducts.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/ScreenClients/DescriptionProducts.kt	(date 1683900706953)
+@@ -1,7 +1,9 @@
+ package com.example.yvypora.ScreenClients
+ 
++import android.annotation.SuppressLint
+ import android.content.Intent
+ import android.os.Bundle
++import android.util.Log
+ import android.widget.Toast
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
+@@ -25,8 +27,13 @@
+ import androidx.compose.ui.unit.sp
+ import com.example.yvypora.R
+ import com.example.yvypora.api.commons.auth
++import com.example.yvypora.api.product.ProductService
+ import com.example.yvypora.models.Credentials
++import com.example.yvypora.models.product.BaseResponse
++import com.example.yvypora.models.product.BaseResponseAsObject
++import com.example.yvypora.models.product.ProductResponse
+ import com.example.yvypora.ui.theme.YvyporaTheme
++import kotlinx.coroutines.launch
+ 
+ class DescriptionProducts : ComponentActivity() {
+     override fun onCreate(savedInstanceState: Bundle?) {
+@@ -38,12 +45,33 @@
+                     modifier = Modifier.fillMaxSize(),
+                     color = MaterialTheme.colors.background)
+                 {
+-                        HeaderDescriptionProducts()
++                    HeaderDescriptionProducts()
++                    SetData()
++                    Log.i("teste", product.toString())
+                 }
+             }
+         }
+     }
+ }
++
++val product = mutableStateOf<ProductResponse?>(null)
++
++
++@SuppressLint("CoroutineCreationDuringComposition")
++@Composable
++fun SetData() {
++    val scope = rememberCoroutineScope()
++    val context = LocalContext.current
++    scope.launch {
++        val service = ProductService()
++        val intent = (context as DescriptionProducts).intent
++        val id = intent.getStringExtra("productId")?.toInt()
++        service.get(id!!) { it ->
++            Log.i("teste", it?.data.toString())
++            product.value = it?.data
++        }
++    }
++}
+ 
+ @Composable
+ fun HeaderDescriptionProducts() {
+@@ -95,7 +123,7 @@
+                 verticalAlignment = Alignment.CenterVertically
+             ) {
+                 Text(
+-                    text = "Beterraba",
++                    text = product?.value?.name ?: "",
+                     modifier = Modifier
+                         .padding(start = 8.dp),
+                     fontSize = 32.sp,
+Index: app/src/main/java/com/example/yvypora/api/Socket.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/api/Socket.kt b/app/src/main/java/com/example/yvypora/api/Socket.kt
+new file mode 100644
+--- /dev/null	(date 1683900706957)
++++ b/app/src/main/java/com/example/yvypora/api/Socket.kt	(date 1683900706957)
+@@ -0,0 +1,30 @@
++package com.example.yvypora.api
++
++import android.content.Context
++import android.util.Log
++import com.example.yvypora.service.datastore.TokenStore
++import io.socket.client.IO
++
++
++class Socket(private val userToken: String) {
++    private lateinit var io: io.socket.client.Socket;
++
++    private val options = IO.Options().apply {
++        query = "token${userToken}"
++    }
++
++    fun createIO() {
++        try {
++            this.io = IO.socket("http://localhost:3337", options)
++        } catch(err: Error) {
++            Log.i("teste", err.toString())
++        }
++    }
++
++    fun connect() {
++        this.io.connect()
++    }
++
++}
++
++
+Index: app/src/main/java/com/example/yvypora/models/product/BaseResponseAsObject.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/product/BaseResponseAsObject.kt b/app/src/main/java/com/example/yvypora/models/product/BaseResponseAsObject.kt
+new file mode 100644
+--- /dev/null	(date 1683900706960)
++++ b/app/src/main/java/com/example/yvypora/models/product/BaseResponseAsObject.kt	(date 1683900706960)
+@@ -0,0 +1,7 @@
++package com.example.yvypora.models.product
++
++data class BaseResponseAsObject<T> (
++    var code: Int? = null,
++    var data: T,
++    var error: Boolean? = null,
++)
+\ No newline at end of file
+Index: app/src/main/java/com/example/yvypora/models/marketer/Marketer.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.models.marketer\n\nimport com.example.yvypora.models.dto.Location\n\ndata class Marketer (\n    val name: String,\n    val email: String,\n    val password: String,\n    val gender: String,\n    val phone: String,\n    val tent_name: String,\n    val location: Location,\n    val birthday: String,\n    val cpf: String\n)
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/marketer/Marketer.kt b/app/src/main/java/com/example/yvypora/models/marketer/Marketer.kt
+--- a/app/src/main/java/com/example/yvypora/models/marketer/Marketer.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/models/marketer/Marketer.kt	(date 1683900706959)
+@@ -3,13 +3,18 @@
+ import com.example.yvypora.models.dto.Location
+ 
+ data class Marketer (
++    var id: Int? = -1,
+     val name: String,
+     val email: String,
+     val password: String,
+     val gender: String,
+     val phone: String,
++    val online: Boolean,
++    var cnpj: String? = null,
++    val review: Float,
++    val avaliations: Float,
+     val tent_name: String,
+     val location: Location,
+     val birthday: String,
+     val cpf: String
+-)
+\ No newline at end of file
++)
+Index: app/src/main/java/com/example/yvypora/models/Product.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.models\n\ndata class Product (\n    val name: String,\n    val photo: String,\n    val qtdeProduct: Int,\n    val price: Float,\n    var description: String? = null,\n    var promo :Boolean? = null,\n    var promo_valor : Int? = null,\n    var category : String? = null,\n\n)
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/Product.kt b/app/src/main/java/com/example/yvypora/models/Product.kt
+--- a/app/src/main/java/com/example/yvypora/models/Product.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/models/Product.kt	(date 1683900706980)
+@@ -1,6 +1,7 @@
+ package com.example.yvypora.models
+ 
+ data class Product (
++    val id: Int,
+     val name: String,
+     val photo: String,
+     val qtdeProduct: Int,
+Index: app/src/main/java/com/example/yvypora/MarketerScreens/RegisterMarketer.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.MarketerScreens\n\nimport android.net.Uri\nimport android.os.Bundle\nimport android.util.Log\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.rememberLauncherForActivityResult\nimport androidx.activity.compose.setContent\nimport androidx.activity.result.contract.ActivityResultContracts\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.clickable\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.rememberScrollState\nimport androidx.compose.foundation.selection.selectable\nimport androidx.compose.foundation.shape.CircleShape\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.foundation.text.KeyboardOptions\nimport androidx.compose.foundation.verticalScroll\nimport androidx.compose.material.*\nimport androidx.compose.material.MaterialTheme.colors\nimport androidx.compose.runtime.*\nimport androidx.compose.runtime.saveable.rememberSaveable\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.focus.FocusRequester\nimport androidx.compose.ui.focus.focusRequester\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.layout.ContentScale\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.input.KeyboardCapitalization\nimport androidx.compose.ui.text.input.KeyboardType\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.tooling.preview.Preview\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport coil.compose.rememberImagePainter\nimport com.example.yvypora.R\nimport com.example.yvypora.api.commons.addPictureToUser\nimport com.example.yvypora.api.commons.auth\nimport com.example.yvypora.api.commons.createMarketer\nimport com.example.yvypora.models.Credentials\nimport com.example.yvypora.models.dto.Location\nimport com.example.yvypora.models.marketer.Marketer\nimport com.example.yvypora.service.datastore.TokenStore\nimport com.example.yvypora.ui.theme.YvyporaTheme\nimport com.example.yvypora.utils.*\nimport kotlinx.coroutines.launch\nimport okhttp3.MediaType.Companion.toMediaTypeOrNull\nimport okhttp3.MultipartBody\nimport okhttp3.RequestBody\nimport java.io.File\nimport java.io.FileOutputStream\n\n\nclass RegisterMarketer : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                Surface(\n                    modifier = Modifier.fillMaxWidth(),\n\n                    ) {\n                    Image(\n                        painter = painterResource(id = R.drawable.logo_no_name),\n                        modifier = Modifier\n                            .height(58.dp)\n                            .width(55.dp)\n                            .padding(horizontal = 28.dp),\n                        alignment = Alignment.BottomStart,\n                        contentDescription = \"logo\",\n                        )\n                    Spacer(\n                        modifier = Modifier.height(36.dp)\n                    )\n                    Column(\n                        modifier = Modifier\n                            .fillMaxSize()\n                            .padding(top = 50.dp),\n                        horizontalAlignment = Alignment.CenterHorizontally,\n                        verticalArrangement = Arrangement.Top\n                    ) {\n                        Text(\n                            text = stringResource(id = R.string.register),\n                            modifier = Modifier.padding(top = 35.dp, end = 10.dp),\n                            textAlign = TextAlign.Center,\n                            color = colorResource(id = R.color.darkgreen_yvy),\n                            fontSize = 48.sp\n                        )\n                    }\n                }\n            }\n            InputsMarketer()\n        }\n    }\n}\n\n@Composable\nfun InputsMarketer() {\n    val context = LocalContext.current\n\n    Column(\n        modifier =\n        Modifier\n            .fillMaxSize()\n            .fillMaxWidth()\n            .padding(top = 170.dp, start = 24.dp, end = 24.dp)\n            .verticalScroll(state = rememberScrollState(), enabled = true),\n        verticalArrangement = Arrangement.Center,\n\n        ) {\n        //Input nome\n        var tentNameState by rememberSaveable {\n            mutableStateOf(\"\")\n        }\n\n        var nameState by rememberSaveable {\n            mutableStateOf(\"\")\n        }\n\n        var isTentNameError by remember {\n            mutableStateOf(false)\n        }\n\n        var isNameError by remember {\n            mutableStateOf(false)\n        }\n        val scope = rememberCoroutineScope()\n\n\n\n        NameInputMarketer(tentNameState, isTentNameError,{ newName ->\n            var lastChar = if (newName.isEmpty()) {\n                isTentNameError = true\n                newName\n\n            } else {\n                newName.get(newName.length - 1)\n                isTentNameError = false\n            }\n            var newValue = if (lastChar == '.' || lastChar == ',')\n                newName.dropLast(1)\n            else newName\n            tentNameState = newValue\n        })\n\n\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n        NameInputMarketer(nameState, isNameError, { newName ->\n            var lastChar = if (newName.isEmpty()) {\n                isNameError = true\n                newName\n\n            } else {\n                newName.get(newName.length - 1)\n                isNameError = false\n            }\n            var newValue = if (lastChar == '.' || lastChar == ',')\n                newName.dropLast(1)\n            else newName\n            nameState = newValue\n        })\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n        var emailState by rememberSaveable {\n            mutableStateOf(\"\")\n        }\n\n        var isEmailError by remember {\n            mutableStateOf(false)\n        }\n\n        //Input Email\n        EmailInputMarketer(emailState, isEmailError, { newEmail ->\n            if (newEmail.isEmpty()) {\n                isEmailError = true\n            } else if (isEmailValid(newEmail) == false) {\n                isEmailError = true\n            } else {\n                newEmail.get(newEmail.length - 1)\n                isEmailError = false\n            }\n\n            emailState = newEmail\n        })\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n\n        var passwordState by rememberSaveable {\n            mutableStateOf(\"\")\n        }\n\n\n        var isPasswordError by remember {\n            mutableStateOf(false)\n        }\n        var isPasswordErrorEmpty by remember {\n            mutableStateOf(false)\n        }\n\n\n        // Input senha\n        PassInputMarketer(passwordState, isPasswordError, isPasswordErrorEmpty, { newPass ->\n            val mMaxLength = 8\n            if (newPass.isEmpty()) {\n                isPasswordErrorEmpty = true\n            } else if (newPass.length >= mMaxLength) {\n                isPasswordError = true\n            } else {\n                newPass.get(newPass.length - 1)\n                isPasswordError = false\n            }\n\n            if (isPasswordError) newPass.dropLast(1)\n\n            passwordState = newPass\n        })\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n        //Input photo\n        PhotoInputMarketer()\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n\n        var cpfState by rememberSaveable {\n            mutableStateOf(\"\")\n        }\n        var isCpfErrorEmpty by remember {\n            mutableStateOf(false)\n        }\n        var isCpfError by remember {\n            mutableStateOf(false)\n        }\n\n        //Input cpf\n        CpfInputMarketer(cpfState, isCpfErrorEmpty, isCpfError, { newCpf ->\n            isCpfErrorEmpty = newCpf.isEmpty()\n            if (cpfState.length > 11) newCpf.dropLast(1)\n\n            if (!ValidationCpf.myValidateCPF(newCpf)) {\n                isCpfError = true\n            } else {\n                isCpfError = false\n                isCpfErrorEmpty = false\n            }\n\n            cpfState = newCpf\n        })\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n\n\n        var phoneState by rememberSaveable {\n            mutableStateOf(\"\")\n        }\n        var isPhoneErrorEmpty by rememberSaveable {\n            mutableStateOf(false)\n        }\n\n        //Input telefone\n        PhoneInputMarketer(phoneState, isPhoneErrorEmpty, onValueChange = { newPhone ->\n            isPhoneErrorEmpty = newPhone.isEmpty()\n\n            if (phoneState.length > 10) newPhone.dropLast(1)\n\n            phoneState = newPhone\n        })\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n\n        //Input birth\n        var birthState by rememberSaveable {\n            mutableStateOf(\"\")\n        }\n        var isBirthErrorEmpty by remember {\n            mutableStateOf(false)\n        }\n\n        BirthMarketer(birthState, isBirthErrorEmpty,{ newBirth ->\n            isBirthErrorEmpty = newBirth.isEmpty()\n\n            if (birthState.length > 8) newBirth.dropLast(1)\n            birthState = newBirth\n        },)\n\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(35.dp)\n        )\n\n        var gender by remember { mutableStateOf(\"\") }\n        //Input genero\n        GenderInputMarketer(gender, onFemClick = { gender = \"F\" }, onManClick = { gender = \"M\" })\n\n        Button(\n            onClick = {\n                      val marketer = Marketer(\n                          name = nameState,\n                          birthday = formatBirthday(birthState),\n                          gender = gender[0].toString(),\n                          cpf = cpfState,\n                          phone = phoneState,\n                          email = emailState,\n                          tent_name = tentNameState,\n                          password = passwordState,\n                          location = Location(\n                              latitude = 0.0,\n                              longitude = 0.0\n                          ),\n                      )\n                scope.launch {\n                    createMarketer(marketer) {it ->\n                        if (it.isNullOrEmpty()) {\n                            Log.i(\"teste\", \"Erro no Cadastro\")\n                        } else {\n                            scope.launch {\n                                auth(credentials = Credentials(marketer.email, marketer.password)) { res ->\n                                    if (!res.error) {\n                                        val tokenStore = TokenStore(context)\n                                        scope.launch {\n                                            tokenStore.saveToken(res.token)\n                                        }\n                                        val uri = Uri.parse(imageUri.value)\n                                        val inputStream =\n                                            context.contentResolver.openInputStream(uri)\n\n                                        if (inputStream != null) {\n                                            val file = File(context.cacheDir, \"image.jpg\")\n                                            val outputStream = FileOutputStream(file)\n\n                                            inputStream.use { input ->\n                                                outputStream.use { output ->\n                                                    input.copyTo(output)\n                                                }\n                                            }\n\n                                            val requestBody = RequestBody.create(\n                                                \"image/*\".toMediaTypeOrNull(),\n                                                file\n                                            )\n\n                                            val imagePart = MultipartBody.Part.createFormData(\n                                                \"picture\",\n                                                file.name,\n                                                requestBody\n                                            )\n\n                                            scope.launch {\n                                                addPictureToUser(res.token, imagePart) { it ->\n                                                    Log.i(\"teste\", it)\n                                                }\n                                            }\n                                        } else {\n                                            Log.e(\"Error\", \"Cannot get input stream from URI\") }\n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            },\n            colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),\n            modifier = Modifier\n                .width(217.dp)\n                .height(48.dp)\n                .align(Alignment.CenterHorizontally),\n            shape = RoundedCornerShape(5.dp),\n\n            ) {\n            Text(\n                text = stringResource(id = R.string.button_register),\n                color = Color.White,\n                fontSize = 20.sp\n            )\n        }\n        //*********************************************************************\n        Spacer(\n            modifier = Modifier.height(15.dp)\n        )\n    }\n}\n\n\n@Composable\nfun NameInputMarketer(nameState: String, isNameError: Boolean, onValueChange: (String) -> Unit) {\n\n    val inputsFocusRequest = FocusRequester()\n\n    Text(\n        text = stringResource(id = R.string.name_tent),\n        modifier = Modifier.padding(top = 5.dp),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = nameState,\n        onValueChange = onValueChange,\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .focusRequester(inputsFocusRequest),\n        isError = isNameError,\n        keyboardOptions = KeyboardOptions(\n            keyboardType = KeyboardType.Text,\n            capitalization = KeyboardCapitalization.Sentences\n        ),\n        singleLine = true,\n\n        )\n\n    if (isNameError) {\n        Text(\n            text = stringResource(id = R.string.name_error),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\n@Composable\nfun EmailInputMarketer(emailState: String, isEmailError: Boolean, onValueChange: (String) -> Unit) {\n    val inputsFocusRequest = FocusRequester()\n\n    Text(\n        text = stringResource(id = R.string.email),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = emailState,\n        onValueChange = onValueChange,\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .focusRequester(inputsFocusRequest),\n        isError = isEmailError,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isEmailError) {\n        Text(\n            text = stringResource(id = R.string.email_error),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n\n}\n\n@Composable\nfun PassInputMarketer(passwordState: String, isPasswordError: Boolean, isPasswordErrorEmpty: Boolean, onValueChange: (String) -> Unit) {\n\n\n    val inputsFocusRequest = FocusRequester()\n\n\n    Text(\n        text = stringResource(id = R.string.password),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = passwordState,\n        onValueChange = onValueChange,\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .focusRequester(inputsFocusRequest),\n        isError = isPasswordError,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isPasswordError) {\n        Text(\n            text = stringResource(id = R.string.message_error_pass2),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n    if (isPasswordErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.message_error_pass1),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\nvar imageUri =  mutableStateOf(\"\")\n\n@Composable\nfun PhotoInputMarketer() {\n        val painter = rememberImagePainter(\n        if (imageUri.value.isEmpty())\n            R.drawable.adicionar_foto\n        else\n            imageUri.value\n    )\n    val launcher = rememberLauncherForActivityResult(\n        contract = ActivityResultContracts.GetContent()\n    ){\n            uri: Uri? ->\n        uri?.let {imageUri.value = it.toString()}\n    }\n\n\n    Column(\n        modifier =\n        Modifier\n            .fillMaxWidth(),\n        verticalArrangement = Arrangement.Center,\n        horizontalAlignment = Alignment.CenterHorizontally\n\n    ) {\n        Text(\n            text = stringResource(id = R.string.profile_picture),\n            fontSize = 20.sp,\n            textAlign = TextAlign.Start,\n            color = colorResource(id = R.color.darkgreen_yvy)\n        )\n        Card(\n            shape = CircleShape,\n            modifier = Modifier\n                .padding(8.dp)\n                .size(115.dp)\n        ) {\n            Image(\n                painter = painter,\n                contentDescription = null,\n                modifier = Modifier\n                    .wrapContentSize()\n                    .padding(start = 5.dp, bottom = 15.dp, top = 12.dp, end = 5.dp)\n                    .clickable { launcher.launch(\"image/*\") },\n                contentScale = ContentScale.Crop\n            )\n\n        }\n    }\n\n}\n\n@Composable\nfun CpfInputMarketer(cpfState: String, isCpfErrorEmpty: Boolean, isCpfError: Boolean, onValueChange: (String) -> Unit) {\n\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.title_cpf),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = cpfState,\n        onValueChange = onValueChange,\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isCpfErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n        visualTransformation = MaskCpf(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isCpfErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.cpf_error_empty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    } else if (isCpfError) {\n        Text(\n            text = stringResource(id = R.string.cpf_error_invalid),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\n\n@Composable\nfun PhoneInputMarketer(phoneState: String, isPhoneErrorEmpty: Boolean, onValueChange: (String) -> Unit) {\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.title_phone),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n\n    TextField(\n        value = phoneState,\n        onValueChange = onValueChange,\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isPhoneErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n//        visualTransformation = MaskPhone(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isPhoneErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.phone_error_empty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n\n@Composable\nfun CnpjInputMarketer() {\n\n    var cnpjState by rememberSaveable {\n        mutableStateOf(\"\")\n    }\n    var isCnpjErrorEmpty by remember {\n        mutableStateOf(false)\n    }\n\n    var isCnpjError by remember {\n        mutableStateOf(false)\n    }\n\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.title_cnpj),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = cnpjState,\n        onValueChange = { newCnpj ->\n            isCnpjError = newCnpj.isEmpty()\n\n            if (cnpjState.length > 11) newCnpj.dropLast(1)\n\n//\n//            if (//!ValidationCpf.myValidateCPF(\n//                    newCnpj\n//            )) {\n//                isCnpjError = true\n//            } else {\n//                isCnpjError = false\n//                isCnpjErrorEmpty = false\n//            }\n\n\n            cnpjState = newCnpj\n        },\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isCnpjErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n        visualTransformation = MaskCnpj(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isCnpjErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.cnpj_error_empty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    } else if (isCnpjError) {\n        Text(\n            text = stringResource(id = R.string.cnpj_error_invalid),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n@Composable\nfun BirthMarketer(birthState: String, isBirthErrorEmpty: Boolean, onValueChange: (String) -> Unit) {\n\n    val inputsFocusRequest = FocusRequester()\n\n    val context = LocalContext.current\n\n    Text(\n        text = stringResource(id = R.string.titleBirth),\n        fontSize = 20.sp,\n        textAlign = TextAlign.Start,\n        color = colorResource(id = R.color.darkgreen_yvy)\n    )\n    TextField(\n        value = birthState,\n        onValueChange = onValueChange,\n        colors = TextFieldDefaults.textFieldColors(\n            backgroundColor = Color.Unspecified,\n            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),\n            cursorColor = colorResource(id = R.color.darkgreen_yvy)\n        ),\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .focusRequester(inputsFocusRequest),\n        isError = isBirthErrorEmpty,\n        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),\n        visualTransformation = MaskBirth(),\n        singleLine = true,\n        shape = RoundedCornerShape(8.dp),\n    )\n    if (isBirthErrorEmpty) {\n        Text(\n            text = stringResource(id = R.string.isBirthErrorEmpty),\n            modifier = Modifier.fillMaxWidth(),\n            color = Color.Red,\n            textAlign = TextAlign.End\n        )\n    }\n}\n@Composable\nfun GenderInputMarketer(selected: String, onFemClick: () -> Unit, onManClick: () -> Unit){\n    Row {\n        RadioButton(\n            selected = selected == \"F\",\n            onClick = onFemClick,\n            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))\n        )\n        Text(\n            text = stringResource(id = R.string.gender_f),\n            modifier = Modifier\n                .clickable(onClick = onFemClick)\n                .padding(top = 12.dp, start = 4.dp)\n        )\n        Spacer(modifier = Modifier.size(60.dp))\n\n        RadioButton(\n            selected = selected == \"M\",\n            onClick = onManClick,\n            colors = RadioButtonDefaults.colors(colorResource(id = R.color.green_yvy))\n        )\n        Text(\n            text = stringResource(id = R.string.gender_m),\n            modifier = Modifier\n                .clickable(onClick = onManClick)\n                .padding(top = 15.dp)\n        )\n    }\n}\n\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/MarketerScreens/RegisterMarketer.kt b/app/src/main/java/com/example/yvypora/MarketerScreens/RegisterMarketer.kt
+--- a/app/src/main/java/com/example/yvypora/MarketerScreens/RegisterMarketer.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/MarketerScreens/RegisterMarketer.kt	(date 1683900706950)
+@@ -321,6 +321,9 @@
+         Button(
+             onClick = {
+                       val marketer = Marketer(
++                          online = false,
++                          review = 0F,
++                          avaliations = 0F,
+                           name = nameState,
+                           birthday = formatBirthday(birthState),
+                           gender = gender[0].toString(),
+Index: app/src/main/java/com/example/yvypora/models/product/ProductResponse.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.models.product\n\nimport com.example.yvypora.models.dto.SaleOff\nimport com.example.yvypora.models.dto.TypeOfPrice\nimport com.example.yvypora.models.marketer.Marketer\nimport com.example.yvypora.models.product.ImageOfProduct\nimport com.google.gson.annotations.SerializedName\n\n\ndata class ProductResponse (\n    val id: Int,\n    val name: String,\n    val price: Double,\n    val quantity: Int?,\n    val review: Int,\n    val avaliations: Int,\n    @SerializedName(\"active_for_selling\")\n    val activeForSelling: Boolean,\n    @SerializedName(\"available_quantity\")\n    val availableQuantity: Int,\n    val marketerId: Int,\n    @SerializedName(\"created_at\")\n    val createdAt: String,\n    @SerializedName(\"updated_at\")\n    val updatedAt: String,\n    val description: String,\n    val categoryOfProductId: Int,\n    val typeOfProductId: Int,\n    val saleOff: List<SaleOff?>,\n    val typeOfPrice: TypeOfPrice,\n    @SerializedName(\"image_of_product\")\n    val imageOfProduct: List<ImageOfProduct>,\n    val marketer: Marketer,\n    var latitude: Boolean? = null,\n    var longitude: Boolean? = null,\n)\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/models/product/ProductResponse.kt b/app/src/main/java/com/example/yvypora/models/product/ProductResponse.kt
+--- a/app/src/main/java/com/example/yvypora/models/product/ProductResponse.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/models/product/ProductResponse.kt	(date 1683900706961)
+@@ -1,5 +1,6 @@
+ package com.example.yvypora.models.product
+ 
++import androidx.compose.runtime.MutableState
+ import com.example.yvypora.models.dto.SaleOff
+ import com.example.yvypora.models.dto.TypeOfPrice
+ import com.example.yvypora.models.marketer.Marketer
+@@ -11,8 +12,9 @@
+     val id: Int,
+     val name: String,
+     val price: Double,
++    val discount: Double?,
+     val quantity: Int?,
+-    val review: Int,
++    val review: Float,
+     val avaliations: Int,
+     @SerializedName("active_for_selling")
+     val activeForSelling: Boolean,
+@@ -24,9 +26,13 @@
+     @SerializedName("updated_at")
+     val updatedAt: String,
+     val description: String,
++    @SerializedName("category_of_productId")
+     val categoryOfProductId: Int,
++    @SerializedName("type_of_productId")
+     val typeOfProductId: Int,
+-    val saleOff: List<SaleOff?>,
++    @SerializedName("sale_off")
++    var saleOff: List<SaleOff?>? = null,
++    @SerializedName("type_of_price")
+     val typeOfPrice: TypeOfPrice,
+     @SerializedName("image_of_product")
+     val imageOfProduct: List<ImageOfProduct>,
+@@ -34,4 +40,3 @@
+     var latitude: Boolean? = null,
+     var longitude: Boolean? = null,
+ )
+-
+Index: app/src/main/java/com/example/yvypora/ScreenClients/InicialScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.ScreenClients\n\nimport android.annotation.SuppressLint\nimport android.content.Intent\nimport android.os.Bundle\nimport android.util.Log\nimport android.widget.RatingBar\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.animation.core.tween\nimport androidx.compose.foundation.*\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.lazy.LazyRow\nimport androidx.compose.foundation.lazy.items\nimport androidx.compose.foundation.shape.CircleShape\nimport androidx.compose.foundation.shape.CornerSize\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.material.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.draw.alpha\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.graphics.graphicsLayer\nimport androidx.compose.ui.layout.ContentScale\nimport androidx.compose.ui.platform.LocalContext\nimport androidx.compose.ui.platform.LocalTextInputService\nimport androidx.compose.ui.res.colorResource\nimport androidx.compose.ui.res.painterResource\nimport androidx.compose.ui.res.stringResource\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.text.input.TextFieldValue\nimport androidx.compose.ui.text.style.TextAlign\nimport androidx.compose.ui.unit.dp\nimport androidx.compose.ui.unit.sp\nimport androidx.compose.ui.util.lerp\nimport androidx.compose.ui.viewinterop.AndroidView\nimport androidx.navigation.NavHostController\nimport androidx.navigation.compose.currentBackStackEntryAsState\nimport androidx.navigation.compose.rememberNavController\nimport coil.annotation.ExperimentalCoilApi\nimport coil.compose.rememberImagePainter\nimport com.example.yvypora.R\nimport com.example.yvypora.api.product.ProductService\nimport com.example.yvypora.model.template\nimport com.example.yvypora.models.Product\nimport com.example.yvypora.models.User\nimport com.example.yvypora.navbar.ItemsMenu\nimport com.example.yvypora.navbar.NavigationHost\nimport com.example.yvypora.service.datastore.TokenStore\nimport com.example.yvypora.service.datastore.UserStore\nimport com.example.yvypora.ui.theme.YvyporaTheme\nimport com.google.accompanist.pager.*\nimport com.google.gson.Gson\nimport kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.delay\nimport kotlinx.coroutines.flow.collect\nimport kotlinx.coroutines.launch\nimport kotlinx.coroutines.yield\nimport kotlin.math.absoluteValue\n\n\nclass InicialScreen : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            YvyporaTheme {\n                HomeScreen()\n                getLists()\n            }\n\n        }\n    }\n}\n\n@OptIn(ExperimentalCoilApi::class)\n@SuppressLint(\"CoroutineCreationDuringComposition\")\n@Composable\nfun Header() {\n    val context = LocalContext.current\n    var scope = rememberCoroutineScope()\n    \n    val store = UserStore(context)\n    var userParsed by remember { mutableStateOf<User?>(null) }\n    scope.launch {\n        store.getDetails.collect {_user ->\n            val gson = Gson()\n            val parsed = gson.fromJson(_user, User::class.java)\n            userParsed = parsed\n        }\n    }\n\n    val profileImage = rememberImagePainter(data = userParsed?.picture_uri ?: \"\")\n    Row(\n        modifier = Modifier\n            .fillMaxWidth()\n            .height(90.dp)\n            .padding(top = 35.dp, start = 15.dp, end = 15.dp),\n        horizontalArrangement = Arrangement.SpaceBetween,\n    ) {\n        Image(\n            painter = painterResource(id = R.drawable.logo_no_name),\n            modifier = Modifier\n                .height(55.dp)\n                .width(55.dp),\n            alignment = Alignment.BottomStart,\n            contentDescription = \"logo\",\n\n            )\n        Image(\n            painter = profileImage,\n            modifier = Modifier\n                .clickable {\n                    val intent = Intent(context, ProfileClient()::class.java)\n                    context.startActivity(intent)\n                }\n                .height(50.dp)\n                .width(55.dp),\n            contentDescription = \"logo\",\n        )\n    }\n}\n\n@OptIn(ExperimentalPagerApi::class)\n@Composable\nfun UpsideLayout() {\n    val offset = remember { mutableStateOf(0f) }\n    val textState = remember { mutableStateOf(TextFieldValue()) }\n    val context = LocalContext.current\n\n    Column(\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxSize()\n            .padding(top = 125.dp)\n            .verticalScroll(rememberScrollState()),\n        horizontalAlignment = Alignment.CenterHorizontally\n    ) {\n        CompositionLocalProvider(\n            LocalTextInputService provides null\n        ) {\n            ReadonlyTextField(\n                value = textState.value,\n                onValueChange = { textState.value = it },\n                modifier = Modifier,\n                onClick = {\n                    val intent = Intent(context, ScreenSearch()::class.java)\n                    context.startActivity(intent)\n                }\n            )\n\n        }\n        Shortcuts()\n        AutoSliding()\n        TabLayoutScreen()\n    }\n}\n\n\n@Composable\nfun ReadonlyTextField(\n    value: TextFieldValue,\n    onValueChange: (TextFieldValue) -> Unit,\n    modifier: Modifier = Modifier,\n    onClick: () -> Unit\n) {\n    Box {\n        OutlinedTextField(\n            value = value,\n            onValueChange = onValueChange,\n            modifier = Modifier\n                .fillMaxWidth()\n                .height(45.dp)\n                .padding(start = 25.dp, end = 25.dp),\n            colors = TextFieldDefaults.textFieldColors(\n                backgroundColor = colorResource(id = R.color.green_yvy),\n                focusedIndicatorColor = colorResource(id = R.color.green_yvy),\n                unfocusedIndicatorColor = colorResource(id = R.color.green_yvy),\n                cursorColor = colorResource(id = R.color.green_yvy)\n            ),\n            shape = RoundedCornerShape(20.dp),\n            trailingIcon = {\n                Icon(\n                    painter = painterResource(R.drawable.lupa_icon),\n                    contentDescription = stringResource(id = R.string.lupa),\n                    modifier = Modifier\n                        .width(35.dp)\n                        .height(35.dp)\n                        .padding(end = 10.dp),\n                    tint = Color.White\n                )\n            }\n        )\n\n        Box(\n            modifier = Modifier\n                .matchParentSize()\n                .alpha(0f)\n                .clickable(onClick = onClick),\n        )\n    }\n}\n\n\n@Composable\nfun HomeScreen() {\n    val navController = rememberNavController()\n    val scaffoldState = rememberScaffoldState()\n    val scope = rememberCoroutineScope()\n    val navigation_item = listOf(\n        ItemsMenu.Pantalla1,\n        ItemsMenu.Pantalla2,\n        ItemsMenu.Pantalla3,\n        ItemsMenu.Pantalla4,\n    )\n\n    Scaffold(\n        scaffoldState = scaffoldState,\n        bottomBar = {\n            NavegationInferior(navController, navigation_item)\n        },\n        floatingActionButtonPosition = FabPosition.Center,\n        floatingActionButton = { Fab(scope, scaffoldState) },\n        isFloatingActionButtonDocked = true,\n        modifier = Modifier.fillMaxHeight()\n    ) { innerPadding ->\n        Box(modifier = Modifier.padding(innerPadding)) {\n            NavigationHost(navController)\n        }\n    }\n}\n\n@Composable\nfun Fab(scope: CoroutineScope, scaffoldState: ScaffoldState) {\n    val context = LocalContext.current\n    FloatingActionButton(\n        onClick = {\n            val intent = Intent(context, ShoppingCartActivity()::class.java)\n            context.startActivity(intent)\n        },\n        backgroundColor = colorResource(id = R.color.green_yvy),\n    ) {\n        Icon(\n            painter = painterResource(id = R.drawable.shopping_cart),\n            contentDescription = \"shopping\",\n            modifier = Modifier\n                .height(44.dp)\n                .width(44.dp)\n                .padding(start = 5.dp)\n        )\n    }\n}\n\n@Composable\nfun currentRoute(navController: NavHostController): String? {\n    val entrada by navController.currentBackStackEntryAsState()\n    return entrada?.destination?.route\n}\n\n@Composable\nfun NavegationInferior(navController: NavHostController, menu_items: List<ItemsMenu>) {\n    BottomAppBar(\n        cutoutShape = MaterialTheme.shapes.medium.copy(\n            CornerSize(percent = 50)\n        ),\n    ) {\n        BottomNavigation(\n            modifier = Modifier.fillMaxSize(),\n        )\n        {\n            val currentRoute = currentRoute(navController = navController)\n            menu_items.forEachIndexed() { index, item ->\n                if (index == 1) {\n                    BottomNavigationItem(\n                        selected = currentRoute == item.rota,\n                        modifier = Modifier\n                            .height(50.dp)\n                            .width(50.dp)\n                            .weight(2f)\n                            .padding(end = 75.dp),\n                        onClick = { navController.navigate(item.rota) },\n                        icon = {\n                            Icon(\n                                painter = painterResource(id = item.icon),\n                                contentDescription = item.title\n                            )\n                        },\n                    )\n                } else {\n                    BottomNavigationItem(\n                        selected = currentRoute == item.rota,\n                        modifier = Modifier\n                            .height(50.dp)\n                            .width(50.dp),\n                        onClick = { navController.navigate(item.rota) },\n                        icon = {\n                            Icon(\n                                painter = painterResource(id = item.icon),\n                                contentDescription = item.title\n                            )\n                        },\n                    )\n                }\n            }\n        }\n    }\n}\n\n\n@OptIn(ExperimentalPagerApi::class)\n@Composable\nfun TabLayoutScreen() {\n    val offset = remember { mutableStateOf(0f) }\n\n    val tabData = listOf(\n        stringResource(id = R.string.all),\n        stringResource(id = R.string.discount),\n        stringResource(id = R.string.near)\n    )\n    val pagerState = rememberPagerState(\n        pageCount = tabData.size,\n        initialOffscreenLimit = 2,\n        infiniteLoop = true,\n        initialPage = 1,\n    )\n    val tabIndex = pagerState.currentPage\n    val coroutineScope = rememberCoroutineScope()\n    Column(modifier = Modifier.height(230.dp)) {\n        TabRow(\n            selectedTabIndex = tabIndex,\n            indicator = { tabPositions ->\n                TabRowDefaults.Indicator(\n                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)\n                )\n            },\n            backgroundColor = Color.Unspecified,\n            contentColor = colorResource(id = R.color.green_yvy),\n\n            ) {\n            tabData.forEachIndexed { index, pair ->\n                Tab(\n                    selected = tabIndex == index,\n                    onClick = {\n                        coroutineScope.launch {\n                            pagerState.animateScrollToPage(index)\n                        }\n                    },\n                    text = {\n                        Text(\n                            text = tabData[index],\n                        )\n                    },\n                    selectedContentColor = colorResource(id = R.color.green_yvy),\n                    unselectedContentColor = colorResource(id = R.color.darkgreen_yvy),\n                )\n            }\n        }\n        HorizontalPager(\n            state = pagerState, modifier = Modifier.weight(1f)\n        ) { index ->\n            Column(\n                modifier = Modifier\n                    .fillMaxSize()\n                    .padding(5.dp),\n                verticalArrangement = Arrangement.Center,\n                horizontalAlignment = Alignment.CenterHorizontally\n            ) {\n                when (tabIndex) {\n                    0 -> ListOfProducts(products = allList)\n                    1 -> ListOfProducts(products = saleOffList)\n                    2 -> ListOfProducts(products = nearToYouList)\n                }\n\n            }\n        }\n    }\n\n}\n\n\nvar saleOffList = mutableListOf<Product>()\nvar allList = mutableListOf<Product>()\nvar nearToYouList = mutableListOf<Product>()\n\n@SuppressLint(\"CoroutineCreationDuringComposition\")\n@Composable\nfun getLists() {\n    val context = LocalContext.current\n    saleOffList.clear()\n    allList.clear()\n    nearToYouList.clear()\n\n    val scope = rememberCoroutineScope()\n    scope.launch {\n        ProductService.atSaleOff { res ->\n            res?.data?.forEach { _product ->\n                saleOffList.add(Product(\n                    photo = _product.imageOfProduct[0].image.uri,\n                    name = _product.name,\n                    price = _product.price.toFloat(),\n                    qtdeProduct = _product.availableQuantity\n                ))\n            }\n        }\n        ProductService.listAllProducts(\n            0,\n            0,\n            higherPrice = 10000,\n            lowerPrice = 0,\n        ) { res ->\n            Log.i(\"teste\", res.toString())\n            res?.data?.forEach { _product ->\n                allList.add(Product(\n                    photo = _product.imageOfProduct[0].image.uri,\n                    name = _product.name,\n                    price = _product.price.toFloat(),\n                    qtdeProduct = _product.availableQuantity\n                ))\n            }\n        }\n        ProductService.listAllProducts(\n            1,\n            0,\n            higherPrice = 10000,\n            lowerPrice = 0,\n        ) { res ->\n            Log.i(\"teste\", res.toString())\n            res?.data?.forEach { _product ->\n                allList.add(Product(\n                    photo = _product.imageOfProduct[0].image.uri,\n                    name = _product.name,\n                    price = _product.price.toFloat(),\n                    qtdeProduct = _product.availableQuantity\n                ))\n            }\n        }\n        ProductService.listAllProducts(\n            2,\n            0,\n            higherPrice = 10000,\n            lowerPrice = 0,\n        ) { res ->\n            Log.i(\"teste\", res.toString())\n            res?.data?.forEach { _product ->\n                allList.add(Product(\n                    photo = _product.imageOfProduct[0].image.uri,\n                    name = _product.name,\n                    price = _product.price.toFloat(),\n                    qtdeProduct = _product.availableQuantity\n                ))\n            }\n        }\n        ProductService.listAllProducts(\n            3,\n            0,\n            higherPrice = 10000,\n            lowerPrice = 0,\n        ) { res ->\n            Log.i(\"teste\", res.toString())\n            res?.data?.forEach { _product ->\n                allList.add(Product(\n                    photo = _product.imageOfProduct[0].image.uri,\n                    name = _product.name,\n                    price = _product.price.toFloat(),\n                    qtdeProduct = _product.availableQuantity\n                ))\n            }\n        }\n        scope.launch {\n            TokenStore(context).getToken.collect {token ->\n                ProductService.closeToClient(\"Bearer $token\") { res ->\n                    res?.data?.forEach { _product ->\n                        nearToYouList.add(Product(\n                            photo = _product.imageOfProduct[0].image.uri,\n                            name = _product.name,\n                            price = _product.price.toFloat(),\n                            qtdeProduct = _product.availableQuantity\n                        ))\n                    }\n                }\n            }\n        }\n    }\n}\n@Composable\nfun ListOfProducts(products: List<Product>) {\n    LazyRow(\n        modifier = Modifier\n            .fillMaxWidth()\n            .fillMaxHeight(),\n        contentPadding = PaddingValues(0.dp),\n    ) {\n        items(products) { product -> CardProducts(product) }\n    }\n}\n\n\n// TODO COMPONENETE DE LISTA --> CARD PRODUCTS\n@Composable\nfun CardProducts(data: Product) {\n    val context = LocalContext.current\n    var titleCard = data.name\n    var photoProduct = rememberImagePainter(data = data.photo)\n    var qtdeProduct = data.qtdeProduct.toString() + \"g\"\n    var priceProduct = \"R$\" + data.price.toString()\n    Card(\n        elevation = 10.dp,\n        contentColor = colorResource(id = R.color.darkgreen_yvy),\n        modifier = Modifier\n            .width(130.dp)\n            .height(145.dp)\n            .clickable {\n                val intent = Intent(context, DescriptionProducts()::class.java)\n                context.startActivity(intent)\n            }\n            .padding(3.dp),\n        border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))\n\n    ) {\n        Column {\n            Column(\n                modifier = Modifier.fillMaxWidth(),\n                horizontalAlignment = Alignment.CenterHorizontally\n            ) {\n                Text(\n                    text = titleCard,\n                    modifier = Modifier.padding(top = 4.dp),\n                    fontWeight = FontWeight.Bold,\n                    fontSize = 14.sp\n                )\n                Image(\n                    painter = photoProduct,\n                    contentDescription = \"Product\",\n                    modifier = Modifier\n                        .width(97.dp)\n                        .height(70.dp),\n                )\n            }\n            Box(modifier = Modifier.fillMaxWidth()) {\n                Text(\n                    text = qtdeProduct,\n                    modifier = Modifier.padding(top = 2.dp, start = 4.dp),\n                    color = colorResource(id = R.color.dark_gray),\n                    fontWeight = FontWeight.Bold,\n                    textAlign = TextAlign.Left,\n                    fontSize = 12.sp\n                )\n                Row(\n                    horizontalArrangement = Arrangement.Center\n                ) {\n                    Text(\n                        text = priceProduct,\n                        modifier = Modifier.padding(top = 20.dp, start = 12.dp, end = 15.dp),\n                        fontWeight = FontWeight.Bold,\n                        textAlign = TextAlign.Left,\n                        fontSize = 14.sp\n                    )\n                    OutlinedButton(\n                        onClick = { },\n                        modifier = Modifier.size(40.dp),\n                        shape = CircleShape,\n                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),\n                        contentPadding = PaddingValues(0.dp),\n                        colors = ButtonDefaults.outlinedButtonColors(\n                            backgroundColor = colorResource(\n                                id = R.color.darkgreen_yvy\n                            )\n                        )\n                    ) {\n                        // Adding an Icon \"Add\" inside the Button\n                        Icon(\n                            painter = painterResource(id = R.drawable.shopping_cart),\n                            modifier = Modifier.padding(start = 3.dp),\n                            contentDescription = \"content description\",\n                            tint = Color.White\n                        )\n                    }\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun Shortcuts() {\n    val context = LocalContext.current\n    Row(\n        modifier = Modifier\n            .fillMaxWidth()\n            .padding(start = 23.dp, end = 25.dp),\n        horizontalArrangement = Arrangement.SpaceBetween\n    ) {\n        Image(\n            painter = painterResource(id = R.drawable.fruits_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, FruitsResultActivity::class.java)\n                    context.startActivity(intent)\n                },\n            contentDescription = \"Fruit\"\n        )\n        Image(\n            painter = painterResource(id = R.drawable.vegetables_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, VegetablesActivityActivity::class.java)\n                    context.startActivity(intent)\n                },\n            contentDescription = \"Vegetables\"\n        )\n        Image(\n            painter = painterResource(id = R.drawable.spices_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, SpicesActivityActivity::class.java)\n                    context.startActivity(intent)\n                },\n            contentDescription = \"Spices\"\n        )\n        Image(\n            painter = painterResource(id = R.drawable.others_category_icon),\n            modifier = Modifier\n                .height(80.dp)\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, OthersActivityActivity::class.java)\n                    context.startActivity(intent)\n                },\n            contentDescription = \"Others\"\n        )\n\n    }\n\n    Row(\n        modifier = Modifier\n            .fillMaxWidth()\n            .padding(start = 25.dp, end = 25.dp),\n        horizontalArrangement = Arrangement.SpaceBetween\n    ) {\n        Text(\n            text = stringResource(id = R.string.fruits),\n            modifier = Modifier\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, FruitsResultActivity::class.java)\n                    context.startActivity(intent)\n                },\n            fontSize = 15.sp,\n            textAlign = TextAlign.Center\n        )\n        Text(\n            text = stringResource(id = R.string.vegetable),\n            modifier = Modifier\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, VegetablesActivityActivity::class.java)\n                    context.startActivity(intent)\n                },\n            fontSize = 15.sp,\n            textAlign = TextAlign.Center\n        )\n        Text(\n            text = stringResource(id = R.string.spices),\n            modifier = Modifier\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, SpicesActivityActivity::class.java)\n                    context.startActivity(intent)\n                },\n            fontSize = 14.sp,\n            textAlign = TextAlign.Center\n        )\n        Text(\n            text = stringResource(id = R.string.other),\n            modifier = Modifier\n                .width(70.dp)\n                .clickable {\n                    val intent = Intent(context, OthersActivityActivity::class.java)\n                    context.startActivity(intent)\n                },\n            fontSize = 15.sp,\n            textAlign = TextAlign.Center\n        )\n    }\n}\n\n@ExperimentalPagerApi\n@Composable\nfun AutoSliding() {\n    val pagerState = rememberPagerState(pageCount = template.size, initialOffscreenLimit = 2)\n\n    LaunchedEffect(Unit) {\n        while (true) {\n            yield()\n            delay(2000)\n            pagerState.animateScrollToPage(\n                page = (pagerState.currentPage + 1) % (pagerState.pageCount),\n                animationSpec = tween(600)\n            )\n        }\n    }\n\n    Column(\n        verticalArrangement = Arrangement.Top\n    ) {\n        HorizontalPager(\n            state = pagerState,\n//            modifier = Modifier.weight(1f)\n        ) { page ->\n            Card(modifier = Modifier\n                .graphicsLayer {\n                    val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue\n                    lerp(\n                        start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)\n                    ).also { scale ->\n                        scaleX = scale\n                        scaleY = scale\n                    }\n\n                }\n                .fillMaxWidth()\n                .height(185.dp)\n                .padding(15.dp, 0.dp, 15.dp, 0.dp),\n                shape = RoundedCornerShape(20.dp)) {\n                val template = template[page]\n                Box(\n                    modifier = Modifier\n                        .fillMaxSize()\n                        .width(130.dp)\n                        .align(Alignment.Center)\n                ) {\n                    Image(\n                        painter = painterResource(\n                            id = when (page) {\n                                1 -> R.drawable.logo\n                                2 -> R.drawable.ofertas\n                                3 -> R.drawable.ofertas\n                                4 -> R.drawable.ofertas\n                                5 -> R.drawable.ofertas\n                                else -> R.drawable.logo\n                            }\n                        ),\n                        contentDescription = \"Image\",\n                        contentScale = ContentScale.Crop,\n                        modifier = Modifier.fillMaxSize()\n                    )\n\n                    Column(\n                        modifier = Modifier\n                            .align(Alignment.BottomStart)\n                            .padding(15.dp)\n                    ) {\n                        val ratingBar = RatingBar(\n                            LocalContext.current,\n                            null,\n                            androidx.appcompat.R.attr.ratingBarStyleSmall\n                        ).apply {\n                            rating = template.rating\n                        }\n                        AndroidView(\n                            factory = { ratingBar },\n                            modifier = Modifier.padding(0.dp, 18.dp, 0.dp, 0.dp)\n                        )\n                    }\n                }\n            }\n            HorizontalPagerIndicator(\n                pagerState = pagerState,\n                modifier = Modifier.padding(top = 210.dp),\n                activeColor = colorResource(id = R.color.darkgreen_yvy),\n                inactiveColor = colorResource(id = R.color.transparentgreen_yvy)\n            )\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/ScreenClients/InicialScreen.kt b/app/src/main/java/com/example/yvypora/ScreenClients/InicialScreen.kt
+--- a/app/src/main/java/com/example/yvypora/ScreenClients/InicialScreen.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/ScreenClients/InicialScreen.kt	(date 1683900706956)
+@@ -41,6 +41,7 @@
+ import coil.annotation.ExperimentalCoilApi
+ import coil.compose.rememberImagePainter
+ import com.example.yvypora.R
++import com.example.yvypora.api.Socket
+ import com.example.yvypora.api.product.ProductService
+ import com.example.yvypora.model.template
+ import com.example.yvypora.models.Product
+@@ -67,11 +68,29 @@
+             YvyporaTheme {
+                 HomeScreen()
+                 getLists()
++                BeOnline()
+             }
++
++        }
++    }
++}
+ 
++@SuppressLint("CoroutineCreationDuringComposition")
++@Composable
++fun BeOnline() {
++    val context = LocalContext.current
++    val scope = rememberCoroutineScope()
++    scope.launch {
++        TokenStore(context).getToken.collect { token ->
++            scope.launch {
++                val socket = Socket(token)
++                socket.createIO()
++                socket.connect()
++            }
+         }
+     }
+ }
++
+ 
+ @OptIn(ExperimentalCoilApi::class)
+ @SuppressLint("CoroutineCreationDuringComposition")
+@@ -156,7 +175,6 @@
+     }
+ }
+ 
+-
+ @Composable
+ fun ReadonlyTextField(
+     value: TextFieldValue,
+@@ -386,97 +404,122 @@
+ @Composable
+ fun getLists() {
+     val context = LocalContext.current
+-    saleOffList.clear()
+-    allList.clear()
+-    nearToYouList.clear()
+-
+     val scope = rememberCoroutineScope()
+-    scope.launch {
+-        ProductService.atSaleOff { res ->
+-            res?.data?.forEach { _product ->
+-                saleOffList.add(Product(
+-                    photo = _product.imageOfProduct[0].image.uri,
+-                    name = _product.name,
+-                    price = _product.price.toFloat(),
+-                    qtdeProduct = _product.availableQuantity
+-                ))
++    if (allList.isEmpty()) {
++        val productService = ProductService()
++        scope.launch {
++            productService.atSaleOff { res ->
++                res?.data?.forEach { _product ->
++                    saleOffList.add(
++                        Product(
++                            id = _product.id,
++                            photo = _product.imageOfProduct[0].image.uri,
++                            name = _product.name,
++                            price = _product.price.toFloat(),
++                            qtdeProduct = _product.availableQuantity
++                        )
++                    )
++                }
+             }
+         }
+-        ProductService.listAllProducts(
+-            0,
+-            0,
+-            higherPrice = 10000,
+-            lowerPrice = 0,
+-        ) { res ->
+-            Log.i("teste", res.toString())
+-            res?.data?.forEach { _product ->
+-                allList.add(Product(
+-                    photo = _product.imageOfProduct[0].image.uri,
+-                    name = _product.name,
+-                    price = _product.price.toFloat(),
+-                    qtdeProduct = _product.availableQuantity
+-                ))
++        scope.launch {
++            TokenStore(context).getToken.collect { token ->
++                productService.closeToClient("Bearer $token") { res ->
++                    res?.data?.forEach { _product ->
++                        nearToYouList.add(
++                            Product(
++                                id = _product.id,
++                                photo = _product.imageOfProduct[0].image.uri,
++                                name = _product.name,
++                                price = _product.price.toFloat(),
++                                qtdeProduct = _product.availableQuantity
++                            )
++                        )
++                    }
++                }
+             }
+         }
+-        ProductService.listAllProducts(
+-            1,
+-            0,
+-            higherPrice = 10000,
+-            lowerPrice = 0,
+-        ) { res ->
+-            Log.i("teste", res.toString())
+-            res?.data?.forEach { _product ->
+-                allList.add(Product(
+-                    photo = _product.imageOfProduct[0].image.uri,
+-                    name = _product.name,
+-                    price = _product.price.toFloat(),
+-                    qtdeProduct = _product.availableQuantity
+-                ))
++        scope.launch {
++            productService.listAllProducts(
++                0,
++                0,
++                higherPrice = 100000,
++                lowerPrice = 0,
++            ) { res ->
++                Log.i("teste", res.toString())
++                res?.data?.forEach { _product ->
++                    allList.add(
++                        Product(
++                            id = _product.id,
++                            photo = _product.imageOfProduct[0].image.uri,
++                            name = _product.name,
++                            price = _product.price.toFloat(),
++                            qtdeProduct = _product.availableQuantity
++                        )
++                    )
++                }
+             }
+         }
+-        ProductService.listAllProducts(
+-            2,
+-            0,
+-            higherPrice = 10000,
+-            lowerPrice = 0,
+-        ) { res ->
+-            Log.i("teste", res.toString())
+-            res?.data?.forEach { _product ->
+-                allList.add(Product(
+-                    photo = _product.imageOfProduct[0].image.uri,
+-                    name = _product.name,
+-                    price = _product.price.toFloat(),
+-                    qtdeProduct = _product.availableQuantity
+-                ))
++        scope.launch {
++            productService.listAllProducts(
++                1,
++                0,
++                higherPrice = 100000,
++                lowerPrice = 0,
++            ) { res ->
++                Log.i("teste", res.toString())
++                res?.data?.forEach { _product ->
++                    allList.add(
++                        Product(
++                            id = _product.id,
++                            photo = _product.imageOfProduct[0].image.uri,
++                            name = _product.name,
++                            price = _product.price.toFloat(),
++                            qtdeProduct = _product.availableQuantity
++                        )
++                    )
++                }
+             }
+         }
+-        ProductService.listAllProducts(
+-            3,
+-            0,
+-            higherPrice = 10000,
+-            lowerPrice = 0,
+-        ) { res ->
+-            Log.i("teste", res.toString())
+-            res?.data?.forEach { _product ->
+-                allList.add(Product(
+-                    photo = _product.imageOfProduct[0].image.uri,
+-                    name = _product.name,
+-                    price = _product.price.toFloat(),
+-                    qtdeProduct = _product.availableQuantity
+-                ))
++        scope.launch {
++            productService.listAllProducts(
++                2,
++                0,
++                higherPrice = 100000,
++                lowerPrice = 0,
++            ) { res ->
++                Log.i("teste", res.toString())
++                res?.data?.forEach { _product ->
++                    allList.add(
++                        Product(
++                            id = _product.id,
++                            photo = _product.imageOfProduct[0].image.uri,
++                            name = _product.name,
++                            price = _product.price.toFloat(),
++                            qtdeProduct = _product.availableQuantity
++                        )
++                    )
++                }
+             }
+         }
+         scope.launch {
+-            TokenStore(context).getToken.collect {token ->
+-                ProductService.closeToClient("Bearer $token") { res ->
+-                    res?.data?.forEach { _product ->
+-                        nearToYouList.add(Product(
++            productService.listAllProducts(
++                3,
++                0,
++                higherPrice = 100000,
++                lowerPrice = 0,
++            ) { res ->
++                Log.i("teste", res.toString())
++                res?.data?.forEach { _product ->
++                    allList.add(
++                        Product(
++                            id = _product.id,
+                             photo = _product.imageOfProduct[0].image.uri,
+                             name = _product.name,
+                             price = _product.price.toFloat(),
+                             qtdeProduct = _product.availableQuantity
+-                        ))
+-                    }
++                        )
++                    )
+                 }
+             }
+         }
+@@ -495,7 +538,6 @@
+ }
+ 
+ 
+-// TODO COMPONENETE DE LISTA --> CARD PRODUCTS
+ @Composable
+ fun CardProducts(data: Product) {
+     val context = LocalContext.current
+@@ -510,7 +552,8 @@
+             .width(130.dp)
+             .height(145.dp)
+             .clickable {
+-                val intent = Intent(context, DescriptionProducts()::class.java)
++                val intent = Intent(context, DescriptionProducts::class.java)
++                intent.putExtra("productId", data.id.toString())
+                 context.startActivity(intent)
+             }
+             .padding(3.dp),
+@@ -778,4 +821,4 @@
+             )
+         }
+     }
+-}
+\ No newline at end of file
++}
+Index: app/src/main/java/com/example/yvypora/api/product/ProductAPIService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.api.product\n\nimport com.example.yvypora.models.*\nimport com.example.yvypora.models.marketer.Marketer\nimport com.example.yvypora.models.product.BaseResponse\nimport com.example.yvypora.models.product.ProductResponse\nimport okhttp3.MultipartBody\n\nimport retrofit2.Call\nimport retrofit2.http.Body\nimport retrofit2.http.GET\nimport retrofit2.http.Header\nimport retrofit2.http.Multipart\nimport retrofit2.http.POST\nimport retrofit2.http.PUT\nimport retrofit2.http.Part\nimport retrofit2.http.Query\n\n\ninterface ProductAPIService {\n   @GET(\"costumer/product/\")\n   fun listAllProducts (\n       @Query(\"category\") category: Int,\n       @Query(\"score\") score: Int,\n       @Query(\"lowerPrice\") lowerPrice: Int,\n       @Query(\"higherPrice\") higherPrice: Int,\n   ): Call<BaseResponse<ProductResponse>>\n\n   @GET(\"costumer/product/inSaleOff\")\n   fun atSaleOff (): Call<BaseResponse<ProductResponse>>\n\n   @GET(\"costumer/product/findNearest\")\n   fun closeToClient(\n       @Header(\"Authorization\") token: String,\n   ): Call<BaseResponse<ProductResponse>>\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/api/product/ProductAPIService.kt b/app/src/main/java/com/example/yvypora/api/product/ProductAPIService.kt
+--- a/app/src/main/java/com/example/yvypora/api/product/ProductAPIService.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/api/product/ProductAPIService.kt	(date 1683900706957)
+@@ -3,6 +3,7 @@
+ import com.example.yvypora.models.*
+ import com.example.yvypora.models.marketer.Marketer
+ import com.example.yvypora.models.product.BaseResponse
++import com.example.yvypora.models.product.BaseResponseAsObject
+ import com.example.yvypora.models.product.ProductResponse
+ import okhttp3.MultipartBody
+ 
+@@ -15,6 +16,7 @@
+ import retrofit2.http.PUT
+ import retrofit2.http.Part
+ import retrofit2.http.Query
++import retrofit2.http.Path
+ 
+ 
+ interface ProductAPIService {
+@@ -34,4 +36,8 @@
+        @Header("Authorization") token: String,
+    ): Call<BaseResponse<ProductResponse>>
+ 
++
++   @GET("costumer/product/{id}")
++   fun get(@Path("id") id: Int): Call<BaseResponseAsObject<ProductResponse>>
++
+ }
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'org.jetbrains.kotlin.android'\n    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'\n}\n\nandroid {\n    namespace 'com.example.yvypora'\n    compileSdk 33\n\n    defaultConfig {\n        applicationId \"com.example.yvypora\"\n        minSdk 26\n        targetSdk 33\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        vectorDrawables {\n            useSupportLibrary true\n        }\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n    buildFeatures {\n        compose true\n        viewBinding true\n    }\n    composeOptions {\n        kotlinCompilerExtensionVersion '1.2.0'\n    }\n    packagingOptions {\n        resources {\n            excludes += '/META-INF/{AL2.0,LGPL2.1}'\n        }\n    }\n}\n\ndependencies {\n\n    // Data Store\n    implementation \"androidx.datastore:datastore-preferences:1.0.0\"\n    implementation \"androidx.datastore:datastore-core:1.0.0\"\n\n    implementation \"androidx.compose.ui:ui-text-google-fonts:1.3.3\"\n    implementation 'androidx.core:core-ktx:1.7.0'\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'\n    implementation 'androidx.activity:activity-compose:1.3.1'\n    implementation \"androidx.compose.ui:ui-util:$compose_ui_version\"\n    implementation \"androidx.compose.ui:ui-tooling-preview:$compose_ui_version\"\n    implementation 'androidx.compose.material:material:1.2.0'\n    implementation 'androidx.appcompat:appcompat:1.4.1'\n    implementation 'com.google.android.material:material:1.5.0'\n    implementation 'androidx.annotation:annotation:1.3.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'\n    implementation 'io.coil-kt:coil-compose:1.3.2'\n    implementation \"androidx.compose.ui:ui:$compose_ui_version\"\n    testImplementation 'junit:junit:4.13.2'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n    androidTestImplementation \"androidx.compose.ui:ui-test-junit4:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-tooling:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-test-manifest:$compose_ui_version\"\n\n\n    implementation(\"androidx.navigation:navigation-compose:2.4.0-beta02\")\n//RetroFit Dependencies\n    implementation 'com.google.code.gson:gson:2.8.9'\n    implementation 'com.squareup.retrofit2:retrofit:2.9.0'\n    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'\n    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.1'\n\n//Coroutains\"\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2\"\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1' //viewModel scope\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1' //lifecycle scope\n    implementation 'androidx.fragment:fragment-ktx:1.4.1'\n\n//Lifecycle\n    implementation 'androidx.lifecycle:lifecycle-common:2.4.1'\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'\n//size dp/sp\n    implementation 'com.intuit.sdp:sdp-android:1.0.6'\n    implementation 'com.intuit.ssp:ssp-android:1.0.6'\n\n    implementation \"androidx.preference:preference-ktx:1.2.0\"\n\n    //FireBase\n    implementation platform('com.google.firebase:firebase-bom:31.2.3')\n    implementation 'com.google.firebase:firebase-analytics-ktx'\n    implementation 'com.google.firebase:firebase-auth:21.1.0'\n\n    //Paging Compose\n    implementation \"com.google.accompanist:accompanist-pager:0.17.0\"\n    implementation \"com.google.accompanist:accompanist-pager-indicators:0.17.0\"\n\n\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0\"\n\n    implementation \"androidx.compose.runtime:runtime-livedata:$compose_ui_version\"\n\n    implementation \"androidx.navigation:navigation-compose:2.5.2\"\n\n   // Dependencias do Google Maps\n    implementation 'com.google.maps.android:maps-compose:2.11.0'\n    implementation 'com.google.android.gms:play-services-maps:18.1.0'\n\n    //navigation\n    implementation(\"androidx.navigation:navigation-compose:2.4.0-alpha09\")\n\n\n\n\n\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/build.gradle	(date 1683900706948)
+@@ -54,6 +54,10 @@
+     implementation "androidx.datastore:datastore-preferences:1.0.0"
+     implementation "androidx.datastore:datastore-core:1.0.0"
+ 
++
++    // SOCKET
++    implementation 'io.socket:socket.io-client:1.0.0'
++
+     implementation "androidx.compose.ui:ui-text-google-fonts:1.3.3"
+     implementation 'androidx.core:core-ktx:1.7.0'
+     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+Index: app/src/main/java/com/example/yvypora/api/product/ProductService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.yvypora.api.product\n\nimport android.content.Context\nimport android.util.Log\nimport com.example.yvypora.api.RetrofitApi\nimport com.example.yvypora.models.Token\nimport com.example.yvypora.models.product.BaseResponse\nimport com.example.yvypora.models.product.ProductResponse\nimport com.example.yvypora.service.datastore.TokenStore\nimport kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.flow.collect\nimport kotlinx.coroutines.launch\nimport retrofit2.Call\nimport retrofit2.Callback\nimport retrofit2.Response\nimport retrofit2.Retrofit\n\nclass ProductService {\n    companion object {\n        private val API = RetrofitApi.productRetrofitService()\n\n        fun listAllProducts(\n            category: Int,\n            score: Int,\n            lowerPrice: Int,\n            higherPrice: Int,\n            onComplete: (BaseResponse<ProductResponse>?) -> Unit\n        ) {\n            val call = API.listAllProducts(category, score, lowerPrice, higherPrice)\n\n            call.enqueue(object : Callback<BaseResponse<ProductResponse>?> {\n                override fun onResponse(\n                    call: Call<BaseResponse<ProductResponse>?>,\n                    response: Response<BaseResponse<ProductResponse>?>\n                ) {\n                    val body = response.body()\n\n                    Log.i(\"teste\", body.toString())\n\n                    if (response.isSuccessful) {\n                        return onComplete.invoke(body)\n                    }\n\n                    return onComplete.invoke(null);\n                }\n\n                override fun onFailure(call: Call<BaseResponse<ProductResponse>?>, t: Throwable) {\n                    t.printStackTrace()\n                }\n\n            })\n        }\n\n        fun atSaleOff(onComplete: (BaseResponse<ProductResponse>?) -> Unit) {\n            val call = API.atSaleOff()\n\n            call.enqueue(object : Callback<BaseResponse<ProductResponse>?> {\n                override fun onResponse(\n                    call: Call<BaseResponse<ProductResponse>?>,\n                    response: Response<BaseResponse<ProductResponse>?>\n                ) {\n                    val body = response.body()\n\n                    if (response.isSuccessful) {\n                        return onComplete.invoke(body)\n                    }\n\n                    return onComplete.invoke(null)\n                }\n\n                override fun onFailure(call: Call<BaseResponse<ProductResponse>?>, t: Throwable) {\n                    t.printStackTrace()\n                }\n            })\n        }\n\n        fun closeToClient(token: String, onComplete: (BaseResponse<ProductResponse>?) -> Unit) {\n            val call = API.closeToClient(token)\n\n            call.enqueue(object: Callback<BaseResponse<ProductResponse>?> {\n                override fun onFailure(call: Call<BaseResponse<ProductResponse>?>, t: Throwable) {\n                    t.printStackTrace()\n                }\n\n                override fun onResponse(\n                    call: Call<BaseResponse<ProductResponse>?>,\n                    response: Response<BaseResponse<ProductResponse>?>\n                ) {\n                    val body = response.body()\n\n                    if (response.isSuccessful) {\n                        return onComplete.invoke(body)\n                    }\n\n                    return onComplete.invoke(null)\n                }\n            })\n        }\n    }\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/yvypora/api/product/ProductService.kt b/app/src/main/java/com/example/yvypora/api/product/ProductService.kt
+--- a/app/src/main/java/com/example/yvypora/api/product/ProductService.kt	(revision 5e282775e5882b567c5db40052b9ea1b77c01467)
++++ b/app/src/main/java/com/example/yvypora/api/product/ProductService.kt	(date 1683900706958)
+@@ -5,6 +5,7 @@
+ import com.example.yvypora.api.RetrofitApi
+ import com.example.yvypora.models.Token
+ import com.example.yvypora.models.product.BaseResponse
++import com.example.yvypora.models.product.BaseResponseAsObject
+ import com.example.yvypora.models.product.ProductResponse
+ import com.example.yvypora.service.datastore.TokenStore
+ import kotlinx.coroutines.CoroutineScope
+@@ -16,7 +17,7 @@
+ import retrofit2.Retrofit
+ 
+ class ProductService {
+-    companion object {
++
+         private val API = RetrofitApi.productRetrofitService()
+ 
+         fun listAllProducts(
+@@ -26,6 +27,7 @@
+             higherPrice: Int,
+             onComplete: (BaseResponse<ProductResponse>?) -> Unit
+         ) {
++            Log.i("teste", category.toString())
+             val call = API.listAllProducts(category, score, lowerPrice, higherPrice)
+ 
+             call.enqueue(object : Callback<BaseResponse<ProductResponse>?> {
+@@ -38,6 +40,7 @@
+                     Log.i("teste", body.toString())
+ 
+                     if (response.isSuccessful) {
++                        Log.i("teste", body.toString())
+                         return onComplete.invoke(body)
+                     }
+ 
+@@ -77,7 +80,7 @@
+         fun closeToClient(token: String, onComplete: (BaseResponse<ProductResponse>?) -> Unit) {
+             val call = API.closeToClient(token)
+ 
+-            call.enqueue(object: Callback<BaseResponse<ProductResponse>?> {
++            call.enqueue(object : Callback<BaseResponse<ProductResponse>?> {
+                 override fun onFailure(call: Call<BaseResponse<ProductResponse>?>, t: Throwable) {
+                     t.printStackTrace()
+                 }
+@@ -96,7 +99,27 @@
+                 }
+             })
+         }
+-    }
+-
++
++        fun get(id: Int, onComplete: (BaseResponseAsObject<ProductResponse>?) -> Unit) {
++            val call = API.get(id)
++            call.enqueue(object : Callback<BaseResponseAsObject<ProductResponse>>{
++                override fun onFailure(call: Call<BaseResponseAsObject<ProductResponse>>, t: Throwable) {
++                    t.printStackTrace()
++                }
++
++                override fun onResponse(
++                    call: Call<BaseResponseAsObject<ProductResponse>>,
++                    response: Response<BaseResponseAsObject<ProductResponse>>
++                ) {
++                    val body = response.body()
++
++                    if (response.isSuccessful) {
++                        return onComplete.invoke(body)
++                    }
++
++                    return onComplete.invoke(null)
++                }
++            })
++        }
+ 
+ }
+\ No newline at end of file
