@@ -77,7 +77,7 @@ class ProductService {
         fun closeToClient(token: String, onComplete: (BaseResponse<ProductResponse>?) -> Unit) {
             val call = API.closeToClient(token)
 
-            call.enqueue(object: Callback<BaseResponse<ProductResponse>?> {
+            call.enqueue(object : Callback<BaseResponse<ProductResponse>?> {
                 override fun onFailure(call: Call<BaseResponse<ProductResponse>?>, t: Throwable) {
                     t.printStackTrace()
                 }
@@ -96,7 +96,27 @@ class ProductService {
                 }
             })
         }
+
+        fun get(id: Int, onComplete: (BaseResponse<ProductResponse>?) -> Unit) {
+            val call = API.get(id)
+            call.enqueue(object : Callback<BaseResponse<ProductResponse>> {
+                override fun onFailure(call: Call<BaseResponse<ProductResponse>>, t: Throwable) {
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(
+                    call: Call<BaseResponse<ProductResponse>>,
+                    response: Response<BaseResponse<ProductResponse>>
+                ) {
+                    val body = response.body()
+
+                    if (response.isSuccessful) {
+                        return onComplete.invoke(body)
+                    }
+
+                    return onComplete.invoke(null)
+                }
+            })
+        }
     }
-
-
 }

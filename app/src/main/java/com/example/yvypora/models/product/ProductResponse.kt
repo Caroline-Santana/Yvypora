@@ -11,6 +11,7 @@ data class ProductResponse (
     val id: Int,
     val name: String,
     val price: Double,
+    val discount: Double?,
     val quantity: Int?,
     val review: Int,
     val avaliations: Int,
@@ -24,9 +25,13 @@ data class ProductResponse (
     @SerializedName("updated_at")
     val updatedAt: String,
     val description: String,
+    @SerializedName("category_of_productId")
     val categoryOfProductId: Int,
+    @SerializedName("type_of_productId")
     val typeOfProductId: Int,
+    @SerializedName("sale_off")
     val saleOff: List<SaleOff?>,
+    @SerializedName("type_of_price")
     val typeOfPrice: TypeOfPrice,
     @SerializedName("image_of_product")
     val imageOfProduct: List<ImageOfProduct>,

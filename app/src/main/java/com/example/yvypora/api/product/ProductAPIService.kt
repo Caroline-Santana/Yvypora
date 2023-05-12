@@ -15,6 +15,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Query
+import retrofit2.http.Path
 
 
 interface ProductAPIService {
@@ -33,5 +34,9 @@ interface ProductAPIService {
    fun closeToClient(
        @Header("Authorization") token: String,
    ): Call<BaseResponse<ProductResponse>>
+
+
+   @GET("costumer/product/{id}")
+   fun get(@Path("id") id: Int): Call<BaseResponse<ProductResponse>>
 
 }

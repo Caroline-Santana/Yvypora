@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
-    <runningDeviceTargetSelectedWithDropDown>
+    <targetSelectedWithDropDown>
       <Target>
-        <type value="RUNNING_DEVICE_TARGET" />
+        <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\22102363\.android\avd\nabo_2001.avd" />
-            <value value="C:\Users\22102358\.android\avd\Pixel_6_Pro_API_30.avd" />
+            <value value="$PROJECT_DIR$/../.android/avd/emulador_para_tcc.avd" />
           </Key>
         </deviceKey>
       </Target>
-    </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-05-09T11:13:49.465885700Z" />
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-05-09T10:44:00.998693500Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-05-10T13:36:11.907501Z" />
   </component>
 </project>

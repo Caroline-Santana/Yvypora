@@ -28,7 +28,7 @@ import com.example.yvypora.api.commons.auth
 import com.example.yvypora.models.Credentials
 import com.example.yvypora.ui.theme.YvyporaTheme
 
-class DescriptionProducts : ComponentActivity() {
+class DescriptionProducts(val id: Int) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

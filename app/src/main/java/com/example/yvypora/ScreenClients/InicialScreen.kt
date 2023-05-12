@@ -41,6 +41,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
+import com.example.yvypora.api.Socket
 import com.example.yvypora.api.product.ProductService
 import com.example.yvypora.model.template
 import com.example.yvypora.models.Product
@@ -67,11 +68,29 @@ class InicialScreen : ComponentActivity() {
             YvyporaTheme {
                 HomeScreen()
                 getLists()
+                BeOnline()
             }
 
         }
     }
 }
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun BeOnline() {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    scope.launch {
+        TokenStore(context).getToken.collect { token ->
+            scope.launch {
+                val socket = Socket(token)
+                socket.createIO()
+                socket.connect()
+            }
+        }
+    }
+}
+
 
 @OptIn(ExperimentalCoilApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -395,6 +414,7 @@ fun getLists() {
         ProductService.atSaleOff { res ->
             res?.data?.forEach { _product ->
                 saleOffList.add(Product(
+                    id = _product.id,
                     photo = _product.imageOfProduct[0].image.uri,
                     name = _product.name,
                     price = _product.price.toFloat(),
@@ -411,6 +431,7 @@ fun getLists() {
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(Product(
+                    id = _product.id,
                     photo = _product.imageOfProduct[0].image.uri,
                     name = _product.name,
                     price = _product.price.toFloat(),
@@ -427,6 +448,7 @@ fun getLists() {
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(Product(
+                    id = _product.id,
                     photo = _product.imageOfProduct[0].image.uri,
                     name = _product.name,
                     price = _product.price.toFloat(),
@@ -443,6 +465,7 @@ fun getLists() {
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(Product(
+                    id = _product.id,
                     photo = _product.imageOfProduct[0].image.uri,
                     name = _product.name,
                     price = _product.price.toFloat(),
@@ -459,6 +482,7 @@ fun getLists() {
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(Product(
+                    id = _product.id,
                     photo = _product.imageOfProduct[0].image.uri,
                     name = _product.name,
                     price = _product.price.toFloat(),
@@ -471,6 +495,7 @@ fun getLists() {
                 ProductService.closeToClient("Bearer $token") { res ->
                     res?.data?.forEach { _product ->
                         nearToYouList.add(Product(
+                            id = _product.id,
                             photo = _product.imageOfProduct[0].image.uri,
                             name = _product.name,
                             price = _product.price.toFloat(),
@@ -510,7 +535,7 @@ fun CardProducts(data: Product) {
             .width(130.dp)
             .height(145.dp)
             .clickable {
-                val intent = Intent(context, DescriptionProducts()::class.java)
+                val intent = Intent(context, DescriptionProducts(data.id)::class.java)
                 context.startActivity(intent)
             }
             .padding(3.dp),
