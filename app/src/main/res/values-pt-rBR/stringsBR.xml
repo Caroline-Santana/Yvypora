@@ -116,6 +116,7 @@
     <string name="my_shopping_cart">Meu carrinho</string>
     <string name="date">Data:</string>
     <string name="promotion">Promoção!</string>
+    <string name="promotion_question">Promoção :</string>
     <string name="pay">Pagar</string>
     <string name="title_activity_inicial_screen_marketer">Página Inicial do Feirante</string>
     <string name="title_activity_checkout">Tela de recibo</string>
