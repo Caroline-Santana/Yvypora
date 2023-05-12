@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.shapes.Shape
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -49,6 +50,8 @@ class AddProducts : ComponentActivity() {
     }
 }
 
+var selected by mutableStateOf(false)
+
 @Composable
 fun HeaderAddProduct() {
     val context = LocalContext.current
@@ -85,17 +88,17 @@ fun HeaderAddProduct() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddProductMain() {
-    var isSelectedPhoto = painterResource(id = R.drawable.check_product_off)
+fun AddProductMain(
 
+) {
 
-    var isSelected by rememberSaveable {
-        mutableStateOf(false)
-    }
     var checkState by rememberSaveable {
         mutableStateOf(false)
     }
 
+    var isSelected by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     var nameStateProduct by rememberSaveable {
         mutableStateOf("")
@@ -143,6 +146,7 @@ fun AddProductMain() {
                 fontSize = 30.sp,
                 color = colorResource(id = R.color.darkgreen_yvy2)
             )
+            Spacer(modifier = Modifier.padding(top = 25.dp))
 
             Text(
                 text = stringResource(id = R.string.category_title),
@@ -167,6 +171,7 @@ fun AddProductMain() {
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clip(RoundedCornerShape(10.dp)),
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = colorResource(id = R.color.gray_input)),
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
 
@@ -190,6 +195,8 @@ fun AddProductMain() {
                 }
             }
 
+            Spacer(modifier = Modifier.padding(top = 25.dp))
+
             Text(
                 text = stringResource(id = R.string.name),
                 fontWeight = FontWeight.Medium,
@@ -210,10 +217,12 @@ fun AddProductMain() {
                         color = colorResource(id = R.color.green_yvy),
                         shape = RoundedCornerShape(10.dp)
                     )
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp)),
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = colorResource(id = R.color.gray_input))
 
 
             )
+            Spacer(modifier = Modifier.padding(top = 25.dp))
             Row(horizontalArrangement = Arrangement.Center) {
                 Text(
                     text = stringResource(id = R.string.description),
@@ -239,17 +248,21 @@ fun AddProductMain() {
                         color = colorResource(id = R.color.green_yvy),
                         shape = RoundedCornerShape(10.dp)
                     )
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp)),
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = colorResource(id = R.color.gray_input))
             )
         }
+        Spacer(modifier = Modifier.padding(top = 25.dp))
         PhotoInputProduct()
+        Spacer(modifier = Modifier.padding(top = 25.dp))
         Text(
             text = stringResource(id = R.string.prices_sizes),
             fontWeight = FontWeight.Medium,
-            fontSize = 30.sp,
+            fontSize = 24.sp,
             color = colorResource(id = R.color.darkgreen_yvy2),
             textAlign = TextAlign.Start
         );
+        Spacer(modifier = Modifier.padding(top = 15.dp))
         Row(
             Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
@@ -258,15 +271,17 @@ fun AddProductMain() {
             Column() {
                 Row() {
                     Image(
-                        painter = isSelectedPhoto,
-                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                        painter = if (isSelected) painterResource(id = R.drawable.check_product_on) else painterResource(
+                            id = R.drawable.check_product_off
+                        ),
+                        contentDescription = "",
+                        modifier = Modifier.clickable { isSelected = true }
                     )
                     Text(
                         text = stringResource(id = R.string.customized),
                         Modifier
                             .height(40.dp)
-                            .width(116.dp)
-
+                            .width(116.dp),
                     )
                 }
                 TextField(
@@ -280,6 +295,7 @@ fun AddProductMain() {
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clip(RoundedCornerShape(10.dp)),
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = colorResource(id = R.color.gray_input)),
                     label = {
                         Text(text = "R$")
                     },
@@ -290,10 +306,13 @@ fun AddProductMain() {
             Column() {
                 Row() {
                     Image(
-                        painter = isSelectedPhoto,
-                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                        painter = if (isSelected) painterResource(id = R.drawable.check_product_on) else painterResource(
+                            id = R.drawable.check_product_off
+                        ),
+                        contentDescription = "",
+                        modifier = Modifier.clickable { isSelected = true }
                     )
-                    Text(text = stringResource(id = R.string.g500))
+                    Text(text = stringResource(id = R.string.g500), textAlign = TextAlign.Center)
                 }
                 TextField(
                     value = gramaStateProduct,
@@ -306,6 +325,7 @@ fun AddProductMain() {
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clip(RoundedCornerShape(10.dp)),
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = colorResource(id = R.color.gray_input)),
                     label = {
                         Text(text = "R$")
                     },
@@ -314,6 +334,7 @@ fun AddProductMain() {
             }
 
         }
+        Spacer(modifier = Modifier.padding(10.dp))
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -322,13 +343,18 @@ fun AddProductMain() {
             Column() {
                 Row() {
                     Image(
-                        painter = isSelectedPhoto,
-                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                        painter = if (isSelected) painterResource(id = R.drawable.check_product_on) else painterResource(
+                            id = R.drawable.check_product_off
+                        ),
+                        contentDescription = "",
+                        modifier = Modifier.clickable { isSelected = true }
                     )
                     Text(
-                        text = stringResource(id = R.string.kg1), Modifier
-                            .width(150.dp)
-                    )
+                        text = stringResource(id = R.string.kg1),
+                        Modifier
+                            .width(150.dp),
+
+                        )
                 }
                 TextField(
                     value = kiloStateProduct,
@@ -341,6 +367,7 @@ fun AddProductMain() {
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clip(RoundedCornerShape(10.dp)),
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = colorResource(id = R.color.gray_input)),
                     label = {
                         Text(text = "R$")
                     },
@@ -350,10 +377,13 @@ fun AddProductMain() {
             Column() {
                 Row() {
                     Image(
-                        painter = isSelectedPhoto,
-                        contentDescription = "", modifier = Modifier.clickable { isSelected = true }
+                        painter = if (isSelected) painterResource(id = R.drawable.check_product_on) else painterResource(
+                            id = R.drawable.check_product_off
+                        ),
+                        contentDescription = "",
+                        modifier = Modifier.clickable { isSelected = true }
                     )
-                    Text(text = stringResource(id = R.string.kg15))
+                    Text(text = stringResource(id = R.string.kg15), textAlign = TextAlign.Start)
                 }
                 TextField(
                     value = kiloemeioStateProduct,
@@ -366,6 +396,7 @@ fun AddProductMain() {
                             shape = RoundedCornerShape(10.dp)
                         )
                         .clip(RoundedCornerShape(10.dp)),
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = colorResource(id = R.color.gray_input)),
                     label = {
                         Text(text = "R$")
                     },
@@ -374,8 +405,9 @@ fun AddProductMain() {
             }
 
         }
+        Spacer(modifier = Modifier.padding(top = 55.dp))
         Row(
-            Modifier.fillMaxSize()
+            Modifier.fillMaxSize(),
         ) {
             Column(Modifier.height(200.dp)) {
                 Text(
@@ -384,25 +416,48 @@ fun AddProductMain() {
                     fontSize = 24.sp,
                     color = colorResource(id = R.color.darkgreen_yvy2)
                 )
-                Switch(checked = checkState, onCheckedChange = { checkState = it })
-            }
-            if (checkState) {
-                TextField(
-                    value = promoStateProduct,
-                    onValueChange = { promoStateProduct = it },
+                Switch(
+                    checked = checkState, onCheckedChange = { checkState = it },
                     Modifier
-                        .width(154.dp)
-                        .border(
-                            width = 2.dp,
-                            color = colorResource(id = R.color.green_yvy),
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                        .clip(RoundedCornerShape(10.dp)) ,
-                    label = {
-                        Text(text = "% da Promoção")
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        .width(100.dp)
+                        .height(60.dp), colors = SwitchDefaults.colors(
+                        checkedThumbColor = colorResource(id = R.color.green_yvy),
+                        uncheckedThumbColor = colorResource(id = R.color.green_yvy),
+                        checkedTrackColor = colorResource(id = R.color.green_yvy),
+                        uncheckedTrackColor = colorResource(id = R.color.gray_yvy),
+                    )
                 )
+            }
+            Spacer(modifier = Modifier.padding(15.dp))
+            if (checkState) {
+                Column(
+                    Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextField(
+                        value = promoStateProduct,
+                        onValueChange = { promoStateProduct = it },
+                        Modifier
+                            .width(230.dp)
+                            .border(
+                                width = 2.dp,
+                                color = colorResource(id = R.color.green_yvy),
+                                shape = RoundedCornerShape(10.dp)
+                            )
+                            .clip(RoundedCornerShape(10.dp)),
+                        colors = TextFieldDefaults.textFieldColors(
+                            backgroundColor = colorResource(
+                                id = R.color.gray_input
+                            )
+                        ),
+
+                        label = {
+                            Text(text = "% da Promoção")
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                }
             }
         }
     }
@@ -441,7 +496,7 @@ fun PhotoInputProduct() {
         )
         Text(
             text = stringResource(id = R.string.photo_product_description),
-            Modifier.width(168.dp),
+            Modifier.width(250.dp),
             fontSize = 14.sp,
             textAlign = TextAlign.Start,
             color = colorResource(id = R.color.gray_text)

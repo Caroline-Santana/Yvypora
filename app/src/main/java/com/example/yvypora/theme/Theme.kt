@@ -5,9 +5,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import com.example.yvypora.R
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
+    primary =  Purple500,
     primaryVariant = Purple700,
     secondary = Teal200
 )
