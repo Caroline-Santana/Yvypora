@@ -49,12 +49,12 @@ import com.example.yvypora.navbar.ItemsMenu
 import com.example.yvypora.navbar.NavigationHost
 import com.example.yvypora.service.datastore.TokenStore
 import com.example.yvypora.service.datastore.UserStore
+import com.example.yvypora.service.websocket.Websocket
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import kotlin.math.absoluteValue
@@ -66,11 +66,19 @@ class InicialScreen : ComponentActivity() {
         setContent {
             YvyporaTheme {
                 HomeScreen()
+                BeOnline()
                 getLists()
             }
 
         }
     }
+}
+
+@Composable
+fun BeOnline() {
+    val context = LocalContext.current
+    val socket = Websocket().getInstance(context)
+    socket.connect()
 }
 
 @OptIn(ExperimentalCoilApi::class)
