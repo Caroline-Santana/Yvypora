@@ -42,8 +42,8 @@ import com.example.yvypora.api.commons.getDetailsOfUser
 import com.example.yvypora.models.Credentials
 import com.example.yvypora.models.Token
 import com.example.yvypora.models.dto.TypeOfUser
-import com.example.yvypora.service.datastore.TokenStore
-import com.example.yvypora.service.datastore.UserStore
+import com.example.yvypora.services.datastore.TokenStore
+import com.example.yvypora.services.datastore.UserStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.gson.Gson
 import kotlinx.coroutines.launch

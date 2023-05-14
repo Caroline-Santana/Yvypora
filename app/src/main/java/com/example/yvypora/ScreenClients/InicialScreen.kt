@@ -47,9 +47,9 @@ import com.example.yvypora.models.Product
 import com.example.yvypora.models.User
 import com.example.yvypora.navbar.ItemsMenu
 import com.example.yvypora.navbar.NavigationHost
-import com.example.yvypora.service.datastore.TokenStore
-import com.example.yvypora.service.datastore.UserStore
-import com.example.yvypora.service.websocket.Websocket
+import com.example.yvypora.services.datastore.TokenStore
+import com.example.yvypora.services.datastore.UserStore
+import com.example.yvypora.services.websocket.Websocket
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
 import com.google.gson.Gson

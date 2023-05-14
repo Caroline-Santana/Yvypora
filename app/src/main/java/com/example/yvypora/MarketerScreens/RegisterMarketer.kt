@@ -44,7 +44,7 @@ import com.example.yvypora.api.commons.createMarketer
 import com.example.yvypora.models.Credentials
 import com.example.yvypora.models.dto.Location
 import com.example.yvypora.models.marketer.Marketer
-import com.example.yvypora.service.datastore.TokenStore
+import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.*
 import kotlinx.coroutines.launch

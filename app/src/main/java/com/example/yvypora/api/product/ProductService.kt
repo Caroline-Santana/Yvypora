@@ -6,7 +6,7 @@ import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.models.Token
 import com.example.yvypora.models.product.BaseResponse
 import com.example.yvypora.models.product.ProductResponse
-import com.example.yvypora.service.datastore.TokenStore
+import com.example.yvypora.services.datastore.TokenStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

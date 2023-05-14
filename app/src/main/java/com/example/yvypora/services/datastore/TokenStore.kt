@@ -1,4 +1,4 @@
-package com.example.yvypora.service.datastore
+package com.example.yvypora.services.datastore
 
 import android.content.Context
 import androidx.compose.runtime.State

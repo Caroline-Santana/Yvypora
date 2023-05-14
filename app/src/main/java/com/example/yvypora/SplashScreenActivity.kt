@@ -30,8 +30,8 @@ import com.example.yvypora.ScreenClients.InicialScreen
 import com.example.yvypora.animatedsplashscreendemo.navigation.SetupNavGraph
 import com.example.yvypora.models.User
 import com.example.yvypora.models.dto.TypeOfUser
-import com.example.yvypora.service.datastore.TokenStore
-import com.example.yvypora.service.datastore.UserStore
+import com.example.yvypora.services.datastore.TokenStore
+import com.example.yvypora.services.datastore.UserStore
 
 
 import com.example.yvypora.ui.theme.YvyporaTheme
