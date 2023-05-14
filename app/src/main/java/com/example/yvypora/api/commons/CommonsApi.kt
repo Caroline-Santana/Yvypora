@@ -1,23 +1,16 @@
 package com.example.yvypora.api.commons
 
-import android.content.Context
-import android.icu.text.Collator.ReorderCodes
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.models.*
-import com.example.yvypora.models.costumer.CostumerInfoError
 import com.example.yvypora.models.marketer.Marketer
-import com.example.yvypora.services.datastore.TokenStore
 import okhttp3.MultipartBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 fun auth(credentials: Credentials, onComplete: (Token) -> Unit) {
-    val call = RetrofitApi.commonsRetrofitSer @GET("costumer/product/")
-   fun listAllProducts (vice().auth(credentials)
+    val call = RetrofitApi.commonsRetrofitService().auth(credentials)
 
     call.enqueue(object : Callback<Token> {
         override fun onResponse(call: Call<Token>, response: Response<Token>) {

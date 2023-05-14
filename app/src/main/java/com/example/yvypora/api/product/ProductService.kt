@@ -1,19 +1,12 @@
 package com.example.yvypora.api.product
 
-import android.content.Context
 import android.util.Log
 import com.example.yvypora.api.RetrofitApi
-import com.example.yvypora.models.Token
 import com.example.yvypora.models.product.BaseResponse
 import com.example.yvypora.models.product.ProductResponse
-import com.example.yvypora.services.datastore.TokenStore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 
 class ProductService {
     companion object {

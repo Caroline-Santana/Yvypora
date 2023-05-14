@@ -1,10 +1,7 @@
 package com.example.yvypora
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.HorizontalScrollView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,11 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.MarketerScreens.InicialMarketerActivity
 import com.example.yvypora.ScreenClients.InicialScreen
-import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.api.commons.auth
 import com.example.yvypora.api.commons.getDetailsOfUser
 import com.example.yvypora.models.Credentials
-import com.example.yvypora.models.Token
 import com.example.yvypora.models.dto.TypeOfUser
 import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.services.datastore.UserStore
