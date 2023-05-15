@@ -67,7 +67,7 @@ class InicialScreen : ComponentActivity() {
             YvyporaTheme {
                 HomeScreen()
                 BeOnline()
-                getLists()
+                GetLists()
             }
 
         }
@@ -392,7 +392,7 @@ var nearToYouList = mutableListOf<Product>()
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun getLists() {
+fun GetLists() {
     val context = LocalContext.current
     saleOffList.clear()
     allList.clear()
@@ -400,16 +400,6 @@ fun getLists() {
 
     val scope = rememberCoroutineScope()
     scope.launch {
-        ProductService.atSaleOff { res ->
-            res?.data?.forEach { _product ->
-                saleOffList.add(Product(
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
-            }
-        }
         ProductService.listAllProducts(
             0,
             0,
@@ -418,14 +408,18 @@ fun getLists() {
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
-                allList.add(Product(
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
+                allList.add(
+                    Product(
+                        photo = _product.imageOfProduct[0].image.uri,
+                        name = _product.name,
+                        price = _product.price.toFloat(),
+                        qtdeProduct = _product.availableQuantity
+                    )
+                )
             }
         }
+    }
+    scope.launch {
         ProductService.listAllProducts(
             1,
             0,
@@ -434,14 +428,18 @@ fun getLists() {
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
-                allList.add(Product(
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
+                allList.add(
+                    Product(
+                        photo = _product.imageOfProduct[0].image.uri,
+                        name = _product.name,
+                        price = _product.price.toFloat(),
+                        qtdeProduct = _product.availableQuantity
+                    )
+                )
             }
         }
+    }
+    scope.launch {
         ProductService.listAllProducts(
             2,
             0,
@@ -450,14 +448,18 @@ fun getLists() {
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
-                allList.add(Product(
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
+                allList.add(
+                    Product(
+                        photo = _product.imageOfProduct[0].image.uri,
+                        name = _product.name,
+                        price = _product.price.toFloat(),
+                        qtdeProduct = _product.availableQuantity
+                    )
+                )
             }
         }
+    }
+    scope.launch {
         ProductService.listAllProducts(
             3,
             0,
@@ -466,25 +468,45 @@ fun getLists() {
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
-                allList.add(Product(
-                    photo = _product.imageOfProduct[0].image.uri,
-                    name = _product.name,
-                    price = _product.price.toFloat(),
-                    qtdeProduct = _product.availableQuantity
-                ))
+                allList.add(
+                    Product(
+                        photo = _product.imageOfProduct[0].image.uri,
+                        name = _product.name,
+                        price = _product.price.toFloat(),
+                        qtdeProduct = _product.availableQuantity
+                    )
+                )
             }
         }
-        scope.launch {
-            TokenStore(context).getToken.collect {token ->
-                ProductService.closeToClient("Bearer $token") { res ->
-                    res?.data?.forEach { _product ->
-                        nearToYouList.add(Product(
+    }
+    scope.launch {
+        ProductService.atSaleOff { res ->
+            res?.data?.forEach { _product ->
+                saleOffList.add(
+                    Product(
+                        photo = _product.imageOfProduct[0].image.uri,
+                        name = _product.name,
+                        price = _product.price.toFloat(),
+                        qtdeProduct = _product.availableQuantity
+                    )
+                )
+            }
+
+        }
+    }
+
+    scope.launch {
+        TokenStore(context).getToken.collect { token ->
+            ProductService.closeToClient("Bearer $token") { res ->
+                res?.data?.forEach { _product ->
+                    nearToYouList.add(
+                        Product(
                             photo = _product.imageOfProduct[0].image.uri,
                             name = _product.name,
                             price = _product.price.toFloat(),
                             qtdeProduct = _product.availableQuantity
-                        ))
-                    }
+                        )
+                    )
                 }
             }
         }

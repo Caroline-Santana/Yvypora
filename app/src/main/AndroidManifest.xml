@@ -76,11 +76,6 @@
             android:label="@string/title_activity_edit_profile_sreen"
             android:theme="@style/Theme.Yvypora" />
         <activity
-            android:name=".ScreenClients.FruitsResultActivity"
-            android:exported="false"
-            android:label="@string/fruits_result"
-            android:theme="@style/Theme.Yvypora" />
-        <activity
             android:name=".ScreenClients.FairsActivity"
             android:exported="false"
             android:label="@string/fair"

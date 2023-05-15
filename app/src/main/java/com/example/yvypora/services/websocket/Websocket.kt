@@ -11,14 +11,10 @@ import io.socket.client.Socket
 
 
 class Websocket {
-    companion object {
-        private lateinit var mSocket: Socket
-
-    }
-
+    private lateinit var mSocket: Socket
     @Composable
     fun getInstance(context: Context): Socket {
-        if (mSocket.isActive) return mSocket
+        if (::mSocket.isInitialized) return mSocket
         val options = IO.Options()
         val jwtToken = TokenStore(context).getToken.collectAsState(initial = "")
         options.query = "token=$jwtToken"
