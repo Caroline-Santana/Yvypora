@@ -141,16 +141,16 @@
     <string name="title_activity_result_search">ResultSearch</string>
     <string name="add_product">Add a new product</string>
     <string name="category_title">Category:</string>
-    <string name="title_result_search" >Result for:</string>
-    <string name="filter" >Filter</string>
-    <string name="prices_sizes" >Prices and sizes :</string>
+    <string name="title_result_search">Result for:</string>
+    <string name="filter">Filter</string>
+    <string name="prices_sizes">Prices and sizes :</string>
     <string name="product_picture">Add a product picture</string>
     <string name="promotion_question">Promotion :</string>
     <string name="customized">Customized by costumer</string>
     <string name="g500">500g</string>
     <string name="kg1">1Kg</string>
     <string name="kg15">1.5Kg</string>
-<!--    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>-->
+    <!--    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>-->
     <string name="photo_product_description">Attach an image that will be visible to costumer </string>
     <string name="distance_filter">Distance </string>
     <string name="price_filter">Price </string>
@@ -162,6 +162,12 @@
     <string name="five_only">5 only</string>
     <string name="apply_filter">Apply filter</string>
     <string name="to">To</string>
+    <string name="title_activity_status_order">StatusOrder</string>
+    <string name="status_order">Order status</string>
+    <string name="confirm_order">Confirmed order</string>
+    <string name="withdrawal_order">Order awaiting pickup</string>
+    <string name="order_deliveryman">Order with the delivery man</string>
+    <string name="order_confirm_delivery">Order under delivery confirmation</string>
 
 
 </resources>

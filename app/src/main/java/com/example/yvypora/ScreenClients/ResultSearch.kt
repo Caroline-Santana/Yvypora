@@ -1,9 +1,11 @@
 package com.example.yvypora.ScreenClients
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
@@ -41,6 +43,7 @@ import com.example.yvypora.R
 import com.example.yvypora.models.Filter
 import com.example.yvypora.models.ProductCardSale
 import com.example.yvypora.ui.theme.YvyporaTheme
+import kotlin.math.roundToInt
 
 
 class ResultSearch : ComponentActivity() {
@@ -153,7 +156,7 @@ fun FilterSearch(
                         .padding(start = 10.dp, top = 10.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.arrow),
+                        painter = painterResource(id = R.drawable.___icon__close_outline_),
                         modifier = Modifier
                             .height(35.dp)
                             .width(40.dp)
@@ -194,56 +197,8 @@ fun FilterSearch(
                         color = colorResource(id = R.color.green_options),
                         textAlign = TextAlign.Start
                     )
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Card(
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                                .width(87.dp)
-                                .height(35.dp)
-                            ,
-                            backgroundColor = Color.White,
-                            border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
-                        ) {
-                            Text(
-                                text = "R$ 5,00",
-                                fontSize = 15.sp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 8.dp),
-                                color = colorResource(id = R.color.green_width),
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        Text(
-                            text = stringResource(id = R.string.to),
-                            fontSize = 15.sp,
-                            color = colorResource(id = R.color.green_width),
-                            fontWeight = FontWeight.Bold
-                        )
-                        Card(
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                                .width(87.dp)
-                                .height(35.dp)
-                            ,
-                            backgroundColor = Color.White,
-                            border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
-                        ) {
-                            Text(
-                                text = "R$ 25,00",
-                                fontSize = 15.sp,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 8.dp),
-                                color = colorResource(id = R.color.green_width),
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    SliderPrice()
                     Text(
                         text = stringResource(id = R.string.rating),
                         fontSize = 15.sp,
@@ -327,10 +282,84 @@ fun FilterSearch(
         }
     }
 }
-
+ @OptIn(ExperimentalMaterialApi::class)
+ @Composable
+ fun SliderPrice(){
+     var sliderValues by remember{
+         mutableStateOf(5f..30f)
+     }
+     val formattedStartValue = sliderValues.start.roundToInt().toString() + ",00"
+     val formattedEndValue = sliderValues.endInclusive.roundToInt().toString() + ",00"
+     Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
+         Row(
+             modifier = Modifier
+                 .fillMaxWidth(),
+             horizontalArrangement = Arrangement.SpaceBetween,
+             verticalAlignment = Alignment.CenterVertically
+         ) {
+             Card(
+                 modifier = Modifier
+                     .padding(end = 10.dp)
+                     .width(87.dp)
+                     .height(35.dp),
+                 backgroundColor = Color.White,
+                 border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
+             ) {
+                 Text(
+                     text = "R$${formattedStartValue}",
+                     fontSize = 15.sp,
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .padding(top = 8.dp),
+                     color = colorResource(id = R.color.green_width),
+                     fontWeight = FontWeight.Bold,
+                     textAlign = TextAlign.Center
+                 )
+             }
+             Text(
+                 text = stringResource(id = R.string.to),
+                 fontSize = 15.sp,
+                 color = colorResource(id = R.color.green_width),
+                 fontWeight = FontWeight.Bold
+             )
+             Card(
+                 modifier = Modifier
+                     .padding(start = 10.dp)
+                     .width(87.dp)
+                     .height(35.dp),
+                 backgroundColor = Color.White,
+                 border = BorderStroke(1.dp, colorResource(id = R.color.green_width))
+             ) {
+                 Text(
+                     text = "R$ ${formattedEndValue}",
+                     fontSize = 15.sp,
+                     modifier = Modifier
+                         .fillMaxWidth()
+                         .padding(top = 8.dp),
+                     color = colorResource(id = R.color.green_width),
+                     fontWeight = FontWeight.Bold,
+                     textAlign = TextAlign.Center
+                 )
+             }
+         }
+         RangeSlider(
+             value = sliderValues,
+             onValueChange = { sliderValues_ ->
+                 sliderValues = sliderValues_
+             },
+             valueRange = 5f..30f,
+             onValueChangeFinished = {
+                 Log.d(
+                     "MainActivity",
+                     "First: ${sliderValues.start}, Last: ${sliderValues.endInclusive}"
+                 )
+             }
+         )
+     }
+ }
 @Composable
 fun FilterButton(text: String, isSelected: Boolean, onClick: () -> Unit) {
- var colorText = colorResource(id = R.color.green_width)
+ var colorText: Color = colorResource(id = R.color.green_width)
     if (isSelected)
         colorText = Color.White
     else
