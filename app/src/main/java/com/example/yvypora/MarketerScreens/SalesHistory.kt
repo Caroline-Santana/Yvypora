@@ -69,7 +69,7 @@ fun SalesHistoryMain() {
                             .height(45.dp)
                             .width(55.dp)
                             .clickable {
-                                val intent = Intent(context, ProfileClient()::class.java)
+                                val intent = Intent(context, ProfileMarketer()::class.java)
                                 context.startActivity(intent)
                             },
                         alignment = Alignment.BottomStart,

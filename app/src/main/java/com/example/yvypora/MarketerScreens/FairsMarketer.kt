@@ -64,9 +64,10 @@ fun FairsMain() {
         fontSize = 30.sp,
         color = colorResource(id = R.color.darkgreen_yvy2)
     )
-   ListOfFairsMarketer(fairs = listMarketerFair())
+    ListOfFairsMarketer(fairs = listMarketerFair())
 
 }
+
 fun listMarketerFair() = listOf<FairsMap>(
     FairsMap(
         id = 1,
@@ -140,15 +141,18 @@ fun FairsComponent(fair: FairsMap) {
     val rating = fair.ratingMarketer
     val calendar = painterResource(id = R.drawable.calendartick)
     val clock = painterResource(id = R.drawable.clock)
-    val user = painterResource(id = R.drawable.user)
+
 
     Card(
-        Modifier.padding(6.dp),
+        Modifier
+            .padding(6.dp)
+            .height(350.dp),
         elevation = 10.dp
     ) {
         Column(
             Modifier
                 .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
         ) {
             var checkState by rememberSaveable {
                 mutableStateOf(false)
@@ -157,7 +161,8 @@ fun FairsComponent(fair: FairsMap) {
                 checked = checkState, onCheckedChange = { checkState = it },
                 Modifier
                     .width(100.dp)
-                    .height(60.dp), colors = SwitchDefaults.colors(
+                    .height(60.dp),
+                colors = SwitchDefaults.colors(
                     checkedThumbColor = colorResource(id = R.color.green_yvy),
                     uncheckedThumbColor = colorResource(id = R.color.green_yvy),
                     checkedTrackColor = colorResource(id = R.color.green_yvy),
@@ -175,7 +180,8 @@ fun FairsComponent(fair: FairsMap) {
                 Column(
                     Modifier
                         .fillMaxWidth(0.75f)
-                        .padding(start = 20.dp)) {
+                        .padding(start = 20.dp)
+                ) {
                     Text(
                         text = nameFair,
                         color = colorResource(
@@ -202,8 +208,8 @@ fun FairsComponent(fair: FairsMap) {
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
 
-                            val timeStart = LocalTime.of(HourStartWork,minuteStartWork)
-                            val timeEnd = LocalTime.of(HourEndWork,minuteEndWork)
+                            val timeStart = LocalTime.of(HourStartWork, minuteStartWork)
+                            val timeEnd = LocalTime.of(HourEndWork, minuteEndWork)
                             val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
                             Image(
@@ -218,19 +224,8 @@ fun FairsComponent(fair: FairsMap) {
                                 )
                             )
                         }
-                        Row(
-                            Modifier.padding(start = 5.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                painter = user, contentDescription = "", modifier = Modifier
-                                    .height(30.dp)
-                                    .width(20.dp)
-                            )
-                        }
                     }
                 }
-
                 Row(
                     Modifier.height(35.dp),
                     verticalAlignment = Alignment.CenterVertically,

@@ -124,12 +124,14 @@ fun FairsComponent(fair: FairsMap) {
     val user = painterResource(id = R.drawable.user)
 
     Card(
-        Modifier.padding(6.dp),
+        Modifier.padding(6.dp)
+            .height(350.dp),
         elevation = 10.dp
     ) {
         Column(
             Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                ,
         ) {
             Image(
                 painter = photoFair,
