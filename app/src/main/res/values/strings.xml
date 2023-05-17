@@ -168,6 +168,10 @@
     <string name="gains">Earnings report</string>
     <string name="sales_history">Sales history</string>
     <string name="question_confirm_delivery">Has your order been delivered?</string>
+    <string name="pedido_confirmado">Confirmed order</string>
+    <string name="aguardando_retirada">Order awaiting pickup</string>
+    <string name="pedido_retirado">Order has been withdrawn</string>
+    <string name="sob_confirmacao_entrega">Order under delivery confirmation</string>
 
 
 </resources>
