@@ -162,5 +162,8 @@
     <string name="five_only">5 apenas</string>
     <string name="apply_filter">Aplicar filtro</string>
     <string name="to">À</string>
+    <string name="myFair">Feiras</string>
+    <string name="gains">Relatório de ganhos</string>
+    <string name="sales_history">Histórico de vendas</string>
 
 </resources>

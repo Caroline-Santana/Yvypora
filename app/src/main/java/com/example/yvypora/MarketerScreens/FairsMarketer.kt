@@ -1,6 +1,4 @@
-@file:Suppress("NAME_SHADOWING")
-
-package com.example.yvypora.ScreenClients
+package com.example.yvypora.MarketerScreens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,43 +8,65 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
+import com.example.yvypora.ScreenClients.HeaderProfile
 import com.example.yvypora.models.FairsMap
 import com.example.yvypora.ui.theme.YvyporaTheme
-import com.google.android.gms.maps.model.LatLng
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class FairsActivity : ComponentActivity() {
+class FairsMarketer : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        HeaderProfile()
+                        Spacer(modifier = Modifier.padding(top = 20.dp))
+                        FairsMain()
+                    }
+                }
             }
         }
     }
 }
 
-fun listLocationFair() = listOf<LatLng>(
-    LatLng(-23.55, -46.64),
-    LatLng(-23.2167, -44.7179),
-    LatLng(-21.55, -46.64),
-    LatLng(-20.55, -46.64),
-)
+@Composable
+fun FairsMain() {
+    Text(
+        text = stringResource(id = R.string.myFair),
+        fontWeight = FontWeight.Medium,
+        fontSize = 30.sp,
+        color = colorResource(id = R.color.darkgreen_yvy2)
+    )
+   ListOfFairsMarketer(fairs = listMarketerFair())
 
+}
 fun listMarketerFair() = listOf<FairsMap>(
     FairsMap(
         id = 1,
@@ -100,7 +120,7 @@ fun listMarketerFair() = listOf<FairsMap>(
 
 
 @Composable
-fun ListOfFairs(fairs: List<FairsMap>) {
+fun ListOfFairsMarketer(fairs: List<FairsMap>) {
     LazyColumn(Modifier.fillMaxSize()) {
         items(fairs) { Fairs -> FairsComponent(fair = Fairs) }
     }
@@ -117,7 +137,6 @@ fun FairsComponent(fair: FairsMap) {
     val minuteStartWork = fair.minuteStartOfWork
     val HourEndWork = fair.hourEndOfWork
     val minuteEndWork = fair.minuteEndOfWork
-    val aproxUser = fair.aproxUserCloser
     val rating = fair.ratingMarketer
     val calendar = painterResource(id = R.drawable.calendartick)
     val clock = painterResource(id = R.drawable.clock)
@@ -131,6 +150,20 @@ fun FairsComponent(fair: FairsMap) {
             Modifier
                 .fillMaxSize(),
         ) {
+            var checkState by rememberSaveable {
+                mutableStateOf(false)
+            }
+            Switch(
+                checked = checkState, onCheckedChange = { checkState = it },
+                Modifier
+                    .width(100.dp)
+                    .height(60.dp), colors = SwitchDefaults.colors(
+                    checkedThumbColor = colorResource(id = R.color.green_yvy),
+                    uncheckedThumbColor = colorResource(id = R.color.green_yvy),
+                    checkedTrackColor = colorResource(id = R.color.green_yvy),
+                    uncheckedTrackColor = colorResource(id = R.color.gray_yvy),
+                )
+            )
             Image(
                 painter = photoFair,
                 contentDescription = "",
@@ -173,8 +206,6 @@ fun FairsComponent(fair: FairsMap) {
                             val timeEnd = LocalTime.of(HourEndWork,minuteEndWork)
                             val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
-
-
                             Image(
                                 painter = clock, contentDescription = "", modifier = Modifier
                                     .height(20.dp)
@@ -195,13 +226,6 @@ fun FairsComponent(fair: FairsMap) {
                                 painter = user, contentDescription = "", modifier = Modifier
                                     .height(30.dp)
                                     .width(20.dp)
-                            )
-                            Text(
-                                text = "Aprox $aproxUser feirantes da Yvy",
-                                Modifier.padding(start = 2.dp),
-                                color = colorResource(
-                                    id = R.color.green_text_dark
-                                )
                             )
                         }
                     }
@@ -231,21 +255,28 @@ fun FairsComponent(fair: FairsMap) {
 
 
     }
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(colorResource(id = R.color.green_yvy))
-            .padding(start = 100.dp)
-    )
-
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun FairPreview() {
-    YvyporaTheme() {
-        FairsActivity()
-    }
-}
+//@Composable
+//fun FairsCard(fair:FairsMap) {
+//    val nameFair = fair.name
+////    val photoFair = fair.photo
+//    val photoFair = painterResource(id = R.drawable.fair_photo)
+//    val dayOfWork = fair.dayOfWork
+//    val HourStartWork = fair.hourStartOfWork
+//    val minuteStartWork = fair.minuteStartOfWork
+//    val HourEndWork = fair.hourEndOfWork
+//    val minuteEndWork = fair.minuteEndOfWork
+//    val aproxUser = fair.aproxUserCloser
+//    val rating = fair.ratingMarketer
+//    val calendar = painterResource(id = R.drawable.calendartick)
+//    val clock = painterResource(id = R.drawable.clock)
+//    val user = painterResource(id = R.drawable.user)
+//
+//
+//    }
+//
+//
+//}
+

@@ -381,7 +381,9 @@ fun AddProductMain(
                             id = R.drawable.check_product_off
                         ),
                         contentDescription = "",
-                        modifier = Modifier.clickable { isSelected = true }
+                        modifier = Modifier.clickable {
+                            isSelected = true
+                        }
                     )
                     Text(text = stringResource(id = R.string.kg15), textAlign = TextAlign.Start)
                 }
@@ -427,6 +429,7 @@ fun AddProductMain(
                         uncheckedTrackColor = colorResource(id = R.color.gray_yvy),
                     )
                 )
+
             }
             Spacer(modifier = Modifier.padding(15.dp))
             if (checkState) {
