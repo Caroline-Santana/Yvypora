@@ -1,10 +1,9 @@
-package com.example.yvypora.ScreenClients
+package com.example.yvypora.MarketerScreens
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,16 +19,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
-import com.example.yvypora.models.ClientData
+import com.example.yvypora.ScreenClients.*
 import com.example.yvypora.ui.theme.YvyporaTheme
 
-//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
-
-class ProfileClient : ComponentActivity() {
+class ProfileMarketer : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -44,7 +40,7 @@ class ProfileClient : ComponentActivity() {
                             .fillMaxSize()
                     ) {
                         HeaderProfile()
-                        JoiningFields()
+                        JoiningFieldsMarketer()
                     }
                 }
             }
@@ -52,48 +48,8 @@ class ProfileClient : ComponentActivity() {
     }
 }
 
-val listClientData = listOf<ClientData>(
-    ClientData(
-        name = "Carlos Arcanjo",
-        email = "carlaoprof@gmail.com"
-    )
-)
 @Composable
-fun HeaderProfile() {
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 22.dp, top = 30.dp)
-
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.icon_user),
-            modifier = Modifier
-                .height(66.dp)
-                .width(75.dp),
-            contentDescription = stringResource(id = R.string.photo_profile),
-
-            )
-        Column(
-            modifier = Modifier
-                .padding(start = 87.dp)
-        ) {
-            Text(
-                text = "Carlos Arcanjo",
-                modifier = Modifier.padding(bottom = 3.dp),
-                fontSize = 20.sp
-
-            )
-            Text(
-                text = "carlaoprof@gmail.com"
-            )
-        }
-
-    }
-}
-@Composable
-fun JoiningFields(){
+fun JoiningFieldsMarketer(){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -101,20 +57,20 @@ fun JoiningFields(){
             .padding(start = 20.dp, end = 20.dp, top = 75.dp)
     )
     {
-        EditProfile()
+        EditProfileMarketer()
         Spacer(modifier = Modifier.height(19.dp))
-        Address()
+        MyFair()
         Spacer(modifier = Modifier.height(19.dp))
-        PaymentMethods()
+        Gains()
         Spacer(modifier = Modifier.height(19.dp))
-        PurchaseHistory()
+        SaleHistory()
         Spacer(modifier = Modifier.height(19.dp))
         Logout()
     }
 }
 
 @Composable
-fun EditProfile(){
+fun EditProfileMarketer(){
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -167,7 +123,7 @@ fun EditProfile(){
 }
 
 @Composable
-fun Address(){
+fun MyFair(){
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -176,7 +132,7 @@ fun Address(){
             .height(60.dp)
             .background(colorResource(id = R.color.green_camps))
             .clickable {
-                val intent = Intent(context, AdressesActivity()::class.java)
+                val intent = Intent(context, FairsMarketer()::class.java)
                 context.startActivity(intent)
             }
             .padding(start = 25.dp),
@@ -184,7 +140,7 @@ fun Address(){
 
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.map),
+            painter = painterResource(id = R.drawable.shop),
             modifier = Modifier
                 .width(24.dp)
                 .height(24.dp)
@@ -198,7 +154,7 @@ fun Address(){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.address),
+                text = stringResource(id = R.string.myFair),
                 modifier = Modifier
                     .padding(start = 10.dp),
                 fontSize = 18.sp,
@@ -221,7 +177,7 @@ fun Address(){
 
 
 @Composable
-fun PaymentMethods() {
+fun Gains() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -238,12 +194,11 @@ fun PaymentMethods() {
 
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.card),
+            painter = painterResource(id = R.drawable.dollarsquare),
             modifier = Modifier
                 .width(24.dp)
                 .height(24.dp)
             ,
-            tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
         Row(
@@ -252,7 +207,7 @@ fun PaymentMethods() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.payment_methods),
+                text = stringResource(id = R.string.gains),
                 modifier = Modifier
                     .padding(start = 10.dp),
                 fontSize = 18.sp,
@@ -273,7 +228,7 @@ fun PaymentMethods() {
     }
 }
 @Composable
-fun PurchaseHistory() {
+fun SaleHistory() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -283,7 +238,7 @@ fun PurchaseHistory() {
             .background(colorResource(id = R.color.green_camps))
             .padding(start = 25.dp)
             .clickable {
-                val intent = Intent(context, BuyHistory()::class.java)
+                val intent = Intent(context, SalesHistory()::class.java)
                 context.startActivity(intent)
             },
 
@@ -305,7 +260,7 @@ fun PurchaseHistory() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.purchase_history),
+                text = stringResource(id = R.string.sales_history),
                 modifier = Modifier
                     .padding(start = 10.dp),
                 fontSize = 18.sp,
@@ -415,7 +370,7 @@ fun Logout() {
                         onClick = { abrirDialog = false },
                         modifier = Modifier.width(80.dp)
 
-                        )
+                    )
                     {
                         Text(
                             text = "Não",
@@ -429,18 +384,5 @@ fun Logout() {
 
         )
 
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun ProfileCliente() {
-    YvyporaTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            HeaderProfile()
-            JoiningFields()
-        }
     }
 }

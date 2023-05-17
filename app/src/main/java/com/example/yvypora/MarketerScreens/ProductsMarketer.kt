@@ -76,7 +76,6 @@ fun HeaderProduct() {
                 .width(55.dp),
             alignment = Alignment.BottomStart,
             contentDescription = "logo",
-
             )
         Text(
             text = stringResource(id = R.string.my_products),

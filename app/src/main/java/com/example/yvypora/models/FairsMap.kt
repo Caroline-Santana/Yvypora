@@ -1,6 +1,6 @@
 package com.example.yvypora.models
 
-data class Fairs(
+data class FairsMap(
     val id: Int,
     val photo: String,
     val name: String,

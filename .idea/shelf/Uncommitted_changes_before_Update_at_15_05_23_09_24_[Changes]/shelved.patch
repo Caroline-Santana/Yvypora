@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Index: app/src/main/java/com/example/yvypora/ScreenClients/ResultSearch.kt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
@@ -92,6 +93,77 @@ diff --git a/app/build.gradle b/app/build.gradle
      implementation ('io.socket:socket.io-client:2.0.0') {
              exclude group: 'org.json', module: 'json'
      }
+=======
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'org.jetbrains.kotlin.android'\n    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'\n}\n\nandroid {\n    namespace 'com.example.yvypora'\n    compileSdk 33\n\n    defaultConfig {\n        applicationId \"com.example.yvypora\"\n        minSdk 26\n        targetSdk 33\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        vectorDrawables {\n            useSupportLibrary true\n        }\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n    buildFeatures {\n        compose true\n        viewBinding true\n    }\n    composeOptions {\n        kotlinCompilerExtensionVersion '1.2.0'\n    }\n    packagingOptions {\n        resources {\n            excludes += '/META-INF/{AL2.0,LGPL2.1}'\n        }\n    }\n}\n\ndependencies {\n\n    // Data Store\n    implementation \"androidx.datastore:datastore-preferences:1.0.0\"\n    implementation \"androidx.datastore:datastore-core:1.0.0\"\n\n    implementation \"androidx.compose.ui:ui-text-google-fonts:1.3.3\"\n    implementation 'androidx.core:core-ktx:1.7.0'\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'\n    implementation 'androidx.activity:activity-compose:1.3.1'\n    implementation \"androidx.compose.ui:ui-util:$compose_ui_version\"\n    implementation \"androidx.compose.ui:ui-tooling-preview:$compose_ui_version\"\n    implementation 'androidx.compose.material:material:1.2.0'\n    implementation 'androidx.appcompat:appcompat:1.4.1'\n    implementation 'com.google.android.material:material:1.5.0'\n    implementation 'androidx.annotation:annotation:1.3.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'\n    implementation 'io.coil-kt:coil-compose:1.3.2'\n    implementation \"androidx.compose.ui:ui:$compose_ui_version\"\n    implementation 'androidx.core:core-ktx:+'\n    testImplementation 'junit:junit:4.13.2'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n    androidTestImplementation \"androidx.compose.ui:ui-test-junit4:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-tooling:$compose_ui_version\"\n    debugImplementation \"androidx.compose.ui:ui-test-manifest:$compose_ui_version\"\n\n\n    implementation(\"androidx.navigation:navigation-compose:2.4.0-beta02\")\n//RetroFit Dependencies\n    implementation 'com.google.code.gson:gson:2.8.9'\n    implementation 'com.squareup.retrofit2:retrofit:2.9.0'\n    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'\n    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.1'\n\n//Coroutains\"\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2\"\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1' //viewModel scope\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1' //lifecycle scope\n    implementation 'androidx.fragment:fragment-ktx:1.4.1'\n\n//Lifecycle\n    implementation 'androidx.lifecycle:lifecycle-common:2.4.1'\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'\n//size dp/sp\n    implementation 'com.intuit.sdp:sdp-android:1.0.6'\n    implementation 'com.intuit.ssp:ssp-android:1.0.6'\n\n    implementation \"androidx.preference:preference-ktx:1.2.0\"\n\n    //FireBase\n    implementation platform('com.google.firebase:firebase-bom:31.2.3')\n    implementation 'com.google.firebase:firebase-analytics-ktx'\n    implementation 'com.google.firebase:firebase-auth:21.1.0'\n\n    //Paging Compose\n    implementation \"com.google.accompanist:accompanist-pager:0.17.0\"\n    implementation \"com.google.accompanist:accompanist-pager-indicators:0.17.0\"\n\n\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0\"\n\n    implementation \"androidx.compose.runtime:runtime-livedata:$compose_ui_version\"\n\n    implementation \"androidx.navigation:navigation-compose:2.5.2\"\n\n   // Dependencias do Google Maps\n    implementation 'com.google.maps.android:maps-compose:2.11.0'\n    implementation 'com.google.android.gms:play-services-maps:18.1.0'\n\n    //navigation\n    implementation(\"androidx.navigation:navigation-compose:2.4.0-alpha09\")\n\n\n    // Websocket\n    implementation ('io.socket:socket.io-client:2.0.0') {\n            exclude group: 'org.json', module: 'json'\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 737c9f276cbca6256e1d24ba2916a266c934c410)
++++ b/app/build.gradle	(date 1684151621457)
+@@ -14,6 +14,7 @@
+         targetSdk 33
+         versionCode 1
+         versionName "1.0"
++        compileSdkPreview = "UpsideDownCake"
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         vectorDrawables {
+@@ -28,8 +29,8 @@
+         }
+     }
+     compileOptions {
+-        sourceCompatibility JavaVersion.VERSION_1_8
+-        targetCompatibility JavaVersion.VERSION_1_8
++        sourceCompatibility "11"
++        targetCompatibility JavaVersion.VERSION_11
+     }
+     kotlinOptions {
+         jvmTarget = '1.8'
+@@ -117,7 +118,7 @@
+ 
+     implementation "androidx.navigation:navigation-compose:2.5.2"
+ 
+-   // Dependencias do Google Maps
++    // Dependencias do Google Maps
+     implementation 'com.google.maps.android:maps-compose:2.11.0'
+     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+ 
+@@ -127,6 +128,6 @@
+ 
+     // Websocket
+     implementation ('io.socket:socket.io-client:2.0.0') {
+-            exclude group: 'org.json', module: 'json'
++        exclude group: 'org.json', module: 'json'
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <uses-permission android:name=\"android.permisson.READ_EXTERNAL_STORAGE\" />\n\n    <application\n        android:allowBackup=\"true\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\n        android:fullBackupContent=\"@xml/backup_rules\"\n        android:icon=\"@drawable/logo\"\n        android:label=\"@string/app_name\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.Yvypora\"\n        android:usesCleartextTraffic=\"true\"\n        tools:targetApi=\"31\">\n        <activity\n            android:name=\".ScreenClients.ResultSearch\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_result_search\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.EditAddress\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_edit_address\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.CheckoutActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_checkout\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.ShoppingCartActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_shopping_cart\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.DescriptionProducts\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_description_products\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.AddAccount\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_account\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.AddCardAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_pay_methods_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.PaymentMethodsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_payment_methods\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.AddAdressAcitivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_add_adress_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.AdressesActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_adresses\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.BuyHistory\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_buy_history_acitivity\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.EditProfileSreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_edit_profile_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.FruitsResultActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/fruits_result\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.FairsActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/fair\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.ProfileClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_profile_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.ScreenSearch\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_screen_search\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.RegisterMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.ProductsMarketer\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.AddProducts\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_marketer\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.InicialScreen\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MarketerScreens.InicialMarketerActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_inicial_screen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.RegisterClient\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_register_client\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".DecisionSreenActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_decision_sreen\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".LoginActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_login\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".MainActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/title_activity_main\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.FruitsResultActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/fruits_result\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.VegetablesActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/vegetable\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.SpicesActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/spices\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".ScreenClients.OthersActivityActivity\"\n            android:exported=\"false\"\n            android:label=\"@string/spices\"\n            android:theme=\"@style/Theme.Yvypora\" />\n        <activity\n            android:name=\".SplashScreenActivity\"\n            android:exported=\"true\"\n            android:label=\"@string/app_name\"\n            android:theme=\"@style/Theme.Yvypora\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n\n        <meta-data\n            android:name=\"com.google.android.geo.API_KEY\"\n            android:value=\"${MAPS_API_KEY}\" />\n        <meta-data\n            android:name=\"com.google.android.gms.version\"\n            android:value=\"@integer/google_play_services_version\" />\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 737c9f276cbca6256e1d24ba2916a266c934c410)
++++ b/app/src/main/AndroidManifest.xml	(date 1684151231644)
+@@ -141,11 +141,6 @@
+             android:label="@string/title_activity_main"
+             android:theme="@style/Theme.Yvypora" />
+         <activity
+-            android:name=".ScreenClients.FruitsResultActivity"
+-            android:exported="false"
+-            android:label="@string/fruits_result"
+-            android:theme="@style/Theme.Yvypora" />
+-        <activity
+             android:name=".ScreenClients.VegetablesActivityActivity"
+             android:exported="false"
+             android:label="@string/vegetable"
+>>>>>>> origin/master
 Index: build.gradle
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
@@ -101,7 +173,11 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/build.gradle b/build.gradle
 --- a/build.gradle	(revision 737c9f276cbca6256e1d24ba2916a266c934c410)
+<<<<<<< HEAD
 +++ b/build.gradle	(date 1684149625998)
+=======
++++ b/build.gradle	(date 1684150684571)
+>>>>>>> origin/master
 @@ -6,7 +6,7 @@
  plugins {
      id 'com.android.application' version '7.4.2' apply false

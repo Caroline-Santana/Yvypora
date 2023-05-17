@@ -132,7 +132,7 @@ fun InicialMarketerMain() {
                             .width(60.dp)
                             .height(80.dp)
                             .clickable {
-                                val intent = Intent(context, ProductsMarketer::class.java)
+                                val intent = Intent(context, ProductsMarketer()::class.java)
                                 context.startActivity(intent)
                             }
                     )
@@ -150,7 +150,10 @@ fun InicialMarketerMain() {
                         modifier = Modifier
                             .width(60.dp)
                             .height(80.dp)
-                            .clickable {}
+                            .clickable {
+                                val intent = Intent(context, FairsMarketer()::class.java)
+                                context.startActivity(intent)
+                            }
                     )
                 }
             }

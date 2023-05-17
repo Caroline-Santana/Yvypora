@@ -162,11 +162,5 @@
     <string name="five_only">5 apenas</string>
     <string name="apply_filter">Aplicar filtro</string>
     <string name="to">À</string>
-    <string name="title_activity_status_order">StatusOrder</string>
-    <string name="status_order">Status do pedido</string>
-    <string name="confirm_order">Pedido confirmado</string>
-    <string name="withdrawal_order">Pedido aguardando retirada</string>
-    <string name="order_deliveryman">Pedido com o entregador</string>
-    <string name="order_confirm_delivery">Pedido sob confrimação de entrega</string>
 
 </resources>
