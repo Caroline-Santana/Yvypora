@@ -1,23 +1,24 @@
 package com.example.yvypora.ScreenClients
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,7 +65,73 @@ fun StatusOrderMain() {
     }
 
 }
-
+//@Composable
+//fun CardConfirmDelivery(){
+//        Card(
+//            Modifier
+//                .width(345.dp)
+//                .height(111.dp),
+//            backgroundColor = colorResource(id = R.color.green_width),
+//            shape = RoundedCornerShape(
+//                topStart = 10.dp,
+//                topEnd = 0.dp,
+//                bottomEnd = 10.dp,
+//                bottomStart = 0.dp
+//            )
+//        ) {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .fillMaxWidth(),
+//                verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text(
+//                    text = stringResource(id = R.string.question_confirm_delivery),
+//                    color = Color.White,
+//                    modifier = Modifier.fillMaxWidth(),
+//                    fontWeight = FontWeight.Bold,
+//                    fontSize = 20.sp,
+//                    textAlign = TextAlign.Center
+//                )
+//                Row(
+//                    modifier = Modifier.width(250.dp).padding(top = 8.dp),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Button(
+//                        modifier = Modifier
+//                            .height(45.dp)
+//                            .width(96.dp),
+//                        colors = ButtonDefaults.buttonColors(Color(36, 85, 1, 255)),
+//                        onClick = {}
+//                    ) {
+//                        Text(
+//                            text = stringResource(id = R.string.yes),
+//                            fontWeight = FontWeight.Bold,
+//                            color = Color.White,
+//                            fontSize = 20.sp
+//                        )
+//                    }
+//                    Button(
+//                        modifier = Modifier
+//                            .height(45.dp)
+//                            .width(96.dp),
+//                        colors = ButtonDefaults.buttonColors(Color(202, 14, 14, 255)),
+//                        onClick = {}
+//                    ) {
+//                        Text(
+//                            text = stringResource(id = R.string.no),
+//                            fontWeight = FontWeight.Bold,
+//                            color = Color.White,
+//                            fontSize = 20.sp
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//
+//}
 @Composable
 fun Timeline(){
     Column(modifier = Modifier
@@ -139,7 +206,9 @@ fun Timeline(){
             ){
                 Icon(
                     painter = painterResource(id = R.drawable.entrega),
-                    modifier = Modifier.height(25.dp).width(30.dp),
+                    modifier = Modifier
+                        .height(25.dp)
+                        .width(30.dp),
                     contentDescription = null,
                     tint = Color.Black
                 )
@@ -158,7 +227,9 @@ fun Timeline(){
             ){
                 Icon(
                     painter = painterResource(id = R.drawable.smile),
-                    modifier = Modifier.height(25.dp).width(30.dp),
+                    modifier = Modifier
+                        .height(25.dp)
+                        .width(30.dp),
                     contentDescription = null,
                     tint = Color.Black
                 )
