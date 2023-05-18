@@ -11,5 +11,6 @@ data class Marketer (
     val tent_name: String,
     val location: Location,
     val birthday: String,
-    val cpf: String
+    val cpf: String,
+    var picture_uri: String = ""
 )

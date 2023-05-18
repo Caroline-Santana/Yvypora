@@ -1,6 +1,6 @@
 package com.example.yvypora.ScreenClients
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,48 +8,121 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.yvypora.R
-import com.example.yvypora.models.MarketerCard
+import com.example.yvypora.api.RetrofitApi
+import com.example.yvypora.api.product.ProductService
 import com.example.yvypora.models.MarketerData
 import com.example.yvypora.models.ProductCardSale
+import com.example.yvypora.models.product.BaseResponse
+import com.example.yvypora.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
+import kotlinx.coroutines.launch
+import retrofit2.Call
 
-class FruitsResultActivity : ComponentActivity() {
+class CategoryResultActivity : ComponentActivity() {
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                FruitsResultMain()
+                val context = LocalContext.current
+                val intent = (context as CategoryResultActivity).intent
+
+                val categoryId = intent.getIntExtra("id", -1)
+
+                var fetch by remember {
+                    mutableStateOf(listOf(MarketerData()));
+                }
+
+                val scope = rememberCoroutineScope()
+
+                scope.launch {
+                        ProductService.listAllProducts(
+                            category = categoryId.toString(),
+                            score = "0.0",
+                            higherPrice = "10000",
+                            lowerPrice = "0"
+                        ) {
+                            val products = it?.data
+                            val data = products?.map { product ->
+                                bindData(product)
+                            }
+                            fetch = data!!
+                        }
+                }
+
+                Log.i("teste", "$fetch fetched data");
+
+                if (fetch.isNotEmpty()) {
+                    val organized = organizeByMarketer(fetch)
+                    CategoryResultMain(organized);
+                } else {
+                    Text("Loading.....")
+                }
             }
         }
-
     }
 }
 
+fun bindData(data: ProductResponse): MarketerData {
+    return MarketerData(
+        name = data.marketer.name,
+        photo = data.marketer.picture_uri,
+        products = listOf(
+            ProductCardSale(
+                id = data.id,
+                name = data.name,
+                photo = data.imageOfProduct.get(0).image.uri ?: "",
+                qntd_product = data.availableQuantity,
+                price = data.price,
+                promo = data.saleOff.isNullOrEmpty().not(),
+                weight_product = data.availableQuantity,
+                type_weight = data.typeOfPrice.name,
+            )
+        )
+    )
+}
+
+
+fun organizeByMarketer(unorderedList: List<MarketerData>): List<MarketerData> {
+    val dividedByName = unorderedList.groupBy { it.name }
+    val orderList = mutableListOf<MarketerData>()
+
+    dividedByName.forEach { s, marketerData ->
+        val products = mutableListOf<ProductCardSale>()
+        marketerData.forEach {
+            it.products?.map { list -> products.add(list) }
+        }
+        marketerData.get(0).products = products
+        orderList.add(marketerData.get(0))
+    }
+
+    return orderList
+}
+
 @Composable
-fun FruitsResultMain() {
+fun CategoryResultMain(productList: List<MarketerData>) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             Modifier.fillMaxSize()
@@ -59,7 +132,7 @@ fun FruitsResultMain() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(id = R.string.fruits_result),
+                    text = stringResource(id = R.string.category_result),
                     Modifier.padding(start = 150.dp),
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.green_options),
@@ -76,242 +149,17 @@ fun FruitsResultMain() {
                     contentDescription = "logo",
                 )
             }
-            ListOfMarketerData(marketers = listMarketerData())
+            ListOfMarketerData(productList)
         }
 
     }
 }
 
-fun listMarketerData() = listOf<MarketerData>(
-    MarketerData(
-        name = "Zé do Alfácil",
-        photo = R.drawable.perfil,
-        products = listOf(
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false
-            ),
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true,
-            ),
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true,
-            ),
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false,
-            )
-        )
-    ),
-    MarketerData(
-        name = "Zé da Manga",
-        photo = R.drawable.perfil,
-        products = listOf(
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ),
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false
-
-            )
-        )
-    ),
-    MarketerData(
-        name = "Zé da Manga",
-        photo = R.drawable.perfil,
-        products = listOf(
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ),
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false
-            )
-        )
-    ),
-    MarketerData(
-        name = "Zé da Manga",
-        photo = R.drawable.perfil,
-        products = listOf(
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ),
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = false
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            )
-        )
-    ),
-    MarketerData(
-        name = "Zé da Manga",
-        photo = R.drawable.perfil,
-        products = listOf(
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ),
-            ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            ), ProductCardSale(
-                id = 1,
-                name = "Manga",
-                qntd_product = 3,
-                photo = 1,
-                type_weight = "g",
-                weight_product = 800,
-                price = 24.00,
-                promo = true
-            )
-        )
-    )
-)
 
 @Composable
-fun ListOfMarketerData(marketers: List<MarketerData>) {
-    LazyColumn() {
-        items(marketers) { marketerData -> DataMarketer(marketer = marketerData) }
+fun ListOfMarketerData(list: List<MarketerData>) {
+    LazyColumn(state = rememberLazyListState()) {
+        items(list) { marketerData -> DataMarketer(marketer = marketerData) }
     }
 }
 
@@ -319,7 +167,7 @@ fun ListOfMarketerData(marketers: List<MarketerData>) {
 fun DataMarketer(marketer: MarketerData) {
     val nameMarketer = marketer.name
 //        var photoMarketer = marketer.photo
-    val photoMarketer = painterResource(id = R.drawable.perfil)
+    val photoMarketer = rememberImagePainter(marketer.photo)
     Column(
         Modifier
             .fillMaxSize()
@@ -331,7 +179,10 @@ fun DataMarketer(marketer: MarketerData) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Image(
                         painter = photoMarketer,
                         contentDescription = "",
@@ -341,10 +192,9 @@ fun DataMarketer(marketer: MarketerData) {
 
                     )
                     Text(
-                        text = nameMarketer,
+                        text = nameMarketer ?: "",
                         Modifier.padding(start = 11.dp),
                         color = colorResource(id = R.color.green_yvy_title),
-
                         )
                 }
                 Card(
@@ -353,7 +203,7 @@ fun DataMarketer(marketer: MarketerData) {
                         colorResource(id = R.color.transparentgreen_yvy)
                     )
                 ) {
-                    ListOfProductData(products = marketer.products)
+                    ListOfProductData(products = marketer.products!!)
                 }
             }
         }
@@ -373,7 +223,7 @@ fun DataProduct(product: ProductCardSale) {
     var nameProduct = product.name
 //    var photoProduct = card.photo
     var typeProduct = product.type_weight
-    var photoProduct = painterResource(id = R.drawable.abobora_shopping)
+    var photoProduct = rememberImagePainter(product.photo)
     var qntProduct = product.qntd_product
     var priceProduct = product.price
     var promoProduct = product.promo
@@ -438,7 +288,11 @@ fun DataProduct(product: ProductCardSale) {
                     ) {
                         Text(
                             text = "R$$priceProduct",
-                            modifier = Modifier.padding(top = 20.dp, start = 12.dp, end = 15.dp),
+                            modifier = Modifier.padding(
+                                top = 20.dp,
+                                start = 12.dp,
+                                end = 15.dp
+                            ),
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Left,
                             fontSize = 14.sp
@@ -447,7 +301,10 @@ fun DataProduct(product: ProductCardSale) {
                             onClick = { },
                             modifier = Modifier.size(40.dp),
                             shape = CircleShape,
-                            border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
+                            border = BorderStroke(
+                                5.dp,
+                                colorResource(id = R.color.darkgreen_yvy)
+                            ),
                             contentPadding = PaddingValues(0.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 backgroundColor = colorResource(
@@ -477,11 +334,11 @@ fun DataProduct(product: ProductCardSale) {
 
 
 }
-
-@Preview(showBackground = true)
-@Composable
-fun FruitsPreview() {
-    YvyporaTheme() {
-        FruitsResultMain()
-    }
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun FruitsPreview() {
+//    YvyporaTheme() {
+//        FruitsResultMain()
+//    }
+//}

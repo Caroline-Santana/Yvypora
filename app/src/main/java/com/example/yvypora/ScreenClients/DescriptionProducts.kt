@@ -2,10 +2,12 @@ package com.example.yvypora.ScreenClients
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import kotlin.math.max
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,10 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import com.example.yvypora.MarketerScreens.imageUri
 import com.example.yvypora.R
 import com.example.yvypora.api.commons.auth
+import com.example.yvypora.api.product.ProductService
 import com.example.yvypora.models.Credentials
+import com.example.yvypora.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
+import kotlin.math.round
+import kotlin.math.roundToInt
 
 class DescriptionProducts : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,20 +44,43 @@ class DescriptionProducts : ComponentActivity() {
             YvyporaTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
                     color = MaterialTheme.colors.background)
                 {
                         HeaderDescriptionProducts()
+
+                        val context = LocalContext.current
+                        val intent = (context as DescriptionProducts).intent
+                        val productId = intent.getIntExtra("id", -1)
+                        Log.i("teste", intent.extras.toString())
+                        product.value = fetchProduct(productId)
                 }
             }
         }
     }
 }
 
+var product = mutableStateOf<ProductResponse?>(null)
+
+@Composable
+fun fetchProduct(id: Int): ProductResponse? {
+    var data by remember { mutableStateOf<ProductResponse?>(null) }
+
+    LaunchedEffect(Unit) {
+        ProductService.get(id) { it ->
+            data = it.data
+        }
+    }
+
+    return data;
+}
+
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun HeaderDescriptionProducts() {
     val context = LocalContext.current
-    var rating by remember{mutableStateOf(4)}
+    var rating by remember{mutableStateOf(product.value?.review?.toInt() ?: 0) }
+    val image = rememberImagePainter(product.value?.imageOfProduct?.get(0)?.image?.uri ?: "")
     Box(modifier = Modifier
         .fillMaxWidth()
         .fillMaxSize()
@@ -83,7 +115,7 @@ fun HeaderDescriptionProducts() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.beterraba),
+                painter = image,
                 modifier = Modifier
                     .height(265.dp)
                     .width(260.dp),
@@ -95,7 +127,7 @@ fun HeaderDescriptionProducts() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Beterraba",
+                    text = product.value?.name ?: "",
                     modifier = Modifier
                         .padding(start = 8.dp),
                     fontSize = 32.sp,
@@ -108,7 +140,7 @@ fun HeaderDescriptionProducts() {
                 ) {
                     Rating(score = rating)
                     Text(
-                        text = "4.2",
+                        text = round(product.value?.review ?: 0F).toString(),
                         modifier = Modifier.padding(start = 20.dp),
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
@@ -120,7 +152,7 @@ fun HeaderDescriptionProducts() {
             }
 
             Text(
-                text = "ZédoAlfácil",
+                text = product.value?.marketer?.name ?: "",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 24.dp),
@@ -182,7 +214,7 @@ fun MainDescriptionProducts() {
         Row (verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center){
             Text(
-                text = "R$7,50",
+                text = "R$${product.value?.price}",
                 fontSize = 36.sp,
                 modifier = Modifier.padding(end = 90.dp),
                 color = colorResource(id = R.color.green_options)
@@ -197,10 +229,7 @@ fun MainDescriptionProducts() {
             color = colorResource(id = R.color.green_text_dark)
         )
         Text(
-            text = "A beterraba é uma planta herbácea da família das Quenopodiáceas," +
-                    " por Cronquist, ou das Amarantáceas, pela APG. Nome derivado do " +
-                    "substantivo francês betterave. O colo tuberizado serve, para além " +
-                    "dos fins culinários, produção de açúcar.",
+            text = product.value?.description ?: "",
             modifier = Modifier.padding(top = 15.dp, end = 8.dp),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Left,
@@ -262,7 +291,7 @@ fun MainDescriptionProducts() {
 
 @Composable
 fun WidhtProductTeste() {
-    var weight by remember { mutableStateOf(1.0f) }
+    var value by remember { mutableStateOf(1F) }
     Box(
         contentAlignment = Alignment.TopStart,
         modifier = Modifier
@@ -281,7 +310,7 @@ fun WidhtProductTeste() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { weight = (weight - 0.5f).coerceAtLeast(1f)},
+                onClick = { value = (value - 1F).coerceAtLeast(1f)},
                 modifier = Modifier
                     .height(30.dp)
                     .width(32.dp),
@@ -290,14 +319,14 @@ fun WidhtProductTeste() {
             ) {}
 
             Text(
-            text = "$weight Kg",
+            text = "$value",
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             color = colorResource(id = R.color.green_width)
         )
             Box(contentAlignment = Alignment.Center) {
                 Button(
-                    onClick = { weight += 0.5f },
+                    onClick = { value += 1F },
                     modifier = Modifier
                         .height(30.dp)
                         .width(32.dp),
@@ -306,7 +335,7 @@ fun WidhtProductTeste() {
                 Icon(
                     painter = painterResource(id = R.drawable.more),
                     modifier = Modifier
-                        .clickable { weight += 0.5f },
+                        .clickable { value += 1F },
                     contentDescription = "",
                     tint = Color.White
                 )
@@ -316,7 +345,7 @@ fun WidhtProductTeste() {
 
         Icon(
             painter = painterResource(id = R.drawable.remove),
-            modifier = Modifier.clickable {  weight = (weight - 0.5f).coerceAtLeast(1f) },
+            modifier = Modifier.clickable {  value = (value - 1F).coerceAtLeast(1f) },
             contentDescription = ""
         )
     }

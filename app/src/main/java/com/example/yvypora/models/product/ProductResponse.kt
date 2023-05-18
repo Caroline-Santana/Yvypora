@@ -12,7 +12,7 @@ data class ProductResponse (
     val name: String,
     val price: Double,
     val quantity: Int?,
-    val review: Int,
+    val review: Float,
     val avaliations: Int,
     @SerializedName("active_for_selling")
     val activeForSelling: Boolean,
@@ -26,12 +26,14 @@ data class ProductResponse (
     val description: String,
     val categoryOfProductId: Int,
     val typeOfProductId: Int,
-    val saleOff: List<SaleOff?>,
+    @SerializedName("sale_off")
+    var saleOff: List<SaleOff>? = null,
+    @SerializedName("type_of_price")
     val typeOfPrice: TypeOfPrice,
     @SerializedName("image_of_product")
     val imageOfProduct: List<ImageOfProduct>,
     val marketer: Marketer,
-    var latitude: Boolean? = null,
-    var longitude: Boolean? = null,
+    var latitude: Float? = null,
+    var longitude: Float? = null,
 )
 
