@@ -162,5 +162,14 @@
     <string name="five_only">5 apenas</string>
     <string name="apply_filter">Aplicar filtro</string>
     <string name="to">À</string>
+    <string name="status_order">Status do pedido</string>
+    <string name="myFair">Feiras</string>
+    <string name="gains">Relatório de ganhos</string>
+    <string name="sales_history">Histórico de vendas</string>
+    <string name="question_confirm_delivery">Seu pedido foi entregue?</string>
+    <string name="pedido_confirmado">Pedido Confirmado</string>
+    <string name="aguardando_retirada">Pedido aguardando retirada</string>
+    <string name="pedido_retirado">Pedido foi retirado</string>
+    <string name="sob_confirmacao_entrega">Pedido sob confirmação de entrega</string>
 
 </resources>

@@ -223,7 +223,9 @@ fun MainCheckout() {
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    val intent = Intent(context, StatusOrder()::class.java)
+                    context.startActivity(intent) },
                 modifier = Modifier
                     .height(58.dp)
                     .fillMaxWidth()
