@@ -141,7 +141,7 @@ fun CardConfirmDelivery(){
                             text = stringResource(id = R.string.no),
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
-                            fontSize = 21.sp
+                            fontSize = 22.sp
                         )
                     }
                 }
