@@ -104,73 +104,74 @@ val listProductMarketer = listOf<ProductCardSale>(
         id = 1,
         name = "Abóbora",
         qntd_product = 3,
-        photo = 1,
+        photo = "",
         type_weight = "g",
         weight_product = 800,
         price = 10.00,
-        promo = false
-    ),
-    ProductCardSale(
-        id = 2,
-        name = "Abóbora",
-        qntd_product = 3,
-        photo = 1,
-        type_weight = "g",
-        weight_product = 800,
-        price = 24.00,
-        promo = false
-    ),
-    ProductCardSale(
-        id = 3,
-        name = "Abóbora",
-        qntd_product = 3,
-        photo = 1,
-        type_weight = "g",
-        weight_product = 800,
-        price = 10.00,
-        promo = false
-    ),
-    ProductCardSale(
-        id = 4,
-        name = "Abóbora",
-        qntd_product = 3,
-        photo = 1,
-        type_weight = "g",
-        weight_product = 800,
-        price = 24.00,
-        promo = false
-    ),
-    ProductCardSale(
-        id = 5,
-        name = "Abóbora",
-        qntd_product = 3,
-        photo = 1,
-        type_weight = "g",
-        weight_product = 800,
-        price = 15.00,
-        promo = false
-    ),
-    ProductCardSale(
-        id = 6,
-        name = "Abóbora",
-        qntd_product = 3,
-        photo = 1,
-        type_weight = "g",
-        weight_product = 800,
-        price = 25.00,
-        promo = false
-    ),
-    ProductCardSale(
-        id = 6,
-        name = "Abóbora",
-        qntd_product = 3,
-        photo = 1,
-        type_weight = "g",
-        weight_product = 800,
-        price = 25.00,
         promo = false
     ),
 )
+//    ProductCardSale(
+//        id = 2,
+//        name = "Abóbora",
+//        qntd_product = 3,
+//        photo = 1,
+//        type_weight = "g",
+//        weight_product = 800,
+//        price = 24.00,
+//        promo = false
+//    ),
+//    ProductCardSale(
+//        id = 3,
+//        name = "Abóbora",
+//        qntd_product = 3,
+//        photo = 1,
+//        type_weight = "g",
+//        weight_product = 800,
+//        price = 10.00,
+//        promo = false
+//    ),
+//    ProductCardSale(
+//        id = 4,
+//        name = "Abóbora",
+//        qntd_product = 3,
+//        photo = 1,
+//        type_weight = "g",
+//        weight_product = 800,
+//        price = 24.00,
+//        promo = false
+//    ),
+//    ProductCardSale(
+//        id = 5,
+//        name = "Abóbora",
+//        qntd_product = 3,
+//        photo = 1,
+//        type_weight = "g",
+//        weight_product = 800,
+//        price = 15.00,
+//        promo = false
+//    ),
+//    ProductCardSale(
+//        id = 6,
+//        name = "Abóbora",
+//        qntd_product = 3,
+//        photo = 1,
+//        type_weight = "g",
+//        weight_product = 800,
+//        price = 25.00,
+//        promo = false
+//    ),
+//    ProductCardSale(
+//        id = 6,
+//        name = "Abóbora",
+//        qntd_product = 3,
+//        photo = 1,
+//        type_weight = "g",
+//        weight_product = 800,
+//        price = 25.00,
+//        promo = false
+//    ),
+//)
 
 @Composable
 fun ListOfProductCardSaleMarketer(cards: List<ProductCardSale>) {

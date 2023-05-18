@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.yvypora.ScreenClients.HeaderProfile
 import com.example.yvypora.ScreenClients.JoiningFields
+import com.example.yvypora.ScreenClients.fetchDetails
 
 @Composable
 fun ProfileMarketer(){
@@ -13,7 +14,8 @@ fun ProfileMarketer(){
         modifier = Modifier
             .fillMaxSize()
     ) {
-        HeaderProfile()
+        val user = fetchDetails();
+        HeaderProfile(user)
         JoiningFields()
     }
 }

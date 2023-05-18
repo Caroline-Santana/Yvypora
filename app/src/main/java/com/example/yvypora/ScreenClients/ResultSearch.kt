@@ -54,12 +54,23 @@ class ResultSearch : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     ResultSearchMain()
+                    val context = LocalContext.current
+                    val intent = (context as ResultSearch).intent
+                    val searchParam = intent.getStringExtra("search");
+                    var products by remember { mutableStateOf(listOf<ProductCardSale>()) }
+                    LaunchedEffect(searchParam) {
+
+                    }
                 }
             }
         }
     }
 }
 
+
+fun bindData(data: ) {
+
+}
 @Composable
 fun ResultSearchMain() {
     var nameProductSearch = "Abobrinha"
@@ -390,7 +401,7 @@ fun listProductsData() = listOf<ProductCardSale>(
         id = 1,
         name = "Manga",
         qntd_product = 3,
-        photo = 1,
+        photo = "",
         type_weight = "g",
         weight_product = 800,
         price = 24.00,
@@ -400,7 +411,7 @@ fun listProductsData() = listOf<ProductCardSale>(
         id = 1,
         name = "Manga",
         qntd_product = 3,
-        photo = 1,
+        photo = "",
         type_weight = "g",
         weight_product = 800,
         price = 24.00,
@@ -410,7 +421,7 @@ fun listProductsData() = listOf<ProductCardSale>(
         id = 1,
         name = "Manga",
         qntd_product = 3,
-        photo = 1,
+        photo = "",
         type_weight = "g",
         weight_product = 800,
         price = 24.00,
@@ -420,7 +431,7 @@ fun listProductsData() = listOf<ProductCardSale>(
         id = 1,
         name = "Manga",
         qntd_product = 3,
-        photo = 1,
+        photo = "",
         type_weight = "g",
         weight_product = 800,
         price = 24.00,

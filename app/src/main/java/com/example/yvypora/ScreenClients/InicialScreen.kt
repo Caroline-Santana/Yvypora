@@ -399,17 +399,19 @@ fun GetLists() {
     nearToYouList.clear()
 
     val scope = rememberCoroutineScope()
+
     scope.launch {
         ProductService.listAllProducts(
-            0,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
+            "3",
+            "0",
+            higherPrice = "10000",
+            lowerPrice = "0",
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(
                     Product(
+                        id = _product.id,
                         photo = _product.imageOfProduct[0].image.uri,
                         name = _product.name,
                         price = _product.price.toFloat(),
@@ -421,15 +423,16 @@ fun GetLists() {
     }
     scope.launch {
         ProductService.listAllProducts(
-            1,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
+            "2",
+            "0",
+            higherPrice = "10000",
+            lowerPrice = "0",
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(
                     Product(
+                        id = _product.id,
                         photo = _product.imageOfProduct[0].image.uri,
                         name = _product.name,
                         price = _product.price.toFloat(),
@@ -441,15 +444,16 @@ fun GetLists() {
     }
     scope.launch {
         ProductService.listAllProducts(
-            2,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
+            "1",
+            "0",
+            higherPrice = "10000",
+            lowerPrice = "0",
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(
                     Product(
+                        id = _product.id,
                         photo = _product.imageOfProduct[0].image.uri,
                         name = _product.name,
                         price = _product.price.toFloat(),
@@ -461,15 +465,16 @@ fun GetLists() {
     }
     scope.launch {
         ProductService.listAllProducts(
-            3,
-            0,
-            higherPrice = 10000,
-            lowerPrice = 0,
+            "0",
+            "0",
+            higherPrice = "10000",
+            lowerPrice = "0",
         ) { res ->
             Log.i("teste", res.toString())
             res?.data?.forEach { _product ->
                 allList.add(
                     Product(
+                        id = _product.id,
                         photo = _product.imageOfProduct[0].image.uri,
                         name = _product.name,
                         price = _product.price.toFloat(),
@@ -484,6 +489,7 @@ fun GetLists() {
             res?.data?.forEach { _product ->
                 saleOffList.add(
                     Product(
+                        id = _product.id,
                         photo = _product.imageOfProduct[0].image.uri,
                         name = _product.name,
                         price = _product.price.toFloat(),
@@ -501,6 +507,7 @@ fun GetLists() {
                 res?.data?.forEach { _product ->
                     nearToYouList.add(
                         Product(
+                            id = _product.id,
                             photo = _product.imageOfProduct[0].image.uri,
                             name = _product.name,
                             price = _product.price.toFloat(),
@@ -540,7 +547,9 @@ fun CardProducts(data: Product) {
             .width(130.dp)
             .height(145.dp)
             .clickable {
-                val intent = Intent(context, DescriptionProducts()::class.java)
+                val intent = Intent(context, DescriptionProducts::class.java)
+                Log.i("teste", data.id.toString())
+                intent.putExtra("id", data.id)
                 context.startActivity(intent)
             }
             .padding(3.dp),
@@ -626,7 +635,8 @@ fun Shortcuts() {
                 .height(80.dp)
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, FruitsResultActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 0)
                     context.startActivity(intent)
                 },
             contentDescription = "Fruit"
@@ -637,7 +647,8 @@ fun Shortcuts() {
                 .height(80.dp)
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, VegetablesActivityActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 1)
                     context.startActivity(intent)
                 },
             contentDescription = "Vegetables"
@@ -648,7 +659,8 @@ fun Shortcuts() {
                 .height(80.dp)
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, SpicesActivityActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 2)
                     context.startActivity(intent)
                 },
             contentDescription = "Spices"
@@ -659,7 +671,8 @@ fun Shortcuts() {
                 .height(80.dp)
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, OthersActivityActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 3)
                     context.startActivity(intent)
                 },
             contentDescription = "Others"
@@ -678,7 +691,8 @@ fun Shortcuts() {
             modifier = Modifier
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, FruitsResultActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 0)
                     context.startActivity(intent)
                 },
             fontSize = 15.sp,
@@ -689,7 +703,8 @@ fun Shortcuts() {
             modifier = Modifier
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, VegetablesActivityActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 1)
                     context.startActivity(intent)
                 },
             fontSize = 15.sp,
@@ -700,7 +715,8 @@ fun Shortcuts() {
             modifier = Modifier
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, SpicesActivityActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 2)
                     context.startActivity(intent)
                 },
             fontSize = 14.sp,
@@ -711,7 +727,8 @@ fun Shortcuts() {
             modifier = Modifier
                 .width(70.dp)
                 .clickable {
-                    val intent = Intent(context, OthersActivityActivity::class.java)
+                    val intent = Intent(context, CategoryResultActivity::class.java)
+                    intent.putExtra("id", 3)
                     context.startActivity(intent)
                 },
             fontSize = 15.sp,

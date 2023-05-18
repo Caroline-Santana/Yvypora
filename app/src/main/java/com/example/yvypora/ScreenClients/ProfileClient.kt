@@ -1,14 +1,13 @@
 package com.example.yvypora.ScreenClients
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.service.autofill.OnClickAction
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.ColorRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,16 +25,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.models.ClientData
-import com.example.yvypora.navbar.ItemsMenu
-import com.example.yvypora.navbar.NavigationHost
+import com.example.yvypora.models.User
+import com.example.yvypora.services.datastore.UserStore
 import com.example.yvypora.ui.theme.YvyporaTheme
-import kotlinx.coroutines.CoroutineScope
+import com.google.gson.Gson
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+
 //import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 class ProfileClient : ComponentActivity() {
@@ -52,7 +51,8 @@ class ProfileClient : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        HeaderProfile()
+                        val user = fetchDetails();
+                        HeaderProfile(user)
                         JoiningFields()
                     }
                 }
@@ -61,14 +61,29 @@ class ProfileClient : ComponentActivity() {
     }
 }
 
-val listClientData = listOf<ClientData>(
-    ClientData(
-        name = "Carlos Arcanjo",
-        email = "carlaoprof@gmail.com"
-    )
-)
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun HeaderProfile() {
+fun fetchDetails(): User {
+    val context = LocalContext.current
+    val repository = UserStore(context)
+    var userParsed by remember { mutableStateOf<User?>(null) }
+    val scope = rememberCoroutineScope()
+
+    scope.launch {
+        repository.getDetails.collect {_user ->
+            val gson = Gson()
+            val parsed = gson.fromJson(_user, User::class.java)
+            userParsed = parsed
+        }
+    }
+
+    Log.i("teste", userParsed.toString())
+
+    return userParsed ?: User()
+}
+@Composable
+fun HeaderProfile(user: User) {
+    val image = rememberImagePainter(user.picture_uri)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,7 +91,7 @@ fun HeaderProfile() {
 
     ) {
         Image(
-            painter = painterResource(id = R.drawable.icon_user),
+            painter = image,
             modifier = Modifier
                 .height(66.dp)
                 .width(75.dp),
@@ -88,13 +103,13 @@ fun HeaderProfile() {
                 .padding(start = 87.dp)
         ) {
             Text(
-                text = "Carlos Arcanjo",
+                text = user.name ?: "",
                 modifier = Modifier.padding(bottom = 3.dp),
                 fontSize = 20.sp
 
             )
             Text(
-                text = "carlaoprof@gmail.com"
+                text = user.email ?: ""
             )
         }
 
@@ -446,7 +461,8 @@ fun ProfileCliente() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            HeaderProfile()
+            val user = fetchDetails();
+            HeaderProfile(user)
             JoiningFields()
         }
     }

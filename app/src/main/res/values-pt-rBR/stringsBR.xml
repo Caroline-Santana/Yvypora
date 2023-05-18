@@ -105,7 +105,7 @@
     <string name="add_account">Add. conta</string>
     <string name="title_activity_add_account">AddAccount</string>
     <string name="add_account_pay_methods">Adcionar sua conta</string>
-    <string name="fruits_result">Frutas</string>
+    <string name="category_result">Frutas</string>
     <string name="logout2">Deslogar</string>
     <string name="logout_text">Tem certeza que deseja sair?</string>
     <string name="title_activity_description_products">DescriçãoProdutos</string>
