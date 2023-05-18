@@ -171,5 +171,11 @@
     <string name="aguardando_retirada">Pedido aguardando retirada</string>
     <string name="pedido_retirado">Pedido foi retirado</string>
     <string name="sob_confirmacao_entrega">Pedido sob confirmação de entrega</string>
+    <string name="title_activity_acomp_corrida">AcompCorridaActivity</string>
+    <string name="my_order">Meu pedido</string>
+    <string name="distance">Distância:</string>
+    <string name="estimated_time">Tempo estimado:</string>
+    <string name="message">Mensagem</string>
+    <string name="call">Ligue</string>
 
 </resources>
