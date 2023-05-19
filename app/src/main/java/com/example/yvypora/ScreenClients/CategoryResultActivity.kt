@@ -57,7 +57,8 @@ class CategoryResultActivity : ComponentActivity() {
 
                 val scope = rememberCoroutineScope()
 
-                scope.launch {
+                if (fetch.isEmpty()) {
+                    scope.launch {
                         ProductService.listAllProducts(
                             category = categoryId.toString(),
                             score = "0.0",
@@ -70,6 +71,7 @@ class CategoryResultActivity : ComponentActivity() {
                             }
                             fetch = data!!
                         }
+                    }
                 }
 
                 Log.i("teste", "$fetch fetched data");

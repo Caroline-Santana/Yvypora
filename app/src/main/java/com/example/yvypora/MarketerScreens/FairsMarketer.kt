@@ -1,6 +1,7 @@
 package com.example.yvypora.MarketerScreens
 
 import android.os.Bundle
+import android.service.autofill.UserData
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -16,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.ScreenClients.HeaderProfile
+import com.example.yvypora.ScreenClients.fetchDetails
 import com.example.yvypora.models.FairsMap
 import com.example.yvypora.ui.theme.YvyporaTheme
 import java.time.LocalTime
@@ -46,7 +49,8 @@ class FairsMarketer : ComponentActivity() {
                             .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        HeaderProfile()
+                        val user = fetchDetails()
+                        HeaderProfile(user)
                         Spacer(modifier = Modifier.padding(top = 20.dp))
                         FairsMain()
                     }

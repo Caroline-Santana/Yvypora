@@ -1,6 +1,8 @@
 package com.example.yvypora.api.product
 
+import com.example.yvypora.MarketerScreens.FairsMarketer
 import com.example.yvypora.models.*
+import com.example.yvypora.models.dto.SearchBaseResponse
 import com.example.yvypora.models.marketer.Marketer
 import com.example.yvypora.models.product.BaseResponse
 import com.example.yvypora.models.product.BaseResponseAsObject
@@ -20,30 +22,30 @@ import retrofit2.http.Query
 
 
 interface ProductAPIService {
-   @GET("costumer/product/")
-   fun listAllProducts (
-       @Query("category") category: String,
-       @Query("score") score: String,
-       @Query("lowerPrice") lowerPrice: String,
-       @Query("higherPrice") higherPrice: String,
-   ): Call<BaseResponse<ProductResponse>>
+    @GET("costumer/product/")
+    fun listAllProducts(
+        @Query("category") category: String,
+        @Query("score") score: String,
+        @Query("lowerPrice") lowerPrice: String,
+        @Query("higherPrice") higherPrice: String,
+    ): Call<BaseResponse<ProductResponse>>
 
-   @GET("costumer/product/inSaleOff")
-   fun atSaleOff (): Call<BaseResponse<ProductResponse>>
+    @GET("costumer/product/inSaleOff")
+    fun atSaleOff(): Call<BaseResponse<ProductResponse>>
 
-   @GET("costumer/product/findNearest")
-   fun closeToClient(
-       @Header("Authorization") token: String,
-   ): Call<BaseResponse<ProductResponse>>
+    @GET("costumer/product/findNearest")
+    fun closeToClient(
+        @Header("Authorization") token: String,
+    ): Call<BaseResponse<ProductResponse>>
 
 
-   @GET("costumer/product/{id}")
-   fun get(
-       @Path("id") id: Int,
-   ): Call<BaseResponseAsObject<ProductResponse?>>
+    @GET("costumer/product/{id}")
+    fun get(
+        @Path("id") id: Int,
+    ): Call<BaseResponseAsObject<ProductResponse?>>
 
-   @GET("costumer/search")
-   fun search(
-       @Query("q") search: String,
-   ): Call<BaseResponse<ProductResponse>>
+    @GET("costumer/search/")
+    fun search(
+        @Query("q") search: String,
+    ): Call<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>>
 }

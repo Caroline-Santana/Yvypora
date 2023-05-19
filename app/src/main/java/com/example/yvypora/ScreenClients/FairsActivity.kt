@@ -16,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,8 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
+import com.example.yvypora.api.fairs.FairsAPIService
+import com.example.yvypora.models.Fair
 import com.example.yvypora.models.FairsMap
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.example.yvypora.utils.getCurrentLocaiton
 import com.google.android.gms.maps.model.LatLng
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -35,10 +39,41 @@ class FairsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
+                var listFairsMap by remember {
+                    mutableStateOf(listOf<FairsMap>())
+                }
+                val context = LocalContext.current
+                val coordinates = getCurrentLocaiton(context)
+
+
+                LaunchedEffect(coordinates) {
+                    FairsAPIService.listByClose(
+                        longitude = coordinates?.long!!,
+                        latitude = coordinates?.lat!!
+                    ) {
+                        val fairs = it.payload
+//                        listFairsMap = fairs.map {
+//                            bindDataToFairCard(it)
+                    }
+                }
+
+                // TODO
             }
         }
     }
 }
+
+fun bindDataToFairCard(data: Fair): FairsMap {
+    return FairsMap(
+        id = data.id,
+        name = data.name,
+        photo = data.image.uri,
+        aproxUserCloser = data.marketerCount,
+        ratingMarketer = 0.0,
+    )
+}
+
+
 
 fun listLocationFair() = listOf<LatLng>(
     LatLng(-23.55, -46.64),
@@ -124,7 +159,8 @@ fun FairsComponent(fair: FairsMap) {
     val user = painterResource(id = R.drawable.user)
 
     Card(
-        Modifier.padding(6.dp)
+        Modifier
+            .padding(6.dp)
             .height(350.dp),
         elevation = 10.dp
     ) {

@@ -1,5 +1,7 @@
 package com.example.yvypora.models
 
+import com.example.yvypora.models.dto.Image
+
 data class FairsMap(
     val id: Int,
     val photo: String,
@@ -11,8 +13,6 @@ data class FairsMap(
     val minuteEndOfWork: Int,
     val aproxUserCloser: Int,
     val ratingMarketer: Double,
-
-
     )
 
 

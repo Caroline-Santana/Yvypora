@@ -1,7 +1,10 @@
 package com.example.yvypora.api.product
 
 import android.util.Log
+import com.example.yvypora.MarketerScreens.FairsMarketer
 import com.example.yvypora.api.RetrofitApi
+import com.example.yvypora.models.MarketerData
+import com.example.yvypora.models.dto.SearchBaseResponse
 import com.example.yvypora.models.product.BaseResponse
 import com.example.yvypora.models.product.BaseResponseAsObject
 import com.example.yvypora.models.product.ProductResponse
@@ -71,7 +74,7 @@ class ProductService {
         fun closeToClient(token: String, onComplete: (BaseResponse<ProductResponse>?) -> Unit) {
             val call = API.closeToClient(token)
 
-            call.enqueue(object: Callback<BaseResponse<ProductResponse>?> {
+            call.enqueue(object : Callback<BaseResponse<ProductResponse>?> {
                 override fun onFailure(call: Call<BaseResponse<ProductResponse>?>, t: Throwable) {
                     t.printStackTrace()
                 }
@@ -113,26 +116,35 @@ class ProductService {
                 }
             })
         }
-    }
 
 
-    fun search(search: String, onComplete: (BaseResponse<ProductResponse>) -> Unit) {
-        val call = RetrofitApi.productRetrofitService().search(search)
-        call.enqueue(
-            object : Callback<BaseResponse<ProductResponse>> {
-                override fun onResponse(
-                    call: Call<BaseResponse<ProductResponse>>,
-                    response: Response<BaseResponse<ProductResponse>>
-                ) {
-                    TODO("Not yet implemented")
+        fun search(search: String, onComplete: (BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>) -> Unit) {
+            val call = RetrofitApi.productRetrofitService().search(search)
+            call.enqueue(
+                object : Callback<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>> {
+                    override fun onResponse(
+                        call: Call<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>>,
+                        response: Response<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>>
+                    ) {
+                        Log.i("teste", response.toString())
+                        Log.i("teste", response.body().toString())
+                        val body = response.body()
+                        if (response.isSuccessful){
+                            return onComplete.invoke(body!!)
+                        }
+
+                        return onComplete.invoke(BaseResponseAsObject(400, null, false));
+                    }
+
+                    override fun onFailure(
+                        call: Call<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>>,
+                        t: Throwable
+                    ) {
+                        t.printStackTrace()
+                    }
+
                 }
-
-                override fun onFailure(call: Call<BaseResponse<ProductResponse>>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-
-            }
-        )
+            )
+        }
     }
-
 }

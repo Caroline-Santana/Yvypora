@@ -1,5 +1,6 @@
 package com.example.yvypora.models.product
 
+import com.example.yvypora.models.dto.CountData
 import com.example.yvypora.models.dto.SaleOff
 import com.example.yvypora.models.dto.TypeOfPrice
 import com.example.yvypora.models.marketer.Marketer
@@ -35,5 +36,6 @@ data class ProductResponse (
     val marketer: Marketer,
     var latitude: Float? = null,
     var longitude: Float? = null,
+    val _count: CountData? = null,
 )
 
