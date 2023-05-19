@@ -6,13 +6,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.yvypora.ScreenClients.MainLive
 
 @Composable
 fun Live(){
-    Column() {
-        Text(
-            text = "Live",
-            style = MaterialTheme.typography.h1
-        )
-    }
+  MainLive()
 }

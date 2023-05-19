@@ -178,6 +178,9 @@
     <string name="estimated_time">Estimated time:</string>
     <string name="message">Message</string>
     <string name="call">Call</string>
+    <string name="title_activity_live_screen">LiveScreen</string>
+    <string name="attention">ATTENTION</string>
+    <string name="message_attention">TAB UNDER CONSTRUCTION</string>
 
 
 </resources>

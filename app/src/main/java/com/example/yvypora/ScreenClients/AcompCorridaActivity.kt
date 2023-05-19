@@ -200,15 +200,15 @@ fun CardTeste() {
                             painter = painterResource(id = R.drawable.message_icon),
                             contentDescription = null,
                             modifier = Modifier
-                                .height(30.dp)
-                                .width(30.dp)
+                                .height(25.dp)
+                                .width(25.dp)
                                 .padding(end = 3.dp),
                             tint = colorResource(id = R.color.green_yvy)
                         )
                         Text(
                             text = stringResource(id = R.string.message),
                             color = colorResource(id = R.color.green_yvy),
-                            fontSize = 16.sp
+                            fontSize = 15.sp
                         )
                     }
 
@@ -229,7 +229,7 @@ fun CardTeste() {
                     Text(
                         text = stringResource(id = R.string.call),
                         color = Color.White,
-                        fontSize = 16.sp
+                        fontSize = 15.sp
                     )
                 }
             }

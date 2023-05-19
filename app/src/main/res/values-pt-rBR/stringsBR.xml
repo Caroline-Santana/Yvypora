@@ -177,5 +177,7 @@
     <string name="estimated_time">Tempo estimado:</string>
     <string name="message">Mensagem</string>
     <string name="call">Ligue</string>
+    <string name="attention">ATENÇÃO</string>
+    <string name="message_attention">ABA EM CONSTRUÇÃO</string>
 
 </resources>
