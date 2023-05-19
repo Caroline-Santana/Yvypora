@@ -67,9 +67,9 @@ class CategoryResultActivity : ComponentActivity() {
                         ) {
                             val products = it?.data
                             val data = products?.map { product ->
-                                bindData(product)
+//                                bindData(product)
                             }
-                            fetch = data!!
+//                            fetch = data!!
                         }
                     }
                 }

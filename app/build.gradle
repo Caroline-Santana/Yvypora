@@ -130,6 +130,9 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    //Lotie
+    implementation "com.airbnb.android:lottie-compose:6.0.0"
+
 
     // location
     implementation 'com.google.android.gms:play-services-location:18.0.0'

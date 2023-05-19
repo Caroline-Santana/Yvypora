@@ -141,16 +141,16 @@
     <string name="title_activity_result_search">ResultSearch</string>
     <string name="add_product">Add a new product</string>
     <string name="category_title">Category:</string>
-    <string name="title_result_search" >Result for:</string>
-    <string name="filter" >Filter</string>
-    <string name="prices_sizes" >Prices and sizes :</string>
+    <string name="title_result_search">Result for:</string>
+    <string name="filter">Filter</string>
+    <string name="prices_sizes">Prices and sizes :</string>
     <string name="product_picture">Add a product picture</string>
     <string name="promotion_question">Promotion :</string>
     <string name="customized">Customized by costumer</string>
     <string name="g500">500g</string>
     <string name="kg1">1Kg</string>
     <string name="kg15">1.5Kg</string>
-<!--    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>-->
+    <!--    <string name="photo_product_description">Anexe uma imagem do produto que ficará visível ao cliente</string>-->
     <string name="photo_product_description">Attach an image that will be visible to costumer </string>
     <string name="distance_filter">Distance </string>
     <string name="price_filter">Price </string>
@@ -172,6 +172,15 @@
     <string name="aguardando_retirada">Order awaiting pickup</string>
     <string name="pedido_retirado">Order has been withdrawn</string>
     <string name="sob_confirmacao_entrega">Order under delivery confirmation</string>
+    <string name="title_activity_acomp_corrida">AcompCorridaActivity</string>
+    <string name="my_order">My order</string>
+    <string name="distance">Distance:</string>
+    <string name="estimated_time">Estimated time:</string>
+    <string name="message">Message</string>
+    <string name="call">Call</string>
+    <string name="title_activity_live_screen">LiveScreen</string>
+    <string name="attention">ATTENTION</string>
+    <string name="message_attention">TAB UNDER CONSTRUCTION</string>
 
 
 </resources>
