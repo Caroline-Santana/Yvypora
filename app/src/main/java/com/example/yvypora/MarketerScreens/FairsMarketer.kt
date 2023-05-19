@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.ScreenClients.HeaderProfile
+import com.example.yvypora.ScreenClients.fetchDetails
 import com.example.yvypora.models.FairsMap
 import com.example.yvypora.ui.theme.YvyporaTheme
 import java.time.LocalTime
@@ -46,7 +47,8 @@ class FairsMarketer : ComponentActivity() {
                             .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        HeaderProfile()
+                        val user = fetchDetails();
+                        HeaderProfile(user)
                         Spacer(modifier = Modifier.padding(top = 20.dp))
                         FairsMain()
                     }
