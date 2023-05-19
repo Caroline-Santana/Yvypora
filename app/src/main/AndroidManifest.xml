@@ -21,6 +21,16 @@
             android:label="@string/title_activity_result_search"
             android:theme="@style/Theme.Yvypora" />
         <activity
+            android:name=".ScreenClients.StatusOrder"
+            android:exported="false"
+            android:label="@string/title_activity_status_order"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
+            android:name=".ScreenClients.AcompCorridaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_acomp_corrida"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".ScreenClients.EditAddress"
             android:exported="false"
             android:label="@string/title_activity_edit_address"

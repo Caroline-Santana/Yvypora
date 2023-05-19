@@ -39,7 +39,8 @@ class ProfileMarketer : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        HeaderProfile()
+                        val user = fetchDetails();
+                        HeaderProfile(user)
                         JoiningFieldsMarketer()
                     }
                 }

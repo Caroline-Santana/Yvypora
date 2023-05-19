@@ -61,9 +61,7 @@ class ResultSearch : ComponentActivity() {
 }
 
 
-fun bindData(data: ) {
-
-}
+//fun bindData(data: ) {}
 @Composable
 fun ResultSearchMain() {
     var nameProductSearch = "Abobrinha"
