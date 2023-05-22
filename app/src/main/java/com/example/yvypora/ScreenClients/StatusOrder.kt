@@ -82,6 +82,7 @@ fun StatusOrderMain() {
 }
 @Composable
 fun CardConfirmDelivery(){
+    val context = LocalContext.current
         Card(
             Modifier
                 .width(345.dp)
@@ -121,7 +122,10 @@ fun CardConfirmDelivery(){
                             .height(45.dp)
                             .width(96.dp),
                         colors = ButtonDefaults.buttonColors(Color(36, 85, 1, 255)),
-                        onClick = {}
+                        onClick = {
+                            val intent = Intent(context, AvaliationScreen::class.java)
+                            context.startActivity(intent)
+                        }
                     ) {
                         Text(
                             text = stringResource(id = R.string.yes),

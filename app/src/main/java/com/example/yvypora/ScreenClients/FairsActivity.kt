@@ -70,6 +70,11 @@ fun bindDataToFairCard(data: Fair): FairsMap {
         photo = data.image.uri,
         aproxUserCloser = data.marketerCount,
         ratingMarketer = 0.0,
+        dayOfWork = "a",
+        hourEndOfWork = 1,
+        minuteEndOfWork = 1,
+        hourStartOfWork = 1,
+        minuteStartOfWork = 1
     )
 }
 

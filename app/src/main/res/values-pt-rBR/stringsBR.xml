@@ -179,5 +179,12 @@
     <string name="call">Ligue</string>
     <string name="attention">ATENÇÃO</string>
     <string name="message_attention">ABA EM CONSTRUÇÃO</string>
+    <string name="avalie_order">Avalie essa compra</string>
+    <string name="nota_delivery">Nota do entregador</string>
+    <string name="nota_products">Nota dos produtos</string>
+    <string name="text_avaliation">Caso queira avaliar cada item da sua compra individualmente</string>
+    <string name="click_avaliation">clique aqui</string>
+    <string name="button_avaliation">Avaliar</string>
+    <string name="ex_comentario">Ex: Produto de ótima qualidade e com uma entrega ultra veloz</string>
 
 </resources>
