@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.datastore.core.DataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -44,8 +43,8 @@ import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.api.product.ProductService
 import com.example.yvypora.model.template
-import com.example.yvypora.models.Product
-import com.example.yvypora.models.User
+import com.example.yvypora.domain.models.Product
+import com.example.yvypora.domain.models.User
 import com.example.yvypora.navbar.ItemsMenu
 import com.example.yvypora.navbar.NavigationHost
 import com.example.yvypora.services.datastore.TokenStore
@@ -54,12 +53,12 @@ import com.example.yvypora.services.websocket.Websocket
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import kotlin.math.absoluteValue
-
 
 class InicialScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +87,6 @@ fun BeOnline() {
 fun Header() {
     val context = LocalContext.current
     var scope = rememberCoroutineScope()
-    
     val store = UserStore(context)
     var userParsed by remember { mutableStateOf<User?>(null) }
     scope.launch {

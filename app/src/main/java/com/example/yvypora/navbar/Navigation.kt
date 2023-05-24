@@ -1,7 +1,9 @@
 package com.example.yvypora.navbar
 
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHost
 
 import androidx.navigation.NavHostController
@@ -12,6 +14,7 @@ import com.example.yvypora.MarketerScreens.InicialMarketerMain
 
 @Composable
 fun NavigationHost(navController: NavHostController){
+    val context = LocalContext.current
    NavHost(navController = navController,
        startDestination = ItemsMenu.Pantalla1.rota,){
        composable(ItemsMenu.Pantalla1.rota){
@@ -21,7 +24,7 @@ fun NavigationHost(navController: NavHostController){
            Live()
        }
        composable(ItemsMenu.Pantalla3.rota){
-           Fair()
+           context.startActivity(Intent(context, Fair::class.java))
        }
        composable(ItemsMenu.Pantalla4.rota){
            Profile()

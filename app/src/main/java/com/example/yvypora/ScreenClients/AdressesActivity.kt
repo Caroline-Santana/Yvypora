@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import com.example.yvypora.R
-import com.example.yvypora.models.AddressCard
-import com.example.yvypora.models.MarketerCardShopping
+import com.example.yvypora.domain.models.AddressCard
+import com.example.yvypora.domain.models.MarketerCardShopping
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class AdressesActivity : ComponentActivity() {
@@ -146,8 +146,8 @@ class AddressActivity : AppCompatActivity(){
         viewModel.setMainAddress(address)
     }
 }
-val listAddress= mutableStateListOf<AddressCard>(
-    AddressCard(
+val listAddress= mutableStateListOf<com.example.yvypora.domain.models.AddressCard>(
+    com.example.yvypora.domain.models.AddressCard(
         titulo = "Casa",
         name_remetente = "Carlos Arcanjo",
         telefone_remetente = "(11) 954009469",
@@ -158,7 +158,7 @@ val listAddress= mutableStateListOf<AddressCard>(
         pais = "Brasil",
         endereço_principal = false,
     ),
-    AddressCard(
+    com.example.yvypora.domain.models.AddressCard(
         titulo = "Escritório",
         name_remetente = "Carlos Arcanjo",
         telefone_remetente = "(11) 954009469",
@@ -169,7 +169,7 @@ val listAddress= mutableStateListOf<AddressCard>(
         pais = "Brasil",
         endereço_principal = true,
     ),
-    AddressCard(
+    com.example.yvypora.domain.models.AddressCard(
         titulo = "Escritório",
         name_remetente = "Carlos Arcanjo",
         telefone_remetente = "(11) 954009469",
@@ -183,7 +183,7 @@ val listAddress= mutableStateListOf<AddressCard>(
 
 )
 @Composable
-fun ListOfCardAddress(addresses: List<AddressCard>) {
+fun ListOfCardAddress(addresses: List<com.example.yvypora.domain.models.AddressCard>) {
     val modifierList = addresses.sortedByDescending { it.endereço_principal }
     LazyColumn() {
         items(modifierList) { address ->
@@ -200,7 +200,7 @@ fun ListOfCardAddress(addresses: List<AddressCard>) {
 }
 
 @Composable
-fun CardPrincipalAdresses(address: AddressCard){
+fun CardPrincipalAdresses(address: com.example.yvypora.domain.models.AddressCard){
     var titleAddress = address.titulo
     var name_remetente = address.name_remetente
     var telefone_remetente = address.telefone_remetente
@@ -362,7 +362,7 @@ fun CardPrincipalAdresses(address: AddressCard){
     }
 }
 @Composable
-fun CardAdresses(address : AddressCard){
+fun CardAdresses(address : com.example.yvypora.domain.models.AddressCard){
 //    val dragState = rememberDraggableState(onDelta = { dy-> onDrag(address)})
 
     var titleAddress = address.titulo

@@ -37,8 +37,8 @@ import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.api.cep.getCep
 import com.example.yvypora.api.commons.createCostumer
-import com.example.yvypora.models.Address
-import com.example.yvypora.models.Costumer
+import com.example.yvypora.domain.models.Address
+import com.example.yvypora.domain.models.costumer.Costumer
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.MaskBirth
 import com.example.yvypora.utils.MaskCep
@@ -305,7 +305,7 @@ fun Inputs() {
                         name = nameState,
                         email = emailState,
                         password = passwordState,
-                        address = Address(
+                        address = com.example.yvypora.domain.models.Address(
                             cep = cep.cep,
                             addressTypeId = 1,
                             city = cep.localidade,

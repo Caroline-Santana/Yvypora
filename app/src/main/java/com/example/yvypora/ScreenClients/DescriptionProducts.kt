@@ -31,8 +31,8 @@ import com.example.yvypora.MarketerScreens.imageUri
 import com.example.yvypora.R
 import com.example.yvypora.api.commons.auth
 import com.example.yvypora.api.product.ProductService
-import com.example.yvypora.models.Credentials
-import com.example.yvypora.models.product.ProductResponse
+import com.example.yvypora.domain.models.Credentials
+import com.example.yvypora.domain.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlin.math.round
 import kotlin.math.roundToInt

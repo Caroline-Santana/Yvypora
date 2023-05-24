@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.yvypora.MarketerScreens.InicialMarketerActivity
 import com.example.yvypora.ScreenClients.InicialScreen
 import com.example.yvypora.ui.theme.YvyporaTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 
 class MainActivity : ComponentActivity() {

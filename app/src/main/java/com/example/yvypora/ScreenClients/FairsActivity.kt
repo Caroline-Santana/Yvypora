@@ -25,57 +25,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
-import com.example.yvypora.api.fairs.FairsAPIService
-import com.example.yvypora.models.Fair
-import com.example.yvypora.models.FairsMap
 import com.example.yvypora.ui.theme.YvyporaTheme
-import com.example.yvypora.utils.getCurrentLocaiton
 import com.google.android.gms.maps.model.LatLng
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+
 
 class FairsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                var listFairsMap by remember {
-                    mutableStateOf(listOf<FairsMap>())
-                }
-                val context = LocalContext.current
-                val coordinates = getCurrentLocaiton(context)
 
 
-                LaunchedEffect(coordinates) {
-                    FairsAPIService.listByClose(
-                        longitude = coordinates?.long!!,
-                        latitude = coordinates?.lat!!
-                    ) {
-                        val fairs = it.payload
-//                        listFairsMap = fairs.map {
-//                            bindDataToFairCard(it)
-                    }
-                }
 
-                // TODO
+
             }
         }
     }
-}
-
-fun bindDataToFairCard(data: Fair): FairsMap {
-    return FairsMap(
-        id = data.id,
-        name = data.name,
-        photo = data.image.uri,
-        aproxUserCloser = data.marketerCount,
-        ratingMarketer = 0.0,
-        dayOfWork = "a",
-        hourEndOfWork = 1,
-        minuteEndOfWork = 1,
-        hourStartOfWork = 1,
-        minuteStartOfWork = 1
-    )
 }
 
 
@@ -87,8 +54,8 @@ fun listLocationFair() = listOf<LatLng>(
     LatLng(-20.55, -46.64),
 )
 
-fun listMarketerFair() = listOf<FairsMap>(
-    FairsMap(
+fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
+    com.example.yvypora.domain.models.FairsMap(
         id = 1,
         photo = "feira.png",
         name = "Feira de Sampa",
@@ -100,7 +67,7 @@ fun listMarketerFair() = listOf<FairsMap>(
         aproxUserCloser = 2,
         ratingMarketer = 3.5
     ),
-    FairsMap(
+    com.example.yvypora.domain.models.FairsMap(
         id = 2,
         photo = "feira.png",
         name = "Feira de Paraty",
@@ -112,7 +79,7 @@ fun listMarketerFair() = listOf<FairsMap>(
         aproxUserCloser = 2,
         ratingMarketer = 5.0
     ),
-    FairsMap(
+    com.example.yvypora.domain.models.FairsMap(
         id = 3,
         photo = "feira.png",
         name = "Feira de Caconde",
@@ -124,7 +91,7 @@ fun listMarketerFair() = listOf<FairsMap>(
         aproxUserCloser = 2,
         ratingMarketer = 3.5
     ),
-    FairsMap(
+    com.example.yvypora.domain.models.FairsMap(
         id = 4,
         photo = "feira.png",
         name = "Feira de Capitólio",
@@ -140,14 +107,14 @@ fun listMarketerFair() = listOf<FairsMap>(
 
 
 @Composable
-fun ListOfFairs(fairs: List<FairsMap>) {
+fun ListOfFairs(fairs: List<com.example.yvypora.domain.models.FairsMap>) {
     LazyColumn(Modifier.fillMaxSize()) {
         items(fairs) { Fairs -> FairsComponent(fair = Fairs) }
     }
 }
 
 @Composable
-fun FairsComponent(fair: FairsMap) {
+fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap) {
 
     val nameFair = fair.name
 //    val photoFair = fair.photo

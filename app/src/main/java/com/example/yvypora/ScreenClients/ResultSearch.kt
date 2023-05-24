@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.yvypora.R
 import com.example.yvypora.api.product.ProductService
-import com.example.yvypora.models.ProductCardSale
-import com.example.yvypora.models.product.ProductResponse
+import com.example.yvypora.domain.models.ProductCardSale
+import com.example.yvypora.domain.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlin.math.roundToInt
 
@@ -109,6 +109,48 @@ class ResultSearch : ComponentActivity() {
 
     }
 
+    val OptionFilter = listOf<com.example.yvypora.domain.models.Filter>(
+        com.example.yvypora.domain.models.Filter(
+            id = 1,
+            titulo = "Próx. a mim",
+            isEnabled = false
+        ),
+        com.example.yvypora.domain.models.Filter(
+            id = 2,
+            titulo = "R$ 5,00",
+            isEnabled = false
+        ),
+        com.example.yvypora.domain.models.Filter(
+            id = 3,
+            titulo = "R$ 25,00",
+            isEnabled = false
+        ),
+        com.example.yvypora.domain.models.Filter(
+            id = 4,
+            titulo = "2 ou mais",
+            isEnabled = false
+        ),
+        com.example.yvypora.domain.models.Filter(
+            id = 5,
+            titulo = "2 ou mais",
+            isEnabled = false
+        ),
+        com.example.yvypora.domain.models.Filter(
+            id = 6,
+            titulo = "3 ou mais",
+            isEnabled = false
+        ),
+        com.example.yvypora.domain.models.Filter(
+            id = 7,
+            titulo = "4 ou mais",
+            isEnabled = false
+        ),
+        com.example.yvypora.domain.models.Filter(
+            id = 8,
+            titulo = "5 apenas",
+            isEnabled = false
+        ),
+    )
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
