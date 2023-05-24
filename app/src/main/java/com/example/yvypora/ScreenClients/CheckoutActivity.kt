@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.yvypora.R
-import com.example.yvypora.models.AddressCard
-import com.example.yvypora.models.CardPayment
-import com.example.yvypora.models.PaymentMethodDescription
+import com.example.yvypora.domain.models.AddressCard
+import com.example.yvypora.domain.models.CardPayment
+import com.example.yvypora.domain.models.PaymentMethodDescription
 import com.example.yvypora.theme.YvyporaTheme
 
 class CheckoutActivity : ComponentActivity() {
@@ -257,7 +257,7 @@ val listPayMethods = mutableStateListOf<PaymentMethodDescription>(
         isSelected = false,
         description_method = "Pagamento pode ser parcelado até 4x",
         card = listOf(
-            CardPayment(
+            com.example.yvypora.domain.models.CardPayment(
                 nome_titular = "Valeria Almeida",
                 numero_cartao = "**** **** **** ****",
                 cvv = 321,
@@ -281,7 +281,7 @@ val listPayMethods = mutableStateListOf<PaymentMethodDescription>(
         isSelected = false,
         description_method = "Pagamento sujeito a taxa",
         card = listOf(
-            CardPayment(
+            com.example.yvypora.domain.models.CardPayment(
                 nome_titular = "Rogério Ceni",
                 numero_cartao = "**** **** **** ****",
                 cvv = 321,

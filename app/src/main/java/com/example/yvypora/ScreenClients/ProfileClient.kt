@@ -26,13 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.example.yvypora.MainActivity
 import com.example.yvypora.R
-import com.example.yvypora.models.ClientData
-import com.example.yvypora.models.User
+import com.example.yvypora.domain.models.User
+import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.services.datastore.UserStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 //import kotlin.coroutines.jvm.internal.CompletedContinuation.context
@@ -350,7 +350,8 @@ fun PurchaseHistory() {
 @Composable
 fun Logout() {
     var abrirDialog by remember { mutableStateOf(false) }
-
+    var eraseData by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
@@ -423,7 +424,12 @@ fun Logout() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { auth.signOut() },
+                        onClick = {
+                            abrirDialog = false
+
+                            eraseData = true;
+
+                                  },
                         modifier = Modifier.width(80.dp)
                     )
                     {
@@ -451,6 +457,16 @@ fun Logout() {
 
         )
 
+    }
+
+    if (eraseData) {
+        LaunchedEffect(Unit) {
+            UserStore(context).saveDetails("")
+            TokenStore(context).saveToken("")
+            val intent = Intent(context, MainActivity::class.java)
+
+            context.startActivity(intent)
+        }
     }
 }
 @Preview(showBackground = true)

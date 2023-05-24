@@ -3,11 +3,11 @@ package com.example.yvypora.api.product
 import android.util.Log
 import com.example.yvypora.MarketerScreens.FairsMarketer
 import com.example.yvypora.api.RetrofitApi
-import com.example.yvypora.models.MarketerData
-import com.example.yvypora.models.dto.SearchBaseResponse
-import com.example.yvypora.models.product.BaseResponse
-import com.example.yvypora.models.product.BaseResponseAsObject
-import com.example.yvypora.models.product.ProductResponse
+import com.example.yvypora.domain.models.MarketerData
+import com.example.yvypora.domain.models.dto.SearchBaseResponse
+import com.example.yvypora.domain.models.product.BaseResponse
+import com.example.yvypora.domain.models.product.BaseResponseAsObject
+import com.example.yvypora.domain.models.product.ProductResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

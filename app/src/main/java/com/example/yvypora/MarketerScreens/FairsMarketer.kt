@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.ScreenClients.HeaderProfile
 import com.example.yvypora.ScreenClients.fetchDetails
-import com.example.yvypora.models.FairsMap
+import com.example.yvypora.domain.models.FairsMap
 import com.example.yvypora.ui.theme.YvyporaTheme
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -72,8 +72,8 @@ fun FairsMain() {
 
 }
 
-fun listMarketerFair() = listOf<FairsMap>(
-    FairsMap(
+fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
+    com.example.yvypora.domain.models.FairsMap(
         id = 1,
         photo = "feira.png",
         name = "Feira de Sampa",
@@ -85,7 +85,7 @@ fun listMarketerFair() = listOf<FairsMap>(
         aproxUserCloser = 2,
         ratingMarketer = 3.5
     ),
-    FairsMap(
+    com.example.yvypora.domain.models.FairsMap(
         id = 2,
         photo = "feira.png",
         name = "Feira de Paraty",
@@ -97,7 +97,7 @@ fun listMarketerFair() = listOf<FairsMap>(
         aproxUserCloser = 2,
         ratingMarketer = 5.0
     ),
-    FairsMap(
+    com.example.yvypora.domain.models.FairsMap(
         id = 3,
         photo = "feira.png",
         name = "Feira de Caconde",
@@ -109,7 +109,7 @@ fun listMarketerFair() = listOf<FairsMap>(
         aproxUserCloser = 2,
         ratingMarketer = 3.5
     ),
-    FairsMap(
+    com.example.yvypora.domain.models.FairsMap(
         id = 4,
         photo = "feira.png",
         name = "Feira de Capitólio",
@@ -125,14 +125,14 @@ fun listMarketerFair() = listOf<FairsMap>(
 
 
 @Composable
-fun ListOfFairsMarketer(fairs: List<FairsMap>) {
+fun ListOfFairsMarketer(fairs: List<com.example.yvypora.domain.models.FairsMap>) {
     LazyColumn(Modifier.fillMaxSize()) {
         items(fairs) { Fairs -> FairsComponent(fair = Fairs) }
     }
 }
 
 @Composable
-fun FairsComponent(fair: FairsMap) {
+fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap) {
 
     val nameFair = fair.name
 //    val photoFair = fair.photo

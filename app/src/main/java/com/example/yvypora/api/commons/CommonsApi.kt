@@ -2,14 +2,18 @@ package com.example.yvypora.api.commons
 
 import android.util.Log
 import com.example.yvypora.api.RetrofitApi
-import com.example.yvypora.models.*
-import com.example.yvypora.models.marketer.Marketer
+import com.example.yvypora.domain.models.Token
+import com.example.yvypora.domain.models.User
+import com.example.yvypora.domain.models.marketer.Marketer
+import com.example.yvypora.domain.models.*
+import com.example.yvypora.domain.models.costumer.Costumer
+import com.example.yvypora.models.CostumerInfoResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun auth(credentials: Credentials, onComplete: (Token) -> Unit) {
+fun auth(credentials: com.example.yvypora.domain.models.Credentials, onComplete: (Token) -> Unit) {
     val call = RetrofitApi.commonsRetrofitService().auth(credentials)
 
     call.enqueue(object : Callback<Token> {
