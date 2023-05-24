@@ -3,16 +3,10 @@ package com.example.yvypora.ScreenClients
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,9 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.node.modifierElementOf
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,15 +28,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.yvypora.R
 import com.example.yvypora.api.product.ProductService
-import com.example.yvypora.models.Filter
-import com.example.yvypora.models.ProductCardSale
-import com.example.yvypora.models.product.ProductResponse
+import com.example.yvypora.domain.models.ProductCardSale
+import com.example.yvypora.domain.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlin.math.roundToInt
 
@@ -119,43 +109,43 @@ class ResultSearch : ComponentActivity() {
 
     }
 
-    val OptionFilter = listOf<Filter>(
-        Filter(
+    val OptionFilter = listOf<com.example.yvypora.domain.models.Filter>(
+        com.example.yvypora.domain.models.Filter(
             id = 1,
             titulo = "Próx. a mim",
             isEnabled = false
         ),
-        Filter(
+        com.example.yvypora.domain.models.Filter(
             id = 2,
             titulo = "R$ 5,00",
             isEnabled = false
         ),
-        Filter(
+        com.example.yvypora.domain.models.Filter(
             id = 3,
             titulo = "R$ 25,00",
             isEnabled = false
         ),
-        Filter(
+        com.example.yvypora.domain.models.Filter(
             id = 4,
             titulo = "2 ou mais",
             isEnabled = false
         ),
-        Filter(
+        com.example.yvypora.domain.models.Filter(
             id = 5,
             titulo = "2 ou mais",
             isEnabled = false
         ),
-        Filter(
+        com.example.yvypora.domain.models.Filter(
             id = 6,
             titulo = "3 ou mais",
             isEnabled = false
         ),
-        Filter(
+        com.example.yvypora.domain.models.Filter(
             id = 7,
             titulo = "4 ou mais",
             isEnabled = false
         ),
-        Filter(
+        com.example.yvypora.domain.models.Filter(
             id = 8,
             titulo = "5 apenas",
             isEnabled = false

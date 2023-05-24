@@ -1,8 +1,8 @@
 package com.example.yvypora.api.fairs
 
 import com.example.yvypora.api.RetrofitApi
-import com.example.yvypora.models.Fair
-import com.example.yvypora.models.dto.BaseResponseAsPayloadList
+import com.example.yvypora.domain.models.Fair
+import com.example.yvypora.domain.models.dto.BaseResponseAsPayloadList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,8 +12,8 @@ class FairsAPIService {
         private val API = RetrofitApi.fairsRetrofitService()
 
         fun listByClose(
-            latitude: Float,
-            longitude: Float,
+            latitude: String,
+            longitude: String,
             onComplete: (BaseResponseAsPayloadList<Fair>) -> Unit
         ) {
             val call = API.listCloseFairs(latitude, longitude)

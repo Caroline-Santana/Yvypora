@@ -32,10 +32,10 @@ import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.api.product.ProductService
-import com.example.yvypora.models.MarketerData
-import com.example.yvypora.models.ProductCardSale
-import com.example.yvypora.models.product.BaseResponse
-import com.example.yvypora.models.product.ProductResponse
+import com.example.yvypora.domain.models.MarketerData
+import com.example.yvypora.domain.models.ProductCardSale
+import com.example.yvypora.domain.models.product.BaseResponse
+import com.example.yvypora.domain.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -57,7 +57,7 @@ class CategoryResultActivity : ComponentActivity() {
 
                 val scope = rememberCoroutineScope()
 
-                if (fetch.isEmpty()) {
+
                     scope.launch {
                         ProductService.listAllProducts(
                             category = categoryId.toString(),
@@ -67,12 +67,11 @@ class CategoryResultActivity : ComponentActivity() {
                         ) {
                             val products = it?.data
                             val data = products?.map { product ->
-//                                bindData(product)
+                                bindData(product)
                             }
-//                            fetch = data!!
+                            fetch = data!!
                         }
                     }
-                }
 
                 Log.i("teste", "$fetch fetched data");
 

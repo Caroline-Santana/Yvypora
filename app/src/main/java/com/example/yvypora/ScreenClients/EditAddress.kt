@@ -39,13 +39,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import coil.size.Size
 import com.example.yvypora.R
-import com.example.yvypora.models.AddressCard
+import com.example.yvypora.domain.models.AddressCard
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class EditAddress : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val listAddress: List<AddressCard> = intent.getParcelableArrayListExtra<AddressCard>("formData") ?: emptyList()
+        val listAddress: List<com.example.yvypora.domain.models.AddressCard> = intent.getParcelableArrayListExtra<com.example.yvypora.domain.models.AddressCard>("formData") ?: emptyList()
         setContent {
             YvyporaTheme {
                 // A surface container using the 'background' color from the theme
