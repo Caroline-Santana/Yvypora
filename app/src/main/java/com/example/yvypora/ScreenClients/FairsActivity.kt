@@ -47,8 +47,6 @@ class FairsActivity : ComponentActivity() {
 
 
 
-
-
 fun listLocationFair() = listOf<LatLng>(
     LatLng(-23.55, -46.64),
     LatLng(-23.2167, -44.7179),

@@ -26,6 +26,10 @@ import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.domain.models.Entregador
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.rememberCameraPositionState
 
 class AcompCorridaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -365,13 +369,25 @@ fun CardEntregador() {
 
 @Composable
 fun MapAcompCorrida(){
+
+    val Fair = (LatLng(-23.55, -46.64))
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(Fair, 5f)
+    }
+
+
     Card(modifier = Modifier
         .width(407.dp)
         .height(348.dp),
         backgroundColor = colorResource(id = R.color.green_yvy),
     )
     {
-        Text(text = "MAPA AQUI")
+        GoogleMap(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(325.dp),
+            cameraPositionState = cameraPositionState
+        )
     }
 
 }
