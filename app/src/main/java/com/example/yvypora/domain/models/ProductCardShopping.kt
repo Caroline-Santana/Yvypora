@@ -2,6 +2,7 @@ package com.example.yvypora.domain.models
 
 data class ProductCardShopping(
     val id: Int,
+    val marketerId: Int,
     val name: String,
     val photo: Int,
     val isSelected: Boolean,

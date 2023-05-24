@@ -60,8 +60,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import kotlin.math.absoluteValue
 
-
-@AndroidEntryPoint
 class InicialScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

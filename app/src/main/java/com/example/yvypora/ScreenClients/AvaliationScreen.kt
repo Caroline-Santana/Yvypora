@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.yvypora.DecisionSreenActivity
 import com.example.yvypora.R
-import com.example.yvypora.models.User
+import com.example.yvypora.domain.models.User
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlin.math.round
 

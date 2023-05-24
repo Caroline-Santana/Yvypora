@@ -10,5 +10,4 @@ data class Product (
     var promo :Boolean? = null,
     var promo_valor : Int? = null,
     var category : String? = null,
-
 )
