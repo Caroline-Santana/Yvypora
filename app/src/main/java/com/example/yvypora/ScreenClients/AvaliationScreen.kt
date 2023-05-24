@@ -1,5 +1,6 @@
 package com.example.yvypora.ScreenClients
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -106,6 +107,7 @@ fun HeaderAvaliation() {
         }
     }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun ColumnAvaliations(){
     val context = LocalContext.current
@@ -211,8 +213,8 @@ fun ColumnAvaliations(){
                                     textDecoration = TextDecoration.Underline,
                                 )
                             ), onClick = {
-                                val intent = Intent(context, DecisionSreenActivity()::class.java)
-                                context.startActivity(intent)
+//                                val intent = Intent(context, DecisionSreenActivity()::class.java)
+//                                context.startActivity(intent)
 
                             }
                         )

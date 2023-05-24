@@ -1,5 +1,6 @@
 package com.example.yvypora.ScreenClients
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -78,6 +79,7 @@ fun MainAcompCorrida() {
     }
 }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun CardTeste() {
     val context = LocalContext.current
@@ -191,7 +193,10 @@ fun CardTeste() {
                     ),
                     border = BorderStroke(3.dp, colorResource(id = R.color.green_button)),
                     colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 255)),
-                    onClick = {}
+                    onClick = {
+                        val intent = Intent(context, ChatClient()::class.java)
+                                context.startActivity(intent)
+                    }
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically

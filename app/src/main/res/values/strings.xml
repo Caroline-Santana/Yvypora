@@ -189,6 +189,7 @@
     <string name="click_avaliation">click here</string>
     <string name="button_avaliation">Evaluate</string>
     <string name="ex_comentario">Ex: Great quality product with ultra fast delivery</string>
+    <string name="title_activity_chat_client">ChatClient</string>
 
 
 </resources>
