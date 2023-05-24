@@ -35,5 +35,6 @@
     <color name="gray_title_no_selecioned">#7D7D7D</color>
     <color name="yellow_star_entregador">#FFC107</color>
     <color name="yellow_board">#FFEA19</color>
+    <color name="green_text_comentario">#C7245501</color>
 
 </resources>

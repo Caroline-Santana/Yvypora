@@ -181,6 +181,14 @@
     <string name="title_activity_live_screen">LiveScreen</string>
     <string name="attention">ATTENTION</string>
     <string name="message_attention">TAB UNDER CONSTRUCTION</string>
+    <string name="title_activity_avaliation_screen">AvaliationScreen</string>
+    <string name="avalie_order">Rate this purchase</string>
+    <string name="nota_delivery">Delivery note</string>
+    <string name="nota_products">Product Note</string>
+    <string name="text_avaliation">If you want to evaluate each item of your purchase individually</string>
+    <string name="click_avaliation">click here</string>
+    <string name="button_avaliation">Evaluate</string>
+    <string name="ex_comentario">Ex: Great quality product with ultra fast delivery</string>
 
 
 </resources>
