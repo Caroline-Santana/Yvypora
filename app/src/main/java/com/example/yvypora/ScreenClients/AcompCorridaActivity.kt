@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
-import com.example.yvypora.models.Entregador
+import com.example.yvypora.domain.models.Entregador
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -241,8 +241,8 @@ fun CardTeste() {
     }
 }
 
-val entregadorDados = mutableStateOf<Entregador>(
-    Entregador(
+val entregadorDados = mutableStateOf<com.example.yvypora.domain.models.Entregador>(
+    com.example.yvypora.domain.models.Entregador(
         name = "João Souza",
         photo = "",
         distancia = 3,

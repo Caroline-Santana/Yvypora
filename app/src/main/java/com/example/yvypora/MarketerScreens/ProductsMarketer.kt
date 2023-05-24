@@ -35,7 +35,7 @@ import com.example.yvypora.ScreenClients.CardProduct
 import com.example.yvypora.ScreenClients.Header
 import com.example.yvypora.ScreenClients.ListOfProductCardSale
 import com.example.yvypora.ScreenClients.ProfileClient
-import com.example.yvypora.models.ProductCardSale
+import com.example.yvypora.domain.models.ProductCardSale
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.MarketerScreens.HeaderProduct as HeaderProduct

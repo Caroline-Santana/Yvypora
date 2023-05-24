@@ -26,8 +26,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.yvypora.MarketerScreens.InicialMarketerActivity
 import com.example.yvypora.ScreenClients.InicialScreen
 import com.example.yvypora.animatedsplashscreendemo.navigation.SetupNavGraph
-import com.example.yvypora.models.User
-import com.example.yvypora.models.dto.TypeOfUser
+import com.example.yvypora.domain.models.User
+import com.example.yvypora.domain.models.dto.TypeOfUser
 import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.services.datastore.UserStore
 

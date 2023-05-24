@@ -30,8 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
-import com.example.yvypora.models.MarketerCard
-import com.example.yvypora.models.ProductCardSale
+import com.example.yvypora.domain.models.MarketerCard
+import com.example.yvypora.domain.models.ProductCardSale
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlinx.coroutines.CoroutineScope

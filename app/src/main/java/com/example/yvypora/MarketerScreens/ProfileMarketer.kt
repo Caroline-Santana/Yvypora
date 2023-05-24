@@ -21,8 +21,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.MainActivity
 import com.example.yvypora.R
 import com.example.yvypora.ScreenClients.*
+import com.example.yvypora.services.datastore.TokenStore
+import com.example.yvypora.services.datastore.UserStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 
 class ProfileMarketer : ComponentActivity() {
@@ -30,6 +33,7 @@ class ProfileMarketer : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -49,7 +53,7 @@ class ProfileMarketer : ComponentActivity() {
 }
 
 @Composable
-fun JoiningFieldsMarketer(){
+fun JoiningFieldsMarketer() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +74,7 @@ fun JoiningFieldsMarketer(){
 }
 
 @Composable
-fun EditProfileMarketer(){
+fun EditProfileMarketer() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -90,8 +94,7 @@ fun EditProfileMarketer(){
             painter = painterResource(id = R.drawable.user),
             modifier = Modifier
                 .width(24.dp)
-                .height(24.dp)
-            ,
+                .height(24.dp),
             tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
@@ -112,8 +115,7 @@ fun EditProfileMarketer(){
                 painter = painterResource(id = R.drawable.arrowright2),
                 modifier = Modifier
                     .width(34.dp)
-                    .height(34.dp)
-                ,
+                    .height(34.dp),
                 tint = colorResource(id = R.color.darkgreen_yvy),
                 contentDescription = "icon"
             )
@@ -123,7 +125,7 @@ fun EditProfileMarketer(){
 }
 
 @Composable
-fun MyFair(){
+fun MyFair() {
     val context = LocalContext.current
     Row(
         modifier = Modifier
@@ -143,8 +145,7 @@ fun MyFair(){
             painter = painterResource(id = R.drawable.shop),
             modifier = Modifier
                 .width(24.dp)
-                .height(24.dp)
-            ,
+                .height(24.dp),
             tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
@@ -165,8 +166,7 @@ fun MyFair(){
                 painter = painterResource(id = R.drawable.arrowright2),
                 modifier = Modifier
                     .width(34.dp)
-                    .height(34.dp)
-                ,
+                    .height(34.dp),
                 tint = colorResource(id = R.color.darkgreen_yvy),
                 contentDescription = "icon"
             )
@@ -197,8 +197,7 @@ fun Gains() {
             painter = painterResource(id = R.drawable.dollarsquare),
             modifier = Modifier
                 .width(24.dp)
-                .height(24.dp)
-            ,
+                .height(24.dp),
             contentDescription = "icon"
         )
         Row(
@@ -218,8 +217,7 @@ fun Gains() {
                 painter = painterResource(id = R.drawable.arrowright2),
                 modifier = Modifier
                     .width(34.dp)
-                    .height(34.dp)
-                ,
+                    .height(34.dp),
                 tint = colorResource(id = R.color.darkgreen_yvy),
                 contentDescription = "icon"
             )
@@ -227,6 +225,7 @@ fun Gains() {
 
     }
 }
+
 @Composable
 fun SaleHistory() {
     val context = LocalContext.current
@@ -249,8 +248,7 @@ fun SaleHistory() {
             painter = painterResource(id = R.drawable.bag),
             modifier = Modifier
                 .width(24.dp)
-                .height(24.dp)
-            ,
+                .height(24.dp),
             tint = colorResource(id = R.color.darkgreen_yvy),
             contentDescription = "icon"
         )
@@ -271,8 +269,7 @@ fun SaleHistory() {
                 painter = painterResource(id = R.drawable.arrowright2),
                 modifier = Modifier
                     .width(34.dp)
-                    .height(34.dp)
-                ,
+                    .height(34.dp),
                 tint = colorResource(id = R.color.darkgreen_yvy),
                 contentDescription = "icon"
             )
@@ -280,10 +277,12 @@ fun SaleHistory() {
 
     }
 }
+
 @Composable
 fun Logout() {
     var abrirDialog by remember { mutableStateOf(false) }
-
+    var eraseData by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(10.dp))
@@ -356,7 +355,10 @@ fun Logout() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { auth.signOut()},
+                        onClick = {
+                            abrirDialog = false
+                            eraseData = true;
+                        },
                         modifier = Modifier.width(80.dp)
                     )
                     {
@@ -384,5 +386,15 @@ fun Logout() {
 
         )
 
+    }
+    if (eraseData) {
+        LaunchedEffect(Unit) {
+            val intent = Intent(context, MainActivity::class.java)
+
+            UserStore(context).saveDetails("")
+            TokenStore(context).saveToken("")
+
+            context.startActivity(intent)
+        }
     }
 }

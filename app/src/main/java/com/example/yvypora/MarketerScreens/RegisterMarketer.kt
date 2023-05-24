@@ -38,9 +38,9 @@ import com.example.yvypora.R
 import com.example.yvypora.api.commons.addPictureToUser
 import com.example.yvypora.api.commons.auth
 import com.example.yvypora.api.commons.createMarketer
-import com.example.yvypora.models.Credentials
-import com.example.yvypora.models.dto.Location
-import com.example.yvypora.models.marketer.Marketer
+import com.example.yvypora.domain.models.Credentials
+import com.example.yvypora.domain.models.dto.Location
+import com.example.yvypora.domain.models.marketer.Marketer
 import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.*
@@ -337,7 +337,11 @@ fun InputsMarketer() {
                             Log.i("teste", "Erro no Cadastro")
                         } else {
                             scope.launch {
-                                auth(credentials = Credentials(marketer.email, marketer.password)) { res ->
+                                auth(credentials = com.example.yvypora.domain.models.Credentials(
+                                    marketer.email,
+                                    marketer.password
+                                )
+                                ) { res ->
                                     if (!res.error) {
                                         val tokenStore = TokenStore(context)
                                         scope.launch {
