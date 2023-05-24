@@ -30,7 +30,6 @@ class ProfileMarketer : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -357,7 +356,7 @@ fun Logout() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { abrirDialog = false },
+                        onClick = { auth.signOut()},
                         modifier = Modifier.width(80.dp)
                     )
                     {

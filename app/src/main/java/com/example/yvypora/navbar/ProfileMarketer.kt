@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.yvypora.MarketerScreens.JoiningFieldsMarketer
 import com.example.yvypora.ScreenClients.HeaderProfile
 import com.example.yvypora.ScreenClients.JoiningFields
 import com.example.yvypora.ScreenClients.fetchDetails
@@ -16,6 +17,6 @@ fun ProfileMarketer(){
     ) {
         val user = fetchDetails();
         HeaderProfile(user)
-        JoiningFields()
+        JoiningFieldsMarketer()
     }
 }

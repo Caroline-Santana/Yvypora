@@ -423,7 +423,7 @@ fun Logout() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { abrirDialog = false },
+                        onClick = { auth.signOut() },
                         modifier = Modifier.width(80.dp)
                     )
                     {
