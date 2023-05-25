@@ -26,15 +26,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.yvypora.R
 import com.example.yvypora.domain.models.MarketerCardShopping
 import com.example.yvypora.domain.models.ProductCardShopping
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.example.yvypora.views.CartViewModel
 
 
 class ShoppingCartActivity : ComponentActivity() {
-    val cartViewModel: CartViewModel = viewModel()
+//    val cartViewModel: CartViewModel = viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

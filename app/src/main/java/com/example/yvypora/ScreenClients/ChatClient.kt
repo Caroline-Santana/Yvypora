@@ -1,47 +1,35 @@
 package com.example.yvypora.ScreenClients
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Message
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
-import com.example.yvypora.models.User
-import com.example.yvypora.models.message_dummy
+import com.example.yvypora.domain.models.User
 import com.example.yvypora.ui.theme.YvyporaTheme
-import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,6 +53,7 @@ class ChatClient : ComponentActivity() {
 val message = mutableStateOf("")
 private val BotChatBubbleShape = RoundedCornerShape(0.dp,8.dp,8.dp,8.dp)
 private val AuthorChatBubbleShape = RoundedCornerShape(8.dp,0.dp,8.dp,8.dp)
+val chatMessages =  mutableStateListOf<com.example.yvypora.models.Message>()
 @Composable
 fun MainChatClient(user: User){
     val context = LocalContext.current
@@ -156,6 +145,7 @@ fun TopBarSection(username: String, profile: ImagePainter, isOnline: Boolean) {
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun MessageSection() {
 val context = LocalContext.current
@@ -201,25 +191,20 @@ val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
         reverseLayout = true,
         verticalArrangement = Arrangement.Bottom
     ){
-        items(message_dummy){ chat ->
-            MessageItem(
-                messageText = chat.text,
-                time = simpleDateFormat.format(chat.time),
-                isOut = chat.isOut,
-            )
+        items(chatMessages){ chat ->
+            MessageItem(chat.text, isOut = chat.isOut, time = simpleDateFormat.format(chat.time) )
             Spacer( modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-fun MessageItem(messageText: String?, time: String, isOut: Boolean) {
+fun MessageItem(message: String?, isOut: Boolean, time: String) {
 Column(modifier = Modifier
     .fillMaxWidth(),
     horizontalAlignment = if (isOut) Alignment.End else Alignment.Start)
 {
-    if (messageText != null){
-        if (messageText != ""){
+    if (message != null){
             Box(modifier = Modifier
 
                 .background(
@@ -244,12 +229,12 @@ Column(modifier = Modifier
                     end = 16.dp
                 )
             ) {
-                Text(
-                    text = messageText,
-                    color = if (isOut) Color.White else colorResource(id = R.color.darkgreen_yvy)
-                )
+
+                    Text(
+                        text = message,
+                        color = if (isOut) Color.White else colorResource(id = R.color.darkgreen_yvy)
+                    )
             }
-        }
     }
     Text(
         text = time,
