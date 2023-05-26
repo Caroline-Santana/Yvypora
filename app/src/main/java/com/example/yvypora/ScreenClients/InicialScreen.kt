@@ -735,14 +735,13 @@ fun Shortcuts() {
 @Composable
 fun AutoSliding() {
     val pagerState = rememberPagerState(1)
-
     LaunchedEffect(Unit) {
         while (true) {
             yield()
             delay(2000)
+            tween<Float>(600)
             pagerState.animateScrollToPage(
-                page = (pagerState.currentPage + 1) % (pagerState.pageCount),
-                animationSpec = tween(600)
+                page = (pagerState.currentPage + 1)
             )
         }
     }

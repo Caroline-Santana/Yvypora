@@ -1,5 +1,6 @@
 package com.example.yvypora.domain.models
 
+import com.example.yvypora.domain.models.costumer.CustomerAddress
 import com.example.yvypora.domain.models.dto.Gender
 import com.example.yvypora.domain.models.dto.Location
 import com.example.yvypora.domain.models.dto.TypeOfUser
@@ -24,6 +25,10 @@ data class User (
     var tent_name: String?= null,
     var gender: Gender?= null,
     var location: Location?= null,
+
+    @SerializedName("costumer_addresses")
+    var costumerAddresses: List<CustomerAddress>? = null,
+
     @SerializedName("typeof")
     var typeOf: TypeOfUser?= null
 )

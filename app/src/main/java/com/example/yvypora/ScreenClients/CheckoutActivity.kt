@@ -3,6 +3,7 @@ package com.example.yvypora.ScreenClients
 import android.content.Intent
 import android.location.Address
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
@@ -30,15 +31,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.yvypora.R
-import com.example.yvypora.domain.models.AddressCard
-import com.example.yvypora.domain.models.CardPayment
-import com.example.yvypora.domain.models.PaymentMethodDescription
+import com.example.yvypora.domain.models.*
+import com.example.yvypora.services.datastore.UserStore
 import com.example.yvypora.theme.YvyporaTheme
+import com.google.gson.Gson
+import kotlinx.coroutines.flow.collect
 
 class CheckoutActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val address = intent.getStringExtra("ADDRESS") ?: ""
         setContent {
             YvyporaTheme {
                 // A surface container using the 'background' color from the theme
@@ -52,8 +53,45 @@ class CheckoutActivity : ComponentActivity() {
                             .fillMaxWidth()
                     )
                     {
+                        val context = LocalContext.current
+                        val intent = (context as CheckoutActivity).intent
+
+                        val _products = intent.getStringExtra("products") ?: "no data";
+
+                        Log.i("checkout", "lista -> $_products")
+
+                        val products =
+                            Gson().fromJson(_products, Array<ProductCardShopping>::class.java)
+
+
+                        var user by remember {
+                            mutableStateOf<User?>(null);
+                        }
+
+                        LaunchedEffect(Unit) {
+                            UserStore(context).getDetails.collect { _user ->
+                                val gson = Gson()
+                                val parsed = gson.fromJson(_user, User::class.java)
+                                user = parsed
+                            }
+                        }
+
+                        Log.i("checkout", products.toString())
+                        Log.i("checkout", user.toString())
+                        Log.i("checkout", user?.costumerAddresses.toString())
+
+                        val _mainAddresses = user?.costumerAddresses?.find { it.address.default }?.address
+
+                        Log.i("checkout", _mainAddresses.toString())
+
+                        var mainAddress by remember {
+                            mutableStateOf<com.example.yvypora.domain.models.Address?>(_mainAddresses)
+                        }
+
+                        Log.i("checkout", user.toString() ?: "null")
+
                         Header()
-                        MainCheckout()
+                        MainCheckout(mainAddress!!, user!!)
                     }
 
                 }
@@ -74,7 +112,7 @@ class CheckOutViewModel : ViewModel() {
 }
 
 @Composable
-fun MainCheckout() {
+fun MainCheckout(address: com.example.yvypora.domain.models.Address, user: User) {
     var subtotal = 48.00
     var taxa_entrega = 8.32
     var total = subtotal.plus(taxa_entrega)
@@ -143,7 +181,7 @@ fun MainCheckout() {
 
                 })
         }
-        CardAddressDelivery()
+        CardAddressDelivery(address, user)
         Spacer(modifier = Modifier.height(25.dp))
         Text(
             text = stringResource(id = R.string.payment_method),
@@ -158,7 +196,8 @@ fun MainCheckout() {
             listPayMethods.forEachIndexed { index, paymentMethodDescription ->
                 CardMethodPayment(
                     methods = paymentMethodDescription,
-                    selected = index == selectedOptionsIndex )
+                    selected = index == selectedOptionsIndex
+                )
                 {
                     selectedOptionsIndex = index
                 }
@@ -225,7 +264,8 @@ fun MainCheckout() {
             Button(
                 onClick = {
                     val intent = Intent(context, StatusOrder()::class.java)
-                    context.startActivity(intent) },
+                    context.startActivity(intent)
+                },
                 modifier = Modifier
                     .height(58.dp)
                     .fillMaxWidth()
@@ -316,7 +356,11 @@ val listPayMethods = mutableStateListOf<PaymentMethodDescription>(
 
 
 @Composable
-fun CardMethodPayment(methods: PaymentMethodDescription, selected: Boolean, onSelected: () -> Unit) {
+fun CardMethodPayment(
+    methods: PaymentMethodDescription,
+    selected: Boolean,
+    onSelected: () -> Unit
+) {
     var title_method = methods.name_method
     var photo = painterResource(id = R.drawable.visa)
     val context = LocalContext.current
@@ -328,7 +372,7 @@ fun CardMethodPayment(methods: PaymentMethodDescription, selected: Boolean, onSe
     ) {
         Row() {
             RadioButton(
-                selected = selected ,
+                selected = selected,
                 onClick = onSelected,
                 modifier = Modifier.padding(end = 16.dp),
                 colors = RadioButtonDefaults.colors(
@@ -385,29 +429,19 @@ fun CardMethodPayment(methods: PaymentMethodDescription, selected: Boolean, onSe
 }
 
 @Composable
-fun CardAddressDelivery(){
-//    var titleAddress = address.titulo
-//    var name_remetente = address.name_remetente
-//    var telefone_remetente = address.telefone_remetente
-//    var rua = address.rua
-//    var numero = address.numero
-//    var cidade = address.cidade
-//    var estado = address.estado
-//    var pais = address.pais
-    var titleAddress = "Casa"
-    var name_remetente = "Caroline"
-    var telefone_remetente = "11 954009469"
-    var rua = "Rua Rita Paes Bustamante"
-    var numero = 90
-    var cidade = "Carapicuíba"
-    var estado = "São Paulo"
-    var pais = "Brasil"
-        Column (modifier = Modifier.padding(start= 15.dp, end = 15.dp)) {
+fun CardAddressDelivery(address: com.example.yvypora.domain.models.Address, user: User) {
+    var titleAddress = address.type?.name!!
+    var name_remetente = user.name!!
+    var telefone_remetente = user.phone
+    var rua = address.logradouro
 
-        Card(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 2.dp)
-            .height(140.dp),
+    Column(modifier = Modifier.padding(start = 15.dp, end = 15.dp)) {
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 2.dp)
+                .height(140.dp),
             backgroundColor = colorResource(id = R.color.green_camps),
             shape = RoundedCornerShape(
                 topStart = 0.dp,
@@ -417,8 +451,9 @@ fun CardAddressDelivery(){
             )
         ) {
             Column() {
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 12.dp),
+                Row(
+                    modifier = Modifier
+                        .padding(start = 15.dp, top = 12.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -426,8 +461,7 @@ fun CardAddressDelivery(){
                         painter = painterResource(id = R.drawable.house2),
                         modifier = Modifier
                             .width(28.dp)
-                            .height(28.dp)
-                        ,
+                            .height(28.dp),
                         tint = colorResource(id = R.color.darkgreen_yvy),
                         contentDescription = "icon"
                     )
@@ -440,11 +474,12 @@ fun CardAddressDelivery(){
                     )
 //                    OpcoesMenu()
                 }
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 5.dp),
+                Row(
+                    modifier = Modifier
+                        .padding(start = 15.dp, top = 5.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
                         text = name_remetente,
                         modifier = Modifier
@@ -460,46 +495,16 @@ fun CardAddressDelivery(){
 
                     )
                 }
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 5.dp),
+                Row(
+                    modifier = Modifier
+                        .padding(start = 15.dp, top = 5.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
-                        text = rua,
+                        text = rua!!,
                         modifier = Modifier
                             .padding(start = 2.dp),
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                    Text(
-                        text = "$numero${','} ",
-                        modifier = Modifier
-                            .padding(start = 2.dp),
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                    Text(
-                        text = " $cidade${','} ",
-                        modifier = Modifier
-                            .padding(start = 2.dp),
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                }
-
-                Row(modifier = Modifier
-                    .padding(start = 15.dp, top = 5.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Text(
-                        text = " $estado${','} ",
-                        fontSize = 15.sp,
-                        color = colorResource(id = R.color.darkgreen_yvy)
-                    )
-                    Text(
-                        text = pais,
                         fontSize = 15.sp,
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
@@ -508,18 +513,20 @@ fun CardAddressDelivery(){
         }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun CheckoutPreview() {
-    YvyporaTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .fillMaxWidth()
-        )
-        {
-            Header()
-            MainCheckout()
-        }
-    }
-}
+
+
+//@Preview(showBackground = true)
+//@Composable
+//fun CheckoutPreview() {
+//    YvyporaTheme {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .fillMaxWidth()
+//        )
+//        {
+//            Header()
+//            MainCheckout()
+//        }
+//    }
+//}

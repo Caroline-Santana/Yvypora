@@ -38,6 +38,7 @@ import com.example.yvypora.domain.models.marketer.Marketer
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.views.CartViewModel
+import com.google.gson.Gson
 
 
 class ShoppingCartActivity : ComponentActivity() {
@@ -69,7 +70,8 @@ class ShoppingCartActivity : ComponentActivity() {
 
     var showPaymentBar by mutableStateOf(false)
     var total_value by mutableStateOf(0.0)
-    val selectedCards = mutableStateListOf<Int>()
+    val selectedCards = mutableStateListOf<ProductCardShopping>()
+
 
     @Composable
     fun ShoppingCartMain(cartViewModel: CartViewModel = viewModel()) {
@@ -288,12 +290,12 @@ class ShoppingCartActivity : ComponentActivity() {
             items(cards) { card ->
                 CardProductShopping(
                     card = card,
-                    isSelected = card.id in selectedCards,
+                    isSelected = card in selectedCards,
                     onCardSelected = { id ->
                         showPaymentBar = true
                         stateSnack = true
                         onCardProductClick(
-                            card.id,
+                            card,
                             selectedCards,
                             card.qtde,
                             listMarketerCardShopping
@@ -353,6 +355,10 @@ class ShoppingCartActivity : ComponentActivity() {
                         colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
                         onClick = {
                             val intent = Intent(context, CheckoutActivity::class.java)
+                            Log.i("checkout", selectedCards.toList().toString())
+                            val products = Gson().toJson(selectedCards)
+                            Log.i("checkout", "lista string-> $products")
+                            intent.putExtra("products", products);
                             context.startActivity(intent)
                         }
                     ) {
@@ -369,15 +375,15 @@ class ShoppingCartActivity : ComponentActivity() {
     }
 
     fun onCardProductClick(
-        cardId: Int,
-        selectedCards: MutableList<Int>,
+        card: ProductCardShopping,
+        selectedCards: MutableList<ProductCardShopping>,
         qtde: Int,
         listMarketerCardShopping: List<MarketerCardShopping>
     ) {
-        if (selectedCards.contains(cardId)) {
-            selectedCards.remove(cardId)
+        if (selectedCards.contains(card)) {
+            selectedCards.remove(card)
         } else {
-            selectedCards.add(cardId)
+            selectedCards.add(card)
         }
         if (selectedCards.size == 0) {
             showPaymentBar = false
@@ -386,7 +392,7 @@ class ShoppingCartActivity : ComponentActivity() {
             // settar os valores para somar
             listMarketerCardShopping.forEach { item ->
                 item.products.forEach { product ->
-                    if (selectedCards.contains(product.id)) {
+                    if (selectedCards.contains(product)) {
                         var price = product.price * product.qtde
                         price = price.coerceAtLeast(product.price)
                         total += price
@@ -423,6 +429,7 @@ class ShoppingCartActivity : ComponentActivity() {
         LaunchedEffect(qtde) {
             onPriceChanged(card.id)
         }
+
         if (show) {
             Column(
                 modifier = Modifier
