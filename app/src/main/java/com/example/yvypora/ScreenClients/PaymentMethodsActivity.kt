@@ -67,9 +67,6 @@ fun TabLayoutScreenPayment() {
         stringResource(id = R.string.other),
     )
     val pagerState = rememberPagerState(
-        pageCount = tabData.size,
-        initialOffscreenLimit = 2,
-        infiniteLoop = true,
         initialPage = 1,
     )
     val tabIndex = pagerState.currentPage
@@ -105,7 +102,7 @@ fun TabLayoutScreenPayment() {
             }
         }
         HorizontalPager(
-            state = pagerState, modifier = Modifier.weight(1f)
+            state = pagerState, modifier = Modifier.weight(1f), count = 2
         ) { index ->
             Column(
                 modifier = Modifier

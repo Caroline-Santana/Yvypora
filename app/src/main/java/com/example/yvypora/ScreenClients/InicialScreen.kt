@@ -324,12 +324,7 @@ fun TabLayoutScreen() {
         stringResource(id = R.string.discount),
         stringResource(id = R.string.near)
     )
-    val pagerState = rememberPagerState(
-        pageCount = tabData.size,
-        initialOffscreenLimit = 2,
-        infiniteLoop = true,
-        initialPage = 1,
-    )
+    val pagerState = rememberPagerState(initialPage = 1,)
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
     Column(modifier = Modifier.height(230.dp)) {
@@ -363,7 +358,7 @@ fun TabLayoutScreen() {
             }
         }
         HorizontalPager(
-            state = pagerState, modifier = Modifier.weight(1f)
+            state = pagerState, modifier = Modifier.weight(1f), count = 3
         ) { index ->
             Column(
                 modifier = Modifier
@@ -739,7 +734,7 @@ fun Shortcuts() {
 @ExperimentalPagerApi
 @Composable
 fun AutoSliding() {
-    val pagerState = rememberPagerState(pageCount = template.size, initialOffscreenLimit = 2)
+    val pagerState = rememberPagerState(1)
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -757,7 +752,8 @@ fun AutoSliding() {
     ) {
         HorizontalPager(
             state = pagerState,
-//            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            count = 3
         ) { page ->
             Card(modifier = Modifier
                 .graphicsLayer {
@@ -779,7 +775,8 @@ fun AutoSliding() {
                     modifier = Modifier
                         .fillMaxSize()
                         .width(130.dp)
-                        .align(Alignment.Center)
+                        ,
+                    contentAlignment = Alignment.Center
                 ) {
                     Image(
                         painter = painterResource(

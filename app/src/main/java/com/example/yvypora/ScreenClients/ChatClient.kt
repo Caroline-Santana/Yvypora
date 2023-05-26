@@ -244,7 +244,7 @@ Column(modifier = Modifier
         modifier = Modifier.padding(start = 8.dp)
     )
 }
-}
+
 
 
 @Preview(showBackground = true)
