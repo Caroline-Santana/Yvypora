@@ -25,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.preference.PreferenceManager
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.yvypora.MarketerScreens.imageUri
@@ -32,8 +34,11 @@ import com.example.yvypora.R
 import com.example.yvypora.api.commons.auth
 import com.example.yvypora.api.product.ProductService
 import com.example.yvypora.domain.models.Credentials
+import com.example.yvypora.domain.models.ProductCardSale
+import com.example.yvypora.domain.models.ProductCardShopping
 import com.example.yvypora.domain.models.product.ProductResponse
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.example.yvypora.views.CartViewModel
 import kotlin.math.round
 import kotlin.math.roundToInt
 
@@ -44,7 +49,9 @@ class DescriptionProducts : ComponentActivity() {
             YvyporaTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
                     color = MaterialTheme.colors.background)
                 {
                         HeaderDescriptionProducts()
@@ -61,6 +68,7 @@ class DescriptionProducts : ComponentActivity() {
 }
 
 var product = mutableStateOf<ProductResponse?>(null)
+var quantity = mutableStateOf(1)
 
 @Composable
 fun fetchProduct(id: Int): ProductResponse? {
@@ -205,6 +213,8 @@ fun Rating(score: Int){
 
 @Composable
 fun MainDescriptionProducts() {
+    val context = LocalContext.current
+    val cartViewModel: CartViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -243,7 +253,11 @@ fun MainDescriptionProducts() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(
-                onClick = { },
+                onClick = {
+                    Toast.makeText(context, "TESTE", Toast.LENGTH_SHORT).show()
+                    val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+                    cartViewModel.addCart(bindDataToProductCardShopping(product.value!!, quantity.value), context, sharedPrefs)
+                },
                 modifier = Modifier
                     .width(128.dp)
                     .height(45.dp),
@@ -289,9 +303,28 @@ fun MainDescriptionProducts() {
     }
 }
 
+fun bindDataToProductCardShopping(data: ProductResponse, quantity: Int): ProductCardShopping {
+    return ProductCardShopping(
+        id = data.id,
+        name = data.name,
+        photo = data.imageOfProduct.get(0).image.uri,
+        weight_product = data.availableQuantity,
+        price = data.price,
+        type_weight = data.typeOfPrice.name,
+        qtde = quantity,
+        isSelected = false,
+        marketerId = data.marketerId,
+        marketerName =  data.marketer.name,
+        marketerPhoto = data.marketer.picture_uri,
+        marketerTentName = data.marketer.tent_name
+    )
+}
+
+
+
+
 @Composable
 fun WidhtProductTeste() {
-    var value by remember { mutableStateOf(1F) }
     Box(
         contentAlignment = Alignment.TopStart,
         modifier = Modifier
@@ -310,7 +343,7 @@ fun WidhtProductTeste() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { value = (value - 1F).coerceAtLeast(1f)},
+                onClick = { quantity.value = (quantity.value - 1).coerceAtLeast(1)},
                 modifier = Modifier
                     .height(30.dp)
                     .width(32.dp),
@@ -319,14 +352,14 @@ fun WidhtProductTeste() {
             ) {}
 
             Text(
-            text = "$value",
+            text = "${quantity.value}",
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             color = colorResource(id = R.color.green_width)
         )
             Box(contentAlignment = Alignment.Center) {
                 Button(
-                    onClick = { value += 1F },
+                    onClick = { quantity.value += 1 },
                     modifier = Modifier
                         .height(30.dp)
                         .width(32.dp),
@@ -335,7 +368,7 @@ fun WidhtProductTeste() {
                 Icon(
                     painter = painterResource(id = R.drawable.more),
                     modifier = Modifier
-                        .clickable { value += 1F },
+                        .clickable { quantity.value += 1 },
                     contentDescription = "",
                     tint = Color.White
                 )
@@ -345,7 +378,7 @@ fun WidhtProductTeste() {
 
         Icon(
             painter = painterResource(id = R.drawable.remove),
-            modifier = Modifier.clickable {  value = (value - 1F).coerceAtLeast(1f) },
+            modifier = Modifier.clickable {  quantity.value = (quantity.value - 1).coerceAtLeast(1) },
             contentDescription = ""
         )
     }

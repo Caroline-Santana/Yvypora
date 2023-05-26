@@ -3,8 +3,11 @@ package com.example.yvypora.domain.models
 data class ProductCardShopping(
     val id: Int,
     val marketerId: Int,
+    val marketerName: String,
+    val marketerPhoto: String,
+    val marketerTentName: String,
     val name: String,
-    val photo: Int,
+    val photo: String,
     val isSelected: Boolean,
     val type_weight: String,
     var weight_product: Int,

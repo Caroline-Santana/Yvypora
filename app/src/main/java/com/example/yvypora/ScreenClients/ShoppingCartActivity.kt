@@ -3,6 +3,7 @@ package com.example.yvypora.ScreenClients
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -26,16 +27,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.preference.PreferenceManager
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.domain.models.MarketerCardShopping
 import com.example.yvypora.domain.models.ProductCardShopping
+import com.example.yvypora.domain.models.marketer.Marketer
 import com.example.yvypora.ui.theme.SpaceGrotesk
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.example.yvypora.views.CartViewModel
 
 
 class ShoppingCartActivity : ComponentActivity() {
-    val cartViewModel: CartViewModel = viewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -61,12 +66,18 @@ class ShoppingCartActivity : ComponentActivity() {
         }
     }
 
+
     var showPaymentBar by mutableStateOf(false)
     var total_value by mutableStateOf(0.0)
     val selectedCards = mutableStateListOf<Int>()
 
     @Composable
-    fun ShoppingCartMain() {
+    fun ShoppingCartMain(cartViewModel: CartViewModel = viewModel()) {
+        val context = LocalContext.current
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val listMarketerCardShopping = cartViewModel.getCartData(sharedPrefs)
+
+        Log.i("carrinho", listMarketerCardShopping.toString())
         val selectedPrice = remember { mutableStateOf(0.0) }
         Text(
             text = stringResource(id = R.string.my_shopping_cart),
@@ -90,85 +101,84 @@ class ShoppingCartActivity : ComponentActivity() {
 
         }
     }
-
-    val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
-        MarketerCardShopping(
-            id_feirante = 1,
-            name = "Barraca do Seu Zé",
-            sub_name = "Vila Madalena",
-            photo = R.drawable.buy_history_card_marketer,
-            products = listOf(
-                ProductCardShopping(
-                    id = 1,
-                    name = "Abóbora",
-                    type_weight = "g",
-                    weight_product = 800,
-                    marketerId = 1,
-                    isSelected = false,
-                    photo = 1,
-                    price = 24.00,
-                ),
-                ProductCardShopping(
-                    id = 2,
-                    marketerId = 1,
-                    name = "Beterraba",
-                    type_weight = "g",
-                    weight_product = 800,
-                    isSelected = false,
-                    photo = 1,
-                    price = 22.00,
-                )
-            )
-        ),
-        MarketerCardShopping(
-            id_feirante = 2,
-            name = "Barraca do Seu Zé",
-            sub_name = "Vila Augusta",
-            photo = R.drawable.buy_history_card_marketer,
-            products = listOf(
-                ProductCardShopping(
-                    id = 3,
-                    name = "Abóbora",
-                    type_weight = "g",
-                    weight_product = 800,
-                    marketerId = 2,
-                    isSelected = false,
-                    photo = 1,
-                    price = 24.00,
-                ),
-                ProductCardShopping(
-                    id = 4,
-                    name = "Beterraba",
-                    type_weight = "g",
-                    marketerId = 2,
-                    weight_product = 800,
-                    isSelected = false,
-                    photo = 1,
-                    price = 22.00,
-                ),
-                ProductCardShopping(
-                    id = 5,
-                    name = "Abóbora",
-                    type_weight = "g",
-                    weight_product = 800,
-                    marketerId = 2,
-                    isSelected = false,
-                    photo = 1,
-                    price = 24.00,
-                ),
-                ProductCardShopping(
-                    id = 6,
-                    marketerId = 2,
-                    name = "Abóbora",
-                    type_weight = "g",
-                    weight_product = 800,
-                    isSelected = false,
-                    photo = 1,
-                    price = 24.00,
-                ),
-            )
-        )
-    )
+//    val listMarketerCardShopping = mutableStateListOf<MarketerCardShopping>(
+//        MarketerCardShopping(
+//            id_feirante = 1,
+//            name = "Barraca do Seu Zé",
+//            sub_name = "Vila Madalena",
+//            photo = R.drawable.buy_history_card_marketer,
+//            products = listOf(
+//                ProductCardShopping(
+//                    id = 1,
+//                    name = "Abóbora",
+//                    type_weight = "g",
+//                    weight_product = 800,
+//                    marketerId = 1,
+//                    isSelected = false,
+//                    photo = 1,
+//                    price = 24.00,
+//                ),
+//                ProductCardShopping(
+//                    id = 2,
+//                    marketerId = 1,
+//                    name = "Beterraba",
+//                    type_weight = "g",
+//                    weight_product = 800,
+//                    isSelected = false,
+//                    photo = 1,
+//                    price = 22.00,
+//                )
+//            )
+//        ),
+//        MarketerCardShopping(
+//            id_feirante = 2,
+//            name = "Barraca do Seu Zé",
+//            sub_name = "Vila Augusta",
+//            photo = R.drawable.buy_history_card_marketer,
+//            products = listOf(
+//                ProductCardShopping(
+//                    id = 3,
+//                    name = "Abóbora",
+//                    type_weight = "g",
+//                    weight_product = 800,
+//                    marketerId = 2,
+//                    isSelected = false,
+//                    photo = 1,
+//                    price = 24.00,
+//                ),
+//                ProductCardShopping(
+//                    id = 4,
+//                    name = "Beterraba",
+//                    type_weight = "g",
+//                    marketerId = 2,
+//                    weight_product = 800,
+//                    isSelected = false,
+//                    photo = 1,
+//                    price = 22.00,
+//                ),
+//                ProductCardShopping(
+//                    id = 5,
+//                    name = "Abóbora",
+//                    type_weight = "g",
+//                    weight_product = 800,
+//                    marketerId = 2,
+//                    isSelected = false,
+//                    photo = 1,
+//                    price = 24.00,
+//                ),
+//                ProductCardShopping(
+//                    id = 6,
+//                    marketerId = 2,
+//                    name = "Abóbora",
+//                    type_weight = "g",
+//                    weight_product = 800,
+//                    isSelected = false,
+//                    photo = 1,
+//                    price = 24.00,
+//                ),
+//            )
+//        )
+//    )
 
     @Composable
     fun ListOfMarketerCardShopping(
@@ -178,6 +188,7 @@ class ShoppingCartActivity : ComponentActivity() {
         LazyColumn {
             items(marketers) { marketer ->
                 CardMarketerShopping(
+                    list = marketers,
                     marketer = marketer,
                     onPriceChanged = onPriceChanged
                 )
@@ -188,15 +199,15 @@ class ShoppingCartActivity : ComponentActivity() {
 
     @Composable
     fun CardMarketerShopping(
+        list: List<MarketerCardShopping>,
         marketer: MarketerCardShopping,
         onPriceChanged: (Double) -> Unit
     ) {
-//    val targetMarketerId = marketer.id_feirante
+        val targetMarketerId = marketer.id_feirante
         var nameCard = marketer.name
         var subnameCard = marketer.sub_name
         var showSnackbar by remember { mutableStateOf(false) }
-//    var photo = marketer.photo
-        var photo = painterResource(id = R.drawable.buy_history_card_marketer)
+        var photo = rememberImagePainter(marketer.photo)
         var products = marketer.products
 
         Card(
@@ -243,6 +254,7 @@ class ShoppingCartActivity : ComponentActivity() {
                     }
                 }
                 ListOfProductCardShopping(
+                    listMarketerCardShopping = list,
                     cards = marketer.products,
                     state = showSnackbar,
                     onPriceChanged = { card, price ->
@@ -257,6 +269,7 @@ class ShoppingCartActivity : ComponentActivity() {
 
     @Composable
     fun ListOfProductCardShopping(
+        listMarketerCardShopping: List<MarketerCardShopping>,
         cards: List<ProductCardShopping>,
         state: Boolean,
         onPriceChanged: (ProductCardShopping, Double) -> Unit
@@ -279,7 +292,12 @@ class ShoppingCartActivity : ComponentActivity() {
                     onCardSelected = { id ->
                         showPaymentBar = true
                         stateSnack = true
-                        onCardProductClick(card.id, selectedCards, card.qtde)
+                        onCardProductClick(
+                            card.id,
+                            selectedCards,
+                            card.qtde,
+                            listMarketerCardShopping
+                        )
                     },
                     onPriceChanged = { quantity ->
                         listMarketerCardShopping.map { item ->
@@ -350,7 +368,12 @@ class ShoppingCartActivity : ComponentActivity() {
         }
     }
 
-    fun onCardProductClick(cardId: Int, selectedCards: MutableList<Int>, qtde: Int) {
+    fun onCardProductClick(
+        cardId: Int,
+        selectedCards: MutableList<Int>,
+        qtde: Int,
+        listMarketerCardShopping: List<MarketerCardShopping>
+    ) {
         if (selectedCards.contains(cardId)) {
             selectedCards.remove(cardId)
         } else {
@@ -375,6 +398,7 @@ class ShoppingCartActivity : ComponentActivity() {
     }
 
 
+    @OptIn(ExperimentalCoilApi::class)
     @Composable
     fun CardProductShopping(
         card: ProductCardShopping,
@@ -382,220 +406,233 @@ class ShoppingCartActivity : ComponentActivity() {
         onCardSelected: (Boolean) -> Unit,
         onPriceChanged: (Int) -> Unit,
     ) {
-
-//    var qtde by remember {
-//        mutableStateOf(card.qtde)
-//    }
+        val cartViewModel: CartViewModel = viewModel()
+        var show by remember {
+            mutableStateOf(true)
+        }
+        val context = LocalContext.current
         var (qtde, setQtde) = remember { mutableStateOf(card.qtde) }
         qtde = qtde.coerceAtLeast(1)
         var nameProduct = card.name
-//    var photoProduct = card.photo
-        var photoProduct = painterResource(id = R.drawable.abobora_shopping)
+        var photoProduct = rememberImagePainter(card.photo)
         var typeProduct = card.type_weight
         var weightProduct = card.weight_product
         var priceProduct = card.price * qtde
         var accumulatorPrice = priceProduct
+
         LaunchedEffect(qtde) {
             onPriceChanged(card.id)
         }
+        if (show) {
+            Column(
+                modifier = Modifier
+                    .padding(bottom = 10.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
 
-        Column(
-            modifier = Modifier
-                .padding(bottom = 10.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
-
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Center
             ) {
-                if (isSelected) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.check_full),
-                        modifier = Modifier
-                            .padding(end = 10.dp)
-                            .clickable { onCardSelected(isSelected) },
-                        contentDescription = "",
-                        tint = colorResource(id = R.color.green_button)
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(id = R.drawable.check_no_full),
-                        modifier = Modifier
-                            .padding(end = 10.dp)
-                            .clickable { onCardSelected(isSelected) },
-                        contentDescription = "",
-                        tint = colorResource(id = R.color.green_button)
-                    )
-                }
-
-                Card(
-                    Modifier
-                        .width(273.dp)
-                        .clickable {
-                            onCardSelected(isSelected)
-                        }
-                        .height(130.dp),
-                    elevation = 0.dp,
-                    backgroundColor = if (isSelected) colorResource(id = R.color.green_camps_transparent) else Color.White,
-                    border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        Modifier.width(100.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(
-                            modifier = Modifier.width(150.dp),
-                            horizontalAlignment = Alignment.Start,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = nameProduct,
-                                Modifier.padding(start = 25.dp),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                fontFamily = SpaceGrotesk,
-                                color = colorResource(id = R.color.darkgreen_yvy)
-                            )
-                            Image(
-                                painter = photoProduct,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(128.dp)
-                                    .padding(start = 5.dp, top = 5.dp)
-                                    .height(63.dp)
-                            )
-                        }
-                        Column(
-                            Modifier
-                                .fillMaxWidth(0.7f),
-                            horizontalAlignment = Alignment.Start,
-                            verticalArrangement = Arrangement.Top
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
+                    if (isSelected) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.check_full),
+                            modifier = Modifier
+                                .padding(end = 10.dp)
+                                .clickable { onCardSelected(isSelected) },
+                            contentDescription = "",
+                            tint = colorResource(id = R.color.green_button)
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.check_no_full),
+                            modifier = Modifier
+                                .padding(end = 10.dp)
+                                .clickable { onCardSelected(isSelected) },
+                            contentDescription = "",
+                            tint = colorResource(id = R.color.green_button)
+                        )
+                    }
 
+                    Card(
+                        Modifier
+                            .width(273.dp)
+                            .clickable {
+                                onCardSelected(isSelected)
+                            }
+                            .height(130.dp),
+                        elevation = 0.dp,
+                        backgroundColor = if (isSelected) colorResource(id = R.color.green_camps_transparent) else Color.White,
+                        border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
+                    ) {
+                        Row(
+                            Modifier.width(100.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(
+                                modifier = Modifier.width(150.dp),
+                                horizontalAlignment = Alignment.Start,
+                                verticalArrangement = Arrangement.Center
+                            ) {
                                 Text(
-                                    text = "$weightProduct",
+                                    text = nameProduct,
+                                    Modifier.padding(start = 25.dp),
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 12.sp,
+                                    fontSize = 16.sp,
                                     fontFamily = SpaceGrotesk,
-                                    color = colorResource(id = R.color.dark_gray)
+                                    color = colorResource(id = R.color.darkgreen_yvy)
                                 )
-                                Text(
-                                    text = typeProduct, fontWeight = FontWeight.Bold,
-                                    fontSize = 12.sp,
-                                    modifier = Modifier.padding(start = 25.dp),
-                                    fontFamily = SpaceGrotesk,
-                                    color = colorResource(id = R.color.dark_gray)
+                                Image(
+                                    painter = photoProduct,
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .width(128.dp)
+                                        .padding(start = 5.dp, top = 5.dp)
+                                        .height(63.dp)
                                 )
                             }
-                            Text(
-                                text = "R$ $accumulatorPrice",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                                fontFamily = SpaceGrotesk,
-                                color = colorResource(id = R.color.green_options)
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .padding(top = 8.dp)
-                                    .width(105.dp)
-                                    .height(30.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                            Column(
+                                Modifier
+                                    .fillMaxWidth(0.7f),
+                                horizontalAlignment = Alignment.Start,
+                                verticalArrangement = Arrangement.Top
                             ) {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Button(
-                                        onClick = {
-                                            setQtde(qtde - 1)
-                                            card.qtde = card.qtde - 1
-                                        },
-                                        modifier = Modifier
-                                            .height(24.dp)
-                                            .width(28.dp),
-                                        shape = RoundedCornerShape(7.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            Color(
-                                                217,
-                                                217,
-                                                217,
-                                                255
-                                            )
-                                        )
-                                    ) {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
 
-                                    }
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.remove),
-                                        modifier = Modifier
-                                            .clickable {
+                                    Text(
+                                        text = "$weightProduct",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 12.sp,
+                                        fontFamily = SpaceGrotesk,
+                                        color = colorResource(id = R.color.dark_gray)
+                                    )
+                                    Text(
+                                        text = typeProduct, fontWeight = FontWeight.Bold,
+                                        fontSize = 12.sp,
+                                        modifier = Modifier.padding(start = 25.dp),
+                                        fontFamily = SpaceGrotesk,
+                                        color = colorResource(id = R.color.dark_gray)
+                                    )
+                                }
+                                Text(
+                                    text = "R$ $accumulatorPrice",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp,
+                                    fontFamily = SpaceGrotesk,
+                                    color = colorResource(id = R.color.green_options)
+                                )
+                                Row(
+                                    modifier = Modifier
+                                        .padding(top = 8.dp)
+                                        .width(105.dp)
+                                        .height(30.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Button(
+                                            onClick = {
                                                 setQtde(qtde - 1)
                                                 card.qtde = card.qtde - 1
                                             },
-                                        contentDescription = ""
+                                            modifier = Modifier
+                                                .height(24.dp)
+                                                .width(28.dp),
+                                            shape = RoundedCornerShape(7.dp),
+                                            colors = ButtonDefaults.buttonColors(
+                                                Color(
+                                                    217,
+                                                    217,
+                                                    217,
+                                                    255
+                                                )
+                                            )
+                                        ) {
+
+                                        }
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.remove),
+                                            modifier = Modifier
+                                                .clickable {
+                                                    setQtde(qtde - 1)
+                                                    card.qtde = card.qtde - 1
+                                                },
+                                            contentDescription = ""
+                                        )
+                                    }
+                                    Text(
+                                        text = "${qtde} ",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = colorResource(id = R.color.darkgreen_yvy)
                                     )
-                                }
-                                Text(
-                                    text = "${qtde} ",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = colorResource(id = R.color.darkgreen_yvy)
-                                )
-                                Box(contentAlignment = Alignment.Center) {
-                                    Button(
-                                        onClick = {
-                                            setQtde(qtde + 1)
-                                            card.qtde = card.qtde + 1
-                                        },
-                                        modifier = Modifier
-                                            .height(24.dp)
-                                            .width(28.dp),
-                                        shape = RoundedCornerShape(7.dp),
-                                    ) {}
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.more),
-                                        modifier = Modifier
-                                            .width(15.dp)
-                                            .height(15.dp)
-                                            .clickable {
-                                                card.qtde = card.qtde + 1
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Button(
+                                            onClick = {
                                                 setQtde(qtde + 1)
+                                                card.qtde = card.qtde + 1
                                             },
-                                        contentDescription = "",
-                                        tint = Color.White
-                                    )
+                                            modifier = Modifier
+                                                .height(24.dp)
+                                                .width(28.dp),
+                                            shape = RoundedCornerShape(7.dp),
+                                        ) {}
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.more),
+                                            modifier = Modifier
+                                                .width(15.dp)
+                                                .height(15.dp)
+                                                .clickable {
+                                                    card.qtde = card.qtde + 1
+                                                    setQtde(qtde + 1)
+                                                },
+                                            contentDescription = "",
+                                            tint = Color.White
+                                        )
+                                    }
+
                                 }
+
 
                             }
-
-
-                        }
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(top = 11.dp, end = 5.dp)
-                        )
-                        {
-                            Icon(
-                                painter = painterResource(id = R.drawable.trash),
-                                contentDescription = "",
+                            Box(
                                 modifier = Modifier
-                                    .height(33.dp)
-                                    .width(33.dp)
-                                    .clickable {}
+                                    .fillMaxSize()
+                                    .padding(top = 11.dp, end = 5.dp)
                             )
-                        }
+                            {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.trash),
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .height(33.dp)
+                                        .width(33.dp)
+                                        .clickable {
+                                            val sharedPrefs =
+                                                PreferenceManager.getDefaultSharedPreferences(
+                                                    context
+                                                )
+                                            cartViewModel.removeProductFromCart(
+                                                sharedPrefs = sharedPrefs,
+                                                context = context,
+                                                product = card
+                                            )
 
+                                            show = false
+                                        }
+                                )
+                            }
+
+                        }
                     }
                 }
             }
         }
-
     }
 
     @Composable

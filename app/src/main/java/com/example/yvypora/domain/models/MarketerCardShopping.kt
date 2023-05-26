@@ -4,6 +4,6 @@ data class MarketerCardShopping(
     val id_feirante: Int,
     val name: String,
     val sub_name: String,
-    val photo: Int,
-    var products: List<ProductCardShopping>
+    val photo: String,
+    var products: MutableList<ProductCardShopping>
 )

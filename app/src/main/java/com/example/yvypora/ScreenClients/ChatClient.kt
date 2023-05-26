@@ -38,8 +38,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
-import com.example.yvypora.models.User
 import com.example.yvypora.models.message_dummy
+import com.example.yvypora.domain.models.User
 import com.example.yvypora.ui.theme.YvyporaTheme
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
