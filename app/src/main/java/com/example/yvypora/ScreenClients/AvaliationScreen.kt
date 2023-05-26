@@ -73,7 +73,7 @@ fun HeaderAvaliation() {
             painter = painterResource(id = R.drawable.wave__6_),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(310.dp),
+                .height(330.dp),
             contentDescription = stringResource(id = R.string.back_screen)
         )
         Image(

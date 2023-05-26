@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
@@ -324,7 +325,7 @@ fun TabLayoutScreen() {
         stringResource(id = R.string.discount),
         stringResource(id = R.string.near)
     )
-    val pagerState = rememberPagerState(initialPage = 1,)
+    val pagerState = rememberPagerState(initialPage = 1)
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
     Column(modifier = Modifier.height(230.dp)) {
@@ -731,10 +732,10 @@ fun Shortcuts() {
     }
 }
 
-@ExperimentalPagerApi
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AutoSliding() {
-    val pagerState = rememberPagerState(1)
+    val pagerState = rememberPagerState(initialPage = 1)
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -752,7 +753,7 @@ fun AutoSliding() {
     ) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.padding(top = 20.dp),
             count = 3
         ) { page ->
             Card(modifier = Modifier
@@ -775,8 +776,7 @@ fun AutoSliding() {
                     modifier = Modifier
                         .fillMaxSize()
                         .width(130.dp)
-                        ,
-                    contentAlignment = Alignment.Center
+                        .align(Alignment.CenterHorizontally)
                 ) {
                     Image(
                         painter = painterResource(
@@ -815,10 +815,19 @@ fun AutoSliding() {
             }
             HorizontalPagerIndicator(
                 pagerState = pagerState,
-                modifier = Modifier.padding(top = 210.dp),
+                modifier = Modifier.padding(start = 185.dp, top = 205.dp),
                 activeColor = colorResource(id = R.color.darkgreen_yvy),
                 inactiveColor = colorResource(id = R.color.transparentgreen_yvy)
             )
         }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun InitialScreenPreview() {
+    YvyporaTheme {
+        HomeScreen()
+        BeOnline()
+        GetLists()
     }
 }
