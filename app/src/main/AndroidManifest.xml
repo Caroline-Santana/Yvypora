@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <application
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,11 +19,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".FairsActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_fairs2"
+            android:theme="@style/Theme.Yvypora" />
+        <activity
             android:name=".ScreenClients.ChatClient"
-            android:windowSoftInputMode="adjustResize"
             android:exported="false"
             android:label="@string/title_activity_chat_client"
-            android:theme="@style/Theme.Yvypora" />
+            android:theme="@style/Theme.Yvypora"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ScreenClients.AvaliationScreen"
             android:exported="false"
@@ -175,8 +179,6 @@
             android:exported="false"
             android:label="@string/fair_activity"
             android:theme="@style/Theme.Yvypora" />
-
-
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true"

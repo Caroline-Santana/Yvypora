@@ -37,9 +37,6 @@ class FairsActivity : ComponentActivity() {
         setContent {
             YvyporaTheme {
 
-
-
-
             }
         }
     }
@@ -256,6 +253,6 @@ fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap) {
 @Composable
 fun FairPreview() {
     YvyporaTheme() {
-        FairsActivity()
+
     }
 }

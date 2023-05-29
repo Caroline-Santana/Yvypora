@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
@@ -748,11 +749,11 @@ fun AutoSliding() {
     }
 
     Column(
+        modifier= Modifier.padding(top = 20.dp),
         verticalArrangement = Arrangement.Top
     ) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f),
             count = 3
         ) { page ->
             Card(modifier = Modifier
@@ -815,10 +816,18 @@ fun AutoSliding() {
             }
             HorizontalPagerIndicator(
                 pagerState = pagerState,
-                modifier = Modifier.padding(top = 210.dp),
+                modifier = Modifier.padding(start = 185.dp ,top = 210.dp),
                 activeColor = colorResource(id = R.color.darkgreen_yvy),
                 inactiveColor = colorResource(id = R.color.transparentgreen_yvy)
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InicialPreview() {
+    YvyporaTheme {
+            HomeScreen()
     }
 }
