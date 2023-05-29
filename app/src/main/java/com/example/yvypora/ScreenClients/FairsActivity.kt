@@ -1,4 +1,4 @@
-@file:Suppress("NAME_SHADOWING")
+
 
 package com.example.yvypora.ScreenClients
 
@@ -7,16 +7,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,7 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -36,7 +39,7 @@ class FairsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-
+                    BottomSheetFairs()
             }
         }
     }
@@ -44,13 +47,70 @@ class FairsActivity : ComponentActivity() {
 
 
 
+var selectedCoordinate by mutableStateOf<LatLng>(
+    LatLng(0.0,0.0)
+)
+//var isBottomSheetExpanded by mutableStateOf(true)
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun BottomSheetFairs() {
+    val Fair = (LatLng(-23.55, -46.64))
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(Fair, 5f)
+    }
+    val combinedList = listLocationFair().zip(listMarketerFair())
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
+    )
+
+    val coroutineScope = rememberCoroutineScope()
+
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(750.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                        Spacer(modifier = Modifier.padding(top = 10.dp))
+                        ListOfFairs(fairs = listMarketerFair(), bottomSheetState = bottomSheetScaffoldState.bottomSheetState)
+                }
+            }
+        }, sheetPeekHeight = 250.dp,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Header()
+            GoogleMap(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                combinedList.forEach { item ->
+                    Marker(
+                        state = MarkerState(selectedCoordinate),
+                    )
+                }
+            }
+        }
+    }
+
+}
 fun listLocationFair() = listOf<LatLng>(
     LatLng(-23.55, -46.64),
     LatLng(-23.2167, -44.7179),
     LatLng(-21.55, -46.64),
     LatLng(-20.55, -46.64),
 )
-
 fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
     com.example.yvypora.domain.models.FairsMap(
         id = 1,
@@ -62,7 +122,8 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 3.5
+        ratingMarketer = 3.5,
+        coordinates = LatLng(-23.55 , -46.64)
     ),
     com.example.yvypora.domain.models.FairsMap(
         id = 2,
@@ -74,7 +135,8 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 5.0
+        ratingMarketer = 5.0,
+        coordinates = LatLng(-23.2167, -44.7179)
     ),
     com.example.yvypora.domain.models.FairsMap(
         id = 3,
@@ -86,7 +148,8 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 3.5
+        ratingMarketer = 3.5,
+        coordinates = LatLng(-21.55, -46.64)
     ),
     com.example.yvypora.domain.models.FairsMap(
         id = 4,
@@ -98,21 +161,24 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 3.5
+        ratingMarketer = 3.5,
+        coordinates = LatLng(-20.55, -46.64)
     )
 )
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ListOfFairs(fairs: List<com.example.yvypora.domain.models.FairsMap>) {
+fun ListOfFairs(fairs: List<com.example.yvypora.domain.models.FairsMap>, bottomSheetState: BottomSheetState) {
     LazyColumn(Modifier.fillMaxSize()) {
-        items(fairs) { Fairs -> FairsComponent(fair = Fairs) }
+        items(fairs) { Fairs -> FairsComponent(fair = Fairs, bottomSheetState = bottomSheetState) }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap) {
-
+fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap,bottomSheetState: BottomSheetState) {
+    val coordinates = fair.coordinates
     val nameFair = fair.name
 //    val photoFair = fair.photo
     val photoFair = painterResource(id = R.drawable.fair_photo)
@@ -130,8 +196,12 @@ fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap) {
     Card(
         Modifier
             .padding(6.dp)
-            .height(350.dp),
-        elevation = 10.dp
+            .clickable {
+                selectedCoordinate = coordinates
+                BottomSheetState(BottomSheetValue.Collapsed)
+            }
+            .height(280.dp),
+        elevation = 2.dp
     ) {
         Column(
             Modifier
@@ -142,6 +212,7 @@ fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap) {
                 painter = photoFair,
                 contentDescription = "",
                 modifier = Modifier
+                    .padding(top = 8.dp)
                     .fillMaxWidth()
                     .height(157.dp)
             )

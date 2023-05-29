@@ -1,5 +1,7 @@
 package com.example.yvypora.domain.models
 
+import com.google.android.gms.maps.model.LatLng
+
 data class FairsMap(
     val id: Int,
     val photo: String,
@@ -11,6 +13,8 @@ data class FairsMap(
     val minuteEndOfWork: Int,
     val aproxUserCloser: Int,
     val ratingMarketer: Double,
+    var coordinates: LatLng
+
     )
 
 

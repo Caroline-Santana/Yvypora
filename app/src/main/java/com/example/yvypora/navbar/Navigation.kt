@@ -24,7 +24,8 @@ fun NavigationHost(navController: NavHostController){
            Live()
        }
        composable(ItemsMenu.Pantalla3.rota){
-           context.startActivity(Intent(context, Fair::class.java))
+//           context.startActivity(Intent(context, Fair::class.java))
+           Fair()
        }
        composable(ItemsMenu.Pantalla4.rota){
            Profile()

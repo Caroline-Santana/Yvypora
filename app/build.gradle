@@ -160,4 +160,7 @@ dependencies {
     //Implementação para o chat
     implementation "io.getstream:stream-chat-android-compose:5.12.0"
     implementation "androidx.compose.material:material-icons-extended:1.3.0"
+
+
+
 }

@@ -1,11 +1,9 @@
 package com.example.yvypora.MarketerScreens
 
 import android.os.Bundle
-import android.service.autofill.UserData
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,20 +15,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.ScreenClients.HeaderProfile
 import com.example.yvypora.ScreenClients.fetchDetails
-import com.example.yvypora.domain.models.FairsMap
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.google.android.gms.maps.model.LatLng
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -83,7 +79,8 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 3.5
+        ratingMarketer = 3.5,
+        coordinates = LatLng(-23.55 , -46.64)
     ),
     com.example.yvypora.domain.models.FairsMap(
         id = 2,
@@ -95,7 +92,8 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 5.0
+        ratingMarketer = 5.0,
+        coordinates = LatLng(-23.55 , -46.64)
     ),
     com.example.yvypora.domain.models.FairsMap(
         id = 3,
@@ -107,7 +105,8 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 3.5
+        ratingMarketer = 3.5,
+        coordinates = LatLng(-23.55 , -46.64)
     ),
     com.example.yvypora.domain.models.FairsMap(
         id = 4,
@@ -119,7 +118,8 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
         hourEndOfWork = 18,
         minuteEndOfWork = 30,
         aproxUserCloser = 2,
-        ratingMarketer = 3.5
+        ratingMarketer = 3.5,
+        coordinates = LatLng(-23.55 , -46.64)
     )
 )
 
