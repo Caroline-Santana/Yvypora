@@ -1,14 +1,21 @@
 package com.example.yvypora.navbar
 
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.example.yvypora.ScreenClients.Header
 import com.example.yvypora.ScreenClients.ListOfFairs
 import com.example.yvypora.ScreenClients.listLocationFair
 import com.example.yvypora.ScreenClients.listMarketerFair
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -19,6 +26,9 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun FairMarketer(){
+
+
+
     val Fair = (LatLng(-23.55, -46.64))
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(Fair, 5f)
