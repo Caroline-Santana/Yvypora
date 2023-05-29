@@ -12,33 +12,23 @@ data class Message(
 val message_dummy = listOf(
 
     Message(
-        text = "ai calica",
-        recipient_id = "Ariana Grande",
+        text = "tudo e vc?",
+        recipient_id = "eu",
         isOut = false
     ),
     Message(
-        text = "Entt se arruma muie ;) ;) ;)",
-        recipient_id = "Faustão",
+        text = "tudo bem?",
+        recipient_id = "voce",
         isOut = true
     ),
     Message(
-        text = "queruuuu",
-        recipient_id = "Ariana Grande",
+        text = "Oi...",
+        recipient_id = "eu",
         isOut = false
     ),
     Message(
-        text = "date hj xuxu?",
-        recipient_id = "Faustão",
-        isOut = true
-    ),
-    Message(
-        text = "Oi bebê...",
-        recipient_id = "Ariana Grande",
-        isOut = false
-    ),
-    Message(
-        text = "Oi amor...",
-        recipient_id = "Faustão",
+        text = "Oi",
+        recipient_id = "voce",
         isOut = true
     )
 

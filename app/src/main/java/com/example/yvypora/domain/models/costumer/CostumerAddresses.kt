@@ -10,3 +10,4 @@ data class CustomerAddress(
     val updated_at: String,
     val address: com.example.yvypora.domain.models.Address
 )
+
