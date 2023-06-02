@@ -38,8 +38,7 @@ import java.util.*
 
 @Composable
 fun Fair(){
-//   BottomSheetFairs()
-    Teste()
+BottomSheetFairs()
 }
 
 //class Fair : ComponentActivity()  {
