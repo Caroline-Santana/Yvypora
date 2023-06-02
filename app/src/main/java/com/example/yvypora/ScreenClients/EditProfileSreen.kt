@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.yvypora.R
 import com.example.yvypora.api.RetrofitApi
+import com.example.yvypora.domain.models.EditProfile
 import com.example.yvypora.navbar.ItemsMenu
 import com.example.yvypora.navbar.NavigationHost
 import com.example.yvypora.ui.theme.YvyporaTheme
@@ -62,6 +63,15 @@ class EditProfileSreen : ComponentActivity() {
     }
 }
 
+val DataEditUser = mutableStateOf<EditProfile>(
+        EditProfile(
+            name = "Caroline Santana",
+            email = "carolinesantana309@gmail.com",
+            password = "carol1234",
+            cpf = "866.807.215-39",
+            cep = "06310-440"
+        )
+)
 
 @Composable
 fun InputsProfile() {
@@ -109,7 +119,7 @@ fun InputsProfile() {
             modifier = Modifier.padding(top = 10.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            NameInputAgain()
+//            NameInputAgain()
             Spacer(modifier = Modifier.height(19.dp))
             EmailInputAgain()
             Spacer(modifier = Modifier.height(19.dp))
@@ -147,11 +157,11 @@ fun InputsProfile() {
 }
 
 @Composable
-fun NameInputAgain() {
+fun NameInputAgain(user : EditProfile) {
     var nameState by rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(user.name.toString())
     }
-
+    var nome = user.name.toString()
     val inputsFocusRequest = FocusRequester()
 
     Text(
@@ -171,12 +181,6 @@ fun NameInputAgain() {
                 newName.dropLast(1)
             else newName
             nameState = newValue
-        },
-        placeholder = {
-            Text(
-                text = "Carlos Arcanjo",
-                fontSize = 20.sp
-            )
         },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
