@@ -103,7 +103,7 @@ fun Header() {
         modifier = Modifier
             .fillMaxWidth()
             .height(90.dp)
-            .padding(top = 35.dp, start = 15.dp, end = 15.dp),
+            .padding(top = 25.dp, start = 15.dp, end = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Image(

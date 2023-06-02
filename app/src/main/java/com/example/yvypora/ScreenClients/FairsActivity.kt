@@ -2,6 +2,7 @@
 
 package com.example.yvypora.ScreenClients
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +32,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -39,7 +42,7 @@ class FairsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                    BottomSheetFairs()
+                    Teste()
             }
         }
     }
@@ -50,7 +53,10 @@ class FairsActivity : ComponentActivity() {
 var selectedCoordinate by mutableStateOf<LatLng>(
     LatLng(0.0,0.0)
 )
-//var isBottomSheetExpanded by mutableStateOf(true)
+
+var onClickCard by mutableStateOf(false)
+//
+////var isBottomSheetExpanded by mutableStateOf(true)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheetFairs() {
@@ -64,6 +70,7 @@ fun BottomSheetFairs() {
     )
 
     val coroutineScope = rememberCoroutineScope()
+    val bottomSheetExpanded = remember { mutableStateOf(true) }
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
@@ -80,10 +87,50 @@ fun BottomSheetFairs() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                         Spacer(modifier = Modifier.padding(top = 10.dp))
-                        ListOfFairs(fairs = listMarketerFair(), bottomSheetState = bottomSheetScaffoldState.bottomSheetState)
+                        ListOfFairs(fairs = listMarketerFair())
                 }
             }
-        }, sheetPeekHeight = 250.dp,
+        },
+        sheetPeekHeight = 250.dp,
+    ) {
+
+
+    }
+
+}
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun Teste() {
+    val Fair = (LatLng(-23.55, -46.64))
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded))
+    val coroutineScope = rememberCoroutineScope()
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(Fair, 5f)
+    }
+    val combinedList = listLocationFair().zip(listMarketerFair())
+
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.padding(top = 10.dp))
+                    ListOfFairs(fairs = listMarketerFair())
+                }
+            }
+        }, sheetPeekHeight = 0.dp
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -97,13 +144,13 @@ fun BottomSheetFairs() {
             ) {
                 combinedList.forEach { item ->
                     Marker(
-                        state = MarkerState(selectedCoordinate),
+                        state = MarkerState(selectedCoordinate)
                     )
                 }
             }
         }
-    }
 
+    }
 }
 fun listLocationFair() = listOf<LatLng>(
     LatLng(-23.55, -46.64),
@@ -169,15 +216,18 @@ fun listMarketerFair() = listOf<com.example.yvypora.domain.models.FairsMap>(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ListOfFairs(fairs: List<com.example.yvypora.domain.models.FairsMap>, bottomSheetState: BottomSheetState) {
+fun ListOfFairs(
+    fairs: List<com.example.yvypora.domain.models.FairsMap>) {
     LazyColumn(Modifier.fillMaxSize()) {
-        items(fairs) { Fairs -> FairsComponent(fair = Fairs, bottomSheetState = bottomSheetState) }
+        items(fairs) { Fairs ->
+        FairsComponent(fair = Fairs)
+        }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap,bottomSheetState: BottomSheetState) {
+fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap) {
     val coordinates = fair.coordinates
     val nameFair = fair.name
 //    val photoFair = fair.photo
@@ -198,7 +248,6 @@ fun FairsComponent(fair: com.example.yvypora.domain.models.FairsMap,bottomSheetS
             .padding(6.dp)
             .clickable {
                 selectedCoordinate = coordinates
-                BottomSheetState(BottomSheetValue.Collapsed)
             }
             .height(280.dp),
         elevation = 2.dp
