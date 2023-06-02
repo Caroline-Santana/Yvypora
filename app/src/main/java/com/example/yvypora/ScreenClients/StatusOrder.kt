@@ -76,7 +76,7 @@ class StatusOrder : ComponentActivity() {
 
     @Composable
     fun FinishOrder(socket: Socket, data: String) {
-        val order = JSONObject(data).optString("order")
+        val order = JSONObject(data)
         Log.i("finish_travel", order.toString())
         LaunchedEffect(socket) {
             socket.emit("confirm_order_arrived", order.toString())
