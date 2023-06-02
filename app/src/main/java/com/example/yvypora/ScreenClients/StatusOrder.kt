@@ -2,6 +2,7 @@ package com.example.yvypora.ScreenClients
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
@@ -9,6 +10,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,9 +31,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.animatedsplashscreendemo.navigation.Screen
+import com.example.yvypora.services.websocket.Websocket
 import com.example.yvypora.ui.theme.YvyporaTheme
+import io.socket.client.Socket
+import org.json.JSONObject
 
 class StatusOrder : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,49 +48,102 @@ class StatusOrder : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    StatusOrderMain()
+                    val socket = getSocket()
+
+                    StatusOrderMain(socket)
                 }
             }
         }
     }
-}
 
-enum class StatusPedido{
-    CONFIRMADO, AGUARDANDO_RETIRADA, RETIRADO, SOB_CONFIRMACAO
-}
-enum class Screen{
-    Main,
-    Other
-}
-@Composable
-fun StatusOrderMain() {
-    var context = LocalContext.current
-    var statusPedido by remember{ mutableStateOf(StatusPedido.SOB_CONFIRMACAO) }
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 40.dp)
-        .fillMaxSize())
-    {
-        Text(
-            text = stringResource(id = R.string.status_order),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = colorResource(id = R.color.green_options),
-            fontSize = 30.sp
-        )
-        Spacer(modifier = Modifier.height(60.dp))
-        Timeline(statusAtual = statusPedido)
-        Button(onClick = {
-            val intent = Intent(context, AcompCorridaActivity()::class.java)
-            context.startActivity(intent) }) {
+    @Composable
+    fun getSocket(): Socket{
+        val context = LocalContext.current
+        val socket =  Websocket().getInstance(context)
+        socket.connect()
+        return socket
+    }
 
+    enum class StatusPedido {
+        PAID, CONFIRMADO, AGUARDANDO_RETIRADA, RETIRADO, SOB_CONFIRMACAO
+    }
+
+    enum class Screen {
+        Main,
+        Other
+    }
+
+
+    @Composable
+    fun FinishOrder(socket: Socket, data: String) {
+        val order = JSONObject(data).optString("order")
+        Log.i("finish_travel", order.toString())
+        LaunchedEffect(socket) {
+            socket.emit("confirm_order_arrived", order.toString())
         }
     }
 
-}
-@Composable
-fun CardConfirmDelivery(){
-    val context = LocalContext.current
+
+    @Composable
+    fun StatusOrderMain(socket: Socket) {
+        var context = LocalContext.current
+
+        var statusPedido by remember { mutableStateOf(StatusPedido.PAID) }
+        var order by remember { mutableStateOf("") }
+
+        LaunchedEffect(socket) {
+            socket.on("travel_accepted") { args ->
+                val message = args[0].toString()
+                statusPedido = StatusPedido.AGUARDANDO_RETIRADA
+                order = message
+            }
+            socket.on("updated_of_order") { args ->
+                val message = args[0].toString()
+                statusPedido = StatusPedido.RETIRADO
+            }
+            socket.on("order_arrived") { args ->
+                val message = args[0].toString()
+                statusPedido = StatusPedido.SOB_CONFIRMACAO
+            }
+        }
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 40.dp)
+                .fillMaxSize()
+                .scrollable(rememberScrollState(), Orientation.Vertical)
+        )
+        {
+            Text(
+                text = stringResource(id = R.string.status_order),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                color = colorResource(id = R.color.green_options),
+                fontSize = 30.sp
+            )
+            Spacer(modifier = Modifier.height(60.dp))
+            Timeline(statusAtual = statusPedido, socket, order)
+            Button(
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(.50.dp)
+                ,
+                onClick = {
+                val intent = Intent(context, AcompCorridaActivity()::class.java)
+                context.startActivity(intent)
+            }) {
+                Text(text = "Chat", textAlign = TextAlign.Center)
+            }
+        }
+    }
+
+    @Composable
+    fun CardConfirmDelivery(socket: Socket, order: String) {
+        val context = LocalContext.current
+        var finish by remember { mutableStateOf(false) }
+
         Card(
             Modifier
                 .width(345.dp)
@@ -123,8 +184,9 @@ fun CardConfirmDelivery(){
                             .width(96.dp),
                         colors = ButtonDefaults.buttonColors(Color(36, 85, 1, 255)),
                         onClick = {
-                            val intent = Intent(context, AvaliationScreen::class.java)
-                            context.startActivity(intent)
+                                finish = true
+//                            val intent = Intent(context, AvaliationScreen::class.java)
+//                            context.startActivity(intent)
                         }
                     ) {
                         Text(
@@ -152,10 +214,14 @@ fun CardConfirmDelivery(){
             }
         }
 
-}
-@Composable
-fun Timeline(statusAtual : StatusPedido){
+        if (finish) {
+            FinishOrder(socket, order)
+        }
 
+    }
+
+    @Composable
+    fun Timeline(statusAtual: StatusPedido, socket: Socket, order: String) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -460,83 +526,84 @@ fun Timeline(statusAtual : StatusPedido){
                         )
                     }
                     if (statusAtual == StatusPedido.SOB_CONFIRMACAO)
-                        CardConfirmDelivery()
+                        CardConfirmDelivery(socket, order)
                 }
             }
         }
-}
+    }
 
-@Composable
-fun CardTimeLine(title: String, date: String, hour: String, atualStatus : Boolean){
-    var colorText: Color = colorResource(id = R.color.green_options)
-    var othercolorText: Color = colorResource(id = R.color.gray_title_no_selecioned)
+    @Composable
+    fun CardTimeLine(title: String, date: String, hour: String, atualStatus: Boolean) {
+        var colorText: Color = colorResource(id = R.color.green_options)
+        var othercolorText: Color = colorResource(id = R.color.gray_title_no_selecioned)
 
-    Card(
-        Modifier
-            .width(243.dp)
-            .height(75.dp),
-        backgroundColor = Color.White,
-        border = BorderStroke(2.dp, 
-            if (atualStatus)
-                colorResource(id = R.color.green_button)
-        else   colorResource(id = R.color.gray_stroke_circle)
-        ),
-        shape = RoundedCornerShape(8.dp)
-    )
-    {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 5.dp, start = 15.dp)
-        ) {
-            Text(
-                text = title,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Start,
-                color =
+        Card(
+            Modifier
+                .width(243.dp)
+                .height(75.dp),
+            backgroundColor = Color.White,
+            border = BorderStroke(
+                2.dp,
                 if (atualStatus)
-                   colorText
-                else othercolorText,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
-            Row(
+                    colorResource(id = R.color.green_button)
+                else colorResource(id = R.color.gray_stroke_circle)
+            ),
+            shape = RoundedCornerShape(8.dp)
+        )
+        {
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 5.dp, end = 10.dp)
-                ,
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ){
+                    .fillMaxWidth()
+                    .padding(top = 5.dp, start = 15.dp)
+            ) {
                 Text(
-                    text = date,
+                    text = title,
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Start,
                     color =
                     if (atualStatus)
                         colorText
                     else othercolorText,
-                    fontSize = 15.sp
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
                 )
-                Text(
-                    text = hour,
-                    textAlign = TextAlign.Start,
-                    color =
-                    if (atualStatus)
-                        colorText
-                    else othercolorText,
-                    fontSize = 15.sp
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 5.dp, end = 10.dp),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = date,
+                        textAlign = TextAlign.Start,
+                        color =
+                        if (atualStatus)
+                            colorText
+                        else othercolorText,
+                        fontSize = 15.sp
+                    )
+                    Text(
+                        text = hour,
+                        textAlign = TextAlign.Start,
+                        color =
+                        if (atualStatus)
+                            colorText
+                        else othercolorText,
+                        fontSize = 15.sp
+                    )
+                }
             }
+
         }
-
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun StatusOrderPreview() {
-    YvyporaTheme {
-       StatusOrderMain()
-    }
+//    @Preview(showBackground = true)
+//    @Composable
+//    fun StatusOrderPreview() {
+//        YvyporaTheme {
+//            StatusOrderMain()
+//        }
+//    }
 }

@@ -17,7 +17,8 @@ class PurchaseService {
         private val API = RetrofitApi.purchaseRetrofitService()
 
         fun createPurchaseIntent(data: StripePaymentIntent, token: String,onComplete: (StripeIntentResponse) -> Unit) {
-            val call = API.createStripeIntent(data, token);
+            val _token = "Bearer $token"
+            val call = API.createStripeIntent(data, _token);
 
             call.enqueue(object : Callback<StripeIntentResponse> {
                 override fun onFailure(call: Call<StripeIntentResponse>, t: Throwable) {
@@ -29,7 +30,7 @@ class PurchaseService {
                     response: Response<StripeIntentResponse>
                 ) {
                     val res = response.body()
-                    Log.i("stripe", data.toString());
+                    Log.i("stripe", "data stripe -> $data");
                     Log.i("stripe", token.toString());
                     Log.i("stripe", response.toString());
 

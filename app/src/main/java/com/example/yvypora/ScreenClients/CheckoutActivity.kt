@@ -2,10 +2,13 @@ package com.example.yvypora.ScreenClients
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -57,6 +61,60 @@ class CheckoutActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
+
+                val context = LocalContext.current
+                val intent = (context as CheckoutActivity).intent
+
+                var user by remember {
+                    mutableStateOf<User>(User())
+                }
+
+                val token = TokenStore(context).getToken.collectAsState(initial = "").value
+
+                _token.value = token
+
+                if (token.isNotEmpty()) {
+                    LaunchedEffect(token) {
+                        getDetailsOfUser(token) {
+                            user = it
+                        }
+                    }
+                }
+
+                val _products = intent.getStringExtra("products") ?: "no data";
+
+                total.value = intent.getStringExtra("total_value") ?: ""
+
+                val products: List<ProductCardShopping> =
+                    Gson().fromJson(_products, Array<ProductCardShopping>::class.java)
+                        .toList()
+
+                val _mainAddressesCostumer =
+                    user.costumerAddresses?.find { it.address.default }
+
+                var productsToStripe = remember {
+                    mutableStateListOf<ProductToStripe>()
+                }
+
+                productsToStripe.clear();
+
+                products.forEach {
+                    productsToStripe.add(
+                        ProductToStripe(
+                            id = it.id,
+                            amount = it.qtde
+                        )
+                    )
+                }
+
+                purchaseData.value = StripePaymentIntent(
+                    costumer_address_id = _mainAddressesCostumer?.id ?: 0,
+                    freight = 19.99,
+                    products = productsToStripe.toList(),
+                )
+
+                Log.i("stripe", purchaseData.value.toString())
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -67,63 +125,6 @@ class CheckoutActivity : ComponentActivity() {
                             .fillMaxWidth()
                     )
                     {
-                        val context = LocalContext.current
-                        val intent = (context as CheckoutActivity).intent
-
-                        var user by remember {
-                            mutableStateOf<User>(User())
-                        }
-
-                        val token = TokenStore(context).getToken.collectAsState(initial = "").value
-
-                        _token.value = token
-
-                        if (token.isNotEmpty()) {
-                            LaunchedEffect(token) {
-                                getDetailsOfUser(token) {
-                                    user = it
-                                }
-                            }
-                        }
-
-                        val _products = intent.getStringExtra("products") ?: "no data";
-
-                        total.value = intent.getStringExtra("total_value") ?: ""
-
-                        Log.i("checkout", "lista -> $_products")
-
-                        val products: List<ProductCardShopping> =
-                            Gson().fromJson(_products, Array<ProductCardShopping>::class.java)
-                                .toList()
-
-                        Log.i("checkout", "List convertida --> $products ${products.size}")
-
-                        Log.i("checkout", "teste $user")
-
-                        val _mainAddressesCostumer =
-                            user.costumerAddresses?.find { it.address.default }
-
-
-                        val productsToStripe = remember {
-                            mutableStateListOf<ProductToStripe>()
-                        }
-
-                        for (product in products) {
-                            productsToStripe.add(
-                                ProductToStripe(
-                                    id = product.id,
-                                    amount = product.qtde
-                                )
-                            )
-                        }
-
-
-                        purchaseData.value = StripePaymentIntent(
-                            costumer_address_id = _mainAddressesCostumer?.id ?: 0,
-                            freight = 19.99,
-                            products = productsToStripe.toList(),
-                        )
-
 
                         Header()
 
@@ -151,6 +152,7 @@ class CheckoutActivity : ComponentActivity() {
         products: List<ProductCardShopping>
     ) {
         var subtotal = this.total.value.toDouble()
+        val isLaunched = remember { mutableStateOf(false) }
         var taxa_entrega = 19.99
         var total = subtotal.plus(taxa_entrega)
         var selectedOptionsIndex by remember { mutableStateOf(0) }
@@ -298,15 +300,27 @@ class CheckoutActivity : ComponentActivity() {
                         color = colorResource(id = R.color.green_width)
                     )
                 }
+                val uriHandler = LocalUriHandler.current
+                val resultLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.StartActivityForResult()
+                ) { result ->
+                    if (result.resultCode == RESULT_OK) {
+                        // Handle the result here if needed
+                    }
+                    val intent = Intent(context, StatusOrder::class.java)
+                    context.startActivity(intent)
+                }
+
                 Button(
                     onClick = {
                         PurchaseService.createPurchaseIntent(purchaseData.value!!, _token.value) {
-                            Log.i("stripe", purchaseData.toString())
-                            Log.i("stripe", _token.value.toString())
-                            Log.i("stripe", it.data)
+                            val urlIntent : Intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(it.data)
+                            )
+                            resultLauncher.launch(urlIntent)
+                            isLaunched.value = true
                         }
-//                        val intent = Intent(context, StatusOrder()::class.java)
-//                        context.startActivity(intent)
                     },
                     modifier = Modifier
                         .height(58.dp)
@@ -328,7 +342,12 @@ class CheckoutActivity : ComponentActivity() {
                 }
             }
         }
+        if (isLaunched.value) {
+            Text("Waiting for the result...")
+        }
     }
+}
+
 
     val listPayMethods = mutableStateListOf<PaymentMethodDescription>(
         PaymentMethodDescription(
@@ -558,6 +577,7 @@ class CheckoutActivity : ComponentActivity() {
     }
 
 
+
 //@Preview(showBackground = true)
 //@Composable
 //fun CheckoutPreview() {
@@ -573,4 +593,4 @@ class CheckoutActivity : ComponentActivity() {
 //        }
 //    }
 //}
-}
+
