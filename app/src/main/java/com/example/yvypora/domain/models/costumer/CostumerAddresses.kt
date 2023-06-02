@@ -8,6 +8,6 @@ data class CustomerAddress(
     val costumerId: Int,
     val created_at: String,
     val updated_at: String,
-    val address: com.example.yvypora.domain.models.Address
+    val address: Address
 )
 

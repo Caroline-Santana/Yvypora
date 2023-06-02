@@ -43,7 +43,7 @@ data class Address(
     var city: City? = null,
     var type: AddressType? = null,
     var uf: UF? = null,
-    val neighborhood: Neighborhood? = null,
+    var neighborhood: Neighborhood? = null,
 )
 
 

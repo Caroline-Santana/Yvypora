@@ -140,12 +140,13 @@ fun MainAddress() {
     }
 }
 class AddressActivity : AppCompatActivity(){
-    private val viewModel: CheckOutViewModel by viewModels()
+    private val viewModel: CheckoutActivity.CheckOutViewModel by viewModels()
 
-    private fun onAddressSelected(address: Address){
+    private fun onAddressSelected(address: com.example.yvypora.domain.models.Address){
         viewModel.setMainAddress(address)
     }
 }
+
 val listAddress= mutableStateListOf<com.example.yvypora.domain.models.AddressCard>(
     com.example.yvypora.domain.models.AddressCard(
         titulo = "Casa",
