@@ -355,9 +355,10 @@ class ShoppingCartActivity : ComponentActivity() {
                         colors = ButtonDefaults.buttonColors(Color(115, 169, 66, 255)),
                         onClick = {
                             val intent = Intent(context, CheckoutActivity::class.java)
-                            Log.i("checkout", selectedCards.toList().toString())
-                            val products = Gson().toJson(selectedCards)
-                            Log.i("checkout", "lista string-> $products")
+                            Log.i("checkout", selectedCards.toString())
+                            val products: String = Gson().toJson(selectedCards) // TO JSON
+                            val total = total_value.toString()
+                            intent.putExtra("total_value", total)
                             intent.putExtra("products", products);
                             context.startActivity(intent)
                         }

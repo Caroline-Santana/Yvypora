@@ -2,6 +2,7 @@ package com.example.yvypora
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -277,6 +278,7 @@ fun LoginLayout() {
                                     scope.launch {
                                         val gson = Gson()
                                         userStore.saveDetails(gson.toJson(user))
+                                        Log.i("teste", user.toString())
                                         if (user.typeOf == TypeOfUser.COSTUMER) {
                                             val intent = Intent(context, InicialScreen()::class.java)
                                             context.startActivity(intent)

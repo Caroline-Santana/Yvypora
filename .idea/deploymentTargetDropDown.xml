@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="$USER_HOME$/.android/avd/Gerson_34.0.91.98.avd" />
+            <value value="$PROJECT_DIR$/../.android/avd/emulador_para_tcc.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-05-26T13:25:14.756461Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-05-29T10:53:36.872609Z" />
   </component>
 </project>

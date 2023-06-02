@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.yvypora.MainActivity
 import com.example.yvypora.R
@@ -83,7 +84,7 @@ fun fetchDetails(): User {
 }
 @Composable
 fun HeaderProfile(user: User) {
-    val image = rememberImagePainter(user.picture_uri)
+    val image = rememberAsyncImagePainter(user.picture_uri)
     Box(
         modifier = Modifier
             .fillMaxWidth()
