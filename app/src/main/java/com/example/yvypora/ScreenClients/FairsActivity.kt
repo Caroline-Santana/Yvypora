@@ -42,7 +42,7 @@ class FairsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             YvyporaTheme {
-                    Teste()
+                    BottomSheetFairs()
             }
         }
     }
@@ -55,54 +55,13 @@ var selectedCoordinate by mutableStateOf<LatLng>(
 )
 
 var onClickCard by mutableStateOf(false)
-//
-////var isBottomSheetExpanded by mutableStateOf(true)
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun BottomSheetFairs() {
-    val Fair = (LatLng(-23.55, -46.64))
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(Fair, 5f)
-    }
-    val combinedList = listLocationFair().zip(listMarketerFair())
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
-    )
-
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetExpanded = remember { mutableStateOf(true) }
-
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(750.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                        Spacer(modifier = Modifier.padding(top = 10.dp))
-                        ListOfFairs(fairs = listMarketerFair())
-                }
-            }
-        },
-        sheetPeekHeight = 250.dp,
-    ) {
 
 
-    }
-
-}
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Teste() {
+fun BottomSheetFairs() {
     val Fair = (LatLng(-23.55, -46.64))
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Expanded))
