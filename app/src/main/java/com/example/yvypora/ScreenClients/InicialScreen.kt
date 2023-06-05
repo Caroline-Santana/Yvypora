@@ -560,7 +560,7 @@ fun CardProducts(data: Product) {
                     text = titleCard,
                     modifier = Modifier.padding(top = 4.dp),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
                 )
                 Image(
                     painter = photoProduct,
@@ -589,26 +589,26 @@ fun CardProducts(data: Product) {
                         textAlign = TextAlign.Left,
                         fontSize = 14.sp
                     )
-                    OutlinedButton(
-                        onClick = { },
-                        modifier = Modifier.size(40.dp),
-                        shape = CircleShape,
-                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
-                        contentPadding = PaddingValues(0.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            backgroundColor = colorResource(
-                                id = R.color.darkgreen_yvy
-                            )
-                        )
-                    ) {
-                        // Adding an Icon "Add" inside the Button
-                        Icon(
-                            painter = painterResource(id = R.drawable.shopping_cart),
-                            modifier = Modifier.padding(start = 3.dp),
-                            contentDescription = "content description",
-                            tint = Color.White
-                        )
-                    }
+//                    OutlinedButton(
+//                        onClick = { },
+//                        modifier = Modifier.size(40.dp),
+//                        shape = CircleShape,
+//                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
+//                        contentPadding = PaddingValues(0.dp),
+//                        colors = ButtonDefaults.outlinedButtonColors(
+//                            backgroundColor = colorResource(
+//                                id = R.color.darkgreen_yvy
+//                            )
+//                        )
+//                    ) {
+//                        // Adding an Icon "Add" inside the Button
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.shopping_cart),
+//                            modifier = Modifier.padding(start = 3.dp),
+//                            contentDescription = "content description",
+//                            tint = Color.White
+//                        )
+//                    }
                 }
             }
         }

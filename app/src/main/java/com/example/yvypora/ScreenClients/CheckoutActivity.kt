@@ -49,9 +49,12 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.json.JSONArray
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class CheckoutActivity : ComponentActivity() {
     var total = mutableStateOf<String>("")
+    var products: List<ProductCardShopping> = emptyList()
     private var purchaseData = mutableStateOf<StripePaymentIntent?>(null)
     var _token = mutableStateOf<String>("")
 
@@ -64,6 +67,12 @@ class CheckoutActivity : ComponentActivity() {
 
                 val context = LocalContext.current
                 val intent = (context as CheckoutActivity).intent
+
+                val buynow = intent.getStringExtra("buy_now")
+                if (!buynow.isNullOrEmpty()) {
+                    val product = Gson().fromJson(buynow, ProductCardShopping::class.java)
+                    products.toMutableList().add(product)
+                }
 
                 var user by remember {
                     mutableStateOf<User>(User())
@@ -85,7 +94,7 @@ class CheckoutActivity : ComponentActivity() {
 
                 total.value = intent.getStringExtra("total_value") ?: ""
 
-                val products: List<ProductCardShopping> =
+                var products: List<ProductCardShopping> =
                     Gson().fromJson(_products, Array<ProductCardShopping>::class.java)
                         .toList()
 
@@ -155,6 +164,14 @@ class CheckoutActivity : ComponentActivity() {
         val isLaunched = remember { mutableStateOf(false) }
         var taxa_entrega = 19.99
         var total = subtotal.plus(taxa_entrega)
+
+        try {
+            total = DecimalFormat("#.##").format(total).toDouble()
+        } catch (e: Exception) {
+            Log.i("teste", e.message!!)
+        }
+
+
         var selectedOptionsIndex by remember { mutableStateOf(0) }
         val context = LocalContext.current
         Row(

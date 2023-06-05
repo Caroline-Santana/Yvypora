@@ -254,7 +254,6 @@ fun MainDescriptionProducts() {
         ) {
             Button(
                 onClick = {
-                    Toast.makeText(context, "TESTE", Toast.LENGTH_SHORT).show()
                     val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
                     cartViewModel.addCart(bindDataToProductCardShopping(product.value!!, quantity.value), context, sharedPrefs)
                 },
@@ -281,7 +280,16 @@ fun MainDescriptionProducts() {
                 )
             }
             Button(
-                onClick = { },
+                onClick = {
+                    val product = product.value!!
+                    val quantity = quantity.value!!
+
+                    val intent = Intent(context, CheckoutActivity::class.java)
+
+                    intent.putExtra("buy_now", product.toString())
+
+                    context.startActivity(intent)
+                },
                 modifier = Modifier
                     .width(128.dp)
                     .height(45.dp)

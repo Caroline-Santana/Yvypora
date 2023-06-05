@@ -3,6 +3,7 @@ package com.example.yvypora.ScreenClients
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Message
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
@@ -38,10 +39,13 @@ import com.example.yvypora.domain.models.User
 import com.example.yvypora.services.datastore.DeliverymanStore
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.gson.Gson
+import io.socket.client.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ChatClient : ComponentActivity() {
+
+    private lateinit var user: User;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -52,13 +56,13 @@ class ChatClient : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val context = LocalContext.current
-                    val user = fetchDetails();
+                    val _user = fetchDetails();
+                    user = _user
 
-                    val deliverymanAsString =
-                        DeliverymanStore(context).getDeliverymanDetails.collectAsState(initial = "").value
+                    val deliverymanAsString = DeliverymanStore(context).getDeliverymanDetails.collectAsState(initial = "").value
 
-                    val deliveryman: Deliveryman =
-                        Gson().fromJson(deliverymanAsString, Deliveryman::class.java)
+                    val deliveryman: Deliveryman = Gson().fromJson(deliverymanAsString, Deliveryman::class.java)
+
 
                     MainChatClient(user = user, deliveryman)
                 }
@@ -169,27 +173,32 @@ class ChatClient : ComponentActivity() {
 
     @Composable
     fun parseSocketToMessage(message: MessageFromSocket): com.example.yvypora.models.Message {
+        val isOut = message.toName !== user.name
         return com.example.yvypora.models.Message(
             text = message.content,
             recipient_id = message.toName,
+            isOut = isOut
         )
     }
 
     @Composable
-    fun sendMessageToSocket(message: com.example.yvypora.models.Message) {
+    fun sendMessageToSocket(socket: Socket, message: com.example.yvypora.models.Message) {
         LaunchedEffect(message) {
-
+            // send to socket
         }
     }
 
     @Composable
-    fun appendMessageToSocket() {
-
+    fun appendMessageToSocket(socket: Socket) {
+        // receive from delivery man
     }
 
     @Composable
-    fun listAllMessages() {
+    fun listAllMessages(socket: Socket) {
+        LaunchedEffect(socket) {
+            // do the req in retrofit
 
+        }
     }
 
     @SuppressLint("UnrememberedMutableState")
