@@ -12,6 +12,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -25,6 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -119,15 +124,17 @@ fun InputsProfile() {
             modifier = Modifier.padding(top = 10.dp),
             verticalArrangement = Arrangement.Center
         ) {
-//            NameInputAgain()
+            NameInputAgain(user = DataEditUser.value)
             Spacer(modifier = Modifier.height(19.dp))
-            EmailInputAgain()
+            EmailInputAgain(user = DataEditUser.value)
             Spacer(modifier = Modifier.height(19.dp))
-            PassInputAgain()
+            PassInputAgain(user = DataEditUser.value)
             Spacer(modifier = Modifier.height(19.dp))
-            CpfInputAgain()
+            PhotoInput()
             Spacer(modifier = Modifier.height(19.dp))
-            CepInputAgain()
+            CpfInputAgain(user = DataEditUser.value)
+            Spacer(modifier = Modifier.height(19.dp))
+            CepInputAgain(user = DataEditUser.value)
             Spacer(modifier = Modifier.height(25.dp))
 
             Button(
@@ -203,9 +210,9 @@ fun NameInputAgain(user : EditProfile) {
 }
 
 @Composable
-fun EmailInputAgain() {
+fun EmailInputAgain(user: EditProfile) {
     var emailState by rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(user.email.toString())
     }
     var isEmailError by remember {
         mutableStateOf(false)
@@ -235,14 +242,7 @@ fun EmailInputAgain() {
                 newEmail.get(newEmail.length - 1)
                 isEmailError = false
             }
-
             emailState = newEmail
-        },
-        placeholder = {
-            Text(
-                text = "carlaoprof@gmail.com",
-                fontSize = 20.sp
-            )
         },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
@@ -269,11 +269,10 @@ fun EmailInputAgain() {
     }
 }
 @Composable
-fun PassInputAgain() {
+fun PassInputAgain(user: EditProfile) {
     var passwordState by rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(user.password.toString())
     }
-
 
     var isPasswordError by remember {
         mutableStateOf(false)
@@ -281,7 +280,9 @@ fun PassInputAgain() {
     var isPasswordErrorEmpty by remember {
         mutableStateOf(false)
     }
-
+    var passwordVisibility by rememberSaveable {
+        mutableStateOf(false)
+    }
     val mMaxLength = 8
 
     val inputsFocusRequest = FocusRequester()
@@ -309,6 +310,19 @@ fun PassInputAgain() {
 
             passwordState = newPass
         },
+        trailingIcon = {
+            val img = if (passwordVisibility) {
+                Icons.Filled.Visibility
+            } else Icons.Filled.VisibilityOff
+
+            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                Icon(
+                    imageVector = img,
+                    contentDescription = null
+                )
+            }
+        },
+        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Unspecified,
             focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -342,9 +356,9 @@ fun PassInputAgain() {
     }
 }
 @Composable
-fun CpfInputAgain() {
+fun CpfInputAgain(user: EditProfile) {
     var cpfState by rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(user.cpf.toString())
     }
     var isCpfErrorEmpty by remember {
         mutableStateOf(false)
@@ -414,10 +428,10 @@ fun CpfInputAgain() {
 }
 
 @Composable
-fun CepInputAgain() {
+fun CepInputAgain(user: EditProfile) {
 
     var cepState by rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(user.cep.toString())
     }
     val inputsFocusRequest = FocusRequester()
 
@@ -448,7 +462,7 @@ fun CepInputAgain() {
             .height(54.dp)
             .focusRequester(inputsFocusRequest),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        visualTransformation = MaskCpf(),
+        visualTransformation = MaskCep(),
         singleLine = true,
         shape = RoundedCornerShape(8.dp),
     )
