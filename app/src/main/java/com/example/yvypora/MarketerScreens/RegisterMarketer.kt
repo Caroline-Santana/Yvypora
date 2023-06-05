@@ -17,6 +17,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -31,6 +34,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -495,7 +500,9 @@ fun PassInputMarketer(passwordState: String, isPasswordError: Boolean, isPasswor
 
 
     val inputsFocusRequest = FocusRequester()
-
+    var passwordVisibility by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     Text(
         text = stringResource(id = R.string.password),
@@ -512,9 +519,22 @@ fun PassInputMarketer(passwordState: String, isPasswordError: Boolean, isPasswor
             unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
             cursorColor = colorResource(id = R.color.darkgreen_yvy)
         ),
+        trailingIcon = {
+            val img = if (passwordVisibility) {
+                Icons.Filled.Visibility
+            } else Icons.Filled.VisibilityOff
+
+            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                Icon(
+                    imageVector = img,
+                    contentDescription = null
+                )
+            }
+        },
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(inputsFocusRequest),
+        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         isError = isPasswordError,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         singleLine = true,
