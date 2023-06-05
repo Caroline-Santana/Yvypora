@@ -1,9 +1,11 @@
 package com.example.yvypora.ScreenClients
 
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -318,10 +320,15 @@ fun Inputs() {
                         birthday = formatBirthday(birthState),
                         gender = gender[0].toString()
                     )
+
+                    Toast.makeText(context, "Registro bem sucedido", Toast.LENGTH_LONG).show()
+
                     // send to create the costumer without a picture
                     createCostumer(costumer) { _costumer ->
-                        Log.i("teste", _costumer.toString())
+
                     }
+
+
                 }
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),

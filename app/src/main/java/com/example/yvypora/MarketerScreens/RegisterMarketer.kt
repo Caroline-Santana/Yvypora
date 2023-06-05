@@ -3,6 +3,7 @@ package com.example.yvypora.MarketerScreens
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -376,6 +377,7 @@ fun InputsMarketer() {
                                                 addPictureToUser(res.token, imagePart) { it ->
                                                     Log.i("teste", it)
                                                 }
+                                                Toast.makeText(context, "Registro bem sucedido", Toast.LENGTH_LONG).show()
                                             }
                                         } else {
                                             Log.e("Error", "Cannot get input stream from URI") }
@@ -438,7 +440,6 @@ fun NameInputMarketer(nameState: String, isNameError: Boolean, onValueChange: (S
             capitalization = KeyboardCapitalization.Sentences
         ),
         singleLine = true,
-
         )
 
     if (isNameError) {

@@ -254,7 +254,7 @@ fun MainDescriptionProducts() {
         ) {
             Button(
                 onClick = {
-                    Toast.makeText(context, "TESTE", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Adicionado com sucesso", Toast.LENGTH_SHORT).show()
                     val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
                     cartViewModel.addCart(bindDataToProductCardShopping(product.value!!, quantity.value), context, sharedPrefs)
                 },
