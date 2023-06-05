@@ -1,6 +1,7 @@
 package com.example.yvypora.models
 
 import java.util.Calendar
+import java.util.Date
 
 data class Message(
     var text:String?= null,
@@ -10,7 +11,6 @@ data class Message(
 )
 
 val message_dummy = listOf(
-
     Message(
         text = "tudo e vc?",
         recipient_id = "eu",
@@ -31,6 +31,6 @@ val message_dummy = listOf(
         recipient_id = "voce",
         isOut = true
     )
-
-
 )
+
+

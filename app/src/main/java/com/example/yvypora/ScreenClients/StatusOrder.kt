@@ -37,8 +37,6 @@ import io.socket.client.Socket
 import org.json.JSONObject
 
 class StatusOrder : ComponentActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -95,6 +93,7 @@ class StatusOrder : ComponentActivity() {
             socket.on("travel_accepted") { args ->
                 val message = args[0].toString()
                 statusPedido = StatusPedido.AGUARDANDO_RETIRADA
+                // TODO save delivery man here
                 order = message
             }
             socket.on("updated_of_order") { args ->
