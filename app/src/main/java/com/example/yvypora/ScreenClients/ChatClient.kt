@@ -16,8 +16,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,19 +36,24 @@ import coil.compose.ImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
-import com.example.yvypora.domain.models.Deliveryman
+import com.example.yvypora.api.norelational.NoRelationalService
 import com.example.yvypora.domain.models.MessageFromSocket
+import com.example.yvypora.domain.models.MessageReceivedFromSocket
 import com.example.yvypora.domain.models.User
-import com.example.yvypora.services.datastore.DeliverymanStore
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.example.yvypora.utils.getSocket
 import com.google.gson.Gson
 import io.socket.client.Socket
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.*
 
 class ChatClient : ComponentActivity() {
 
     private lateinit var user: User;
+    private lateinit var deliveryman: Deliveryman
+
+    val gson = Gson()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -55,16 +63,21 @@ class ChatClient : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val socket = getSocket()
+
                     val context = LocalContext.current
+                    val intent = (context as ChatClient).intent
                     val _user = fetchDetails();
+
                     user = _user
 
-                    val deliverymanAsString = DeliverymanStore(context).getDeliverymanDetails.collectAsState(initial = "").value
+                    val order : Order = Gson().fromJson(intent.getStringExtra("order"), Order::class.java)
 
-                    val deliveryman: Deliveryman = Gson().fromJson(deliverymanAsString, Deliveryman::class.java)
+                    deliveryman = order.orderDetails.deliveryman
 
 
-                    MainChatClient(user = user, deliveryman)
+
+                    MainChatClient(user = user, deliveryman, socket)
                 }
             }
         }
@@ -73,12 +86,29 @@ class ChatClient : ComponentActivity() {
     private val BotChatBubbleShape = RoundedCornerShape(0.dp, 8.dp, 8.dp, 8.dp)
     private val AuthorChatBubbleShape = RoundedCornerShape(8.dp, 0.dp, 8.dp, 8.dp)
 
-    val message = mutableStateOf("")
-    val chatMessages = mutableStateListOf<com.example.yvypora.models.Message>()
 
     @Composable
-    fun MainChatClient(user: User, deliveryman: Deliveryman) {
-        val image = rememberAsyncImagePainter(deliveryman.picture_uri)
+    fun MainChatClient(user: User, deliveryman: Deliveryman, socket: Socket) {
+        val image = rememberAsyncImagePainter(deliveryman.pictureUri)
+        var chatMessages = remember { mutableStateListOf<com.example.yvypora.models.Message>() }
+
+        LaunchedEffect(Unit) {
+            NoRelationalService.listChat(user.id!!, deliveryman.id) {
+                val messages = it.data
+                messages!!.forEach { message ->
+                    val isOut = message.fromName == user.name
+                    chatMessages.add(com.example.yvypora.models.Message(
+                        text = message.content,
+                        isOut = isOut,
+                        recipient_id = message.fromId.toString(),
+                    ))
+                }
+            }
+        }
+
+        // Listener to changes
+        appendMessageToSocket(socket, chatMessages)
+
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -100,8 +130,8 @@ class ChatClient : ComponentActivity() {
                     contentDescription = null
                 )
                 Column(modifier = Modifier.fillMaxSize()) {
-                    ChatSection(Modifier.weight(1f))
-                    MessageSection()
+                    ChatSection(Modifier.weight(1f), chatMessages)
+                    MessageSection(socket, chatMessages)
                 }
             }
 
@@ -182,29 +212,64 @@ class ChatClient : ComponentActivity() {
     }
 
     @Composable
-    fun sendMessageToSocket(socket: Socket, message: com.example.yvypora.models.Message) {
-        LaunchedEffect(message) {
-            // send to socket
+    fun parseMessageToSocket(message: com.example.yvypora.models.Message ): MessageFromSocket {
+        return MessageFromSocket(
+            fromName = user.name!!,
+            fromId = user.id!!,
+            from = user.id!!,
+            content = message.text!!,
+            toId = deliveryman.id,
+            to = deliveryman.id,
+            toName = deliveryman.name
+        )
+    }
+
+
+    @Composable
+    fun sendMessageToSocket(socket: Socket, message: com.example.yvypora.models.Message, chatMessages: MutableList<com.example.yvypora.models.Message>) {
+        chatMessages.add(0, message)
+        val messageToSocket = parseMessageToSocket(message = message)
+        LaunchedEffect(socket) {
+            Log.i("chat", message.toString())
+            Log.i("chat", gson.toJson(messageToSocket))
+            socket.emit("send_message", gson.toJson(messageToSocket).toString())
         }
     }
 
     @Composable
-    fun appendMessageToSocket(socket: Socket) {
-        // receive from delivery man
+    fun appendMessageToSocket(socket: Socket, chatMessages: MutableList<com.example.yvypora.models.Message>) {
+        var addMessageToList by remember { mutableStateOf(false)}
+        var newMessage by remember { mutableStateOf<MessageReceivedFromSocket?>(null)}
+        LaunchedEffect(socket) {
+            socket.on("chat_message") {args ->
+                val message = args[0].toString()
+                newMessage = gson.fromJson(message, MessageReceivedFromSocket::class.java)
+                addMessageToList = true
+            }
+        }
+        if (addMessageToList) {
+            chatMessages.add(0, com.example.yvypora.models.Message(
+                text = newMessage!!.content,
+                isOut = false,
+                recipient_id = newMessage!!.from.toString()
+            ))
+            addMessageToList = false
+        }
+
     }
 
     @Composable
     fun listAllMessages(socket: Socket) {
         LaunchedEffect(socket) {
             // do the req in retrofit
-
         }
     }
 
     @SuppressLint("UnrememberedMutableState")
     @Composable
-    fun MessageSection() {
-        val context = LocalContext.current
+    fun MessageSection(socket: Socket, chatMessages: MutableList<com.example.yvypora.models.Message>) {
+        var message by remember { mutableStateOf("") }
+        var send by remember { mutableStateOf<Boolean>(false) }
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
@@ -213,9 +278,9 @@ class ChatClient : ComponentActivity() {
                 placeholder = {
                     Text(text = "Message...")
                 },
-                value = message.value,
+                value = message,
                 onValueChange = {
-                    message.value = it
+                    message = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White,
@@ -229,7 +294,9 @@ class ChatClient : ComponentActivity() {
                         painter = painterResource(id = R.drawable.send_icon),
                         contentDescription = null,
                         tint = colorResource(id = R.color.green_width),
-                        modifier = Modifier.clickable {}
+                        modifier = Modifier.clickable {
+                            send = true
+                        }
                     )
                 },
                 modifier = Modifier
@@ -237,10 +304,18 @@ class ChatClient : ComponentActivity() {
                     .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
             )
         }
+        if (send) {
+            sendMessageToSocket(socket = socket, message = com.example.yvypora.models.Message(
+                text = message,
+                user.id.toString(),
+                isOut = true,
+            ), chatMessages)
+            send = false
+        }
     }
 
     @Composable
-    fun ChatSection(modifier: Modifier = Modifier) {
+    fun ChatSection(modifier: Modifier = Modifier, chatMessages: MutableList<com.example.yvypora.models.Message>) {
         val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
         LazyColumn(
             modifier = Modifier

@@ -1,5 +1,6 @@
 package com.example.yvypora.ScreenClients
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,13 +35,19 @@ import androidx.compose.ui.unit.sp
 import com.example.yvypora.R
 import com.example.yvypora.animatedsplashscreendemo.navigation.Screen
 import com.example.yvypora.services.websocket.Websocket
+import com.example.yvypora.ui.theme.Shapes
 import com.example.yvypora.ui.theme.YvyporaTheme
+import com.example.yvypora.utils.getSocket
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import io.socket.client.Socket
 import org.json.JSONObject
 
 class StatusOrder : ComponentActivity() {
+    val gson = Gson()
+    private var orderAsState = mutableStateOf("")
+
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -49,20 +58,46 @@ class StatusOrder : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val socket = getSocket()
+                    val context = LocalContext.current
 
-                    StatusOrderMain(socket)
+                    Scaffold(
+                        floatingActionButton = {
+                            CircleFloatingActionButton(
+                                onClick = {
+                                    val intent = Intent(context, ChatClient()::class.java)
+
+                                    intent.putExtra("order", orderAsState.value)
+
+                                    context.startActivity(intent)
+                                }
+                            )
+                        },
+                        isFloatingActionButtonDocked = true,
+                        content = {
+                            StatusOrderMain(socket)
+                        }
+                    )
                 }
+
             }
         }
     }
 
+
     @Composable
-    fun getSocket(): Socket{
-        val context = LocalContext.current
-        val socket =  Websocket().getInstance(context)
-        socket.connect()
-        return socket
+    fun CircleFloatingActionButton(onClick: () -> Unit) {
+        FloatingActionButton(
+            onClick = onClick,
+            modifier = Modifier
+                .size(126.dp)
+                .padding(25.dp),
+            shape = CircleShape,
+            contentColor = colorResource(id = R.color.green_button)
+        ) {
+            Icon(imageVector = Icons.Filled.Chat, contentDescription = "Chat", tint = Color.White)
+        }
     }
+
 
     enum class StatusPedido {
         PAID, CONFIRMADO, AGUARDANDO_RETIRADA, RETIRADO, SOB_CONFIRMACAO
@@ -74,10 +109,9 @@ class StatusOrder : ComponentActivity() {
     }
 
     var sended = mutableStateOf(false)
+
     @Composable
     fun FinishOrder(socket: Socket, data: String) {
-        val pedido: Order = Gson().fromJson(data, Order::class.java)
-        Log.i("finish_travel", "teste $pedido")
         LaunchedEffect(socket) {
             socket.emit("confirm_order_arrived", data)
             sended.value = true
@@ -98,6 +132,7 @@ class StatusOrder : ComponentActivity() {
                 statusPedido = StatusPedido.AGUARDANDO_RETIRADA
                 // TODO save delivery man here
                 order = message
+                orderAsState.value = message
             }
             socket.on("updated_of_order") { args ->
                 val message = args[0].toString()
@@ -116,6 +151,8 @@ class StatusOrder : ComponentActivity() {
                 .scrollable(rememberScrollState(), Orientation.Vertical)
         )
         {
+
+
             Text(
                 text = stringResource(id = R.string.status_order),
                 modifier = Modifier.fillMaxWidth(),
@@ -125,17 +162,7 @@ class StatusOrder : ComponentActivity() {
             )
             Spacer(modifier = Modifier.height(60.dp))
             Timeline(statusAtual = statusPedido, socket, order)
-            FloatingActionButton(
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
-                ,
-                onClick = {
-                val intent = Intent(context, ChatClient()::class.java)
-                context.startActivity(intent)
-            }) {
-                Text(text = "Chat", textAlign = TextAlign.Center)
-            }
+
         }
     }
 
@@ -215,7 +242,7 @@ class StatusOrder : ComponentActivity() {
         if (finish) {
             FinishOrder(socket, order)
             if (sended.value) {
-                val data : Order = Gson().fromJson(order, Order::class.java)
+                val data: Order = gson.fromJson(order, Order::class.java)
 
                 val intent = Intent(context, AvaliationScreen::class.java)
 
@@ -605,9 +632,8 @@ class StatusOrder : ComponentActivity() {
 
         }
     }
+
 }
-
-
 
 data class Order(
     @SerializedName("accepted")

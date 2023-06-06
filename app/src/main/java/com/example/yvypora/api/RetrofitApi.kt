@@ -4,6 +4,7 @@ import com.example.yvypora.api.cep.CepApiService
 import com.example.yvypora.api.commons._CommonsAPIService
 import com.example.yvypora.api.fairs.FairAPIService
 import com.example.yvypora.api.fairs.FairsAPIService
+import com.example.yvypora.api.norelational.NoRelationalAPIService
 import com.example.yvypora.api.product.ProductAPIService
 import com.example.yvypora.api.purchases.PurchaseAPIService
 import com.example.yvypora.constants.Constants
@@ -28,6 +29,9 @@ class RetrofitApi {
 
         fun productRetrofitService(): ProductAPIService {
             return getRetrofit(Constants.BASE_URL).create(ProductAPIService::class.java)
+        }
+        fun noRelationalRetrofitService(): NoRelationalAPIService {
+            return getRetrofit(Constants.BASE_URL_NO_RELATIONAL).create(NoRelationalAPIService::class.java)
         }
         fun fairsRetrofitService(): FairAPIService {
             return getRetrofit(Constants.BASE_URL).create(FairAPIService::class.java)

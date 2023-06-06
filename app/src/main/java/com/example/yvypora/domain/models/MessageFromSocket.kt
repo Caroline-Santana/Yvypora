@@ -3,13 +3,20 @@ package com.example.yvypora.domain.models
 import java.util.Date
 
 data class MessageFromSocket(
-    val id: String,
+    var id: String? = null,
+    var from: Int? = null,
+    var to: Int? = null,
     val fromName: String,
     val toName: String,
 
     val content: String,
 
-    val toId: String,
-    val FromId: String,
-    val createdAt: String
+    val toId: Int,
+    val fromId: Int,
+    var createdAt: String? = null
+)
+
+data class MessageReceivedFromSocket(
+    val from: Int,
+    val content: String,
 )
