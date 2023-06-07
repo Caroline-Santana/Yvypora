@@ -307,7 +307,7 @@ class CheckoutActivity : ComponentActivity() {
                         color = colorResource(id = R.color.darkgreen_yvy2)
                     )
                     Text(
-                        text = "R$ ${total}",
+                        text = "R$" +"%.2f".format(total),
                         fontSize = 24.sp,
                         modifier = Modifier
                             .fillMaxWidth()

@@ -1,4 +1,4 @@
-package com.example.yvypora.ScreenClients
+ package com.example.yvypora.ScreenClients
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -46,6 +46,8 @@ import org.json.JSONObject
 class StatusOrder : ComponentActivity() {
     val gson = Gson()
     private var orderAsState = mutableStateOf("")
+    private var  _stateStatus : MutableState<StatusPedido> = mutableStateOf(StatusPedido.PAID)
+
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,17 +62,20 @@ class StatusOrder : ComponentActivity() {
                     val socket = getSocket()
                     val context = LocalContext.current
 
+
                     Scaffold(
                         floatingActionButton = {
-                            CircleFloatingActionButton(
-                                onClick = {
-                                    val intent = Intent(context, ChatClient()::class.java)
+                            if (_stateStatus.value == StatusPedido.CONFIRMADO || _stateStatus.value == StatusPedido.RETIRADO || _stateStatus.value == StatusPedido.AGUARDANDO_RETIRADA) {
+                                CircleFloatingActionButton(
+                                    onClick = {
+                                        val intent = Intent(context, ChatClient()::class.java)
 
-                                    intent.putExtra("order", orderAsState.value)
+                                        intent.putExtra("order", orderAsState.value)
 
-                                    context.startActivity(intent)
-                                }
-                            )
+                                        context.startActivity(intent)
+                                    }
+                                )
+                            }
                         },
                         isFloatingActionButtonDocked = true,
                         content = {
@@ -122,14 +127,16 @@ class StatusOrder : ComponentActivity() {
     @Composable
     fun StatusOrderMain(socket: Socket) {
         var context = LocalContext.current
-
-        var statusPedido by remember { mutableStateOf(StatusPedido.PAID) }
         var order by remember { mutableStateOf("") }
+        var statusPedido by remember {
+            mutableStateOf<StatusPedido>(StatusPedido.PAID)
+        }
 
         LaunchedEffect(socket) {
             socket.on("travel_accepted") { args ->
                 val message = args[0].toString()
                 statusPedido = StatusPedido.AGUARDANDO_RETIRADA
+                _stateStatus.value = StatusPedido.CONFIRMADO
                 // TODO save delivery man here
                 order = message
                 orderAsState.value = message
@@ -164,6 +171,11 @@ class StatusOrder : ComponentActivity() {
             Timeline(statusAtual = statusPedido, socket, order)
 
         }
+        if(statusPedido == StatusPedido.RETIRADO){
+
+
+        }
+
     }
 
     @Composable

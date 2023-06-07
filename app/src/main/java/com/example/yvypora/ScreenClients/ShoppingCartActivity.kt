@@ -82,6 +82,9 @@ class ShoppingCartActivity : ComponentActivity() {
 
         Log.i("carrinho", listMarketerCardShopping.toString())
         val selectedPrice = remember { mutableStateOf(0.0) }
+
+
+
         Text(
             text = stringResource(id = R.string.my_shopping_cart),
             modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
@@ -216,6 +219,7 @@ class ShoppingCartActivity : ComponentActivity() {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(350.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -282,7 +286,7 @@ class ShoppingCartActivity : ComponentActivity() {
 //    var valuePay by remember { mutableStateOf(0.0) }
         LazyColumn(
             modifier = Modifier
-                .height(300.dp)
+                .height(400.dp)
                 .padding(top = 5.dp, bottom = 50.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
