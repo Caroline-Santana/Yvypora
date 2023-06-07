@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -130,16 +131,25 @@ fun HeaderDescriptionProducts() {
                 contentDescription = "product",
                 alignment = Alignment.Center
             )
-            Row(modifier = Modifier
-                .fillMaxWidth(),
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = product.value?.name ?: "",
+                    fontSize = 32.sp,
+                    textAlign = TextAlign.Start,
+                    color = colorResource(id = R.color.green_text_dark)
+                )
+            }
+            Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = product.value?.name ?: "",
+                    text = product.value?.marketer?.name ?: "",
                     modifier = Modifier
-                        .padding(start = 8.dp),
-                    fontSize = 32.sp,
-                    color = colorResource(id = R.color.green_text_dark)
+                        .padding(start = 24.dp),
+                    fontSize = 18.sp,
+                    color = colorResource(id = R.color.gray_yvy)
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -155,18 +165,7 @@ fun HeaderDescriptionProducts() {
                         color = colorResource(id = R.color.darkgreen_yvy)
                     )
                 }
-
-
             }
-
-            Text(
-                text = product.value?.marketer?.name ?: "",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 24.dp),
-                fontSize = 18.sp,
-                color = colorResource(id = R.color.gray_yvy)
-            )
             MainDescriptionProducts()
         }
     }
@@ -215,23 +214,47 @@ fun Rating(score: Int){
 fun MainDescriptionProducts() {
     val context = LocalContext.current
     val cartViewModel: CartViewModel = viewModel()
+    val saleOffPrice = product.value?.saleOff?.firstOrNull()?.value
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxSize()
             .padding(top = 10.dp, start = 15.dp)
     ) {
-        Row (verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center){
-            Text(
-                text = "R$${product.value?.price}",
-                fontSize = 36.sp,
-                modifier = Modifier.padding(end = 90.dp),
-                color = colorResource(id = R.color.green_options)
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            if (saleOffPrice != null) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = "R$${saleOffPrice}",
+                        fontSize = 36.sp,
+                        modifier = Modifier.padding(end = 90.dp),
+                        color = colorResource(id = R.color.green_width)
+                    )
+                    Text(
+                        text = "R$${product.value?.price}",
+                        fontSize = 20.sp,
+                        textDecoration = TextDecoration.LineThrough,
+                        modifier = Modifier.padding(end = 90.dp),
+                        color = colorResource(id = R.color.gray_title_no_selecioned)
+                    )
+                }
+            } else {
+                Text(
+                    text = "R$${product.value?.price}",
+                    fontSize = 36.sp,
+                    modifier = Modifier.padding(end = 90.dp),
+                    color = colorResource(id = R.color.green_options)
+                )
+            }
+
             WidhtProductTeste()
         }
-
         Text(
             text = stringResource(id = R.string.description),
             modifier = Modifier.padding(top = 10.dp),

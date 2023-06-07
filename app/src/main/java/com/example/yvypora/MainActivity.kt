@@ -97,7 +97,7 @@ fun MainLayout() {
         modifier =
         Modifier
             .fillMaxSize()
-            .padding(bottom = 34.dp),
+            .padding( bottom = 2.dp),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     )

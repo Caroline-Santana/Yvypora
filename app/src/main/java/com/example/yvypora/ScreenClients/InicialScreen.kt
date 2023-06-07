@@ -488,7 +488,9 @@ fun GetLists() {
                         photo = _product.imageOfProduct[0].image.uri,
                         name = _product.name,
                         price = _product.price.toFloat(),
-                        qtdeProduct = _product.availableQuantity
+                        qtdeProduct = _product.availableQuantity,
+                        promo = true,
+
                     )
                 )
             }
@@ -540,7 +542,13 @@ fun CardProducts(data: Product) {
         contentColor = colorResource(id = R.color.darkgreen_yvy),
         modifier = Modifier
             .width(130.dp)
-            .height(145.dp)
+            .height(
+//                if (titleCard.length > 10){
+//                    155.dp
+//                }else{
+                145.dp
+//                }
+            )
             .clickable {
                 val intent = Intent(context, DescriptionProducts::class.java)
                 Log.i("teste", data.id.toString())
@@ -558,22 +566,49 @@ fun CardProducts(data: Product) {
             ) {
                 Text(
                     text = titleCard,
-                    modifier = Modifier.padding(top = 4.dp),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                )
-                Image(
-                    painter = photoProduct,
-                    contentDescription = "Product",
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .width(97.dp)
-                        .height(70.dp),
+                        .padding(top = 4.dp)
+                        .height(
+                            if (titleCard.length > 10) {
+                                35.dp
+                            } else {
+                                20.dp
+                            }
+                        ),
+                    fontWeight = FontWeight.Bold,
+                    fontSize =
+                    if (titleCard.length > 10) {
+                        12.sp
+                    } else {
+                        14.sp
+                    },
                 )
+                    Image(
+                        painter = photoProduct,
+                        contentDescription = "Product",
+                        modifier = Modifier
+                            .width(
+                                if (titleCard.length > 10) {
+                                    90.dp
+                                } else {
+                                    95.dp
+                                }
+                            )
+                            .height(
+                                if (titleCard.length > 10) {
+                                    50.dp
+                                } else {
+                                    70.dp
+                                }
+                            ),
+                    )
             }
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = qtdeProduct,
-                    modifier = Modifier.padding(top = 2.dp, start = 4.dp),
+                    modifier = Modifier.padding(
+                        top = 2.dp, start = 4.dp),
                     color = colorResource(id = R.color.dark_gray),
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left,
@@ -589,26 +624,26 @@ fun CardProducts(data: Product) {
                         textAlign = TextAlign.Left,
                         fontSize = 14.sp
                     )
-//                    OutlinedButton(
-//                        onClick = { },
-//                        modifier = Modifier.size(40.dp),
-//                        shape = CircleShape,
-//                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
-//                        contentPadding = PaddingValues(0.dp),
-//                        colors = ButtonDefaults.outlinedButtonColors(
-//                            backgroundColor = colorResource(
-//                                id = R.color.darkgreen_yvy
-//                            )
-//                        )
-//                    ) {
-//                        // Adding an Icon "Add" inside the Button
-//                        Icon(
-//                            painter = painterResource(id = R.drawable.shopping_cart),
-//                            modifier = Modifier.padding(start = 3.dp),
-//                            contentDescription = "content description",
-//                            tint = Color.White
-//                        )
-//                    }
+                    OutlinedButton(
+                        onClick = { },
+                        modifier = Modifier.size(40.dp),
+                        shape = CircleShape,
+                        border = BorderStroke(5.dp, colorResource(id = R.color.darkgreen_yvy)),
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            backgroundColor = colorResource(
+                                id = R.color.darkgreen_yvy
+                            )
+                        )
+                    ) {
+                        // Adding an Icon "Add" inside the Button
+                        Icon(
+                            painter = painterResource(id = R.drawable.shopping_cart),
+                            modifier = Modifier.padding(start = 3.dp),
+                            contentDescription = "content description",
+                            tint = Color.White
+                        )
+                    }
                 }
             }
         }
