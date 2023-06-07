@@ -48,7 +48,7 @@ fun NavegationMarketer(navController: NavHostController){
             FairMarketer()
         }
         composable(ItemsMenu.Pantalla8.rota){
-            ProfileMarketer()
+            ProfileMarketerNav()
         }
     }
 }

@@ -10,7 +10,7 @@ import com.example.yvypora.ScreenClients.JoiningFields
 import com.example.yvypora.ScreenClients.fetchDetails
 
 @Composable
-fun ProfileMarketer(){
+fun ProfileMarketerNav(){
     Column(
         modifier = Modifier
             .fillMaxSize()

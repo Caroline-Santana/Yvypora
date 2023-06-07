@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.preference.PreferenceManager
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.domain.models.MarketerCardShopping
@@ -209,7 +210,7 @@ class ShoppingCartActivity : ComponentActivity() {
         var nameCard = marketer.name
         var subnameCard = marketer.sub_name
         var showSnackbar by remember { mutableStateOf(false) }
-        var photo = rememberImagePainter(marketer.photo)
+        var photo = rememberAsyncImagePainter(marketer.photo)
         var products = marketer.products
 
         Card(
@@ -421,11 +422,12 @@ class ShoppingCartActivity : ComponentActivity() {
         var (qtde, setQtde) = remember { mutableStateOf(card.qtde) }
         qtde = qtde.coerceAtLeast(1)
         var nameProduct = card.name
-        var photoProduct = rememberImagePainter(card.photo)
+        var photoProduct = rememberAsyncImagePainter(card.photo)
         var typeProduct = card.type_weight
         var weightProduct = card.weight_product
         var priceProduct = card.price * qtde
         var accumulatorPrice = priceProduct
+
 
         LaunchedEffect(qtde) {
             onPriceChanged(card.id)
@@ -528,7 +530,7 @@ class ShoppingCartActivity : ComponentActivity() {
                                     )
                                 }
                                 Text(
-                                    text = "R$ $accumulatorPrice",
+                                    text = "R$" + "%.2f".format(accumulatorPrice),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 20.sp,
                                     fontFamily = SpaceGrotesk,

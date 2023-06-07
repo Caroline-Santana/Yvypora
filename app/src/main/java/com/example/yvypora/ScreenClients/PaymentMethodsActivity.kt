@@ -28,7 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.MarketerScreens.ProfileMarketer
 import com.example.yvypora.R
+
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -237,7 +239,7 @@ fun HeaderPayMethods() {
                 .width(55.dp)
                 .padding(start = 3.dp)
                 .clickable {
-                    val intent = Intent(context, ProfileClient()::class.java)
+                    val intent = Intent(context, ProfileMarketer()::class.java)
                     context.startActivity(intent)
                 },
             alignment = Alignment.BottomStart,
