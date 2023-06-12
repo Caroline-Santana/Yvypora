@@ -37,11 +37,12 @@ import androidx.lifecycle.ViewModel
 import com.example.yvypora.R
 import com.example.yvypora.api.commons.getDetailsOfUser
 import com.example.yvypora.api.purchases.PurchaseService
+import com.example.yvypora.composables.Header
 import com.example.yvypora.domain.models.*
 import com.example.yvypora.domain.models.Address
 import com.example.yvypora.domain.models.ProductCardShopping
-import com.example.yvypora.domain.models.dto.ProductToStripe
-import com.example.yvypora.domain.models.dto.StripePaymentIntent
+import com.example.yvypora.domain.dto.ProductToStripe
+import com.example.yvypora.domain.dto.StripePaymentIntent
 import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.services.datastore.UserStore
 import com.example.yvypora.theme.YvyporaTheme
@@ -324,7 +325,13 @@ class CheckoutActivity : ComponentActivity() {
                     if (result.resultCode == RESULT_OK) {
                         // Handle the result here if needed
                     }
+                    PurchaseService.updateCall {
+                        Log.i("chamei update", it.toString())
+                    }
                     val intent = Intent(context, StatusOrder::class.java)
+
+                    intent.putExtra("products", Gson().toJson(products))
+
                     context.startActivity(intent)
                 }
 

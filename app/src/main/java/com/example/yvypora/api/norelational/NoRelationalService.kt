@@ -3,7 +3,7 @@ package com.example.yvypora.api.norelational
 import android.util.Log
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.domain.models.MessageFromSocket
-import com.example.yvypora.domain.models.dto.SearchBaseResponse
+import com.example.yvypora.domain.dto.SearchBaseResponse
 import com.example.yvypora.domain.models.product.BaseResponse
 import com.example.yvypora.domain.models.product.BaseResponseAsObject
 import com.example.yvypora.domain.models.product.ProductResponse

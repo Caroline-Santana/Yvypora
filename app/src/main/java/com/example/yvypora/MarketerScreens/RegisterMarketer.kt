@@ -45,7 +45,7 @@ import com.example.yvypora.api.commons.addPictureToUser
 import com.example.yvypora.api.commons.auth
 import com.example.yvypora.api.commons.createMarketer
 import com.example.yvypora.domain.models.Credentials
-import com.example.yvypora.domain.models.dto.Location
+import com.example.yvypora.domain.dto.Location
 import com.example.yvypora.domain.models.marketer.Marketer
 import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.ui.theme.YvyporaTheme

@@ -5,7 +5,7 @@ import android.location.Location
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
-import com.example.yvypora.domain.models.dto.Coordinates
+import com.example.yvypora.domain.dto.Coordinates
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult

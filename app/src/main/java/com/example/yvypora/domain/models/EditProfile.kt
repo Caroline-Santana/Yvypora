@@ -1,9 +1,9 @@
 package com.example.yvypora.domain.models
 
 data class EditProfile(
-    val name: String?= null,
-    val email: String?= null,
-    val password: String?= null,
-    val cpf: String?= null,
+    var name: String?= null,
+    var email: String?= null,
+    var password: String?= null,
+    var cpf: String?= null,
     var cep: String?= null,
 )

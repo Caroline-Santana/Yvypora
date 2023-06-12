@@ -82,7 +82,7 @@ fun EditProfileMarketer() {
             .fillMaxWidth()
             .height(60.dp)
             .clickable {
-                val intent = Intent(context, EditProfileSreen()::class.java)
+                val intent = Intent(context, EditProfileScreen()::class.java)
                 context.startActivity(intent)
             }
             .background(colorResource(id = R.color.green_camps))

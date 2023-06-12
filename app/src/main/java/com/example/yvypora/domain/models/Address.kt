@@ -1,6 +1,6 @@
 package com.example.yvypora.domain.models
 
-import com.example.yvypora.domain.models.dto.AddressType
+import com.example.yvypora.domain.dto.AddressType
 
 
 data class AddressToRegister(

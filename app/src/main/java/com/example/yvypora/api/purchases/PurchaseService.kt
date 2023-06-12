@@ -2,9 +2,9 @@ package com.example.yvypora.api.purchases
 
 import android.util.Log
 import com.example.yvypora.api.RetrofitApi
-import com.example.yvypora.domain.models.dto.SearchBaseResponse
-import com.example.yvypora.domain.models.dto.StripeIntentResponse
-import com.example.yvypora.domain.models.dto.StripePaymentIntent
+import com.example.yvypora.domain.dto.SearchBaseResponse
+import com.example.yvypora.domain.dto.StripeIntentResponse
+import com.example.yvypora.domain.dto.StripePaymentIntent
 import com.example.yvypora.domain.models.product.BaseResponse
 import com.example.yvypora.domain.models.product.BaseResponseAsObject
 import com.example.yvypora.domain.models.product.ProductResponse
@@ -16,7 +16,7 @@ class PurchaseService {
     companion object {
         private val API = RetrofitApi.purchaseRetrofitService()
 
-        fun createPurchaseIntent(data: StripePaymentIntent, token: String,onComplete: (StripeIntentResponse) -> Unit) {
+        fun createPurchaseIntent(data: StripePaymentIntent, token: String, onComplete: (StripeIntentResponse) -> Unit) {
             val _token = "Bearer $token"
             val call = API.createStripeIntent(data, _token);
 
@@ -41,5 +41,22 @@ class PurchaseService {
             })
         }
 
+        fun updateCall(onComplete: (Boolean) -> Unit) {
+            val call = API.updateCall();
+
+            call.enqueue(object : Callback<Any> {
+                override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                    if (response.isSuccessful) {
+                        return onComplete.invoke(true)
+                    }
+                    return onComplete.invoke(false)
+                }
+
+                override fun onFailure(call: Call<Any>, t: Throwable) {
+                    t.printStackTrace()
+                }
+            })
+
+        }
     }
 }

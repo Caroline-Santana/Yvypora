@@ -39,7 +39,9 @@ import com.example.yvypora.R
 import com.example.yvypora.api.norelational.NoRelationalService
 import com.example.yvypora.domain.models.MessageFromSocket
 import com.example.yvypora.domain.models.MessageReceivedFromSocket
+import com.example.yvypora.domain.models.Order
 import com.example.yvypora.domain.models.User
+import com.example.yvypora.domain.models._Deliveryman
 import com.example.yvypora.ui.theme.YvyporaTheme
 import com.example.yvypora.utils.getSocket
 import com.google.gson.Gson
@@ -51,7 +53,7 @@ import java.util.*
 class ChatClient : ComponentActivity() {
 
     private lateinit var user: User;
-    private lateinit var deliveryman: Deliveryman
+    private lateinit var deliveryman: _Deliveryman
 
     val gson = Gson()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +77,6 @@ class ChatClient : ComponentActivity() {
 
                     deliveryman = order.orderDetails.deliveryman
 
-
-
                     MainChatClient(user = user, deliveryman, socket)
                 }
             }
@@ -88,23 +88,25 @@ class ChatClient : ComponentActivity() {
 
 
     @Composable
-    fun MainChatClient(user: User, deliveryman: Deliveryman, socket: Socket) {
+    fun MainChatClient(user: User, deliveryman: _Deliveryman, socket: Socket) {
         val image = rememberAsyncImagePainter(deliveryman.pictureUri)
         var chatMessages = remember { mutableStateListOf<com.example.yvypora.models.Message>() }
 
-        LaunchedEffect(Unit) {
-            NoRelationalService.listChat(user.id!!, deliveryman.id) {
-                val messages = it.data
-                messages!!.forEach { message ->
-                    val isOut = message.fromName == user.name
-                    chatMessages.add(com.example.yvypora.models.Message(
-                        text = message.content,
-                        isOut = isOut,
-                        recipient_id = message.fromId.toString(),
-                    ))
-                }
-            }
-        }
+//        LaunchedEffect(Unit) {
+//            NoRelationalService.listChat(user.id!!, deliveryman.id) {
+//                val messages = it.data
+//                Log.i("chat", "message $messages")
+//                messages!!.forEach { message ->
+//                    Log.i("chat", messages.toString())
+//                    val isOut = message.senderName == user.name
+//                    chatMessages.add(com.example.yvypora.models.Message(
+//                        text = message.content,
+//                        isOut = isOut,
+//                        recipient_id = message.senderId.toString(),
+//                    ))
+//                }
+//            }
+//        }
 
         // Listener to changes
         appendMessageToSocket(socket, chatMessages)
@@ -203,10 +205,10 @@ class ChatClient : ComponentActivity() {
 
     @Composable
     fun parseSocketToMessage(message: MessageFromSocket): com.example.yvypora.models.Message {
-        val isOut = message.toName !== user.name
+        val isOut = message.senderName !== user.name
         return com.example.yvypora.models.Message(
             text = message.content,
-            recipient_id = message.toName,
+            recipient_id = message.senderId.toString() ?: "0",
             isOut = isOut
         )
     }

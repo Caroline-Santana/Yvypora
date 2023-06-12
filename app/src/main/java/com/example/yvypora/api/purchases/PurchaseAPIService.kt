@@ -1,9 +1,9 @@
 package com.example.yvypora.api.purchases
 
 import com.example.yvypora.domain.models.*
-import com.example.yvypora.domain.models.dto.SearchBaseResponse
-import com.example.yvypora.domain.models.dto.StripeIntentResponse
-import com.example.yvypora.domain.models.dto.StripePaymentIntent
+import com.example.yvypora.domain.dto.SearchBaseResponse
+import com.example.yvypora.domain.dto.StripeIntentResponse
+import com.example.yvypora.domain.dto.StripePaymentIntent
 import com.example.yvypora.domain.models.product.BaseResponse
 import com.example.yvypora.domain.models.product.BaseResponseAsObject
 import com.example.yvypora.domain.models.product.ProductResponse
@@ -21,5 +21,9 @@ import retrofit2.http.Query
 interface PurchaseAPIService {
     @POST("costumer/purchases/")
     fun createStripeIntent (@Body data: StripePaymentIntent, @Header("Authorization") token: String): Call<StripeIntentResponse>
+
+
+    @GET("costumer/purchases/success")
+    fun updateCall(): Call<Any>
 
 }

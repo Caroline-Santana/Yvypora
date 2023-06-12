@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.yvypora.ScreenClients.Header
 import com.example.yvypora.ScreenClients.ListOfFairs
 import com.example.yvypora.ScreenClients.listLocationFair
 import com.example.yvypora.ScreenClients.listMarketerFair
+import com.example.yvypora.composables.Header
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.model.CameraPosition

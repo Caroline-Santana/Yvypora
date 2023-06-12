@@ -1,8 +1,8 @@
 package com.example.yvypora.domain.models.product
 
-import com.example.yvypora.domain.models.dto.CountData
-import com.example.yvypora.domain.models.dto.SaleOff
-import com.example.yvypora.domain.models.dto.TypeOfPrice
+import com.example.yvypora.domain.dto.CountData
+import com.example.yvypora.domain.dto.SaleOff
+import com.example.yvypora.domain.dto.TypeOfPrice
 import com.example.yvypora.domain.models.marketer.Marketer
 import com.example.yvypora.domain.models.product.ImageOfProduct
 import com.google.gson.annotations.SerializedName

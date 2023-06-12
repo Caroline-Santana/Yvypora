@@ -1,4 +1,4 @@
-package com.example.yvypora.domain.models.dto
+package com.example.yvypora.domain.dto
 
 data class CountData(
     var image_of_product: Int? = null,

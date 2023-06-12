@@ -1,6 +1,6 @@
 package com.example.yvypora.domain.models
 
-import com.example.yvypora.domain.models.dto.Image
+import com.example.yvypora.domain.dto.Image
 import com.google.gson.annotations.SerializedName
 
 data class Fair(

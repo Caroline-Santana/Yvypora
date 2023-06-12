@@ -1,6 +1,6 @@
 package com.example.yvypora.domain.models.product
 
-import com.example.yvypora.domain.models.dto.Image
+import com.example.yvypora.domain.dto.Image
 
 data class ImageOfProduct(
     val id: Int,

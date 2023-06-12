@@ -1,4 +1,4 @@
-package com.example.yvypora.domain.models.dto
+package com.example.yvypora.domain.dto
 
 data class Coordinates(
     var lat: Double = 0.0,

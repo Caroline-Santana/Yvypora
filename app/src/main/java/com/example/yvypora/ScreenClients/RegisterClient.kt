@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
 import com.example.yvypora.api.cep.getCep
@@ -483,10 +484,13 @@ fun PassInput(passwordState: String, isPasswordError: Boolean, onPasswordChange:
 
 }
 
+
+typealias StringCallback = (String) -> Unit
+
 @Composable
-fun PhotoInput() {
+fun PhotoInput(setter: StringCallback? = null) {
     val imageUri = rememberSaveable { mutableStateOf("") }
-    val painter = rememberImagePainter(
+    val painter = rememberAsyncImagePainter(
         if (imageUri.value.isEmpty())
             R.drawable.adicionar_foto
         else
@@ -495,7 +499,10 @@ fun PhotoInput() {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let { imageUri.value = it.toString() }
+        uri?.let {
+            imageUri.value = it.toString()
+            setter?.invoke(imageUri.value)
+        }
     }
 
 

@@ -2,11 +2,14 @@ package com.example.yvypora.api.commons
 
 import android.util.Log
 import com.example.yvypora.api.RetrofitApi
+import com.example.yvypora.domain.dto.AddAddress
 import com.example.yvypora.domain.models.Token
 import com.example.yvypora.domain.models.User
 import com.example.yvypora.domain.models.marketer.Marketer
 import com.example.yvypora.domain.models.*
 import com.example.yvypora.domain.models.costumer.Costumer
+import com.example.yvypora.domain.dto.CostumerUpdateAccountBody
+import com.example.yvypora.domain.dto.CostumerUpdateAccountResponse
 import com.example.yvypora.models.CostumerInfoResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -139,7 +142,7 @@ fun getDetailsOfUser(token: String, onComplete: (User) -> Unit) {
 
 fun createMarketer(marketer: Marketer, onComplete: (String?) -> Unit) {
     val call = RetrofitApi.commonsRetrofitService().createMarketer(marketer)
-    call.enqueue(object:  Callback<Any> {
+    call.enqueue(object : Callback<Any> {
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
             val res = response.body()
 
@@ -155,6 +158,47 @@ fun createMarketer(marketer: Marketer, onComplete: (String?) -> Unit) {
         }
     })
 }
+fun updateCostumerAccount(id: Int, body: CostumerUpdateAccountBody, onComplete: (CostumerUpdateAccountResponse?) -> Unit) {
+    val call = RetrofitApi.commonsRetrofitService().updateCostumerAccount(id, body)
+    call.enqueue(object : Callback<CostumerUpdateAccountResponse> {
+        override fun onFailure(call: Call<CostumerUpdateAccountResponse>, t: Throwable) {
+            t.printStackTrace()
+        }
+
+        override fun onResponse(
+            call: Call<CostumerUpdateAccountResponse>,
+            response: Response<CostumerUpdateAccountResponse>
+        ) {
+            val body = response.body()
+
+            if (response.isSuccessful) {
+                return onComplete.invoke(body!!)
+            }
+
+            Log.i("error", response.toString())
+            return onComplete.invoke(null)
+        }
+    })
+}
+
+fun addAddress(id: Int, body: AddAddress, onComplete: (Boolean) -> Unit) {
+    val call = RetrofitApi.commonsRetrofitService().addAddress(id, body)
+    call.enqueue(object : Callback<Any> {
+        override fun onFailure(call: Call<Any>, t: Throwable) {
+            t.printStackTrace()
+        }
+
+        override fun onResponse(call: Call<Any>, response: Response<Any>) {
+            if (response.isSuccessful) {
+                return onComplete.invoke(true)
+            }
+            Log.i("error", response.toString())
+
+            return onComplete.invoke(false)
+        }
+    })
+}
+
 
 
 

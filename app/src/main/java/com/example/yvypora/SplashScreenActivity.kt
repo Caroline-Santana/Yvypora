@@ -27,7 +27,7 @@ import com.example.yvypora.MarketerScreens.InicialMarketerActivity
 import com.example.yvypora.ScreenClients.InicialScreen
 import com.example.yvypora.animatedsplashscreendemo.navigation.SetupNavGraph
 import com.example.yvypora.domain.models.User
-import com.example.yvypora.domain.models.dto.TypeOfUser
+import com.example.yvypora.domain.dto.TypeOfUser
 import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.services.datastore.UserStore
 
@@ -44,8 +44,6 @@ class SplashScreenActivity : ComponentActivity() {
             YvyporaTheme {
                 val navController = rememberNavController()
                 SetupNavGraph(navController = navController)
-
-
             }
         }
     }
@@ -99,8 +97,6 @@ fun AnimatedSplashScreen(navController: NavHostController) {
     context.startActivity(intent)
     Splash(alpha = alphaAnim.value)
 }
-
-
 
 
 @Composable

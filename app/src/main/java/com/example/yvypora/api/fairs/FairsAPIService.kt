@@ -2,7 +2,7 @@ package com.example.yvypora.api.fairs
 
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.domain.models.Fair
-import com.example.yvypora.domain.models.dto.BaseResponseAsPayloadList
+import com.example.yvypora.domain.dto.BaseResponseAsPayloadList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

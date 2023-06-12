@@ -111,8 +111,8 @@ fun MainEditAdress() {
         Spacer(modifier = Modifier.height(25.dp))
         Button(
             onClick = {
-                val intent = Intent(context, AddAdressAcitivity()::class.java)
-                context.startActivity(intent)
+//                val intent = Intent(context, AddAdressAcitivity()::class.java)
+//                context.startActivity(intent)
             },
             colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),
             modifier = Modifier
@@ -505,8 +505,6 @@ fun ChangeForMain(){
                 }
             }
         }
-
-
     }
 }
 

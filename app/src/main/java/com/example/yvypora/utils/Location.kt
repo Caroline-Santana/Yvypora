@@ -4,7 +4,7 @@ import android.location.Geocoder
 import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.*
-import com.example.yvypora.domain.models.dto.Coordinates
+import com.example.yvypora.domain.dto.Coordinates
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

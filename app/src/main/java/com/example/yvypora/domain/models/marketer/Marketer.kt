@@ -1,6 +1,6 @@
 package com.example.yvypora.domain.models.marketer
 
-import com.example.yvypora.domain.models.dto.Location
+import com.example.yvypora.domain.dto.Location
 
 data class Marketer (
     val name: String,

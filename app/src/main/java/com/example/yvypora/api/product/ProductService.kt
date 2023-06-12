@@ -4,10 +4,14 @@ import android.util.Log
 import com.example.yvypora.MarketerScreens.FairsMarketer
 import com.example.yvypora.api.RetrofitApi
 import com.example.yvypora.domain.models.MarketerData
-import com.example.yvypora.domain.models.dto.SearchBaseResponse
+import com.example.yvypora.domain.dto.CostumerUpdateAccountBody
+import com.example.yvypora.domain.dto.ReviewDeliveryman
+import com.example.yvypora.domain.dto.ReviewProduct
+import com.example.yvypora.domain.dto.SearchBaseResponse
 import com.example.yvypora.domain.models.product.BaseResponse
 import com.example.yvypora.domain.models.product.BaseResponseAsObject
 import com.example.yvypora.domain.models.product.ProductResponse
+import io.getstream.chat.android.core.internal.exhaustive
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -118,10 +122,14 @@ class ProductService {
         }
 
 
-        fun search(search: String, onComplete: (BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>) -> Unit) {
+        fun search(
+            search: String,
+            onComplete: (BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>) -> Unit
+        ) {
             val call = RetrofitApi.productRetrofitService().search(search)
             call.enqueue(
-                object : Callback<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>> {
+                object :
+                    Callback<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>> {
                     override fun onResponse(
                         call: Call<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>>,
                         response: Response<BaseResponseAsObject<SearchBaseResponse<Unit, Unit, ProductResponse>>>
@@ -129,7 +137,7 @@ class ProductService {
                         Log.i("teste", response.toString())
                         Log.i("teste", response.body().toString())
                         val body = response.body()
-                        if (response.isSuccessful){
+                        if (response.isSuccessful) {
                             return onComplete.invoke(body!!)
                         }
 
@@ -146,5 +154,52 @@ class ProductService {
                 }
             )
         }
+
+        fun reviewProducts(token: String, reviews: ReviewProduct, onComplete: (Boolean) -> Unit) {
+            val authorization = "Bearer $token"
+            val call = RetrofitApi.productRetrofitService().reviewProducts(authorization, reviews)
+            Log.i("review", authorization)
+
+
+
+            call.enqueue(object : Callback<Any> {
+                override fun onFailure(call: Call<Any>, t: Throwable) {
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                    if (response.isSuccessful) {
+                        return onComplete.invoke(true)
+                    }
+                    Log.i("review", response.toString())
+                    onComplete.invoke(false)
+                }
+            })
+        }
+
+        fun reviewDeliveryman(token: String,review: ReviewDeliveryman, onComplete: (Boolean) -> Unit) {
+            val authorization = "Bearer $token"
+
+            Log.i("review", authorization)
+
+            val call = RetrofitApi.productRetrofitService().reviewDeliveryman(authorization, review)
+
+            call.enqueue(object : Callback<Any> {
+                override fun onFailure(call: Call<Any>, t: Throwable) {
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                    if (response.isSuccessful) {
+                        return onComplete.invoke(true)
+                    }
+                    Log.i("review", response.toString())
+                    onComplete.invoke(false)
+                }
+            })
+        }
+
+
+
     }
 }

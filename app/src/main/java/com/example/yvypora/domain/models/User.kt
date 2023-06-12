@@ -1,9 +1,9 @@
 package com.example.yvypora.domain.models
 
 import com.example.yvypora.domain.models.costumer.CustomerAddress
-import com.example.yvypora.domain.models.dto.Gender
-import com.example.yvypora.domain.models.dto.Location
-import com.example.yvypora.domain.models.dto.TypeOfUser
+import com.example.yvypora.domain.dto.Gender
+import com.example.yvypora.domain.dto.Location
+import com.example.yvypora.domain.dto.TypeOfUser
 import com.google.gson.annotations.SerializedName
 
 data class User (

@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.yvypora.R
 import com.example.yvypora.ScreenClients.CardProduct
-import com.example.yvypora.ScreenClients.Header
 import com.example.yvypora.ScreenClients.ListOfProductCardSale
 import com.example.yvypora.ScreenClients.ProfileClient
 import com.example.yvypora.domain.models.ProductCardSale

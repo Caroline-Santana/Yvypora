@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.yvypora.MainActivity
 import com.example.yvypora.R
 import com.example.yvypora.domain.models.User
@@ -146,7 +145,7 @@ fun EditProfile(){
             .fillMaxWidth()
             .height(60.dp)
             .clickable {
-                val intent = Intent(context, EditProfileSreen()::class.java)
+                val intent = Intent(context, EditProfileScreen()::class.java)
                 context.startActivity(intent)
             }
             .background(colorResource(id = R.color.green_camps))

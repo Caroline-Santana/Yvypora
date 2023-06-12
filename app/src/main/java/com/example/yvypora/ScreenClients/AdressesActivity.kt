@@ -117,7 +117,7 @@ fun MainAddress() {
             Spacer(modifier = Modifier.height(15.dp))
             Button(
                 onClick = {
-                    val intent = Intent(context, AddAdressAcitivity()::class.java)
+                    val intent = Intent(context, AddAddressAcitivity()::class.java)
                     context.startActivity(intent)
                 },
                 colors = ButtonDefaults.buttonColors(Color(83, 141, 34)),

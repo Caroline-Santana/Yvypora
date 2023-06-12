@@ -44,7 +44,7 @@ import com.example.yvypora.ScreenClients.InicialScreen
 import com.example.yvypora.api.commons.auth
 import com.example.yvypora.api.commons.getDetailsOfUser
 import com.example.yvypora.domain.models.Credentials
-import com.example.yvypora.domain.models.dto.TypeOfUser
+import com.example.yvypora.domain.dto.TypeOfUser
 import com.example.yvypora.services.datastore.TokenStore
 import com.example.yvypora.services.datastore.UserStore
 import com.example.yvypora.ui.theme.YvyporaTheme

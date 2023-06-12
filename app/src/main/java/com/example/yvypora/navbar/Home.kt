@@ -2,13 +2,13 @@ package com.example.yvypora.navbar
 
 
 import androidx.compose.runtime.Composable
-import com.example.yvypora.ScreenClients.Header
-import com.example.yvypora.ScreenClients.UpsideLayout
-
+import com.example.yvypora.ScreenClients.InicialScreen
+import com.example.yvypora.composables.Header
 
 @Composable
 
 fun Home(){
-   Header()
-    UpsideLayout()
+    Header()
+    InicialScreen().UpsideLayout()
 }
+

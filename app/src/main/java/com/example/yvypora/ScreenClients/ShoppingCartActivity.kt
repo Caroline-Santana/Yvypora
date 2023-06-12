@@ -33,6 +33,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.yvypora.R
+import com.example.yvypora.composables.Header
 import com.example.yvypora.domain.models.MarketerCardShopping
 import com.example.yvypora.domain.models.ProductCardShopping
 import com.example.yvypora.domain.models.marketer.Marketer
