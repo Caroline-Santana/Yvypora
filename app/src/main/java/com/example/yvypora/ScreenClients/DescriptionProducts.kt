@@ -339,7 +339,8 @@ fun bindDataToProductCardShopping(data: ProductResponse, quantity: Int): Product
         marketerId = data.marketerId,
         marketerName =  data.marketer.name,
         marketerPhoto = data.marketer.picture_uri,
-        marketerTentName = data.marketer.tent_name
+        marketerTentName = data.marketer.tent_name,
+        saleOff = data.saleOff
     )
 }
 

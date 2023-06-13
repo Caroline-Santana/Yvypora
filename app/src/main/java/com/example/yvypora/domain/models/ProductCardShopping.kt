@@ -1,6 +1,8 @@
 package com.example.yvypora.domain.models
 
-data class ProductCardShopping(
+import com.example.yvypora.domain.dto.SaleOff
+
+data class ProductCardShopping (
     val id: Int,
     val marketerId: Int,
     val marketerName: String,
@@ -13,6 +15,7 @@ data class ProductCardShopping(
     var weight_product: Int,
     var price: Double,
     var qtde: Int = 1,
+    var saleOff: List<SaleOff>? = null,
 )
 
 
