@@ -159,6 +159,8 @@ fun createMarketer(marketer: Marketer, onComplete: (String?) -> Unit) {
     })
 }
 fun updateCostumerAccount(id: Int, body: CostumerUpdateAccountBody, onComplete: (CostumerUpdateAccountResponse?) -> Unit) {
+    Log.i("update", "$id $body")
+
     val call = RetrofitApi.commonsRetrofitService().updateCostumerAccount(id, body)
     call.enqueue(object : Callback<CostumerUpdateAccountResponse> {
         override fun onFailure(call: Call<CostumerUpdateAccountResponse>, t: Throwable) {

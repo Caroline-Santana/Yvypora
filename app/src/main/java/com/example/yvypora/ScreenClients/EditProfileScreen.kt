@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -31,11 +32,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextInputForTests
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yvypora.LoginActivity
 import com.example.yvypora.MarketerScreens.imageUri
 import com.example.yvypora.R
 import com.example.yvypora.api.commons.addPictureToUser
@@ -50,6 +53,8 @@ import com.example.yvypora.utils.MaskCep
 import com.example.yvypora.utils.MaskCpf
 import com.example.yvypora.utils.ValidationCpf
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -73,20 +78,10 @@ class EditProfileScreen : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        val context = LocalContext.current
 
-                        val user = fetchDetails()
 
-                        Log.i("teste", user.toString())
+                        InputsProfile()
 
-                        val dataEditUser = EditProfile(
-                            name = user.name,
-                            email = user.email,
-                            password = "",
-                            cpf = user.cpf ?: "",
-                        )
-
-                        InputsProfile(dataEditUser)
                     }
 
                 }
@@ -96,10 +91,81 @@ class EditProfileScreen : ComponentActivity() {
 
 
     @Composable
-    fun InputsProfile(dataEditUser: EditProfile) {
+    fun InputsProfile() {
         val context = LocalContext.current
+        var user by remember {
+            mutableStateOf<User?>(null)
+        }
+
+        val repository = UserStore(context)
+
+        var dataEditUser by remember { mutableStateOf<User?>(null) }
+
+
+        LaunchedEffect(Unit) {
+            repository.getDetails.collect { _user ->
+                val gson = Gson()
+                val parsed = gson.fromJson(_user, User::class.java)
+                dataEditUser = parsed
+                user = parsed
+            }
+        }
+
+
+        var nameState by remember {
+            mutableStateOf(dataEditUser?.name ?: "")
+        }
+
+        var emailState by remember {
+            mutableStateOf(dataEditUser?.email ?: "")
+        }
+
+
+        var passwordState by remember {
+            mutableStateOf("")
+        }
+
+        var cpfState by remember {
+            mutableStateOf(dataEditUser?.cpf ?: "")
+        }
+
+
+        var isEmailError by remember {
+            mutableStateOf(false)
+        }
+        val inputsFocusRequest = FocusRequester()
+
+        val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
+        fun isEmailValid(email: String): Boolean {
+            return EMAIL_REGEX.toRegex().matches(email);
+
+        }
+
+        var isPasswordError by remember {
+            mutableStateOf(false)
+        }
+        var isPasswordErrorEmpty by remember {
+            mutableStateOf(false)
+        }
+        var passwordVisibility by rememberSaveable {
+            mutableStateOf(false)
+        }
+        val mMaxLength = 8
+
+
+        var isCpfErrorEmpty by remember {
+            mutableStateOf(false)
+        }
+        var isCpfError by remember {
+            mutableStateOf(false)
+        }
+
+
+
+
+
+
         var update by remember { mutableStateOf(false) }
-        val user: User = fetchDetails()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,11 +208,64 @@ class EditProfileScreen : ComponentActivity() {
                 modifier = Modifier.padding(top = 10.dp),
                 verticalArrangement = Arrangement.Center
             ) {
-                NameInputAgain(user = dataEditUser)
+                dataEditUser?.let {
+                    NameInputAgain(nameState, setter = { newName ->
+                        try {
+                            var lastChar = newName.get(newName.length - 1)
+                            var newValue =
+                                if (lastChar == '.' || lastChar == ',')
+                                    newName.dropLast(1)
+                                else if (newName.isEmpty())
+                                    ""
+                                else newName
+
+                            newData.value.name = newValue
+                            nameState = newValue
+                        } catch (e: Exception) {
+                            newData.value.name = ""
+                            nameState = ""
+                        }
+                    })
+                }
                 Spacer(modifier = Modifier.height(19.dp))
-                EmailInputAgain(user = dataEditUser)
+                dataEditUser?.let {
+                    EmailInputAgain(emailState, setter = { newEmail ->
+                        if (newEmail.isEmpty()) {
+                            isEmailError = true
+                        } else if (isEmailValid(newEmail) == false) {
+                            isEmailError = true
+                        } else {
+                            newEmail.get(newEmail.length - 1)
+                            isEmailError = false
+                        }
+                        newData.value.email = newEmail
+                        emailState = newEmail
+                    }, isEmailError)
+                }
                 Spacer(modifier = Modifier.height(19.dp))
-                PassInputAgain(user = dataEditUser)
+                dataEditUser?.let {
+                    PassInputAgain(
+                        passwordState,
+                        setter = { newPass ->
+                            if (newPass.isEmpty()) {
+                                isPasswordErrorEmpty = true
+                            } else if (newPass.length >= mMaxLength) {
+                                isPasswordError = true
+                            } else {
+                                newPass.get(newPass.length - 1)
+                                isPasswordError = false
+                            }
+
+                            if (isPasswordError) newPass.dropLast(1)
+                            newData.value.password = newPass
+                            passwordState = newPass
+                        },
+                        isPasswordError,
+                        isPasswordErrorEmpty,
+                        passwordVisibility,
+                        iconSetter = { passwordVisibility = !passwordVisibility })
+                }
+
                 Spacer(modifier = Modifier.height(19.dp))
 
                 PhotoInput() {
@@ -154,11 +273,25 @@ class EditProfileScreen : ComponentActivity() {
                 }
 
                 Spacer(modifier = Modifier.height(19.dp))
-                CpfInputAgain(user = dataEditUser)
-                Spacer(modifier = Modifier.height(19.dp))
-                CepInputAgain(user = dataEditUser)
-                Spacer(modifier = Modifier.height(25.dp))
+                dataEditUser?.let {
+                    CpfInputAgain(cpfState, setter = { newCpf ->
+                        isCpfErrorEmpty = newCpf.isEmpty()
 
+                        if (cpfState.length > 11) newCpf.dropLast(1)
+
+
+                        if (!ValidationCpf.myValidateCPF(newCpf)) {
+                            isCpfError = true
+                        } else {
+                            isCpfError = false
+                            isCpfErrorEmpty = false
+                        }
+
+                        newData.value.cpf = newCpf
+                        cpfState = newCpf
+                    }, isCpfErrorEmpty, isCpfError)
+                }
+                Spacer(modifier = Modifier.height(19.dp))
                 Button(
                     onClick = {
                         update = true
@@ -180,17 +313,22 @@ class EditProfileScreen : ComponentActivity() {
                 Spacer(modifier = Modifier.height(19.dp))
             }
         }
+
+
         var updateToken by remember { mutableStateOf(false) }
         var token by remember { mutableStateOf("") }
         val previewToken = TokenStore(context).getToken.collectAsState(initial = "").value
 
+        Log.i("update", newData.value.toString())
+
         if (update) {
+            Log.i("update", "teste ${newData.value}")
             LaunchedEffect(Unit) {
                 val body = CostumerUpdateAccountBody(
-                    name = newData.value.name,
-                    email = newData.value.email,
-                    cpf = newData.value.cpf,
-                    password = newData.value.password,
+                    name = nameState,
+                    email = emailState.ifEmpty { user!!.email },
+                    cpf = cpfState,
+                    password = if (passwordState.isEmpty()) null else emailState,
                 )
 
                 if (!newProfilePicture.value.isNullOrEmpty()) {
@@ -224,8 +362,16 @@ class EditProfileScreen : ComponentActivity() {
                         }
                     }
 
-                    updateCostumerAccount(user.id!!, body) {
+                    updateCostumerAccount(dataEditUser?.id!!, body) {
                         if (it != null) {
+                            token = it.data.newToken
+                            updateToken = true
+                        }
+                    }
+                } else {
+                    updateCostumerAccount(dataEditUser?.id!!, body) {
+                        if (it != null) {
+                            Log.i("update" ,"token ${it.data.newToken}")
                             token = it.data.newToken
                             updateToken = true
                         }
@@ -234,18 +380,20 @@ class EditProfileScreen : ComponentActivity() {
             }
             if (updateToken) {
                 LaunchedEffect(token) {
+                    Log.i("token", token.toString())
                     TokenStore(context).saveToken(token) // save new token
+                    Log.i("update", "novo token salvo")
                 }
+                val intent = Intent(context, LoginActivity::class.java)
+                Toast.makeText(context, "Faça Login Novamente!", Toast.LENGTH_SHORT).show()
+                context.startActivity(intent)
             }
         }
+
     }
 
     @Composable
-    fun NameInputAgain(user: EditProfile) {
-        var nameState by rememberSaveable {
-            mutableStateOf(user.name.toString())
-        }
-        var nome = user.name.toString()
+    fun NameInputAgain(nameState: String, setter: (String) -> Unit) {
         val inputsFocusRequest = FocusRequester()
 
         Text(
@@ -257,17 +405,7 @@ class EditProfileScreen : ComponentActivity() {
         )
         TextField(
             value = nameState,
-            onValueChange = { newName ->
-                var lastChar = newName.get(newName.length - 1)
-
-                var newValue =
-                    if (lastChar == '.' || lastChar == ',')
-                        newName.dropLast(1)
-                    else newName
-
-                newData.value.name = newValue
-                nameState = newValue
-            },
+            onValueChange = setter,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Unspecified,
                 focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -289,20 +427,8 @@ class EditProfileScreen : ComponentActivity() {
     }
 
     @Composable
-    fun EmailInputAgain(user: EditProfile) {
-        var emailState by rememberSaveable {
-            mutableStateOf(user.email.toString())
-        }
-        var isEmailError by remember {
-            mutableStateOf(false)
-        }
+    fun EmailInputAgain(emailState: String, setter: (String) -> Unit, isEmailError: Boolean) {
         val inputsFocusRequest = FocusRequester()
-
-        val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
-        fun isEmailValid(email: String): Boolean {
-            return EMAIL_REGEX.toRegex().matches(email);
-
-        }
 
         Text(
             text = stringResource(id = R.string.email),
@@ -312,18 +438,7 @@ class EditProfileScreen : ComponentActivity() {
         )
         TextField(
             value = emailState,
-            onValueChange = { newEmail ->
-                if (newEmail.isEmpty()) {
-                    isEmailError = true
-                } else if (isEmailValid(newEmail) == false) {
-                    isEmailError = true
-                } else {
-                    newEmail.get(newEmail.length - 1)
-                    isEmailError = false
-                }
-                newData.value.email = newEmail
-                emailState = newEmail
-            },
+            onValueChange = setter,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Unspecified,
                 focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -350,22 +465,14 @@ class EditProfileScreen : ComponentActivity() {
     }
 
     @Composable
-    fun PassInputAgain(user: EditProfile) {
-        var passwordState by rememberSaveable {
-            mutableStateOf(user.password.toString())
-        }
-
-        var isPasswordError by remember {
-            mutableStateOf(false)
-        }
-        var isPasswordErrorEmpty by remember {
-            mutableStateOf(false)
-        }
-        var passwordVisibility by rememberSaveable {
-            mutableStateOf(false)
-        }
-        val mMaxLength = 8
-
+    fun PassInputAgain(
+        passwordState: String,
+        setter: (String) -> Unit,
+        isPasswordError: Boolean,
+        isPasswordErrorEmpty: Boolean,
+        passwordVisibility: Boolean,
+        iconSetter: () -> Unit
+    ) {
         val inputsFocusRequest = FocusRequester()
 
 
@@ -377,26 +484,13 @@ class EditProfileScreen : ComponentActivity() {
         )
         TextField(
             value = passwordState,
-            onValueChange = { newPass ->
-                if (newPass.isEmpty()) {
-                    isPasswordErrorEmpty = true
-                } else if (newPass.length >= mMaxLength) {
-                    isPasswordError = true
-                } else {
-                    newPass.get(newPass.length - 1)
-                    isPasswordError = false
-                }
-
-                if (isPasswordError) newPass.dropLast(1)
-                newData.value.password = newPass
-                passwordState = newPass
-            },
+            onValueChange = setter,
             trailingIcon = {
                 val img = if (passwordVisibility) {
                     Icons.Filled.Visibility
                 } else Icons.Filled.VisibilityOff
 
-                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                IconButton(onClick = iconSetter) {
                     Icon(
                         imageVector = img,
                         contentDescription = null
@@ -438,16 +532,13 @@ class EditProfileScreen : ComponentActivity() {
     }
 
     @Composable
-    fun CpfInputAgain(user: EditProfile) {
-        var cpfState by rememberSaveable {
-            mutableStateOf(user.cpf.toString())
-        }
-        var isCpfErrorEmpty by remember {
-            mutableStateOf(false)
-        }
-        var isCpfError by remember {
-            mutableStateOf(false)
-        }
+    fun CpfInputAgain(
+        cpfState: String,
+        setter: (String) -> Unit,
+        isCpfErrorEmpty: Boolean,
+        isCpfError: Boolean
+    ) {
+
         val inputsFocusRequest = FocusRequester()
 
         val context = LocalContext.current
@@ -460,22 +551,7 @@ class EditProfileScreen : ComponentActivity() {
         )
         TextField(
             value = cpfState,
-            onValueChange = { newCpf ->
-                isCpfErrorEmpty = newCpf.isEmpty()
-
-                if (cpfState.length > 11) newCpf.dropLast(1)
-
-
-                if (!ValidationCpf.myValidateCPF(newCpf)) {
-                    isCpfError = true
-                } else {
-                    isCpfError = false
-                    isCpfErrorEmpty = false
-                }
-
-                newData.value.cpf = newCpf
-                cpfState = newCpf
-            },
+            onValueChange = setter,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Unspecified,
                 focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
@@ -509,47 +585,47 @@ class EditProfileScreen : ComponentActivity() {
         }
     }
 
-    @Composable
-    fun CepInputAgain(user: EditProfile) {
-
-        var cepState by rememberSaveable {
-            mutableStateOf(user.cep.toString())
-        }
-        val inputsFocusRequest = FocusRequester()
-
-        val context = LocalContext.current
-
-        Text(
-            text = stringResource(id = R.string.title_cep),
-            fontSize = 20.sp,
-            textAlign = TextAlign.Start,
-            color = colorResource(id = R.color.darkgreen_yvy)
-        )
-        TextField(
-            value = cepState,
-            onValueChange = { newCep ->
-
-                if (cepState.length > 11) newCep.dropLast(1)
-
-                cepState = newCep
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Unspecified,
-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(54.dp)
-                .focusRequester(inputsFocusRequest),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            visualTransformation = MaskCep(),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-        )
-
-    }
+//    @Composable
+//    fun CepInputAgain(user: EditProfile) {
+//
+//        var cepState by rememberSaveable {
+//            mutableStateOf(user.cep.toString())
+//        }
+//        val inputsFocusRequest = FocusRequester()
+//
+//        val context = LocalContext.current
+//
+//        Text(
+//            text = stringResource(id = R.string.title_cep),
+//            fontSize = 20.sp,
+//            textAlign = TextAlign.Start,
+//            color = colorResource(id = R.color.darkgreen_yvy)
+//        )
+//        TextField(
+//            value = cepState,
+//            onValueChange = { newCep ->
+//
+//                if (cepState.length > 11) newCep.dropLast(1)
+//
+//                cepState = newCep
+//            },
+//            colors = TextFieldDefaults.textFieldColors(
+//                backgroundColor = Color.Unspecified,
+//                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+//                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+//                cursorColor = colorResource(id = R.color.darkgreen_yvy)
+//            ),
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(54.dp)
+//                .focusRequester(inputsFocusRequest),
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+//            visualTransformation = MaskCep(),
+//            singleLine = true,
+//            shape = RoundedCornerShape(8.dp),
+//        )
+//
+//    }
 
     @Preview(showBackground = true)
     @Composable

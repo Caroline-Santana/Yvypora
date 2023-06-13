@@ -104,20 +104,18 @@ fun MainLayout() {
     {
         val context = LocalContext.current
 
-        Button(onClick = {
-            val intent = Intent(context, InicialScreen()::class.java)
-            context.startActivity(intent)
-        }) {
-            Text(text = "consumidor")
-        }
-        Button(onClick = {
-            val intent = Intent(context, InicialMarketerActivity()::class.java)
-            context.startActivity(intent)
-        }) {
-            Text(text = "feirante")
-        }
-
-
+//        Button(onClick = {
+//            val intent = Intent(context, InicialScreen()::class.java)
+//            context.startActivity(intent)
+//        }) {
+//            Text(text = "consumidor")
+//        }
+//        Button(onClick = {
+//            val intent = Intent(context, InicialMarketerActivity()::class.java)
+//            context.startActivity(intent)
+//        }) {
+//            Text(text = "feirante")
+//        }
 
         Button(
             onClick = {

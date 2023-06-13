@@ -39,7 +39,7 @@ interface _CommonsAPIService {
     @PUT("commons/picture/")
     fun uploadPictureToUser(@Header("Authorization") token: String, @Part picture: MultipartBody.Part): Call<Any>
 
-    @PUT("register/costumer/")
+    @PUT("commons/register/costumer/{id}")
     fun updateCostumerAccount(
         @Path("id") id : Int,
         @Body body: CostumerUpdateAccountBody
