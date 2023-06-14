@@ -396,12 +396,12 @@ class ShoppingCartActivity : ComponentActivity() {
             showPaymentBar = false
         } else {
             var total = 0.0
-            // settar os valores para somar
             listMarketerCardShopping.forEach { item ->
                 item.products.forEach { product ->
                     if (selectedCards.contains(product)) {
-                        var price = product.price * product.qtde
-                        price = price.coerceAtLeast(product.price)
+                        val saleOffPrice = product.saleOff?.firstOrNull()?.value
+                        var price = if(saleOffPrice !== null) saleOffPrice * qtde else product.price * qtde
+                        price = price.coerceAtLeast(price)
                         total += price
                     }
                 }
@@ -430,7 +430,10 @@ class ShoppingCartActivity : ComponentActivity() {
         var photoProduct = rememberAsyncImagePainter(card.photo)
         var typeProduct = card.type_weight
         var weightProduct = card.weight_product
-        var priceProduct = card.price * qtde
+        val saleOffPrice = card.saleOff?.firstOrNull()?.value
+
+        var priceProduct = if(saleOffPrice !== null) saleOffPrice * qtde else card.price * qtde
+
         var accumulatorPrice = priceProduct
 
 

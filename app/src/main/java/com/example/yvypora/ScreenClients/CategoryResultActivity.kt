@@ -1,6 +1,7 @@
 package com.example.yvypora.ScreenClients
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -220,6 +222,7 @@ fun ListOfProductData(products: List<ProductCardSale>) {
 
 @Composable
 fun DataProduct(product: ProductCardSale) {
+    val context = LocalContext.current
 //        val context = LocalContext.current
     var nameProduct = product.name
 //    var photoProduct = card.photo
@@ -236,10 +239,11 @@ fun DataProduct(product: ProductCardSale) {
             modifier = Modifier
                 .width(130.dp)
                 .height(175.dp)
-//            .clickable {
-//                val intent = Intent(context, DescriptionProducts()::class.java)
-//                context.startActivity(intent)
-//            }
+                .clickable {
+                    val intent = Intent(context, DescriptionProducts::class.java)
+                    intent.putExtra("id", product.id)
+                    context.startActivity(intent)
+                }
                 .padding(3.dp),
             border = BorderStroke(1.dp, colorResource(id = R.color.transparentgreen_yvy))
 
