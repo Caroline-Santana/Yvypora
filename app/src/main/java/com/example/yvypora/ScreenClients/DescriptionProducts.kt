@@ -131,6 +131,7 @@ fun HeaderDescriptionProducts() {
                 contentDescription = "product",
                 alignment = Alignment.Center
             )
+
             Row(modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically) {
