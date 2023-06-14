@@ -161,10 +161,6 @@ class EditProfileScreen : ComponentActivity() {
         }
 
 
-
-
-
-
         var update by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
@@ -273,25 +269,25 @@ class EditProfileScreen : ComponentActivity() {
                 }
 
                 Spacer(modifier = Modifier.height(19.dp))
-                dataEditUser?.let {
-                    CpfInputAgain(cpfState, setter = { newCpf ->
-                        isCpfErrorEmpty = newCpf.isEmpty()
-
-                        if (cpfState.length > 11) newCpf.dropLast(1)
-
-
-                        if (!ValidationCpf.myValidateCPF(newCpf)) {
-                            isCpfError = true
-                        } else {
-                            isCpfError = false
-                            isCpfErrorEmpty = false
-                        }
-
-                        newData.value.cpf = newCpf
-                        cpfState = newCpf
-                    }, isCpfErrorEmpty, isCpfError)
-                }
-                Spacer(modifier = Modifier.height(19.dp))
+//                dataEditUser?.let {
+//                    CpfInputAgain(cpfState, setter = { newCpf ->
+//                        isCpfErrorEmpty = newCpf.isEmpty()
+//
+//                        if (cpfState.length > 11) newCpf.dropLast(1)
+//
+//
+//                        if (!ValidationCpf.myValidateCPF(newCpf)) {
+//                            isCpfError = true
+//                        } else {
+//                            isCpfError = false
+//                            isCpfErrorEmpty = false
+//                        }
+//
+//                        newData.value.cpf = newCpf
+//                        cpfState = newCpf
+//                    }, isCpfErrorEmpty, isCpfError)
+//                }
+//                Spacer(modifier = Modifier.height(19.dp))
                 Button(
                     onClick = {
                         update = true
@@ -323,12 +319,12 @@ class EditProfileScreen : ComponentActivity() {
 
         if (update) {
             Log.i("update", "teste ${newData.value}")
+
             LaunchedEffect(Unit) {
                 val body = CostumerUpdateAccountBody(
                     name = nameState,
                     email = emailState.ifEmpty { user!!.email },
-                    cpf = cpfState,
-                    password = if (passwordState.isEmpty()) null else emailState,
+                    password = if (passwordState.isEmpty()) null else passwordState,
                 )
 
                 if (!newProfilePicture.value.isNullOrEmpty()) {
@@ -371,219 +367,214 @@ class EditProfileScreen : ComponentActivity() {
                 } else {
                     updateCostumerAccount(dataEditUser?.id!!, body) {
                         if (it != null) {
-                            Log.i("update" ,"token ${it.data.newToken}")
+                            Log.i("update", "token ${it.data.newToken}")
                             token = it.data.newToken
                             updateToken = true
                         }
                     }
                 }
             }
-            if (updateToken) {
-                LaunchedEffect(token) {
-                    Log.i("token", token.toString())
-                    TokenStore(context).saveToken(token) // save new token
-                    Log.i("update", "novo token salvo")
-                }
-                val intent = Intent(context, LoginActivity::class.java)
-                Toast.makeText(context, "Faça Login Novamente!", Toast.LENGTH_SHORT).show()
-                context.startActivity(intent)
+
+            val intent = Intent(context, LoginActivity::class.java)
+            Toast.makeText(context, "Faça Login Novamente!", Toast.LENGTH_SHORT).show()
+            context.startActivity(intent)
+        }
+    }
+
+}
+
+@Composable
+fun NameInputAgain(nameState: String, setter: (String) -> Unit) {
+    val inputsFocusRequest = FocusRequester()
+
+    Text(
+        text = stringResource(id = R.string.name),
+        modifier = Modifier.padding(top = 20.dp),
+        fontSize = 20.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = nameState,
+        onValueChange = setter,
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .focusRequester(inputsFocusRequest),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences
+        ),
+        singleLine = true,
+
+        )
+
+}
+
+@Composable
+fun EmailInputAgain(emailState: String, setter: (String) -> Unit, isEmailError: Boolean) {
+    val inputsFocusRequest = FocusRequester()
+
+    Text(
+        text = stringResource(id = R.string.email),
+        fontSize = 20.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = emailState,
+        onValueChange = setter,
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(57.dp)
+            .focusRequester(inputsFocusRequest),
+        isError = isEmailError,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        singleLine = true,
+        shape = RoundedCornerShape(8.dp),
+    )
+    if (isEmailError) {
+        Text(
+            text = stringResource(id = R.string.email_error),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
+        )
+    }
+}
+
+@Composable
+fun PassInputAgain(
+    passwordState: String,
+    setter: (String) -> Unit,
+    isPasswordError: Boolean,
+    isPasswordErrorEmpty: Boolean,
+    passwordVisibility: Boolean,
+    iconSetter: () -> Unit
+) {
+    val inputsFocusRequest = FocusRequester()
+
+
+    Text(
+        text = stringResource(id = R.string.password),
+        fontSize = 20.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = passwordState,
+        onValueChange = setter,
+        trailingIcon = {
+            val img = if (passwordVisibility) {
+                Icons.Filled.Visibility
+            } else Icons.Filled.VisibilityOff
+
+            IconButton(onClick = iconSetter) {
+                Icon(
+                    imageVector = img,
+                    contentDescription = null
+                )
             }
-        }
-
-    }
-
-    @Composable
-    fun NameInputAgain(nameState: String, setter: (String) -> Unit) {
-        val inputsFocusRequest = FocusRequester()
-
+        },
+        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .focusRequester(inputsFocusRequest),
+        isError = isPasswordError,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        singleLine = true,
+        shape = RoundedCornerShape(8.dp),
+    )
+    if (isPasswordError) {
         Text(
-            text = stringResource(id = R.string.name),
-            modifier = Modifier.padding(top = 20.dp),
-            fontSize = 20.sp,
-            textAlign = TextAlign.Start,
-            color = colorResource(id = R.color.darkgreen_yvy)
+            text = stringResource(id = R.string.message_error_pass2),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
         )
-        TextField(
-            value = nameState,
-            onValueChange = setter,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Unspecified,
-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .focusRequester(inputsFocusRequest),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                capitalization = KeyboardCapitalization.Sentences
-            ),
-            singleLine = true,
-
-            )
-
     }
-
-    @Composable
-    fun EmailInputAgain(emailState: String, setter: (String) -> Unit, isEmailError: Boolean) {
-        val inputsFocusRequest = FocusRequester()
-
+    if (isPasswordErrorEmpty) {
         Text(
-            text = stringResource(id = R.string.email),
-            fontSize = 20.sp,
-            textAlign = TextAlign.Start,
-            color = colorResource(id = R.color.darkgreen_yvy)
+            text = stringResource(id = R.string.message_error_pass1),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
         )
-        TextField(
-            value = emailState,
-            onValueChange = setter,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Unspecified,
-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(57.dp)
-                .focusRequester(inputsFocusRequest),
-            isError = isEmailError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-        )
-        if (isEmailError) {
-            Text(
-                text = stringResource(id = R.string.email_error),
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Red,
-                textAlign = TextAlign.End
-            )
-        }
     }
+}
 
-    @Composable
-    fun PassInputAgain(
-        passwordState: String,
-        setter: (String) -> Unit,
-        isPasswordError: Boolean,
-        isPasswordErrorEmpty: Boolean,
-        passwordVisibility: Boolean,
-        iconSetter: () -> Unit
-    ) {
-        val inputsFocusRequest = FocusRequester()
+@Composable
+fun CpfInputAgain(
+    cpfState: String,
+    setter: (String) -> Unit,
+    isCpfErrorEmpty: Boolean,
+    isCpfError: Boolean
+) {
 
+    val inputsFocusRequest = FocusRequester()
 
+    val context = LocalContext.current
+
+    Text(
+        text = stringResource(id = R.string.title_cpf),
+        fontSize = 20.sp,
+        textAlign = TextAlign.Start,
+        color = colorResource(id = R.color.darkgreen_yvy)
+    )
+    TextField(
+        value = cpfState,
+        onValueChange = setter,
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Unspecified,
+            focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
+            cursorColor = colorResource(id = R.color.darkgreen_yvy)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(54.dp)
+            .focusRequester(inputsFocusRequest),
+        isError = isCpfErrorEmpty,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        visualTransformation = MaskCpf(),
+        singleLine = true,
+        shape = RoundedCornerShape(8.dp),
+    )
+    if (isCpfErrorEmpty) {
         Text(
-            text = stringResource(id = R.string.password),
-            fontSize = 20.sp,
-            textAlign = TextAlign.Start,
-            color = colorResource(id = R.color.darkgreen_yvy)
+            text = stringResource(id = R.string.cpf_error_empty),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
         )
-        TextField(
-            value = passwordState,
-            onValueChange = setter,
-            trailingIcon = {
-                val img = if (passwordVisibility) {
-                    Icons.Filled.Visibility
-                } else Icons.Filled.VisibilityOff
-
-                IconButton(onClick = iconSetter) {
-                    Icon(
-                        imageVector = img,
-                        contentDescription = null
-                    )
-                }
-            },
-            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Unspecified,
-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .focusRequester(inputsFocusRequest),
-            isError = isPasswordError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-        )
-        if (isPasswordError) {
-            Text(
-                text = stringResource(id = R.string.message_error_pass2),
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Red,
-                textAlign = TextAlign.End
-            )
-        }
-        if (isPasswordErrorEmpty) {
-            Text(
-                text = stringResource(id = R.string.message_error_pass1),
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Red,
-                textAlign = TextAlign.End
-            )
-        }
-    }
-
-    @Composable
-    fun CpfInputAgain(
-        cpfState: String,
-        setter: (String) -> Unit,
-        isCpfErrorEmpty: Boolean,
-        isCpfError: Boolean
-    ) {
-
-        val inputsFocusRequest = FocusRequester()
-
-        val context = LocalContext.current
-
+    } else if (isCpfError) {
         Text(
-            text = stringResource(id = R.string.title_cpf),
-            fontSize = 20.sp,
-            textAlign = TextAlign.Start,
-            color = colorResource(id = R.color.darkgreen_yvy)
+            text = stringResource(id = R.string.cpf_error_invalid),
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Red,
+            textAlign = TextAlign.End
         )
-        TextField(
-            value = cpfState,
-            onValueChange = setter,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Unspecified,
-                focusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                unfocusedIndicatorColor = colorResource(id = R.color.darkgreen_yvy),
-                cursorColor = colorResource(id = R.color.darkgreen_yvy)
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(54.dp)
-                .focusRequester(inputsFocusRequest),
-            isError = isCpfErrorEmpty,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            visualTransformation = MaskCpf(),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-        )
-        if (isCpfErrorEmpty) {
-            Text(
-                text = stringResource(id = R.string.cpf_error_empty),
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Red,
-                textAlign = TextAlign.End
-            )
-        } else if (isCpfError) {
-            Text(
-                text = stringResource(id = R.string.cpf_error_invalid),
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Red,
-                textAlign = TextAlign.End
-            )
-        }
     }
+}
 
 //    @Composable
 //    fun CepInputAgain(user: EditProfile) {
@@ -627,16 +618,15 @@ class EditProfileScreen : ComponentActivity() {
 //
 //    }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun PreviewEditProfileSreen() {
-        YvyporaTheme {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
+@Preview(showBackground = true)
+@Composable
+fun PreviewEditProfileSreen() {
+    YvyporaTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
 //                InputsProfile()
-            }
         }
     }
 }

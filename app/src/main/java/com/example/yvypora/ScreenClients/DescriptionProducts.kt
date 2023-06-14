@@ -100,7 +100,7 @@ fun HeaderDescriptionProducts() {
             painter = painterResource(id = R.drawable.wave_products),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(310.dp),
+                .height(330.dp),
             contentDescription = stringResource(id = R.string.back_screen)
         )
         Image(
@@ -131,7 +131,7 @@ fun HeaderDescriptionProducts() {
                 contentDescription = "product",
                 alignment = Alignment.Center
             )
-            Row(modifier = Modifier.fillMaxWidth(),
+            Row(modifier = Modifier.fillMaxWidth().padding(start = 5.dp),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(

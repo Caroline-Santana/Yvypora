@@ -288,7 +288,7 @@ class ShoppingCartActivity : ComponentActivity() {
         LazyColumn(
             modifier = Modifier
                 .height(400.dp)
-                .padding(top = 5.dp, bottom = 50.dp),
+                .padding(top = 5.dp, bottom = 30.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
 //        userScrollEnabled = false
@@ -477,7 +477,7 @@ class ShoppingCartActivity : ComponentActivity() {
                             .clickable {
                                 onCardSelected(isSelected)
                             }
-                            .height(130.dp),
+                            .height(100.dp),
                         elevation = 0.dp,
                         backgroundColor = if (isSelected) colorResource(id = R.color.green_camps_transparent) else Color.White,
                         border = BorderStroke(1.dp, colorResource(id = R.color.green_yvy))
